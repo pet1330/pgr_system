@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scopes\StudentUserScope;
+use App\Scopes\UserScope;
 
 class Student extends User
 {
@@ -11,7 +11,7 @@ class Student extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new StudentUserScope);
+        static::addGlobalScope(new UserScope('student'));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scopes\WizardUserScope;
+use App\Scopes\UserScope;
 
 class Wizard extends User
 {
@@ -10,6 +10,6 @@ class Wizard extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new WizardUserScope);
+        static::addGlobalScope(new UserScope('wizard'));
     }
 }

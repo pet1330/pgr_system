@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scopes\AdminUserScope;
+use App\Scopes\UserScope;
 
 class Admin extends User
 {
@@ -10,6 +10,6 @@ class Admin extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new AdminUserScope);
+        static::addGlobalScope(new UserScope('admin'));
     }
 }

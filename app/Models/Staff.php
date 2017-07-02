@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scopes\StaffUserScope;
+use App\Scopes\UserScope;
 
 class Staff extends User
 {
@@ -10,6 +10,6 @@ class Staff extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new StaffUserScope);
+        static::addGlobalScope(new UserScope('staff'));
     }
 }
