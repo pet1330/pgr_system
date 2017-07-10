@@ -7,16 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class StudentRecord extends Model
 {
 
+    protected $casts = [
+        'tierFour' => 'boolean',
+    ];
+    
     protected $fillable = [
-        'student',
-        'college',
+        'studentid',
         'school',
         'enrolment_date', 
         'student_status',
-        'programme',
+        'programe_title',
+        'programe_type',
         'enrolment_status',
         'funding_type',
         'mode_of_study',
+        'tierFour'
     ];
 
     /**
@@ -27,5 +32,8 @@ class StudentRecord extends Model
         return $this->belongsTo(Student::class);
     }
 
-    
+    public function getCollegeAttribute()
+    {
+        return $this->school->college;
+    }
 }

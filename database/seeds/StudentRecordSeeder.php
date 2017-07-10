@@ -14,11 +14,9 @@ class StudentRecordSeeder extends Seeder
     public function run()
     {
         $students = Student::all();
-
-        foreach ($students as $student) {
-            $student
-                ->records()
-                ->save(factory( StudentRecord::class )->make(), 'student_id' );
+        foreach ($students as $student)
+        {
+            $student->records()->save(factory(StudentRecord::class)->make() , 'student_id' );
         }
     }
 }
