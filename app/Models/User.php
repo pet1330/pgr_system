@@ -33,4 +33,12 @@ abstract class User extends Authenticatable
     protected $hidden = [
 		'id',
     ];
+
+    public function getNameAttribute()
+    {
+        if( is_null($this->middle_name) )
+            return sprintf("%s %s", $this->first_name, $this->last_name);
+        else
+            return sprintf("%s %s %s", $this->first_name, $this->middle_name, $this->last_name);
+    }
 }
