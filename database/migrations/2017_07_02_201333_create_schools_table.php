@@ -23,12 +23,9 @@ class CreateSchoolsTable extends Migration
 
         // Add School to Student Record
         Schema::table('student_records', function($table) {
-            $table->integer('school')->unsigned()->index();
-            $table->foreign('school')->references('id')->on('schools');
+            $table->integer('school_id')->unsigned()->index();
+            $table->foreign('school_id')->references('id')->on('schools');
         });
-
-
-
     }
 
     /**
@@ -39,8 +36,8 @@ class CreateSchoolsTable extends Migration
     public function down()
     {
         Schema::table('student_records', function (Blueprint $table) {
-            $table->dropForeign('student_records_school_foreign');
-            $table->dropColumn('school');
+            $table->dropForeign('student_records_school_id_foreign');
+            $table->dropColumn('school_id');
         });
 
         Schema::dropIfExists('schools');

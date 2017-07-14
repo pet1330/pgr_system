@@ -23,17 +23,17 @@ class CreateStatusesTable extends Migration
 
         // Add Student and Enrolment Status to Student Record
         Schema::table('student_records', function($table) {
-            $table->integer('student_status')->unsigned()->index();
-            $table->integer('enrolment_status')->unsigned()->index();
-            $table->integer('mode_of_study')->unsigned()->index();
-            $table->integer('programme_type')->unsigned()->index();
-            $table->integer('funding_type')->unsigned()->index();
+            $table->integer('student_status_id')->unsigned()->index();
+            $table->integer('enrolment_status_id')->unsigned()->index();
+            $table->integer('mode_of_study_id')->unsigned()->index();
+            $table->integer('programme_type_id')->unsigned()->index();
+            $table->integer('funding_type_id')->unsigned()->index();
             
-            $table->foreign('student_status')->references('id')->on('statuses');
-            $table->foreign('enrolment_status')->references('id')->on('statuses');
-            $table->foreign('mode_of_study')->references('id')->on('statuses');
-            $table->foreign('programme_type')->references('id')->on('statuses');
-            $table->foreign('funding_type')->references('id')->on('statuses');
+            $table->foreign('student_status_id')->references('id')->on('statuses');
+            $table->foreign('enrolment_status_id')->references('id')->on('statuses');
+            $table->foreign('mode_of_study_id')->references('id')->on('statuses');
+            $table->foreign('programme_type_id')->references('id')->on('statuses');
+            $table->foreign('funding_type_id')->references('id')->on('statuses');
         });
     }
 
@@ -45,20 +45,20 @@ class CreateStatusesTable extends Migration
     public function down()
     {
         Schema::table('student_records', function (Blueprint $table) {
-            $table->dropForeign('student_records_student_status_foreign');
-            $table->dropColumn('student_status');
+            $table->dropForeign('student_records_student_status_id_foreign');
+            $table->dropColumn('student_status_id');
 
-            $table->dropForeign('student_records_enrolment_status_foreign');
-            $table->dropColumn('enrolment_status');
+            $table->dropForeign('student_records_enrolment_status_id_foreign');
+            $table->dropColumn('enrolment_status_id');
 
-            $table->dropForeign('student_records_mode_of_study_foreign');
-            $table->dropColumn('mode_of_study');
+            $table->dropForeign('student_records_mode_of_study_id_foreign');
+            $table->dropColumn('mode_of_study_id');
             
-            $table->dropForeign('student_records_programme_type_foreign');
-            $table->dropColumn('programme_type');
+            $table->dropForeign('student_records_programme_type_id_foreign');
+            $table->dropColumn('programme_type_id');
 
-            $table->dropForeign('student_records_funding_type_foreign');
-            $table->dropColumn('funding_type');
+            $table->dropForeign('student_records_funding_type_id_foreign');
+            $table->dropColumn('funding_type_id');
         });
 
         Schema::dropIfExists('statuses');

@@ -14,4 +14,9 @@ class ModeOfStudy extends Model
         parent::boot();
         static::addGlobalScope(new StatusScope('mode_of_study'));
     }
+
+    public function StudentRecord()
+    {
+        return $this->hasMany(StudentRecord::class);
+    }
 }
