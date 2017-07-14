@@ -10,6 +10,6 @@ class Staff extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new UserScope('staff'));
+        static::addGlobalScope(new UserScope('Staff'));
     }
 }

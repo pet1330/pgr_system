@@ -10,6 +10,6 @@ class Wizard extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new UserScope('wizard'));
+        static::addGlobalScope(new UserScope('Wizard'));
     }
 }

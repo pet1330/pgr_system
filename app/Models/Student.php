@@ -12,7 +12,7 @@ class Student extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new UserScope('student'));
+        static::addGlobalScope(new UserScope('Student'));
     }
 
     /**

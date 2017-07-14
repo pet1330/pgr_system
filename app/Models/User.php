@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-abstract class User extends Authenticatable
+class User extends Authenticatable
 {
     use Notifiable;
 
@@ -31,7 +31,7 @@ abstract class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-		'id',
+        'id',
     ];
 
     public function getNameAttribute()
@@ -40,5 +40,20 @@ abstract class User extends Authenticatable
             return sprintf("%s %s", $this->first_name, $this->last_name);
         else
             return sprintf("%s %s %s", $this->first_name, $this->middle_name, $this->last_name);
+    }
+
+    public function newFromBuilder($attributes = [], $connection = null)
+    {
+        if (static::class === "App\Models\User")
+        {
+            if(!isset($attributes->user_type))
+                throw new Exception("User Type Not Defined", 1);
+            
+            $userType = "App\\Models\\" . $attributes->user_type;
+            $factory = (new $userType)->newFromBuilder($attributes, $connection);
+            $factory->setRawAttributes((array) $attributes, true);
+            return $factory->load($factory->with);
+        }
+        return parent::newFromBuilder($attributes, $connection);
     }
 }

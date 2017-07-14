@@ -10,6 +10,6 @@ class Admin extends User
     {
         parent::boot();
 
-        static::addGlobalScope(new UserScope('admin'));
+        static::addGlobalScope(new UserScope('Admin'));
     }
 }
