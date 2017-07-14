@@ -43,14 +43,14 @@ class StatusQueryScopeSeeder extends TestCase
     }
 
     /**
-     * Test Program Status Query Scope
+     * Test Programme Status Query Scope
      *
      * @return void
      */
-    public function testProgramStatusQueryScope()
+    public function testProgrammeStatusQueryScope()
     {
-        $this->artisan('db:seed', [ '--class' => 'ProgramSeeder']);
-        $this->assertEquals(App\Models\Program::count(), 3);
+        $this->artisan('db:seed', [ '--class' => 'ProgrammeSeeder']);
+        $this->assertEquals(App\Models\Programme::count(), 3);
     }
 
     /**

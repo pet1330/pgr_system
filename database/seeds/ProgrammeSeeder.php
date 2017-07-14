@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Program;
+use App\Models\Programme;
 
-class ProgramSeeder extends Seeder
+class ProgrammeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,9 +16,9 @@ class ProgramSeeder extends Seeder
 
         foreach ($example_statuses as $status)
         {
-            Program::create([
+            Programme::create([
                 'status' => $status,
-                'status_type' => 'program'
+                'status_type' => 'programme'
             ]);
         }
     }

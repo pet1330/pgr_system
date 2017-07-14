@@ -19,7 +19,7 @@ use \App\Models\StudentRecord;
 use \App\Models\School;
 use \App\Models\EnrolmentStatus;
 use \App\Models\StudentStatus;
-use \App\Models\Program;
+use \App\Models\Programme;
 use \App\Models\FundingType;
 use \App\Models\ModeOfStudy;
 
@@ -74,13 +74,13 @@ $factory->define(Wizard::class, function (Faker\Generator $faker) {
 $factory->define(StudentRecord::class, function (Faker\Generator $faker) {
 
     return [
-        'school' => School::inRandomOrder()->pluck('id')->first(),
-        'enrolment_status' => EnrolmentStatus::inRandomOrder()->pluck('id')->first(),
-        'student_status' => StudentStatus::inRandomOrder()->pluck('id')->first(),
-        'programe_title' => $faker->sentence,
-        'programme_type' => Program::inRandomOrder()->pluck('id')->first(),
-        'funding_type' => FundingType::inRandomOrder()->pluck('id')->first(),
-        'mode_of_study' => ModeOfStudy::inRandomOrder()->pluck('id')->first(),
+        'school_id' => School::inRandomOrder()->pluck('id')->first(),
+        'enrolment_status_id' => EnrolmentStatus::inRandomOrder()->pluck('id')->first(),
+        'student_status_id' => StudentStatus::inRandomOrder()->pluck('id')->first(),
+        'programme_title' => $faker->sentence,
+        'programme_type_id' => Programme::inRandomOrder()->pluck('id')->first(),
+        'funding_type_id' => FundingType::inRandomOrder()->pluck('id')->first(),
+        'mode_of_study_id' => ModeOfStudy::inRandomOrder()->pluck('id')->first(),
         'tierFour' => $faker->boolean,
     ];
 });

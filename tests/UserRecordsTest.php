@@ -14,7 +14,7 @@ class UserRecordsTest extends TestCase
         $this->artisan('db:seed', [ '--class' => 'EnrolmentStatusSeeder']);
         $this->artisan('db:seed', [ '--class' => 'ModeOfStudySeeder']);
         $this->artisan('db:seed', [ '--class' => 'StudentStatusSeeder']);
-        $this->artisan('db:seed', [ '--class' => 'ProgramSeeder']);
+        $this->artisan('db:seed', [ '--class' => 'ProgrammeSeeder']);
         $this->artisan('db:seed', [ '--class' => 'CollegeSeeder']);
         $this->artisan('db:seed', [ '--class' => 'SchoolSeeder']);
         $this->artisan('db:seed', [ '--class' => 'FundingTypeSeeder']);
