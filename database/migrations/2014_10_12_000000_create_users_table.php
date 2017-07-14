@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('university_email')->unique();
             $table->string('university_id')->unique();
             $table->boolean('locked')->default(false);
-            $table->enum('user_type', ['student', 'staff', 'admin', 'wizard']);
+            $table->enum('user_type', ['Student', 'Staff', 'Admin', 'Wizard']);
             $table->timestamps();
         });
     }
