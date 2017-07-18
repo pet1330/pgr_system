@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserQueryScopeTest extends TestCase
 {
+
     use DatabaseTransactions;
 
     /**

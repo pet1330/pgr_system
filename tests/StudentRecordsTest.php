@@ -1,13 +1,13 @@
 <?php
 
-useIlluminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class StudentRecordsTest extends TestCase
 {
-    use DatabaseTransactions;
 
+    use DatabaseTransactions;
 
     public function seedDatabaseWithStudentRecordInformation()
     {

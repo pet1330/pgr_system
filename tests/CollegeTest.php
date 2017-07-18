@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CollegeTest extends TestCase
 {
+    
+    use DatabaseTransactions;
 
         protected $testCollege = 'College of Testing';
         protected $testSchools = 

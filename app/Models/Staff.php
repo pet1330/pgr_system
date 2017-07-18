@@ -12,4 +12,9 @@ class Staff extends User
 
         static::addGlobalScope(new UserScope('Staff'));
     }
+
+    public function supervising()
+    {
+        return $this->belongsToMany(StudentRecord::class, 'supervisors')->with('student');
+    }
 }

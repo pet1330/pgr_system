@@ -6,7 +6,7 @@ use App\Scopes\UserScope;
 
 class Student extends User
 {
-    protected $with = ['records'];
+    // protected $with = ['records'];
 
     protected static function boot()
     {
@@ -69,5 +69,35 @@ class Student extends User
     public function getModeOfStudyAttribute()
     {
         return $this->record()->ModeOfStudy;
+    }
+
+    public function getDirectorOfStudyAttribute()
+    {
+        return $this->record()->directorOfStudy;
+    }
+
+    public function getSecondSupervisorAttribute()
+    {
+        return $this->record()->secondSupervisor;
+    }
+
+    public function getThirdSupervisorAttribute()
+    {
+        return $this->record()->thirdSupervisor;
+    }
+
+    public function removeSupervisor(Staff $supervisor)
+    {
+        return $this->record()->removeSupervisor($supervisor);
+    }
+
+    public function addSupervisor(Staff $supervisor, $type)
+    {
+        return $this->record()->addSupervisor($supervisor, $type);
+    }
+
+    public function supervisors()
+    {
+        return $this->record()->supervisors();
     }
 }
