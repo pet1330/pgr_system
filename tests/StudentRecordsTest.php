@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+useIlluminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class UserRecordsTest extends TestCase
+class StudentRecordsTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -21,7 +21,7 @@ class UserRecordsTest extends TestCase
     }
 
     /**
-     * Test User can save a Record
+     * Test Student can save a Record
      *
      * @return void
      */
@@ -40,7 +40,7 @@ class UserRecordsTest extends TestCase
     }
 
     /**
-     * Test User has A Record
+     * Test Student has A Record
      *
      * @return void
      */
