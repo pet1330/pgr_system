@@ -27,5 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FundingTypeSeeder::class);
         $this->call(StudentRecordSeeder::class);
         $this->call(SupervisorSeeder::class);
+        $this->call(AbsenceTypeSeeder::class);
+        $this->call(AbsenceSeeder::class);
     }
 }

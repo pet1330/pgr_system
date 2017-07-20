@@ -55,4 +55,19 @@ class User extends Authenticatable
         }
         return parent::newFromBuilder($attributes, $connection);
     }
+
+    public function absences()
+    {
+        return $this->hasMany(Absence::class, 'user_id');
+    }
+
+    public function isAbsent()
+    {
+        return !! $this->absences()->current()->count();
+    }
+
+    public function isNotAbsent()
+    {
+        return ! $this->isAbsent();
+    }
 }

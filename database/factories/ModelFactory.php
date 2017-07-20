@@ -22,6 +22,8 @@ use App\Models\StudentStatus;
 use App\Models\Programme;
 use App\Models\FundingType;
 use App\Models\ModeOfStudy;
+use App\Models\Absence;
+use App\Models\AbsenceType;
 use Carbon\Carbon;
 
 $factory->define(Student::class, function (Faker\Generator $faker) {
@@ -88,5 +90,22 @@ $factory->define(StudentRecord::class, function (Faker\Generator $faker) {
         'funding_type_id'      => FundingType::inRandomOrder()->pluck('id')->first(),
         'mode_of_study_id'     => ModeOfStudy::inRandomOrder()->pluck('id')->first(),
         'tierFour'             => $faker->boolean,
+    ];
+});
+
+
+$factory->define(Absence::class, function (Faker\Generator $faker) {
+    $start = Carbon::instance($faker->dateTimeBetween('-6 months', '6 months'));
+    $approval = $faker->optional()->boolean();
+
+    return [
+        'user_id'              => Student::inRandomOrder()->pluck('id')->first(),
+        'absence_type_id'      => AbsenceType::inRandomOrder()->pluck('id')->first(),
+        'from'                 => $start->format('Y-m-d H:i:s'),
+        'to'                   => $start->addDays($faker->numberBetween(2,30))->format('Y-m-d H:i:s'),
+        'approval_required'    => $faker->boolean(),
+        'approval_granted'     => $approval,
+        'approved_by'          => $approval ? Staff::inRandomOrder()->pluck('id')->first() : null,
+        'approved_on'          => $approval ? $start->subDays($faker->numberBetween(2,30))->format('Y-m-d H:i:s') : null,
     ];
 });
