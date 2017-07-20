@@ -108,13 +108,10 @@ class StudentRecord extends Model
 
     public function addSupervisor(Staff $supervisor, $type)
     {
-        return $this->supervisors()->sync(
+        return $this->supervisors()->syncWithoutDetaching(
             [
-                $supervisor->id => 
-                [ 
-                    "supervisor_type" => $type
-                ]
-            ], false
+                $supervisor->id =>  [ "supervisor_type" => $type ]
+            ]
         );
     }
 }
