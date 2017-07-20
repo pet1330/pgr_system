@@ -48,8 +48,7 @@ class User extends Authenticatable
         {
             if(!isset($attributes->user_type))
                 throw new Exception("User Type Not Defined", 1);
-            
-            $userType = "App\\Models\\" . $attributes->user_type;
+            $userType = __NAMESPACE__ . '\\' . $attributes->user_type;
             $factory = (new $userType)->newFromBuilder($attributes, $connection);
             $factory->setRawAttributes((array) $attributes, true);
             return $factory->load($factory->with);

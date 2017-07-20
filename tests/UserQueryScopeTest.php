@@ -52,4 +52,47 @@ class UserQueryScopeTest extends TestCase
         factory(App\Models\Wizard::class,2)->create();
         $this->assertEquals(App\Models\Wizard::count(), 2);
     }
+
+    /**
+     * Test a admin user type is returned when base class is instanciated
+     * @return void
+     */
+    public function testUserClassResolvesAdminCorrectly()
+    {
+        // factory(App\Models\Student::class, 1)->create();
+        // factory(App\Models\Staff::class, 1)->create();
+        factory(App\Models\Admin::class, 1)->create();
+        // factory(App\Models\Wizard::class, 1)->create();
+        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Admin);
+    }
+
+    /**
+     * Test a staff user type is returned when base class is instanciated
+     * @return void
+     */
+    public function testUserClassResolvesStaffCorrectly()
+    {
+        factory(App\Models\Staff::class, 1)->create();
+        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Staff);
+    }
+
+    /**
+     * Test a student user type is returned when base class is instanciated
+     * @return void
+     */
+    public function testUserClassResolvesStudentCorrectly()
+    {
+        factory(App\Models\Student::class, 1)->create();
+        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Student);
+    }
+
+    /**
+     * Test a wizard user type is returned when base class is instanciated
+     * @return void
+     */
+    public function testUserClassResolvesWizardCorrectly()
+    {
+        factory(App\Models\Wizard::class, 1)->create();
+        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Wizard);
+    }
 }
