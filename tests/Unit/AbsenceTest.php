@@ -1,9 +1,16 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Carbon\Carbon;
+use App\Models\Student;
+use App\Models\Absence;
+use App\Models\Staff;
+use App\Models\Admin;
+use Auth;
 
 class AbsenceTest extends TestCase
 {
@@ -18,9 +25,9 @@ class AbsenceTest extends TestCase
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
         
-        $student = factory(App\Models\Student::class)->create();
+        $student = factory(Student::class)->create();
 
-        $ab = factory(App\Models\Absence::class)->make([
+        $ab = factory(Absence::class)->make([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
@@ -37,9 +44,9 @@ class AbsenceTest extends TestCase
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
         
-        $staff = factory(App\Models\Staff::class)->create();
+        $staff = factory(Staff::class)->create();
 
-        $ab = factory(App\Models\Absence::class)->make([
+        $ab = factory(Absence::class)->make([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
@@ -56,9 +63,9 @@ class AbsenceTest extends TestCase
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
         
-        $admin = factory(App\Models\Admin::class)->create();
+        $admin = factory(Admin::class)->create();
 
-        $ab = factory(App\Models\Absence::class)->make([
+        $ab = factory(Absence::class)->make([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
             ]);
@@ -74,19 +81,19 @@ class AbsenceTest extends TestCase
     public function testAbsenceIsHappeningNow()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        $student = factory(App\Models\Student::class)->create();
+        $student = factory(Student::class)->create();
         
-        $pastAbence = factory(App\Models\Absence::class)->create([
+        $pastAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
         ]);
 
-        $futureAbence = factory(App\Models\Absence::class)->create([
+        $futureAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->addDays(2),
             'to'   =>  Carbon::now()->addDays(4),
         ]);
 
-        $currentAbence = factory(App\Models\Absence::class)->create([
+        $currentAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
@@ -105,19 +112,19 @@ class AbsenceTest extends TestCase
     public function testAbsenceHasHappenedAndFinished()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        $student = factory(App\Models\Student::class)->create();
+        $student = factory(Student::class)->create();
         
-        $pastAbence = factory(App\Models\Absence::class)->create([
+        $pastAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
         ]);
 
-        $futureAbence = factory(App\Models\Absence::class)->create([
+        $futureAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->addDays(2),
             'to'   =>  Carbon::now()->addDays(4),
         ]);
 
-        $currentAbence = factory(App\Models\Absence::class)->create([
+        $currentAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
@@ -135,19 +142,19 @@ class AbsenceTest extends TestCase
     public function testAbsenceHasNotStartedYet()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        $student = factory(App\Models\Student::class)->create();
+        $student = factory(Student::class)->create();
         
-        $pastAbence = factory(App\Models\Absence::class)->create([
+        $pastAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
         ]);
 
-        $futureAbence = factory(App\Models\Absence::class)->create([
+        $futureAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->addDays(2),
             'to'   =>  Carbon::now()->addDays(4),
         ]);
 
-        $currentAbence = factory(App\Models\Absence::class)->create([
+        $currentAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
@@ -165,16 +172,16 @@ class AbsenceTest extends TestCase
     public function testScopeForPastAbsences()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        factory(App\Models\Student::class)->create();
+        factory(Student::class)->create();
 
-        factory(App\Models\Absence::class)->create([
+        factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
         ]);
 
-        $this->assertEquals(App\Models\Absence::past()->count(), 1);
-        $this->assertEquals(App\Models\Absence::current()->count(), 0);
-        $this->assertEquals(App\Models\Absence::future()->count(), 0);
+        $this->assertEquals(Absence::past()->count(), 1);
+        $this->assertEquals(Absence::current()->count(), 0);
+        $this->assertEquals(Absence::future()->count(), 0);
     }
 
     /**
@@ -185,16 +192,16 @@ class AbsenceTest extends TestCase
     public function testScopeForFutureAbsences()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        factory(App\Models\Student::class)->create();
+        factory(Student::class)->create();
 
-        factory(App\Models\Absence::class)->create([
+        factory(Absence::class)->create([
             'from' =>  Carbon::now()->addDays(2),
             'to'   =>  Carbon::now()->addDays(4),
         ]);
 
-        $this->assertEquals(App\Models\Absence::past()->count(), 0);
-        $this->assertEquals(App\Models\Absence::current()->count(), 0);
-        $this->assertEquals(App\Models\Absence::future()->count(), 1);
+        $this->assertEquals(Absence::past()->count(), 0);
+        $this->assertEquals(Absence::current()->count(), 0);
+        $this->assertEquals(Absence::future()->count(), 1);
     }
 
     /**
@@ -205,16 +212,16 @@ class AbsenceTest extends TestCase
     public function testScopeForCurrentAbsences()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        factory(App\Models\Student::class)->create();
+        factory(Student::class)->create();
 
-        factory(App\Models\Absence::class)->create([
+        factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
 
-        $this->assertEquals(App\Models\Absence::past()->count(), 0);
-        $this->assertEquals(App\Models\Absence::current()->count(), 1);
-        $this->assertEquals(App\Models\Absence::future()->count(), 0);
+        $this->assertEquals(Absence::past()->count(), 0);
+        $this->assertEquals(Absence::current()->count(), 1);
+        $this->assertEquals(Absence::future()->count(), 0);
 
     }
 
@@ -226,10 +233,10 @@ class AbsenceTest extends TestCase
     public function testMarkingAbsenceAsApproved()
     {
         $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        $staff = factory(App\Models\Student::class)->create();
-        factory(App\Models\Staff::class)->create();
+        $staff = factory(Student::class)->create();
+        factory(Staff::class)->create();
 
-        $ab = factory(App\Models\Absence::class)->create([
+        $ab = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
             'approval_required' => true,
@@ -238,13 +245,13 @@ class AbsenceTest extends TestCase
             'approved_on' => null,
         ]);
 
-        $this->assertEquals(App\Models\Absence::IsApproved()->count(), 0);
+        $this->assertEquals(Absence::IsApproved()->count(), 0);
 
         Auth::loginUsingId($staff->id);
 
         $ab->approve();
 
-        $this->assertEquals(App\Models\Absence::IsApproved()->count(), 1);
+        $this->assertEquals(Absence::IsApproved()->count(), 1);
 
     }
 }

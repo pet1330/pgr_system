@@ -1,8 +1,16 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\EnrolmentStatus;
+use App\Models\FundingType;
+use App\Models\ModeOfStudy;
+use App\Models\Programme;
+use App\Models\StudentStatus;
+
 
 class StatusQueryScopeSeeder extends TestCase
 {
@@ -17,7 +25,7 @@ class StatusQueryScopeSeeder extends TestCase
     public function testEnrolmentStatusQueryScope()
     {
         $this->artisan('db:seed', [ '--class' => 'EnrolmentStatusSeeder']);
-        $this->assertEquals(App\Models\EnrolmentStatus::count(), 5);
+        $this->assertEquals(EnrolmentStatus::count(), 5);
     }
 
     /**
@@ -28,7 +36,7 @@ class StatusQueryScopeSeeder extends TestCase
     public function testFundingTypeStatusQueryScope()
     {
         $this->artisan('db:seed', [ '--class' => 'FundingTypeSeeder']);
-        $this->assertEquals(App\Models\FundingType::count(), 3);
+        $this->assertEquals(FundingType::count(), 3);
     }
 
     /**
@@ -39,7 +47,7 @@ class StatusQueryScopeSeeder extends TestCase
     public function testModeOfStudyStatusQueryScope()
     {
         $this->artisan('db:seed', [ '--class' => 'ModeOfStudySeeder']);
-        $this->assertEquals(App\Models\ModeOfStudy::count(), 3);
+        $this->assertEquals(ModeOfStudy::count(), 3);
     }
 
     /**
@@ -50,7 +58,7 @@ class StatusQueryScopeSeeder extends TestCase
     public function testProgrammeStatusQueryScope()
     {
         $this->artisan('db:seed', [ '--class' => 'ProgrammeSeeder']);
-        $this->assertEquals(App\Models\Programme::count(), 3);
+        $this->assertEquals(Programme::count(), 3);
     }
 
     /**
@@ -61,7 +69,7 @@ class StatusQueryScopeSeeder extends TestCase
     public function testStudentStatusQueryScope()
     {
         $this->artisan('db:seed', [ '--class' => 'StudentStatusSeeder']);
-        $this->assertEquals(App\Models\StudentStatus::count(), 3);
+        $this->assertEquals(StudentStatus::count(), 3);
 
     }
 }

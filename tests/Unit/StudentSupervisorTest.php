@@ -1,8 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Student;
+use App\Models\Staff;
+use App\Models\StudentRecord;
 
 class StudentSupervisorTest extends TestCase
 {
@@ -28,9 +33,9 @@ class StudentSupervisorTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
 
-        $student = factory(App\Models\Student::class)->create();
-        $supers = factory(App\Models\Staff::class, 3)->create();
-        $studentRecord = factory(App\Models\StudentRecord::class)->make();
+        $student = factory(Student::class)->create();
+        $supers = factory(Staff::class, 3)->create();
+        $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
 
         $supers->each(function($s) use ($student)
@@ -38,7 +43,7 @@ class StudentSupervisorTest extends TestCase
             $count = $student->supervisors()->count()+1;
             $student->addSupervisor( $s, $count);
 
-            $this->seeInDatabase('supervisors', [
+            $this->assertDatabaseHas('supervisors', [
                 'staff_id' => $s->id,
                 'student_record_id' => $student->record()->id,
                 'changed_on' => null,
@@ -58,9 +63,9 @@ class StudentSupervisorTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
 
-        $student = factory(App\Models\Student::class)->create();
-        $supers = factory(App\Models\Staff::class, 3)->create();
-        $studentRecord = factory(App\Models\StudentRecord::class)->make();
+        $student = factory(Student::class)->create();
+        $supers = factory(Staff::class, 3)->create();
+        $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
 
         $supers->each(function($s) use ($student)
@@ -68,7 +73,7 @@ class StudentSupervisorTest extends TestCase
             $count = $student->supervisors()->count()+1;
             $student->addSupervisor( $s, $count);
 
-            $this->seeInDatabase('supervisors', [
+            $this->assertDatabaseHas('supervisors', [
                 'staff_id' => $s->id,
                 'student_record_id' => $student->record()->id,
                 'changed_on' => null,
@@ -93,9 +98,9 @@ class StudentSupervisorTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
         
-        $student = factory(App\Models\Student::class)->create();
-        $staff = factory(App\Models\Staff::class)->create();
-        $studentRecord = factory(App\Models\StudentRecord::class)->make();
+        $student = factory(Student::class)->create();
+        $staff = factory(Staff::class)->create();
+        $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
         $student->addSupervisor($staff,1);
         $this->assertEquals($student->DirectorOfStudy->id, $staff->id);
@@ -113,9 +118,9 @@ class StudentSupervisorTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
         
-        $student = factory(App\Models\Student::class)->create();
-        $staff = factory(App\Models\Staff::class)->create();
-        $studentRecord = factory(App\Models\StudentRecord::class)->make();
+        $student = factory(Student::class)->create();
+        $staff = factory(Staff::class)->create();
+        $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
         $student->addSupervisor($staff,2);
         $this->assertNull($student->DirectorOfStudy);
@@ -138,9 +143,9 @@ class StudentSupervisorTest extends TestCase
             $this->artisan('db:seed', [ '--class' => 'SchoolSeeder' ]);
             $this->artisan('db:seed', [ '--class' => 'FundingTypeSeeder' ]);
         
-        $student = factory(App\Models\Student::class)->create();
-        $staff = factory(App\Models\Staff::class)->create();
-        $studentRecord = factory(App\Models\StudentRecord::class)->make();
+        $student = factory(Student::class)->create();
+        $staff = factory(Staff::class)->create();
+        $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
         $student->addSupervisor($staff,3);
         $this->assertNull($student->DirectorOfStudy);
