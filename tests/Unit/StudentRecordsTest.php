@@ -1,8 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Student;
+use App\Models\StudentRecord;
 
 class StudentRecordsTest extends TestCase
 {
@@ -29,14 +33,14 @@ class StudentRecordsTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
 
-        factory( App\Models\Student::class, 10 )
+        factory( Student::class, 10 )
           ->create()
           ->each( function ( $stu ) {
                 $stu
                     ->records()
-                    ->save( factory( App\Models\StudentRecord::class )->make() );
+                    ->save( factory( StudentRecord::class )->make() );
             } );
-        $this->assertEquals(App\Models\StudentRecord::count(), 10);
+        $this->assertEquals(StudentRecord::count(), 10);
     }
 
     /**
@@ -48,16 +52,16 @@ class StudentRecordsTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
 
-        factory( App\Models\Student::class,10 )
+        factory( Student::class,10 )
           ->create()
           ->each( function ( $stu )
           {
                 $stu
                     ->records()
-                    ->save( factory( App\Models\StudentRecord::class )->make() );
+                    ->save( factory( StudentRecord::class )->make() );
             } );
 
-        $students = App\Models\Student::all();
+        $students = Student::all();
 
         foreach ($students as $stu)
         {
@@ -69,16 +73,16 @@ class StudentRecordsTest extends TestCase
     {
         $this->seedDatabaseWithStudentRecordInformation();
 
-        factory( App\Models\Student::class,10 )
+        factory( Student::class,10 )
             ->create()
             ->each( function ( $stu )
             {
                 $stu
                     ->records()
-                    ->save( factory( App\Models\StudentRecord::class )->make() );
+                    ->save( factory( StudentRecord::class )->make() );
             } );
 
-        $students = App\Models\Student::all();
+        $students = Student::all();
 
         foreach ($students as $stu)
         {

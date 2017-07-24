@@ -1,8 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\School;
+use App\Models\College;
 
 class SchoolTest extends TestCase
 {
@@ -18,14 +22,14 @@ class SchoolTest extends TestCase
      */
     public function testCreatingSchool()
     {
-        $college = App\Models\College::create([ 'name' => $this->testCollege]);
-        $school = App\Models\School::create(
+        $college = College::create([ 'name' => $this->testCollege]);
+        $school = School::create(
         [ 
             'name' => $this->testSchools,
             'college_id' => $college->id,
         ]);
 
-        $this->assertEquals(App\Models\School::whereName($this->testSchools)->count(), 1);
+        $this->assertEquals(School::whereName($this->testSchools)->count(), 1);
     }
 
     /**
@@ -35,8 +39,8 @@ class SchoolTest extends TestCase
      */
     public function testSchoolBelongsToCollege()
     {
-        $college = App\Models\College::create([ 'name' => $this->testCollege]);
-        $school = App\Models\School::create(
+        $college = College::create([ 'name' => $this->testCollege]);
+        $school = School::create(
         [ 
             'name' => $this->testSchools,
             'college_id' => $college->id,

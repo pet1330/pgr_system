@@ -38,6 +38,6 @@ class CreateSupervisorsTable extends Migration
             $table->dropForeign('supervisors_student_record_id_foreign');
             $table->dropForeign('supervisors_staff_id_foreign');
         });
-        Schema::drop('supervisors');
+        Schema::dropIfExists('supervisors');
     }
 }

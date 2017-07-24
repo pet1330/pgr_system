@@ -1,9 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
+use App\Models\College;
+use App\Models\School;
 class CollegeTest extends TestCase
 {
     
@@ -27,8 +30,8 @@ class CollegeTest extends TestCase
      */
     public function testCreatingCollege()
     {
-        App\Models\College::create([ 'name' => $this->testCollege]);
-        $this->assertEquals(App\Models\College::whereName($this->testCollege)->count(), 1);
+        College::create([ 'name' => $this->testCollege]);
+        $this->assertEquals(College::whereName($this->testCollege)->count(), 1);
     }
 
     /**
@@ -38,12 +41,12 @@ class CollegeTest extends TestCase
      */
     public function testCollegeHasSchools()
     {
-        App\Models\College::create([ 'name' => $this->testCollege]);
-        $college = App\Models\College::whereName($this->testCollege)->first();
+        College::create([ 'name' => $this->testCollege]);
+        $college = College::whereName($this->testCollege)->first();
 
         foreach ($this->testSchools as $schoolName)
         {  
-            $s = new App\Models\School;
+            $s = new School;
             $s->name = $schoolName;
             $college->schools()->save( $s );
             $this->assertEquals( $college->schools()->whereName($schoolName)->count(), 1);

@@ -1,8 +1,15 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Student;
+use App\Models\Staff;
+use App\Models\Admin;
+use App\Models\Wizard;
+use App\Models\User;
 
 class UserQueryScopeTest extends TestCase
 {
@@ -16,8 +23,8 @@ class UserQueryScopeTest extends TestCase
      */
     public function testStudentUserQueryScope()
     {
-        factory(App\Models\Student::class,10)->create();
-        $this->assertEquals(App\Models\Student::count(), 10);
+        factory(Student::class,10)->create();
+        $this->assertEquals(Student::count(), 10);
     }
 
     /**
@@ -27,8 +34,8 @@ class UserQueryScopeTest extends TestCase
      */
     public function testStaffUserQueryScope()
     {
-        factory(App\Models\Staff::class,7)->create();
-        $this->assertEquals(App\Models\Staff::count(), 7);
+        factory(Staff::class,7)->create();
+        $this->assertEquals(Staff::count(), 7);
     }
 
     /**
@@ -38,8 +45,8 @@ class UserQueryScopeTest extends TestCase
      */
     public function testAdminUserQueryScope()
     {
-        factory(App\Models\Admin::class,5)->create();
-        $this->assertEquals(App\Models\Admin::count(), 5);
+        factory(Admin::class,5)->create();
+        $this->assertEquals(Admin::count(), 5);
     }
 
     /**
@@ -49,8 +56,8 @@ class UserQueryScopeTest extends TestCase
      */
     public function testWizardUserQueryScope()
     {
-        factory(App\Models\Wizard::class,2)->create();
-        $this->assertEquals(App\Models\Wizard::count(), 2);
+        factory(Wizard::class,2)->create();
+        $this->assertEquals(Wizard::count(), 2);
     }
 
     /**
@@ -59,11 +66,11 @@ class UserQueryScopeTest extends TestCase
      */
     public function testUserClassResolvesAdminCorrectly()
     {
-        // factory(App\Models\Student::class, 1)->create();
-        // factory(App\Models\Staff::class, 1)->create();
-        factory(App\Models\Admin::class, 1)->create();
-        // factory(App\Models\Wizard::class, 1)->create();
-        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Admin);
+        // factory(Student::class, 1)->create();
+        // factory(Staff::class, 1)->create();
+        factory(Admin::class, 1)->create();
+        // factory(Wizard::class, 1)->create();
+        return $this->assertTrue(User::first() instanceof Admin);
     }
 
     /**
@@ -72,8 +79,8 @@ class UserQueryScopeTest extends TestCase
      */
     public function testUserClassResolvesStaffCorrectly()
     {
-        factory(App\Models\Staff::class, 1)->create();
-        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Staff);
+        factory(Staff::class, 1)->create();
+        return $this->assertTrue(User::first() instanceof Staff);
     }
 
     /**
@@ -82,8 +89,8 @@ class UserQueryScopeTest extends TestCase
      */
     public function testUserClassResolvesStudentCorrectly()
     {
-        factory(App\Models\Student::class, 1)->create();
-        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Student);
+        factory(Student::class, 1)->create();
+        return $this->assertTrue(User::first() instanceof Student);
     }
 
     /**
@@ -92,7 +99,7 @@ class UserQueryScopeTest extends TestCase
      */
     public function testUserClassResolvesWizardCorrectly()
     {
-        factory(App\Models\Wizard::class, 1)->create();
-        return $this->assertTrue(App\Models\User::first() instanceof App\Models\Wizard);
+        factory(Wizard::class, 1)->create();
+        return $this->assertTrue(User::first() instanceof Wizard);
     }
 }
