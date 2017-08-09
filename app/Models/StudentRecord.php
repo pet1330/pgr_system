@@ -7,7 +7,6 @@ use Carbon\Carbon;
 
 class StudentRecord extends Model
 {
-    // protected $with = ['school', 'modeOfStudy', 'studentStatus', 'programmeType', 'enrolmentStatus'];
 
     protected $casts = [
         'tierFour' => 'boolean',
@@ -22,12 +21,13 @@ class StudentRecord extends Model
         'school_id',
         'enrolment_date', 
         'student_status_id',
-        'programme_title',
-        'programme_type_id',
+        'programme_id',
         'enrolment_status_id',
         'funding_type_id',
         'mode_of_study_id',
-        'tierFour'
+        'tierFour',
+        'archived',
+        'provisioned',
     ];
 
     /**
@@ -58,7 +58,7 @@ class StudentRecord extends Model
         return $this->belongsTo(StudentStatus::class);
     }
 
-    public function programmeType()
+    public function programme()
     {
         return $this->belongsTo(Programme::class);
     }
@@ -113,5 +113,37 @@ class StudentRecord extends Model
                 $supervisor->id =>  [ "supervisor_type" => $type ]
             ]
         );
+    }
+
+    public function fundingType()
+    {
+        return $this->belongsTo(FundingType::class);
+    }
+
+    public function timeline()
+    {
+        return $this->hasOne(Milestone::class);
+    }
+
+    public function getStartAttribute()
+    {
+        return $this->enrolment_date;
+    }
+
+    public function getEndAttribute()
+    {
+        return $this->calculateEndDate();
+    }
+
+    public function calculateEndDate()
+    {
+        $unit = "add" . ucfirst($this->programme->duration_unit);
+        return $this->enrolment_date
+                    ->copy()
+                    ->addMonths(
+                        $this->programme->duration * 
+                        $this->modeOfStudy->timing_factor)
+                    ->addDays(
+                        $this->student->interuptionPeriodSoFar());
     }
 }

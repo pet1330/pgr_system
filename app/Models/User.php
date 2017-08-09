@@ -70,4 +70,20 @@ class User extends Authenticatable
     {
         return ! $this->isAbsent();
     }
+
+    public function avatar()
+    {
+        return asset('imgs/usericon.jpg');
+    }
+
+    public function interuptionPeriodSoFar($include_current=true)
+    {
+        return $this->absences->filter(function ($ab) {
+            return !! $ab->absence_type->interuption;
+        })->filter(function ($ab) use ($include_current) {
+            return $ab->isPast() || $ab->isCurrent() && $include_current;
+        })->sum(function ($ab) {
+            return $ab->duration;
+        });
+    }
 }

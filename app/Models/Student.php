@@ -6,7 +6,7 @@ use App\Scopes\UserScope;
 
 class Student extends User
 {
-    // protected $with = ['records'];
+    protected $with = ['records'];
 
     protected static function boot()
     {
@@ -99,5 +99,31 @@ class Student extends User
     public function supervisors()
     {
         return $this->record()->supervisors();
+    }
+
+
+    public function getStartDateAttribute()
+    {
+        return $this->record->enrolment_date;
+    }
+
+    public function enrolmentStatus()
+    {
+        return $this->record->enrolmentStatus();
+    }
+
+    public function fundingType()
+    {
+        return $this->record->fundingType();
+    }
+
+    public function programme()
+    {
+        return $this->record->programme();
+    }
+
+    public function modeOfStudy()
+    {
+        return $this->record->modeOfStudy();
     }
 }
