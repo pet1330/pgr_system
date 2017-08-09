@@ -85,8 +85,7 @@ $factory->define(StudentRecord::class, function (Faker\Generator $faker) {
         'enrolment_status_id'  => EnrolmentStatus::inRandomOrder()->pluck('id')->first(),
         'student_status_id'    => StudentStatus::inRandomOrder()->pluck('id')->first(),
         'enrolment_date'       => Carbon::instance($faker->dateTimeBetween('-3 years', 'now')),
-        'programme_title'      => $faker->sentence,
-        'programme_type_id'    => Programme::inRandomOrder()->pluck('id')->first(),
+        'programme_id'         => Programme::inRandomOrder()->pluck('id')->first(),
         'funding_type_id'      => FundingType::inRandomOrder()->pluck('id')->first(),
         'mode_of_study_id'     => ModeOfStudy::inRandomOrder()->pluck('id')->first(),
         'tierFour'             => $faker->boolean,
@@ -96,16 +95,25 @@ $factory->define(StudentRecord::class, function (Faker\Generator $faker) {
 
 $factory->define(Absence::class, function (Faker\Generator $faker) {
     $start = Carbon::instance($faker->dateTimeBetween('-6 months', '6 months'));
+    $end = $start->copy()->addDays($faker->numberBetween(2,30));
     $approval = $faker->optional()->boolean();
 
     return [
         'user_id'              => Student::inRandomOrder()->pluck('id')->first(),
         'absence_type_id'      => AbsenceType::inRandomOrder()->pluck('id')->first(),
         'from'                 => $start->format('Y-m-d H:i:s'),
-        'to'                   => $start->addDays($faker->numberBetween(2,30))->format('Y-m-d H:i:s'),
+        'to'                   => $end->format('Y-m-d H:i:s'),
+        'duration'             => $start->diffInDays($end->copy()->addDays(1)),
         'approval_required'    => $faker->boolean(),
         'approval_granted'     => $approval,
         'approved_by'          => $approval ? Staff::inRandomOrder()->pluck('id')->first() : null,
         'approved_on'          => $approval ? $start->subDays($faker->numberBetween(2,30))->format('Y-m-d H:i:s') : null,
+    ];
+});
+
+$factory->define(AbsenceType::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'interuption' => $faker->boolean,
     ];
 });

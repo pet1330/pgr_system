@@ -17,7 +17,6 @@ class CreateStudentRecordsTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->integer('student_id')->unsigned()->index();
-            $table->string('programme_title')->nullable();
             $table->date('enrolment_date')->nullable();
             $table->boolean('tierFour')->default(false);
             $table->timestamps();
