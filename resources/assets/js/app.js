@@ -1,20 +1,17 @@
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
+window.events = new Vue();
 
-Vue.component('example', require('./components/Example.vue'));
+require('./AdminLTE');
 
-const app = new Vue({
-    el: '#app'
-});
+Vue.component('flash', require('./components/Flash.vue'));
+Vue.component('click-confirm', require('./components/ClickConfirm.vue'));
+Vue.component('toggle', require('./components/ToggleButton.vue'));
+Vue.component('simple-toggle', require('./components/simpleToggle.vue'));
+Vue.component('edit-modal', require('./components/EditModal.vue'));
+Vue.component('bug-report', require('./components/BugReport.vue'));
+
+window.flash = function(message) { window.events.$emit('flash', message); };
+
+const app = new Vue({ el: '#app' });
