@@ -3,15 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Scopes\StatusScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EnrolmentStatus extends Model
 {
-    protected $table = 'statuses';
+
+    use SoftDeletes;
     
-    protected static function boot()
+    protected $fillable = ['status'];
+    
+    protected $table = 'enrolment_statuses';
+
+    protected $dates = ['deleted_at'];
+
+    public function students()
     {
-        parent::boot();
-        static::addGlobalScope(new StatusScope('enrolment'));
+        return $this->hasMany(StudentRecord::class);
     }
 }

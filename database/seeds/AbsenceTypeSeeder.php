@@ -12,13 +12,22 @@ class AbsenceTypeSeeder extends Seeder
      */
     public function run()
     {
-        $example_statuses = ['holiday', 'sickness', 'conference', 'fieldwork'];
+        $examples = [
+            'holiday' => 0,
+            'sickness' => 0,
+            'conference' => 0,
+            'fieldwork' => 0,
+            'long term sick' => 1,
+            'unknown (interuptive)' => 1,
+            'unknown (non interuptive)' => 0];
 
-        foreach ($example_statuses as $status)
+
+
+        foreach ($examples as $name => $interupts)
         {
             AbsenceType::create([
-                'status' => $status,
-                'status_type' => 'absence'
+                'name' => $name,
+                'interuption' => $interupts
             ]);
         }
     }

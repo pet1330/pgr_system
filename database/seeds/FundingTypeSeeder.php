@@ -12,13 +12,12 @@ class FundingTypeSeeder extends Seeder
      */
     public function run()
     {
-        $example_statuses = ['rif', 'project', 'self_funding'];
+        $examples = ['rif', 'project', 'self_funding'];
 
-        foreach ($example_statuses as $status)
+        foreach ($examples as $example)
         {
             FundingType::create([
-                'status' => $status,
-                'status_type' => 'funding_type'
+                'name' => $example
             ]);
         }
     }

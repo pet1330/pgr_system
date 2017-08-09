@@ -17,8 +17,7 @@ class EnrolmentStatusSeeder extends Seeder
         foreach ($example_statuses as $status)
         {
             EnrolmentStatus::create([
-                'status' => $status,
-                'status_type' => 'enrolment',
+                'status' => $status
             ]);
         }
     }

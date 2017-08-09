@@ -12,13 +12,18 @@ class ProgrammeSeeder extends Seeder
      */
     public function run()
     {
-        $example_statuses = ['PhD', 'MSc', 'MPhil'];
-
-        foreach ($example_statuses as $status)
+        $example_programmes =
+            [
+                ['name' => 'PhD', 'duration' => 42, 'duration_unit' => 'Months' ],
+                ['name' => 'MSc', 'duration' => 12, 'duration_unit' => 'Months' ],
+                ['name' => 'MPhil', 'duration' => 18,'duration_unit' => 'Months' ]
+            ];
+        foreach ($example_programmes as $programme)
         {
             Programme::create([
-                'status' => $status,
-                'status_type' => 'programme'
+                'name' => $programme['name'],
+                'duration' => $programme['duration'],
+                'duration_unit' => $programme['duration_unit'],
             ]);
         }
     }

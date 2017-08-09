@@ -12,13 +12,17 @@ class ModeOfStudySeeder extends Seeder
      */
     public function run()
     {
-        $example_statuses = ['Full Time', 'Part Time', 'Remote'];
+        $examples = [
+            'Full Time' => 1.,
+            'Lazy Full Time' => 1.5,
+            'Part Time' => 2.,
+            'Every Thursdays Afternoon' => 10.];
 
-        foreach ($example_statuses as $status)
+        foreach ($examples as $mos => $tf)
         {
             ModeOfStudy::create([
-                'status' => $status,
-                'status_type' => 'mode_of_study'
+                'name' => $mos,
+                'timing_factor' => $tf,
             ]);
         }
     }

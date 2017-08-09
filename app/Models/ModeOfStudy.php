@@ -3,19 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Scopes\StatusScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ModeOfStudy extends Model
 {
-    protected $table = 'statuses';
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new StatusScope('mode_of_study'));
-    }
+    use SoftDeletes;
 
-    public function StudentRecord()
+    protected $fillable = ['name', 'timing_factor'];
+
+    protected $table = 'mode_of_studys';
+
+    protected $dates = ['deleted_at'];
+
+    public function studentRecord()
     {
         return $this->hasMany(StudentRecord::class);
     }

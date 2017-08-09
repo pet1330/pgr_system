@@ -12,13 +12,12 @@ class StudentStatusSeeder extends Seeder
      */
     public function run()
     {
-        $example_statuses = ['Full Time', 'Part Time', 'Remote'];
+        $example_statuses = ['UK', 'EU', 'International'];
 
         foreach ($example_statuses as $status)
         {
             StudentStatus::create([
-                'status' => $status,
-                'status_type' => 'student'
+                'status' => $status
             ]);
         }
     }

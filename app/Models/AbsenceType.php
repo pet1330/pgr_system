@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Scopes\StatusScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AbsenceType extends Model
 {
-    protected $table = 'statuses';
+    
+    use SoftDeletes;
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new StatusScope('absence'));
-    }
+    protected $fillable = ['name', 'interuption'];
+
+    protected $table = 'absence_types';
+
+    protected $dates = ['deleted_at'];
 
     public function absence()
     {

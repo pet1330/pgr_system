@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFundingTable extends Migration
+class CreateFundingTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,9 +16,14 @@ class CreateFundingTable extends Migration
         Schema::create('funding_types', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
-            $table->string('status');
-            $table->integer('amount');
+            $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::table('student_records', function($table) {
+            $table->integer('funding_type_id')->unsigned()->index();
+            $table->foreign('funding_type_id')->references('id')->on('funding_types');
         });
     }
 
@@ -29,6 +34,11 @@ class CreateFundingTable extends Migration
      */
     public function down()
     {
+        Schema::table('student_records', function (Blueprint $table) {
+            $table->dropForeign('student_records_funding_type_id_foreign');
+            $table->dropColumn('funding_type_id');
+        });
+        
         Schema::dropIfExists('funding_types');
     }
 }
