@@ -21,6 +21,7 @@ class Absence extends Model
         'absence_type_id',
         'from',
         'to',
+        'duration',
         'approval_required',
         'approval_granted',
         'approved_by',
@@ -62,16 +63,6 @@ class Absence extends Model
     public function scopeNeedsApproving($query)
     {
         return $query->where('approval_required',true)->whereNull('approval_granted');
-    }
-
-    public function getDurationAttribute()
-    {
-        return $this->to->addDays(1)->diffInDays($this->from);
-    }
-
-    public function getDurationForHumansAttribute()
-    {
-        return $this->to->addDays(1)->diffForHumans($this->from, true);
     }
 
     public function isFuture()
@@ -119,5 +110,13 @@ class Absence extends Model
         $this->approval_granted = $allowed;
         $this->approved_on = Carbon::now();
         $this->save();
+    }
+
+    public function calculateDuration()
+    {
+        return $this->from
+                ->diffInDaysFiltered(function(Carbon $date) {
+                    return !$date->isWeekend();
+                }, $this->to);
     }
 }
