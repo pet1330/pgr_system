@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateModeOfStudysTable extends Migration
+class CreateModesOfStudyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateModeOfStudysTable extends Migration
      */
     public function up()
     {
-        Schema::create('mode_of_studys', function (Blueprint $table) {
+        Schema::create('modes_of_study', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('name');
@@ -25,7 +25,7 @@ class CreateModeOfStudysTable extends Migration
         // Add Student and Enrolment Status to Student Record
         Schema::table('student_records', function($table) {
             $table->integer('mode_of_study_id')->unsigned()->index();
-            $table->foreign('mode_of_study_id')->references('id')->on('mode_of_studys');
+            $table->foreign('mode_of_study_id')->references('id')->on('modes_of_study');
         });
     }
 
@@ -40,6 +40,6 @@ class CreateModeOfStudysTable extends Migration
             $table->dropForeign('student_records_mode_of_study_id_foreign');
             $table->dropColumn('mode_of_study_id');
         });
-        Schema::drop('mode_of_studys');
+        Schema::drop('modes_of_study');
     }
 }
