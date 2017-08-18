@@ -15,7 +15,7 @@ class CreateAbsenceTypesTable extends Migration
     {
         Schema::create('absence_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->boolean('interuption')->default(false);
             $table->softDeletes();
             $table->timestamps();
