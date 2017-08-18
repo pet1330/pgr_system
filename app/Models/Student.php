@@ -6,7 +6,6 @@ use App\Scopes\UserScope;
 
 class Student extends User
 {
-    protected $with = ['records'];
 
     protected static function boot()
     {
