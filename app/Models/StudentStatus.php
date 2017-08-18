@@ -14,4 +14,9 @@ class StudentStatus extends Model
     protected $table = 'student_statuses';
 
     protected $dates = ['deleted_at'];
+
+    public function students()
+    {
+        return $this->hasMany(StudentRecord::class);
+    }
 }

@@ -12,11 +12,11 @@ class ModeOfStudy extends Model
 
     protected $fillable = ['name', 'timing_factor'];
 
-    protected $table = 'mode_of_studys';
+    protected $table = 'modes_of_study';
 
     protected $dates = ['deleted_at'];
 
-    public function studentRecord()
+    public function students()
     {
         return $this->hasMany(StudentRecord::class);
     }
