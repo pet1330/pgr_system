@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Milestone;
+use Illuminate\Database\Eloquent\Model;
 
 class StudentRecord extends Model
 {
-
-    protected $casts = [
-        'tierFour' => 'boolean',
-    ];
-
     protected $dates = [
     'enrolment_date'
     ];
@@ -146,4 +142,10 @@ class StudentRecord extends Model
                     ->addDays(
                         $this->student->interuptionPeriodSoFar());
     }
+
+    public function milestones()
+    {
+        return $this->hasMany(Milestone::class);
+    }
+
 }

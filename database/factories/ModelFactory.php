@@ -25,6 +25,12 @@ use App\Models\ModeOfStudy;
 use App\Models\Absence;
 use App\Models\AbsenceType;
 use Carbon\Carbon;
+use App\Models\Milestone;
+use App\Models\MilestoneType;
+use App\Models\TimelineTemplate;
+use App\Models\MilestoneTemplate;
+use App\Models\Role;
+use App\Models\Permission;
 
 $factory->define(Student::class, function (Faker\Generator $faker) {
     $unid = $faker->unique()->bothify('???########');
@@ -117,3 +123,61 @@ $factory->define(AbsenceType::class, function (Faker\Generator $faker) {
         'interuption' => $faker->boolean,
     ];
 });
+
+$factory->define(MilestoneType::class, function (Faker\Generator $faker) {
+    return [
+        'name'                 => $faker->name,
+        'duration'             => $faker->numberBetween(1,12),
+    ];
+});
+
+$factory->define(TimelineTemplate::class, function (Faker\Generator $faker) {
+        $type = MilestoneType::inRandomOrder()->first();
+    return [
+        'name'                  => $faker->lastName,
+    ];
+});
+
+$factory->define(MilestoneTemplate::class, function (Faker\Generator $faker) {
+        $type = MilestoneType::inRandomOrder()->first();
+        $timeline = TimelineTemplate::inRandomOrder()->first();
+    return [
+        'due'                  => $faker->numberBetween(1,12),
+        'milestone_type_id'    => $type->id,
+        'timeline_template_id'    => $timeline->id,
+    ];
+});
+
+$factory->define(Milestone::class, function (Faker\Generator $faker) {
+    $sub = $faker->optional()->boolean();
+    $approval = $faker->optional()->boolean() || $sub;
+    $type = MilestoneType::inRandomOrder()->first();
+    return [
+        'name'                 => $sub ? $type->name : null ,
+        'due'                  => $faker->numberBetween(1,12),
+        'submission_date'      => $sub ? Carbon::now()->addMonths($faker->numberBetween(1,12)) : null,
+        'student_record_id'    => StudentRecord::inRandomOrder()->first()->id,
+        'milestone_type_id'    => $type->id,
+    ];
+});
+
+$factory->define(Role::class, function (Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+$factory->define(Permission::class, function (Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+
+// APPROVAL Model
+// 'approval_required'    => $faker->boolean(),
+        // 'approval_granted'     => $approval,
+        // 'approved_by'          => $approval ? Staff::inRandomOrder()->pluck('id')->first() : null,
+        // 'approved_on'          => $approval ? Carbon::now()->addMonths($faker->numberBetween(1,12))->format('Y-m-d H:i:s') : null,

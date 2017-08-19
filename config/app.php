@@ -168,6 +168,10 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Yajra\Datatables\HtmlServiceProvider::class,
+        Yajra\Datatables\ButtonsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -226,6 +230,13 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
+
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
 
     ],
 

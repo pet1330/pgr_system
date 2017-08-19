@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     protected $table = "users";
+    protected $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.
@@ -82,8 +85,32 @@ class User extends Authenticatable
             return !! $ab->absence_type->interuption;
         })->filter(function ($ab) use ($include_current) {
             return $ab->isPast() || $ab->isCurrent() && $include_current;
-        })->sum(function ($ab) {
-            return $ab->duration;
-        });
+        })->sum('duration');
+    }
+
+    public function isAdmin()
+    {
+        return $this->user_type === "Admin";
+    }
+
+    public function isStaff()
+    {
+        return $this->user_type === "Staff";
+    }
+
+    public function isStudent()
+    {
+        return $this->user_type === "Student";
+    }
+
+    public function dashboard_url($user=null)
+    {
+        if( $user instanceof static ) $user = $user->id;
+
+        switch ($this->user_type) {
+            case 'Admin': return route('admin.admin.show', $user ?? $this->id);
+            case 'Staff': return route('admin.staff.show', $user ?? $this->id);
+            case 'Student': return route('admin.student.show', $user ?? $this->id);
+        }
     }
 }
