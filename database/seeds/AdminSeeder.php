@@ -12,5 +12,6 @@ class AdminSeeder extends Seeder
     public function run()
     {
         \factory(App\Models\Admin::class,20)->create();
+        App\Models\Admin::first()->assignRole('manage_access_control');
     }
 }

@@ -11,6 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        // Roles and Permissions
+        $this->call(PermissionSeeder::class);
+
         // User Seeders
         $this->call(StudentSeeder::class);
         $this->call(StaffSeeder::class);
@@ -33,5 +37,11 @@ class DatabaseSeeder extends Seeder
         // Absence Seeders
         $this->call(AbsenceTypeSeeder::class);
         $this->call(AbsenceSeeder::class);
+
+        // Milestone Seeders
+        $this->call(MilestoneTypeSeeder::class);
+        $this->call(TimelineTemplateSeeder::class);
+        $this->call(MilestoneTemplateSeeder::class);
+        $this->call(MilestoneSeeder::class);
     }
 }
