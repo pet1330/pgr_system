@@ -1,82 +1,97 @@
 @extends('layouts.dashboard')
-@section('page_title', 'example of page title')
-@section('page_description', '')
+@section('page_title', $admin->name)
+@section('page_description', 'Dashboard')
 @section('content')
 
     {{-- Main content --}}
     <section class="content">
       <div class="row">
+
         @component('components.infobox')
-          @slot('title', 'Number of students')
+          @slot('title', 'students')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\Student::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of staff')
+          @slot('title', 'staff')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\Staff::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of Admins')
+          @slot('title', 'Admins')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\Admin::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of programmes')
+          @slot('title', 'programmes')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\Programme::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of Study Modes')
+          @slot('title', 'Study Modes')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\ModeOfStudy::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of funding types')
+          @slot('title', 'funding types')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\FundingType::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of schools')
+          @slot('title', 'schools')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\School::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of colleges')
+          @slot('title', 'colleges')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\College::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of Student Records')
+          @slot('title', 'Student Records')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\StudentRecord::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of Milestone Types')
+          @slot('title', 'Milestone Types')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\MilestoneType::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number of Milestones')
+          @slot('title', 'Milestones')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\Milestone::count() }}
         @endcomponent
 
         @component('components.infobox')
-          @slot('title', 'Number Milestone templates')
+          @slot('title', 'Milestone Templates')
           @slot('icon', 'fa fa-gear')
           {{ App\Models\MilestoneTemplate::count() }}
         @endcomponent
+
+        @component('components.infobox')
+          @slot('title', 'Timeline Templates')
+          @slot('icon', 'fa fa-gear')
+          {{ App\Models\TimelineTemplate::count() }}
+        @endcomponent
+
+        @component('components.infobox')
+          @slot('title', 'This Admin')
+          @slot('icon', 'fa fa-gear')
+          DB ID: {{ $admin->id ?? "Unknown Admin" }} <br>
+          UNI ID: {{ $admin->university_id ?? "Unknown Admin" }}
+        @endcomponent
+
       </div>
     </section>
 @endsection

@@ -1,10 +1,11 @@
 @extends('layouts.dashboard')
-@section('page_title', 'example of page title')
-@section('page_description', 'example of page descrition')
+@section('page_title', 'Student Overview')
+@section('page_description', 'List of all students')
 @section('content')
-<div id="app">
-    <section class="content">
-        @component('components.datatable')
+<div class="content">
+  <div class="col-md-12">
+            @component('components.datatable')
+            @slot('tableId', 'admin-student-table')
             <td>First Name</td>
             <td>Last Name</td>
             <td>University ID</td>
@@ -15,6 +16,6 @@
             <td>Mode of Study</td>
             <td>Student Status</td>
         @endcomponent
-    </section>
+  </div>
 </div>
 @endsection

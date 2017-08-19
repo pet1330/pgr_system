@@ -29,10 +29,12 @@
                 this.body = message;
                 this.show = true;
                 this.hide();
+                console.log('Flashing');
             },
             hide() {
                 setTimeout(() => {
                     this.show = false;
+                    console.log('Hiding');
                 }, 3000);
             }
         }

@@ -6,7 +6,7 @@
   </a>
   <ul class="treeview-menu">
     <li>
-      <a href="{{ route('overview.students') }}">Overview</a>
+      <a href="{{ route('admin.student.index') }}">Overview</a>
     </li>
     <li>
       <a href="#">Overdue</a>

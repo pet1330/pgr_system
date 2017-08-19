@@ -2,7 +2,7 @@
   <li class="header">MAIN MENU</li>
   <li>
     <li>
-      <a href="{{ url("/") }}">
+      <a href="{{ Auth::user()->dashboard_url() }}">
         <i class="fa fa-dashboard" aria-hidden="true"></i>
         <span>Dashboard</span>
       </a>
@@ -10,5 +10,6 @@
     @include('layouts.sidebar.menu.admin.student')
     @include('layouts.sidebar.menu.admin.staff')
     @include('layouts.sidebar.menu.admin.settings')
+    @include('layouts.sidebar.menu.admin.accessControl')
   </li>
 </ul>

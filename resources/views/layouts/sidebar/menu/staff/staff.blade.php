@@ -31,7 +31,7 @@
           <a href="#">Upcoming</a>
         </li>
         <li>
-          <a href="{{route('settings.student.index')}}">Reports</a>
+          <a href="{{route('admin.settings.student.index')}}">Reports</a>
         </li>
         <li>
           <a href="#">Settings</a>
@@ -55,7 +55,7 @@
           <a href="#">Upcoming</a>
         </li>
         <li>
-          <a href="{{route('settings.student.index')}}">Reports</a>
+          <a href="{{route('admin.settings.student.index')}}">Reports</a>
         </li>
         <li>
           <a href="#">Settings</a>
