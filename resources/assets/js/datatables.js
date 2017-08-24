@@ -10,7 +10,7 @@ $(document).ready(function() {
         info: true,
         // stateSave: true,
         bProcessing: true,
-        deferRender: true,
+        deferRender: false,
         lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500], [10, 20, 30, 40, 50, 100, 200, 500]],
         dom: 'lfrtBip',
         buttons: [
@@ -148,8 +148,64 @@ $(document).ready(function() {
             columns: [
                 { data: 'name', name: 'name', searchable: false, orderable: false },
                 { data: 'duration', name: 'interuption', searchable: false, orderable: false },
-                { data: 'milestone_count', name: 'milestone_count', searchable: false, orderable: false },
-                { data: 'template_count', name: 'template_count', searchable: false, orderable: false },
+                { data: 'milestones_count', name: 'milestones_count', searchable: false, orderable: false },
+                { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: false },
+                { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of timeline templates for Admins
+    //==============================================================================================
+    $('#admin-timeline-template-table').DataTable(
+        _.merge({}, generalSettings, {
+            "searching": false,
+            columns: [
+                { data: 'name', name: 'name', searchable: false, orderable: false },
+                { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: false },
+                { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of milestones for Admins
+    //==============================================================================================
+    $('#admin-milestones-table').DataTable(
+        _.merge({}, generalSettings, {
+            "searching": false,
+            columns: [
+                { data: 'name', name: 'milestone_type.name', searchable: true, orderable: true },
+                { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
+                { data: 'first_name', name: 'student_record.student.first_name', searchable: false, orderable: false },
+                { data: 'last_name', name: 'student_record.student.last_name', searchable: false, orderable: false },
+            ]
+        })
+    );
+
+    // List of submitted milestones for Admins
+    //==============================================================================================
+    $('#admin-submitted-milestones-table').DataTable(
+        _.merge({}, generalSettings, {
+            "searching": false,
+            columns: [
+                { data: 'name', name: 'milestone_type.name', searchable: true, orderable: true },
+                { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
+                { data: 'submitted_date', name: 'submitted_date', searchable: true, orderable: true },
+                { data: 'first_name', name: 'student_record.student.first_name', searchable: false, orderable: false },
+                { data: 'last_name', name: 'student_record.student.last_name', searchable: false, orderable: false },
+            ]
+        })
+    );
+
+    // List of milestone templates for Admins
+    //==============================================================================================
+    $('#admin-milestone-template-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'name', name: 'milestone_type.name', searchable: true, orderable: true },
+                { data: 'due', name: 'due', searchable: true, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]

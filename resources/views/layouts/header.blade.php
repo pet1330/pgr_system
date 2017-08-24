@@ -12,14 +12,12 @@
   ]); ?>
   </script>
   @stack('header_scripts')
-  {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.4.0/css/buttons.bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/colreorder/1.3.3/css/colReorder.bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.0/css/rowReorder.bootstrap.css"/> --}}
+
+<link rel="stylesheet" href="{{ asset('visjs/vis.min.css') }}"/>
+<script src="{{ asset('visjs/vis.min.js') }}"></script>
 
 <link rel="stylesheet"
-      href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+      href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
 <link rel="stylesheet"
       href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css"/>
 <link rel="stylesheet"

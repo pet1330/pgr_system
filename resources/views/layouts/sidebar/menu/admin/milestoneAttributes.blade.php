@@ -8,10 +8,7 @@
     <a href="{{ route('admin.settings.milestone-type.index') }}">Milestone Types</a>
   </li>
   <li>
-    <a href="{{ route('admin.settings.milestone-template.index') }}">Milestone Template</a>
-  </li>
-  <li>
-    <a href="{{ route('admin.settings.timeline-template.index') }}">Timeline Templates</a>
+    <a href="{{ route('admin.settings.timeline.index') }}">Timeline Templates</a>
   </li>
   </ul>
 </li>

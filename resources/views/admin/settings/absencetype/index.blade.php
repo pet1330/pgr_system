@@ -28,17 +28,12 @@
           </div>
           <div class="form-group{{ $errors->has('interuption') ? ' has-error' : '' }} col-md-4">
             <select class="form-control" name="interuption">
-              <option>Does this interupt?</option>
-              <option value="1"
-                @if(old('interuption') == '1')
-                selected="selected"
-                @endif>
+              <option>--- Select ---</option>
+              <option value="1" @if(old('interuption') == '1') selected="selected" @endif>
                 Interuption
               </option>
-              <option value="0"
-                @if(old('interuption') == '0'))
-                selected="selected"
-                @endif>Not Interuption
+              <option value="0" @if(old('interuption') == '0')) selected="selected" @endif>
+                Not Interuption
               </option>
             </select>
             @if ($errors->has('interuption'))

@@ -9,13 +9,13 @@
       <a href="{{ route('admin.student.index') }}">Overview</a>
     </li>
     <li>
-      <a href="#">Overdue</a>
+      <a href="{{ route('admin.student.overdue') }}">Overdue Milestones</a>
     </li>
     <li>
-      <a href="#">Upcoming</a>
+      <a href="{{ route('admin.student.upcoming') }}">Upcoming Milestones</a>
     </li>
     <li>
-      <a href="#">Reports</a>
+      <a href="{{ route('admin.student.submitted') }}">Submitted Milestones</a>
     </li>
   </ul>
 </li>

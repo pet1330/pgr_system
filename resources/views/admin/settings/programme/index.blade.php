@@ -42,7 +42,7 @@
       <div class="box-body">
         <div class="panel-heading">
           <h4 class="panel-title">
-          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseone">Show Deleted Absence Types
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseone">Show Deleted Programmes
           </a>
           </h4>
         </div>

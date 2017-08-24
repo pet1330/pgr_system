@@ -7,9 +7,9 @@
     @component('components.datatable')
     @slot('tableId', 'admin-milestone-type-table')
       <td>Milestone Type</td>
-      <td>Interuption</td>
-      <td>Current</td>
-      <td>Total</td>
+      <td>Duration (Days)</td>
+      <td>Milestones</td>
+      <td>Templates</td>
     <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
     <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
     @endcomponent

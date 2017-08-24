@@ -6,14 +6,14 @@
   <div class="col-md-12">
     @component('components.datatable')
     @slot('tableId', 'admin-timeline-template-table')
-    <th>Name</th>
-    <th>Milestone Count</th>
-    <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
-    <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
+      <th>Name</th>
+      <th>Milestone Count</th>
+      <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
+      <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
     @endcomponent
     <div class="box box box-primary">
       <div class="box-body">
-        <label>Create new Timeline Template</label>
+        <label>Create new Enrolment Statuses</label>
         <form action="{{ route('admin.settings.timeline.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-12">
@@ -28,7 +28,7 @@
         </form>
       </div>
     </div>
-    @if($deleted_timelines->isNotEmpty())
+    @if($deleted_timeline_templates->isNotEmpty())
     <div class="box box box-primary">
       <div class="box-body">
         <div class="panel-heading">
@@ -39,20 +39,20 @@
         </div>
         <div id="collapseone" class="panel-collapse collapse">
           <div class="panel-body">
-            @foreach($deleted_timelines as $tt)
-            <div class="col-md-12">
-              <a href="{{ route('admin.settings.timeline.restore', $tt->id) }}">
-                <span class="btn btn-success">Restore</span>
-              </a>
-              {{ $tt->Name }}
+              @foreach($deleted_timeline_templates as $tt)
+              <div class="col-md-12">
+                <a href="{{ route('admin.settings.timeline-template.restore', $tt->id) }}">
+                  <span class="btn btn-success">Restore</span>
+                </a>
+                {{ $tt->Name }}
+              </div>
+                @endforeach
             </div>
-            @endforeach
           </div>
         </div>
       </div>
     </div>
+    @endif
   </div>
-  @endif
-</div>
 </li>
 @endsection

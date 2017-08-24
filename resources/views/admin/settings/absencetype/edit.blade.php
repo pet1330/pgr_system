@@ -18,7 +18,7 @@
       </div>
       <div class="form-group{{ $errors->has('interuption') ? ' has-error' : '' }} col-md-4">
         <select class="form-control" name="interuption">
-          <option></option>
+          <option>--- Select ---</option>
           <option value="1"
             @if(old('interuption') == '1' or $absence_type->interuption == '1')
             selected="selected"

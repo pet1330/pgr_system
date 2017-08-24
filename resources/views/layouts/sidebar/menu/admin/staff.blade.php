@@ -14,8 +14,5 @@
     <li>
       <a href="#">Upcoming</a>
     </li>
-    <li>
-      <a href="#">Reports</a>
-    </li>
   </ul>
 </li>
