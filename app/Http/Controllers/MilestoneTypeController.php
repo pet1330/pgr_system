@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
 use App\Http\Controllers\Controller;
+use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\MilestoneTypeRequest;
 
 class MilestoneTypeController extends Controller
@@ -18,7 +19,7 @@ class MilestoneTypeController extends Controller
     {
         if ($request->ajax())
         {
-            $miletypes = MilestoneType::withCount(['milestones', 'milestone_templates']);
+            $miletypes = MilestoneType::withCount(['milestones', 'milestone_templates'])->orderBy('name');
 
             return Datatables::eloquent($miletypes)
                 ->addColumn('editaction', function (MilestoneType $mt) {
@@ -63,9 +64,18 @@ class MilestoneTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MilestoneTypeRequest $request, MilestoneType $milestoneType)
+    public function update(MilestoneTypeRequest $request, MilestoneType $milestone_type)
     {
-        return "update";
+        $milestone_type->update($request->all());
+        $milestone_type->save();
+        return redirect()
+            ->route('admin.settings.milestone-type.index')
+            ->with('flash', 'Successfully updated "' . $milestone_type->name . '"');
+    }
+
+    public function edit(MilestoneType $milestone_type)
+    {
+      return view('admin.settings.milestonetype.edit', compact('milestone_type'));
     }
 
     /**
@@ -74,12 +84,27 @@ class MilestoneTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MilestoneType $milestoneType)
+    public function destroy(MilestoneType $milestone_type)
     {
         // We are using soft delete so this item will remain in the database
-        $milestoneType->delete();
+        $milestone_type->delete();
         return redirect()
             ->route('admin.settings.milestone-type.index')
-            ->with('flash', 'Successfully deleted "' . $milestoneType->name . '"');
+            ->with('flash', 'Successfully deleted "' . $milestone_type->name . '"');
+    }
+
+    public function restore($id)
+    {
+        $mt = MilestoneType::withTrashed()->find($id);
+        if($mt->trashed())
+        {
+            $mt->restore();
+            return redirect()
+                ->route('admin.settings.milestone-type.index')
+                ->with('flash', 'Successfully restored "' . $mt->name . '"');
+        }
+        return redirect()
+                ->route('admin.settings.milestone-type.index')
+                ->with('flash', 'Error: Milestone Type is not deleted: "' . $mt->name . '"');
     }
 }

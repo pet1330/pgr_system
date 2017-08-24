@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Student;
+use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\StudentRecord;
-use App\Models\Student;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -15,9 +16,13 @@ class StudentController extends Controller
         if ($request->ajax())
         {
             $students = StudentRecord::with([
-                'student', 'fundingType', 'modeOfStudy',
-                'studentStatus', 'programme', 'enrolmentStatus',
-            ]);
+                'student',
+                'fundingType' => function ($query) { $query->withTrashed(); },
+                'modeOfStudy' => function ($query) { $query->withTrashed(); },
+                'studentStatus' => function ($query) { $query->withTrashed(); },
+                'programme' => function ($query) { $query->withTrashed(); },
+                'enrolmentStatus' => function ($query) { $query->withTrashed(); }
+            ])->has('student');
             return Datatables::eloquent($students)
                 ->addColumn('first_name', function (StudentRecord $sr)
                     { return $sr->student->first_name; })
@@ -37,20 +42,29 @@ class StudentController extends Controller
                     { return $sr->enrolmentStatus->status; })
                 ->editColumn('tierFour', '{{$tierFour ? "Yes" : "No" }}')
                 ->setRowAttr([ 'data-link' => function($student)
-                    { return route('admin.student.show', $student->id); }])
+                    { return route('admin.student.show', $student->student->university_id); }])
                 ->make(true);
         }
-        return View('admin.index.students');
+        return View('admin.user.student.index');
     }
 
-    public function show(Student $student )
+    public function show(Student $student)
     {
-        return View('student.dashboard', compact('student'));
+        $milestones = $student->record()->timeline;
+
+        $recently_submitted = $milestones->filter->isRecentlySubmitted();
+        $overdue = $milestones->filter->isOverdue();
+        $submitted = $milestones->filter->isPreviouslySubmitted();
+        $upcoming = $milestones->filter->isUpcoming();
+        $future = $milestones->filter->isFuture();
+
+        return View('student.dashboard', 
+                        compact('student', 'milestones', 'recently_submitted',
+                                'overdue', 'submitted', 'upcoming', 'future'));
     }
 
-    public function ownProfile()
+    public function create()
     {
-        $student = App\Models\Student::first();
-        return View('student.profile', compact('student'));
+        return view('admin.user.student.create');
     }
 }
