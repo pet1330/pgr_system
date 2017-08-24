@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\StudentStatus;
 
-class StudentStatusRequest extends FormRequest
+class MilestoneRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,21 +29,20 @@ class StudentStatusRequest extends FormRequest
             return [];
             case 'PATCH':
             case 'PUT':
-                $status = StudentStatus::where('status', $this->status)->first();
                 return [
-                    'status' => [
-                        'required',
-                        'min:3',
-                        'unique:student_statuses,status' . (is_null($status)? "" : ",".$status->id),
+                    'milestone_type' => [
+                    'required',
+                    'exists:milestone_types,id', 
                     ],
+                    'due' => [ 'date' ],
                 ];
             case 'POST':
                 return [
-                    'status' => [
-                        'required',
-                        'min:3',
-                        'unique:student_statuses,status',
+                    'milestone_type' => [
+                    'required',
+                    'exists:milestone_types,id',
                     ],
+                    'due' => [ 'date' ],
                 ];
         }
     }

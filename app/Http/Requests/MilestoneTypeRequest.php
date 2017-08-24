@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\MilestoneType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class MilestoneTypeRequest extends FormRequest
 {
@@ -30,12 +30,12 @@ class MilestoneTypeRequest extends FormRequest
             return [];
             case 'PATCH':
             case 'PUT':
-                $abst = Programme::where('name', $this->name)->first();
+                $mt = MilestoneType::where('name', '=' ,$this->name)->first();
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        Rule::unique('milestone_types')->ignore($id),
+                        'unique:milestone_types,name' . (is_null($mt)? "" : ",".$mt->id)
                     ],
                     'duration' => [
                         'nullable',
@@ -49,7 +49,7 @@ class MilestoneTypeRequest extends FormRequest
                     'name' => [
                     'required',
                     'min:3',
-                    Rule::unique('milestone_types')
+                    'unique:milestone_types,name'
                     ],
                     'duration' => [
                         'nullable',
