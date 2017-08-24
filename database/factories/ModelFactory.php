@@ -37,7 +37,6 @@ $factory->define(Student::class, function (Faker\Generator $faker) {
     return [
         'first_name'           => $faker->firstName,
         'last_name'            => $faker->lastName,
-        'middle_name'          => $faker->optional()->firstName,
         'university_email'     => $unid . "@students.lincoln.ac.uk",
         'university_id'        => $unid,
         'user_type'            => 'student',
@@ -51,7 +50,6 @@ $factory->define(Staff::class, function (Faker\Generator $faker) {
     return [
         'first_name'           => $fName,
         'last_name'            => $lName,
-        'middle_name'          => $faker->optional()->firstName,
         'university_email'     => $fName[0] . $lName . "@lincoln.ac.uk",
         'university_id'        => $fName[0] . $lName,
         'user_type'            => 'staff',
@@ -64,7 +62,6 @@ $factory->define(Admin::class, function (Faker\Generator $faker) {
     return [
         'first_name'           => $fName,
         'last_name'            => $lName,
-        'middle_name'          => $faker->optional()->firstName,
         'university_email'     => $fName[0] . $lName . "@lincoln.ac.uk",
         'university_id'        => $fName[0] . $lName,
         'user_type'            => 'admin',
@@ -77,7 +74,6 @@ $factory->define(Wizard::class, function (Faker\Generator $faker) {
     return [
         'first_name'           => $fName,
         'last_name'            => $lName,
-        'middle_name'          => $faker->optional()->firstName,
         'university_email'     => $fName[0] . $lName . "@lincoln.ac.uk",
         'university_id'        => $fName[0] . $lName,
         'user_type'            => 'wizard',
@@ -149,15 +145,21 @@ $factory->define(MilestoneTemplate::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(Milestone::class, function (Faker\Generator $faker) {
-    $sub = $faker->optional()->boolean();
-    $approval = $faker->optional()->boolean() || $sub;
+
+    $sr = StudentRecord::inRandomOrder()->first();
+    $sub = $faker->optional()->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
+    $due = $faker->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
     $type = MilestoneType::inRandomOrder()->first();
+
     return [
-        'name'                 => $sub ? $type->name : null ,
-        'due'                  => $faker->numberBetween(1,12),
-        'submission_date'      => $sub ? Carbon::now()->addMonths($faker->numberBetween(1,12)) : null,
-        'student_record_id'    => StudentRecord::inRandomOrder()->first()->id,
-        'milestone_type_id'    => $type->id,
+        'submitted_date'      => $sub,
+        'duration'              => $faker->numberBetween(1,12),
+        'duration_unit'         => 'Months',
+        'name'                 => $sub ? $type->name : null,
+        'due_date'              => $due,
+        'non_interuptive_date'  => $due,
+        'student_record_id'     => $sr->id,
+        'milestone_type_id'     => $type->id,
     ];
 });
 
@@ -180,4 +182,4 @@ $factory->define(Permission::class, function (Faker\Generator $faker) {
 // 'approval_required'    => $faker->boolean(),
         // 'approval_granted'     => $approval,
         // 'approved_by'          => $approval ? Staff::inRandomOrder()->pluck('id')->first() : null,
-        // 'approved_on'          => $approval ? Carbon::now()->addMonths($faker->numberBetween(1,12))->format('Y-m-d H:i:s') : null,
+        // 'approved_on'          => $approval ? Carbon::now()->copy()->addMonths($faker->numberBetween(1,12))->format('Y-m-d H:i:s') : null,

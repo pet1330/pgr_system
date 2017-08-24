@@ -18,11 +18,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('middle_name')->nullable();
             $table->string('university_email')->unique();
             $table->string('university_id')->unique();
             $table->boolean('locked')->default(false);
             $table->enum('user_type', ['Student', 'Staff', 'Admin', 'Wizard']);
+            $table->index(['user_type', 'id']);
             $table->timestamps();
         });
     }

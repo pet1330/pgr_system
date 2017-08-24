@@ -20,6 +20,7 @@ class CreateStudentRecordsTable extends Migration
             $table->date('enrolment_date')->nullable();
             $table->boolean('tierFour')->default(false);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('student_id')->references('id')->on('users');
         });
     }

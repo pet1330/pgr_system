@@ -23,6 +23,7 @@ class CreateAbsencesTable extends Migration
             $table->boolean('approval_granted')->nullable();
             $table->integer('approved_by')->unsigned()->nullable();
             $table->datetime('approved_on')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

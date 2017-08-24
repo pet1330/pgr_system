@@ -16,8 +16,11 @@ class CreateMilestonesTable extends Migration
         Schema::create('milestones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->integer('due')->unsigned();
-            $table->dateTime('submission_date')->nullable();
+            $table->integer('duration')->unsigned();
+            $table->enum('duration_unit', ['Days', 'Weeks', 'Months', 'Years'])->default('Months');
+            $table->dateTime('submitted_date')->nullable();
+            $table->dateTime('due_date');
+            $table->dateTime('non_interuptive_date');
             $table->integer('student_record_id')->unsigned();
             $table->integer('milestone_type_id')->unsigned();
             $table->softDeletes();

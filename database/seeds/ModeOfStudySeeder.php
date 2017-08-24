@@ -16,7 +16,7 @@ class ModeOfStudySeeder extends Seeder
             'Full Time' => 1.,
             'Lazy Full Time' => 1.5,
             'Part Time' => 2.,
-            'Every Thursdays Afternoon' => 10.];
+            'Every Thursdays Afternoon' => 4.];
 
         foreach ($examples as $mos => $tf)
         {
