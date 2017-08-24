@@ -4,16 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+    use Spatie\Activitylog\Traits\LogsActivity;
 
 class MilestoneTemplate extends Model
 {
     use SoftDeletes;
+    use LogsActivity;
+
+    protected static $logOnlyDirty = true;
+
+    protected static $logAttributes = [ 'due', 'milestone_type_id' ];
 
     protected $table ='milestone_templates';
 
     protected $with = ['milestone_type'];
 
-    protected $fillable = [ 'due', 'milestone_type_id', 'timeline_template_id' ];
+    protected $fillable = ['due', 'milestone_type_id'];
 
 
     public function milestone_type()
@@ -33,5 +39,4 @@ class MilestoneTemplate extends Model
                 'milestone_type_id' => $this->milestone_type->id,
             ]);
     }
-    
 }

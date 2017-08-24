@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentStatus extends Model
 {
- use SoftDeletes;
+    use SoftDeletes;
+    use LogsActivity;
+
+    protected static $logOnlyDirty = true;
+
+    protected static $logAttributes = [ 'status' ];
 
     protected $fillable = ['status'];
 

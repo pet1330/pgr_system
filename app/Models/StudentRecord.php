@@ -5,13 +5,29 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Milestone;
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class StudentRecord extends Model
 {
-    protected $dates = [
-    'enrolment_date'
-    ];
+    protected $dates = [ 'enrolment_date' ];
     
+    use LogsActivity;
+    use SoftDeletes;
+
+    protected static $logOnlyDirty = true;
+
+    protected static $logAttributes = [
+        'student_id',
+        'school_id',
+        'enrolment_date',
+        'student_status_id',
+        'programme_id',
+        'enrolment_status_id',
+        'funding_type_id',
+        'mode_of_study_id',
+        'tierFour'
+    ];
+
     protected $fillable = [
         'student_id',
         'school_id',
@@ -22,8 +38,6 @@ class StudentRecord extends Model
         'funding_type_id',
         'mode_of_study_id',
         'tierFour',
-        'archived',
-        'provisioned',
     ];
 
     /**
@@ -118,7 +132,7 @@ class StudentRecord extends Model
 
     public function timeline()
     {
-        return $this->hasOne(Milestone::class);
+        return $this->hasMany(Milestone::class);
     }
 
     public function getStartAttribute()
@@ -147,5 +161,4 @@ class StudentRecord extends Model
     {
         return $this->hasMany(Milestone::class);
     }
-
 }

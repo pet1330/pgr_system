@@ -1,18 +1,21 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
 
 class User extends Authenticatable
 {
-    use Notifiable;
     use HasRoles;
+    use Notifiable;
+    use LogsActivity;
 
     protected $table = "users";
     protected $guard_name = 'web';
+    protected static $logOnlyDirty = true;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +25,6 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
-        'middle_name',
         'university_email',
         'university_id',
         'user_type'
@@ -39,10 +41,7 @@ class User extends Authenticatable
 
     public function getNameAttribute()
     {
-        if( is_null($this->middle_name) )
-            return sprintf("%s %s", $this->first_name, $this->last_name);
-        else
-            return sprintf("%s %s %s", $this->first_name, $this->middle_name, $this->last_name);
+        return sprintf("%s %s", $this->first_name, $this->last_name);
     }
 
     public function newFromBuilder($attributes = [], $connection = null)
@@ -59,32 +58,18 @@ class User extends Authenticatable
         return parent::newFromBuilder($attributes, $connection);
     }
 
-    public function absences()
+    public function avatar($size=80)
     {
-        return $this->hasMany(Absence::class, 'user_id');
+        return "https://www.gravatar.com/avatar/" . 
+                md5( strtolower( trim( $this->university_id ) ) ) . "?d=mm&s=" . $size;
     }
 
-    public function isAbsent()
+    public function interuptionPeriodSoFar($include_current=true, $at_point=null)
     {
-        return !! $this->absences()->current()->count();
-    }
-
-    public function isNotAbsent()
-    {
-        return ! $this->isAbsent();
-    }
-
-    public function avatar()
-    {
-        return asset('imgs/usericon.jpg');
-    }
-
-    public function interuptionPeriodSoFar($include_current=true)
-    {
-        return $this->absences->filter(function ($ab) {
+        return $this->absences->filter(function ( Absence $ab) {
             return !! $ab->absence_type->interuption;
-        })->filter(function ($ab) use ($include_current) {
-            return $ab->isPast() || $ab->isCurrent() && $include_current;
+        })->filter(function (Absence $ab) use ($include_current, $at_point) {
+            return $ab->isPast($at_point) || $ab->isCurrent($at_point) && $include_current;
         })->sum('duration');
     }
 
@@ -108,9 +93,14 @@ class User extends Authenticatable
         if( $user instanceof static ) $user = $user->id;
 
         switch ($this->user_type) {
-            case 'Admin': return route('admin.admin.show', $user ?? $this->id);
-            case 'Staff': return route('admin.staff.show', $user ?? $this->id);
-            case 'Student': return route('admin.student.show', $user ?? $this->id);
+            case 'Admin': return route('admin.admin.show', $user ?? $this->university_id);
+            case 'Staff': return route('admin.staff.show', $user ?? $this->university_id);
+            case 'Student': return route('admin.student.show', $user ?? $this->university_id);
         }
+    }
+
+    public function getRouteKeyName()
+    {
+        return "university_id";
     }
 }
