@@ -11,6 +11,10 @@ before_script:
   - composer install --dev --prefer-source --no-interaction
   - travis_retry php artisan key:generate
   - travis_retry php artisan migrate
+  - . $HOME/.nvm/nvm.sh
+  - nvm install 6.10.3
+  - nvm use 6.10.3
+  - npm install -g yarn
   - yarn
   - yarn run production
 
