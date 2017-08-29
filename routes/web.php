@@ -1,11 +1,17 @@
 <?php
 
-// Auth::logout();
-Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
-// Auth::loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
-// Auth::loginUsingId(App\Models\Admin::find(602)->first()->id);
-// Auth::loginUsingId(App\Models\Staff::pluck('id')->first());
-// Auth::loginUsingId(App\Models\Student::pluck('id')->first());
+
+Route::get('demo', function (){
+    Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
+    return redirect('/');
+
+    // Auth::logout();
+    // Auth::loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
+    // Auth::loginUsingId(App\Models\Admin::find(602)->first()->id);
+    // Auth::loginUsingId(App\Models\Staff::pluck('id')->first());
+    // Auth::loginUsingId(App\Models\Student::pluck('id')->first());
+});
+
 
 Route::any('error', function(){
     dd(Request::all());
