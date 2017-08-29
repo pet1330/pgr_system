@@ -148,6 +148,7 @@ $(document).ready(function() {
             columns: [
                 { data: 'name', name: 'name', searchable: false, orderable: false },
                 { data: 'duration', name: 'interuption', searchable: false, orderable: false },
+                { data: 'student_makable', name: 'student_makable', searchable: false, orderable: false },
                 { data: 'milestones_count', name: 'milestones_count', searchable: false, orderable: false },
                 { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: false },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },

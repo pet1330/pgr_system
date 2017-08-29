@@ -13,11 +13,11 @@ class MilestoneType extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'name', 'duration' ];
+    protected static $logAttributes = [ 'name', 'duration', 'student_makable'];
     
     protected $table ='milestone_types';
 
-    protected $fillable = [ 'name', 'duration' ];
+    protected $fillable = [ 'name', 'duration', 'student_makable' ];
 
     public function milestones()
     {

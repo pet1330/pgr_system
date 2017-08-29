@@ -16,6 +16,7 @@ class CreateMilestoneTypesTable extends Migration
         Schema::create('milestone_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
+            $table->boolean('student_makable');
             $table->integer('duration')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();

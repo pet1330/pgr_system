@@ -1,20 +1,20 @@
 <?php
 
 namespace App\Models;
-use Spatie\Permission\Traits\HasRoles;
+
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
+    use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 
 class User extends Authenticatable
 {
-    use HasRoles;
+    use HasRolesAndAbilities;
     use Notifiable;
     use LogsActivity;
 
     protected $table = "users";
-    protected $guard_name = 'web';
+
     protected static $logOnlyDirty = true;
 
     /**
@@ -60,8 +60,8 @@ class User extends Authenticatable
 
     public function avatar($size=80)
     {
-        return "https://www.gravatar.com/avatar/" . 
-                md5( strtolower( trim( $this->university_id ) ) ) . "?d=mm&s=" . $size;
+        return "https://s.gravatar.com/avatar/" . 
+                md5( strtolower( trim( $this->university_email ) ) ) . "?d=mm&s=" . $size;
     }
 
     public function interuptionPeriodSoFar($include_current=true, $at_point=null)

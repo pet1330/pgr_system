@@ -19,7 +19,7 @@
           <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-6">
             {{-- <label for="milestone_type">Milestone Type</label> --}}
             <select class="form-control" name="milestone_type">
-              <option>--- Select ---</option>
+              <option value="">--- Select ---</option>
               @foreach($types as $t)
               <option value="{{ $t->id }}"
                 @if( old('milestone_type') == $t->id )

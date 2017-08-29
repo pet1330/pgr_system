@@ -8,10 +8,10 @@
       <div class="box-body">
         <form action="{{ route('admin.student.milestone.store', $student->id) }}" method="POST">
           {{ csrf_field() }}
-          <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-6">
+          <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-8">
             <label for="milestone_type">Milestone Type</label>
             <select class="form-control" name="milestone_type">
-              <option>--- Select ---</option>
+              <option value="">--- Select ---</option>
               @foreach($types as $t)
                 <option value="{{ $t->id }}"
                   @if( old('milestone_type') == $t->id )
@@ -27,7 +27,7 @@
             </span>
             @endif
           </div>
-          <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-6">
+          <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-4">
             <label for="due">Due On</label>
             <input type="date" class="form-control" name="due" value="{{ old('due') }}">
             @if ($errors->has('due'))

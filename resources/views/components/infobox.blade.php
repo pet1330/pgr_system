@@ -7,7 +7,7 @@
       <span class="info-box-text">
         {{ $title or '' }}
       </span>
-      <span class="info-box-number">
+      <span class="info-box-text">
       {{ $slot }}
       </span>
     </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Milestone;
+use App\Models\Admin;
 use App\Models\MilestoneType;
 use App\Models\StudentRecord;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,7 @@ class MilestoneSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        StudentRecord::get()->map(function ($sr) use ($faker)
+        StudentRecord::all()->map(function ($sr) use ($faker)
         {
             for ($i=0; $i < 10 ; $i++) {
                 $sub = $faker->optional()->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
@@ -30,6 +31,7 @@ class MilestoneSeeder extends Seeder
                         'due_date'              =>   $due,
                         'non_interuptive_date'  =>   $due,
                         'milestone_type_id'     =>   $type->id,
+                        'created_by'            =>   Admin::first()->id,
                     ])
                 );
             }

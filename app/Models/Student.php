@@ -6,6 +6,7 @@ use App\Scopes\UserScope;
 
 class Student extends User
 {
+    protected $with = ['records'];
 
     protected static function boot()
     {
@@ -19,7 +20,6 @@ class Student extends User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-
     public function records()
     {
         return $this->hasMany(StudentRecord::class);
@@ -27,7 +27,7 @@ class Student extends User
 
     public function record()
     {
-        return $this->records()->first();
+        return $this->records->last();
     }
 
     public function getSchoolAttribute()
@@ -103,26 +103,41 @@ class Student extends User
 
     public function getStartDateAttribute()
     {
-        return $this->record->enrolment_date;
+        return $this->record()->enrolment_date;
     }
 
     public function enrolmentStatus()
     {
-        return $this->record->enrolmentStatus();
+        return $this->record()->enrolmentStatus();
     }
 
     public function fundingType()
     {
-        return $this->record->fundingType();
+        return $this->record()->fundingType();
     }
 
     public function programme()
     {
-        return $this->record->programme();
+        return $this->record()->programme();
     }
 
     public function modeOfStudy()
     {
-        return $this->record->modeOfStudy();
+        return $this->record()->modeOfStudy();
+    }
+
+    public function absences()
+    {
+        return $this->hasMany(Absence::class, 'user_id');
+    }
+
+    public function isAbsent()
+    {
+        return $this->absences()->current()->isNotEmpty();
+    }
+
+    public function isNotAbsent()
+    {
+        return ! $this->isAbsent();
     }
 }

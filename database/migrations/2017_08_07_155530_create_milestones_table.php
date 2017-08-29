@@ -19,13 +19,14 @@ class CreateMilestonesTable extends Migration
             $table->integer('duration')->unsigned();
             $table->enum('duration_unit', ['Days', 'Weeks', 'Months', 'Years'])->default('Months');
             $table->dateTime('submitted_date')->nullable();
-            $table->dateTime('due_date');
+            $table->dateTime('due_date')->index();
             $table->dateTime('non_interuptive_date');
             $table->integer('student_record_id')->unsigned();
             $table->integer('milestone_type_id')->unsigned();
+            $table->integer('created_by')->unsigned();
             $table->softDeletes();
             $table->timestamps();
-
+            $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('student_record_id')->references('id')->on('student_records');
             $table->foreign('milestone_type_id')->references('id')->on('milestone_types');
         });
