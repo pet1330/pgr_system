@@ -30,15 +30,6 @@ class User extends Authenticatable
         'user_type'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'id',
-    ];
-
     public function getNameAttribute()
     {
         return sprintf("%s %s", $this->first_name, $this->last_name);
