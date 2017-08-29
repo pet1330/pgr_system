@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Permission;
-use App\Models\Role;
+// use App\Models\Permission;
+// use App\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -13,35 +13,15 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        // Reset cached roles and permissions
-         app()['cache']->forget('spatie.permission.cache');
+
+        Bouncer::allow('manage_access_control')->to('ban-users');
          
-
-        // Permissions
-        Permission::create(['name' => 'assign_permissions_to_user']);
-        Permission::create(['name' => 'remove_permissions_from_user']);
-
-        Permission::create(['name' => 'assign_role_to_user']);
-        Permission::create(['name' => 'remove_role_from_user']);
-
-        Permission::create(['name' => 'assign_permissions_to_role']);
-        Permission::create(['name' => 'remove_permissions_from_role']);
-
-
-        // Roles
-        Role::create(['name' => 'student_default']);
-        // ----------------------------------------------
-        // ====================================================
-
-        $role = Role::create(['name' => 'manage_access_control']);
-        // ----------------------------------------------
-        $role->givePermissionTo('assign_permissions_to_user');
-        $role->givePermissionTo('remove_permissions_from_user');
-        $role->givePermissionTo('assign_role_to_user');
-        $role->givePermissionTo('remove_role_from_user');
-        $role->givePermissionTo('assign_permissions_to_role');
-        $role->givePermissionTo('remove_permissions_from_role');
-
-        // ====================================================
+        Bouncer::allow('manage_access_control')->to([
+            'assign_permissions_to_user',
+            'remove_permissions_from_user',
+            'assign_role_to_user',
+            'remove_role_from_user',
+            'assign_permissions_to_role',
+            'remove_permissions_from_role']);
     }
 }

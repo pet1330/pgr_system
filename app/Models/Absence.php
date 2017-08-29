@@ -2,19 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 use Auth;
+use Carbon\Carbon;
+use Balping\HashSlug\HasHashSlug;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Absence extends Model
 {
+    use SoftDeletes;
+    use LogsActivity;
+    use HasHashSlug;
+
+    protected static $logOnlyDirty = true;
+
+    protected static $logAttributes = [
+        'user_id',
+        'absence_type_id',
+        'from',
+        'to',
+        'duration'
+    ];
+
     protected $with = ['absence_type'];
 
-    protected $casts = [
-        'approval_required' => 'boolean',
-        'approval_granted' => 'boolean',
-
-    ];
 
     protected $fillable = [
         'user_id',
@@ -22,17 +34,11 @@ class Absence extends Model
         'from',
         'to',
         'duration',
-        'approval_required',
-        'approval_granted',
-        'approved_by',
-        'approved_on',
     ];
 
     protected $dates = [
         'from',
         'to',
-        'approved_on',
-
     ];
 
     public function absence_type()
@@ -40,14 +46,9 @@ class Absence extends Model
         return $this->belongsTo(AbsenceType::class);
     }
 
-    public function user()
+    public function student()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function approved_by()
-    {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(student::class, 'user_id');
     }
 
     public function getTypeAttribute()
@@ -60,24 +61,20 @@ class Absence extends Model
         return $this->absence_type->status;
     }
 
-    public function scopeNeedsApproving($query)
+    public function isFuture($date=null)
     {
-        return $query->where('approval_required',true)->whereNull('approval_granted');
-    }
-
-    public function isFuture()
-    {
-        return Carbon::now()->lt($this->from);
+        return ($date ?? Carbon::now()) < $this->from;
     }
     
-    public function isPast()
+    public function isPast($date=null)
     {
-        return Carbon::now()->gt($this->to);
+        return ($date ?? Carbon::now()) > $this->to;
     }
 
-    public function isCurrent()
+    public function isCurrent($date=null)
     {
-        return Carbon::now()->gte($this->from) && Carbon::now()->lte($this->to);
+        $date = $date ?? Carbon::now();
+        return $date >= $this->from && $date <= $this->to;
     }
 
     public function scopePast($query)
@@ -98,25 +95,11 @@ class Absence extends Model
         ->orderBy('from', 'asc')->get();
     }
 
-    public function scopeIsApproved($query)
-    {
-        return $query->where('approval_granted',true)
-                     ->orWhere('approval_required', false);
-    }
-
-    public function approve($allowed=true)
-    {
-        $this->user()->associate( Auth::user() );
-        $this->approval_granted = $allowed;
-        $this->approved_on = Carbon::now();
-        $this->save();
-    }
-
-    public function calculateDuration()
-    {
-        return $this->from
-                ->diffInDaysFiltered(function(Carbon $date) {
-                    return !$date->isWeekend();
-                }, $this->to);
-    }
+    // public function calculateDuration()
+    // {
+    //     return $this->from
+    //             ->diffInDaysFiltered(function(Carbon $date) {
+    //                 return !$date->isWeekend();
+    //             }, $this->to);
+    // }
 }
