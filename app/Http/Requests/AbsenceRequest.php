@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MilestoneRequest extends FormRequest
+class AbsenceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,22 +30,38 @@ class MilestoneRequest extends FormRequest
             case 'PATCH':
             case 'PUT':
                 return [
-                    'milestone_type' => [
+                    'absence_type_id' => [
                         'required',
-                        'exists:milestone_types,id',
+                        'exists:absence_types,id',
                     ],
-                    'due' => [
+                    'from' => [
                         'date'
+                    ],
+                    'to' => [
+                        'date',
+                        'after:from'
+                    ],
+                    'duration' => [
+                        'required',
+                        'integer'
                     ]
                 ];
             case 'POST':
                 return [
-                    'milestone_type' => [
+                    'absence_type_id' => [
                         'required',
-                        'exists:milestone_types,id',
+                        'exists:absence_types,id',
                     ],
-                    'due' => [
+                    'from' => [
                         'date'
+                    ],
+                    'to' => [
+                        'date',
+                        'after:from'
+                    ],
+                    'duration' => [
+                        'required',
+                        'integer'
                     ]
                 ];
         }

@@ -22,6 +22,7 @@ class MilestoneTypeController extends Controller
             $miletypes = MilestoneType::withCount(['milestones', 'milestone_templates'])->orderBy('name');
 
             return Datatables::eloquent($miletypes)
+                ->editColumn('student_makable', '{{ $student_makable ? "Yes" : "No" }}')
                 ->addColumn('editaction', function (MilestoneType $mt) {
                     return '<form method="GET" action="' . route('admin.settings.milestone-type.edit', $mt->id) . '"
                       accept-charset="UTF-8" class="delete-form">
@@ -51,7 +52,7 @@ class MilestoneTypeController extends Controller
      */
     public function store(MilestoneTypeRequest $request)
     {
-        $mt = MilestoneType::create($request->all());
+        $mt = MilestoneType::create( $request->all() );
         return redirect()
             ->route('admin.settings.milestone-type.index')
             ->with('flash', 'Successfully added "' . $mt->name . '"');

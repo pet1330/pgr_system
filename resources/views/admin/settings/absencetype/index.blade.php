@@ -28,7 +28,7 @@
           </div>
           <div class="form-group{{ $errors->has('interuption') ? ' has-error' : '' }} col-md-4">
             <select class="form-control" name="interuption">
-              <option>--- Select ---</option>
+              <option value="">--- Select ---</option>
               <option value="1" @if(old('interuption') == '1') selected="selected" @endif>
                 Interuption
               </option>
@@ -57,20 +57,20 @@
         </div>
         <div id="collapseone" class="panel-collapse collapse">
           <div class="panel-body">
-              @foreach($deletedAbsenceType as $dat)
-              <div class="col-md-12">
-                <a href="{{ route('admin.settings.absence-type.restore', $dat->id) }}">
-                  <span class="btn btn-success">Restore</span>
-                </a>
-                {{ $dat->name }}
-              </div>
-                @endforeach
+            @foreach($deletedAbsenceType as $dat)
+            <div class="col-md-12">
+              <a href="{{ route('admin.settings.absence-type.restore', $dat->id) }}">
+                <span class="btn btn-success">Restore</span>
+              </a>
+              {{ $dat->name }}
             </div>
+            @endforeach
           </div>
         </div>
       </div>
     </div>
     @endif
   </div>
+</div>
 </li>
 @endsection

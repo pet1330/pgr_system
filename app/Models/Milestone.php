@@ -3,14 +3,20 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Plank\Mediable\Mediable;
+use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Milestone extends Model
 {
+    use Mediable;
+    use HasHashSlug;
     use SoftDeletes;
     use LogsActivity;
+
+    protected static $minSlugLength = 11;
 
     protected static $logOnlyDirty = true;
 
@@ -37,6 +43,7 @@ class Milestone extends Model
         'name',
         'due_date',
         'duration',
+        'created_by',
         'submitted_date',
         'milestone_type_id',
         'student_record_id',
@@ -129,7 +136,7 @@ class Milestone extends Model
         return $this->isNotSubmitted() && $this->due_date <= Carbon::now();
     }
 
-    public function startDate()
+    public function getStartDateAttribute()
     {
         return $this->due_date->subMonths($this->duration);
     }
@@ -161,6 +168,11 @@ class Milestone extends Model
         if ( $this->isPreviouslySubmitted() ) return "Submitted";
         if ( $this->isUpcoming() ) return "Upcoming";
         if ( $this->isFuture() ) return "Future";
-    }    
+    }  
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class);
+    }  
 
 }

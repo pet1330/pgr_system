@@ -4,7 +4,7 @@
 @section('content')
 <div class="content">
 <div class="panel-body">
-    <a  href="{{ route('admin.student.create') }}">
+    <a  href="{{ route('admin.student.find') }}">
         <span class="btn btn-default pull-right">
         Add A New Student Record</span>
     </a>

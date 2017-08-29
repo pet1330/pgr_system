@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Auth;
 use Carbon\Carbon;
+use MediaUploader;
 use App\Models\Student;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
@@ -14,6 +16,22 @@ use Yajra\Datatables\Facades\Datatables;
 
 class MilestoneController extends Controller
 {
+
+    public function index(Student $student)
+    {
+        $milestones = $student->record()->timeline;
+
+        $recently_submitted = $milestones->filter->isRecentlySubmitted();
+        $overdue = $milestones->filter->isOverdue();
+        $submitted = $milestones->filter->isPreviouslySubmitted();
+        $upcoming = $milestones->filter->isUpcoming();
+        $future = $milestones->filter->isFuture();
+
+        return View('student.milestones', 
+                        compact('student', 'milestones', 'recently_submitted',
+                                'overdue', 'submitted', 'upcoming', 'future'));
+    }
+
     public function overdue(Request $request)
     {
         if ($request->ajax())
@@ -21,7 +39,7 @@ class MilestoneController extends Controller
             return $this->data( Milestone::overdue() )->make(true);
         }
 
-        return view('admin.milestone.index', [
+        return view('admin.milestone.list', [
             'title' => 'Overdue Milestones',
             'subtitle' => 'All overdue milestones',
             ]);
@@ -34,7 +52,7 @@ class MilestoneController extends Controller
             return $this->data( Milestone::upcoming() )->make(true);
         }
 
-        return view('admin.milestone.index', [
+        return view('admin.milestone.list', [
             'title' => 'Upcoming Milestones',
             'subtitle' => 'All upcoming milestones',
             ]);
@@ -59,7 +77,7 @@ class MilestoneController extends Controller
                 ->make(true);
         }
 
-        return view('admin.milestone.index', [
+        return view('admin.milestone.list', [
             'title' => 'Submitted Milestones',
             'subtitle' => 'All submitted milestones',
             'show_submitted' => true,
@@ -87,9 +105,6 @@ class MilestoneController extends Controller
                 { return route('admin.student.show', $ms->student->student->university_id); }]);
     }
 
-
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -114,7 +129,8 @@ class MilestoneController extends Controller
             Milestone::make([
                 'due_date' => $request->due,
                 'milestone_type_id' => $request->milestone_type,
-                'non_interuptive_date' => Carbon::parse($request->due)->subDays($away_days)
+                'non_interuptive_date' => Carbon::parse($request->due)->subDays($away_days),
+                'created_by' => Auth::id(),
             ])
         );
         return redirect()->route('admin.student.milestone.show', compact('student', 'milestone'));
@@ -172,5 +188,22 @@ class MilestoneController extends Controller
     public function destroy($id)
     {
 
+    }
+
+    public function upload(Request $request, Milestone $milestone)
+    {
+        if($milestone)
+        {
+            session()->flash("files", 1);
+            $media = MediaUploader::fromSource( $request->file( 'file' ) )
+                ->useHashForFilename()
+                ->toDestination( 'public', 'milestone-attachments/' . $milestone->slug() )
+                ->upload();
+            $milestone->attachMedia($media, ['submission']);
+            $milestone->submitted_date = Carbon::now();
+            $milestone->save();
+            return "File uploaded successfully";
+        }
+        abort(404);
     }
 }

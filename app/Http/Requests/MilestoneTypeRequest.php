@@ -43,6 +43,10 @@ class MilestoneTypeRequest extends FormRequest
                         'min:1',
                         'max:600',
                     ],
+                    'student_makable' => [
+                        'required',
+                        'boolean'
+                    ]
                 ];
             case 'POST':
                 return [
@@ -57,6 +61,10 @@ class MilestoneTypeRequest extends FormRequest
                         'min:1',
                         'max:600',
                     ],
+                    'student_makable' => [
+                        'required',
+                        'boolean'
+                    ]
                 ];
         }
     }
