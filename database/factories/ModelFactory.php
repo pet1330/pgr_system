@@ -145,7 +145,7 @@ $factory->define(MilestoneTemplate::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(Milestone::class, function (Faker\Generator $faker) {
-
+    $admin = factory(Admin::class)->create();
     $sr = StudentRecord::inRandomOrder()->first();
     $sub = $faker->optional()->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
     $due = $faker->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
@@ -160,7 +160,7 @@ $factory->define(Milestone::class, function (Faker\Generator $faker) {
         'non_interuptive_date'  => $due,
         'student_record_id'     => $sr->id,
         'milestone_type_id'     => $type->id,
-        'created_by'            => Admin::first()->id,
+        'created_by'            => $admin->id,
     ];
 });
 
