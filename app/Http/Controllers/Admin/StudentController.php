@@ -32,11 +32,14 @@ class StudentController extends Controller
                 'modeOfStudy' => function ($query) { $query->withTrashed(); },
                 'studentStatus' => function ($query) { $query->withTrashed(); },
                 'programme' => function ($query) { $query->withTrashed(); },
+                'school' => function ($query) { $query->withTrashed(); },
                 'enrolmentStatus' => function ($query) { $query->withTrashed(); }
             ])->has('student');
             return Datatables::eloquent($students)
                 ->addColumn('first_name', function (StudentRecord $sr)
                     { return $sr->student->first_name; })
+                ->addColumn('school', function (StudentRecord $sr)
+                    { return $sr->school->name; })
                 ->addColumn('last_name', function (StudentRecord $sr)
                     { return $sr->student->last_name; })
                 ->addColumn('university_id', function (StudentRecord $sr)

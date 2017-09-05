@@ -55,27 +55,27 @@ class StudentRecord extends Model
 
     public function school()
     {
-        return $this->belongsTo(School::class);
+        return $this->belongsTo(School::class)->withTrashed();
     }
 
     public function modeOfStudy()
     {
-        return $this->belongsTo(ModeOfStudy::class);
+        return $this->belongsTo(ModeOfStudy::class)->withTrashed();
     }
 
     public function studentStatus()
     {
-        return $this->belongsTo(StudentStatus::class);
+        return $this->belongsTo(StudentStatus::class)->withTrashed();
     }
 
     public function programme()
     {
-        return $this->belongsTo(Programme::class);
+        return $this->belongsTo(Programme::class)->withTrashed();
     }
 
     public function enrolmentStatus()
     {
-        return $this->belongsTo(EnrolmentStatus::class);
+        return $this->belongsTo(EnrolmentStatus::class)->withTrashed();
     }
 
     public function getDirectorOfStudyAttribute()
@@ -127,7 +127,7 @@ class StudentRecord extends Model
 
     public function fundingType()
     {
-        return $this->belongsTo(FundingType::class);
+        return $this->belongsTo(FundingType::class)->withTrashed();
     }
 
     public function timeline()

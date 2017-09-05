@@ -1,8 +1,8 @@
 <?php
 
 
-Route::get('demo', function (){
     Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
+Route::get('demo', function (){
     return redirect('/');
 
     // Auth::logout();
@@ -26,7 +26,11 @@ Route::get('logout', 'SAMLController@logout');
         return redirect('a');
     });
 
-Route::middleware('samlauth')->namespace('Admin')->as('admin.')->prefix('a')->group( function() {
+Route::middleware('samlauth')
+    ->namespace('Admin')
+    ->as('admin.')
+    ->prefix('a')
+    ->group( function() {
     // =======================================================================
     // ======================== Admin Specific Routes ========================
     // =======================================================================

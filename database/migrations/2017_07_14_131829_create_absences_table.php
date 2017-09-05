@@ -19,13 +19,8 @@ class CreateAbsencesTable extends Migration
             $table->datetime('from');
             $table->datetime('to');
             $table->integer('duration')->unsigned(); // This is required as not all days are workdays
-            $table->boolean('approval_required')->default(True);
-            $table->boolean('approval_granted')->nullable();
-            $table->integer('approved_by')->unsigned()->nullable();
-            $table->datetime('approved_on')->nullable();
             $table->softDeletes();
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

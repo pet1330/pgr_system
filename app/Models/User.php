@@ -55,15 +55,6 @@ class User extends Authenticatable
                 md5( strtolower( trim( $this->university_email ) ) ) . "?d=mm&s=" . $size;
     }
 
-    public function interuptionPeriodSoFar($include_current=true, $at_point=null)
-    {
-        return $this->absences->filter(function ( Absence $ab) {
-            return !! $ab->absence_type->interuption;
-        })->filter(function (Absence $ab) use ($include_current, $at_point) {
-            return $ab->isPast($at_point) || $ab->isCurrent($at_point) && $include_current;
-        })->sum('duration');
-    }
-
     public function isAdmin()
     {
         return $this->user_type === "Admin";

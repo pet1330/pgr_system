@@ -6,17 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-
-
-
-
-
-
-
-
-
-
 class School extends Model
 {
     use SoftDeletes;
@@ -34,17 +23,17 @@ class School extends Model
 
     public function college()
     {
-        return $this->belongsTo(College::class);
+        return $this->belongsTo(College::class)->withTrashed();
     }
 
     public function student()
     {
         return $this->hasManyThrough(
-            Student::class, StudentRecord::class, 'school_id', 'id');
+            Student::class, StudentRecord::class, 'school_id', 'id')->withTrashed();
     }
 
     public function studentRecord()
     {
-        return $this->hasMany(StudentRecord::class);
+        return $this->hasMany(StudentRecord::class)->withTrashed();
     }
 }

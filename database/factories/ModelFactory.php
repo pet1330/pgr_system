@@ -98,7 +98,6 @@ $factory->define(StudentRecord::class, function (Faker\Generator $faker) {
 $factory->define(Absence::class, function (Faker\Generator $faker) {
     $start = Carbon::instance($faker->dateTimeBetween('-6 months', '6 months'));
     $end = $start->copy()->addDays($faker->numberBetween(2,30));
-    $approval = $faker->optional()->boolean();
 
     return [
         'user_id'              => Student::inRandomOrder()->pluck('id')->first(),
@@ -106,10 +105,6 @@ $factory->define(Absence::class, function (Faker\Generator $faker) {
         'from'                 => $start->format('Y-m-d H:i:s'),
         'to'                   => $end->format('Y-m-d H:i:s'),
         'duration'             => $start->diffInDays($end->copy()->addDays(1)),
-        'approval_required'    => $faker->boolean(),
-        'approval_granted'     => $approval,
-        'approved_by'          => $approval ? Staff::inRandomOrder()->pluck('id')->first() : null,
-        'approved_on'          => $approval ? $start->subDays($faker->numberBetween(2,30))->format('Y-m-d H:i:s') : null,
     ];
 });
 

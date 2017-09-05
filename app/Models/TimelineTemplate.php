@@ -26,11 +26,8 @@ class TimelineTemplate extends Model
         return $this->hasMany(MilestoneTemplate::class);
     }
 
-    public function copyToStudent(StudentRecord $record, $all=false)
+    public function copyToStudent(StudentRecord $record)
     {
-        // $this->milestone_templates()
-        //      ->get()
-        //      ->map()
+        $this->milestone_templates->map->create_milestone($record);
     }
-
 }

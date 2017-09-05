@@ -29,12 +29,14 @@ $(document).ready(function() {
                 { data: 'first_name', name: 'student.first_name', searchable: true, orderable: true },
                 { data: 'last_name', name: 'student.last_name', searchable: true, orderable: true },
                 { data: 'university_id', name: 'student.university_id', searchable: true, orderable: true },
+                { data: 'school', name: 'school.name', searchable: true, orderable: true },
                 { data: 'tierFour', name: 'tierFour', searchable: true, orderable: true },
                 { data: 'fundingType', name: 'fundingType.name', searchable: true, orderable: true },
                 { data: 'modeOfStudy', name: 'modeOfStudy.name', searchable: true, orderable: true },
                 { data: 'programme', name: 'programme.name', searchable: true, orderable: true },
                 { data: 'enrolmentStatus', name: 'enrolmentStatus.status', searchable: true, orderable: true },
                 { data: 'studentStatus', name: 'studentStatus.status', searchable: true, orderable: true }
+
             ]
         })
     );

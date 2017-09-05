@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-    use Spatie\Activitylog\Traits\LogsActivity;
 
 class MilestoneTemplate extends Model
 {
@@ -34,9 +35,17 @@ class MilestoneTemplate extends Model
 
     public function create_milestone(StudentRecord $record)
     {
-        return $record->timeline->save([
-                'due' => $this->due,
-                'milestone_type_id' => $this->milestone_type->id,
-            ]);
+        $nid = $record->enrolment_date->copy()->addMonths($this->due);
+
+        return $record->timeline()->save(
+            Milestone::create([
+        'non_interuptive_date' => $nid,
+        'student_record_id' => $record->id,
+        'created_by' => Auth::id(),
+        'milestone_type_id' => $this->milestone_type->id,
+        'due_date' => $nid->copy()->addDays($record->student
+                                        ->interuptionPeriodSoFar())
+            ])
+        );
     }
 }

@@ -50,17 +50,14 @@ class Milestone extends Model
         'non_interuptive_date',
     ];
 
-    public static function fromTemplate(StudentRecord $record, MilestoneTemplate $template)
-    {
-        // return $record->timeline->save([
-            // 'due' => $template->due,
-            // 'milestone_type_id' => $template->milestone_type->id,
-            // ]);
-    }
-
     public function getNameAttribute()
     {
         return $this->attributes['name'] ?? $this->milestone_type->name;
+    }
+
+    public function getDurationAttribute()
+    {
+        return $this->attributes['duration'] ?? $this->milestone_type->duration;
     }
 
     public function student()
@@ -138,7 +135,9 @@ class Milestone extends Model
 
     public function getStartDateAttribute()
     {
-        return $this->due_date->subMonths($this->duration);
+        if($this->duration)
+            return $this->due_date->subMonths($this->duration);
+        return $this->due_date;
     }
 
     public function usefulDate()
