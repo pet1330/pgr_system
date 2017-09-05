@@ -35,7 +35,7 @@ return $settings = array(
     /**
      * Where to redirect after logout
      */
-    'logoutRoute' => '/you-are-logged-out',
+    'logoutRoute' => '/',
 
     /**
      * Where to redirect after login if no other option was provided
