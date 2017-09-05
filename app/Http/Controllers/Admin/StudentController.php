@@ -131,7 +131,7 @@ class StudentController extends Controller
             session()->reflash();
             redirect()->back()->withErrors(['student', 'WHAT IS THIS?']);
         }
-        redirect()->back()->withErrors(['nomatch', 'NO MATCH FOUND?']);
+        redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
         return redirect()->route( 'admin.student.find' );
     }
 

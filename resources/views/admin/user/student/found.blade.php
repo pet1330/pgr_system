@@ -5,7 +5,7 @@
 <div class="row">
     @if($student->records->isNotEmpty())
     <div class="form-group alert alert-danger col-md-8 col-md-offset-2">
-        <label>Warning! {{ $student->name }} already has {{ $student->records->count() }} record. Creating a new one, will archive her previous record</label>
+        <label>Warning! {{ $student->name }} already has {{ $student->records->count() }} record. Creating a new one, will archive this previous record.</label>
     </div>
     @endif
     <div class="col-md-3 col-md-offset-4">

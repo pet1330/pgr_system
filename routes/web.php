@@ -1,8 +1,8 @@
 <?php
 
 
-    Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
 Route::get('demo', function (){
+    Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
     return redirect('/');
 
     // Auth::logout();

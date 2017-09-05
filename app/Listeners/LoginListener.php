@@ -2,9 +2,11 @@
 
 namespace App\Listeners;
 
-use \Aacotroneo\Saml2\Events\Saml2LoginEvent;
+use Auth;
+use App\Models\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use \Aacotroneo\Saml2\Events\Saml2LoginEvent;
 
 class LoginListener
 {
@@ -15,7 +17,7 @@ class LoginListener
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -26,27 +28,30 @@ class LoginListener
      */
     public function handle(Saml2LoginEvent $event)
     {
-        $user = $event->getSaml2User();
-		$userData = [
-			'id' => $user->getUserId(),
-			'attributes' => $user->getAttributes(),
-			'assertion' => $user->getRawSamlAssertion()
-		];
-		$userData['attributes']['university_id'] = [str_before($userData['attributes']['upn'], '@')];
+        $loginAttempt = $event->getSaml2User();
+        $details = $loginAttempt->getAttributes();
+        
         //check if email already exists and fetch user
-		$user = \App\Models\User::where('university_id', $userData['attributes']['university_id'][0])->first();
-		
-		//if email doesn't exist, create new user
-		if($user === null)
-		{		
-			$user = new \App\User;
-			$user->name = sprintf('%s %s', $userData['attributes']['FirstName'][0], $userData['attributes']['LastName'][0]);
-			$user->email = $userData['attributes']['EmailAddress'][0];
-			$user->password = bcrypt(str_random(8));
-			$user->save();
-		}
-		
-		//login user
-		\Auth::login($user);
+        $user = User::where('university_email', $loginAttempt->getUserId())->first();
+                  
+        //if email doesn't exist, create new user
+        if($user === null)
+        {
+            $user = new User;
+            $user->university_email = $loginAttempt->getUserId();
+            $user->first_name = $details['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'][0];
+            $user->last_name = $details['LastName'][0];
+            $user->university_id = $details['UniversityID'][0];
+            $user->user_type = 'Student';
+            if($details['Description'][0] == 'Staff Account')
+                $user->user_type = 'Staff';
+            $user->save();
+            // Fetch user into the relavant type
+            $user = User::where('university_email', $loginAttempt->getUserId())->first();
+        }
+
+        // SET USER PERMISSIONS HERE
+        
+        Auth::login($user);
     }
 }
