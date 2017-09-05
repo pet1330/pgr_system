@@ -139,4 +139,20 @@ class TimelineTemplateController extends Controller
             ->route('admin.settings.timeline.index')
             ->with('flash', 'Successfully deleted "' . $timeline->name . '"');
     }
+
+
+    public function restore($id)
+    {
+        $tt = TimelineTemplate::withTrashed()->find($id);
+        if($tt->trashed())
+        {
+            $tt->restore();
+            return redirect()
+                ->route('admin.settings.timeline.index')
+                ->with('flash', 'Successfully restored "' . $tt->name . '"');
+        }
+        return redirect()
+                ->route('admin.settings.timeline.index')
+                ->with('flash', 'Error: Timeline Template has not deleted: "' . $tt->name . '"');
+    }
 }

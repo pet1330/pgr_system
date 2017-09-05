@@ -44,7 +44,7 @@
               <a href="{{ route('admin.settings.timeline.restore', $tt->id) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
-              {{ $tt->Name }}
+              {{ $tt->name }}
             </div>
             @endforeach
           </div>

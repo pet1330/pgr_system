@@ -1,6 +1,5 @@
 <?php
 
-
 Route::get('demo', function (){
     Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
     return redirect('/');
@@ -65,6 +64,10 @@ Route::middleware('samlauth')
 
     Route::prefix('settings')->as('settings.')->group(function ()
     {
+        Route::get('timeline/{timeline}/restore',
+                   'TimelineTemplateController@restore')
+            ->name('timeline.restore');
+
         Route::get('absence-type/{absence_type}/restore',
                    'AbsenceTypeController@restore')
             ->name('absence-type.restore');
