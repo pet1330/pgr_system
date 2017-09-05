@@ -15,6 +15,7 @@
         <td>First Name</td>
         <td>Last Name</td>
         <td>University ID</td>
+        <td>school</td>
         <td>Tier Four</td>
         <td>Funding Type</td>
         <td>Enrolment Status</td>
