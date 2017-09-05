@@ -26,9 +26,8 @@ class FindStudentRequest extends FormRequest
         return [
             'university_id' => [
                 'required',
-                'min:11',
-                'max:11',
-                'string',
+                'min:8',
+                'max:8'
             ],
         ];
     }

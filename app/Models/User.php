@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
-    use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -85,4 +86,10 @@ class User extends Authenticatable
     {
         return "university_id";
     }
+
+    // overload the defualt password and remember me token
+    public function getAuthPassword() {return null; /* not supported*/ }
+    public function getRememberToken() {return null; /* not supported*/ }
+    public function setRememberToken($value) {return null; /* not supported*/ }
+    public function getRememberTokenName() {return null; /* not supported*/ }
 }
