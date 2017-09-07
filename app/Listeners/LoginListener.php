@@ -31,21 +31,23 @@ class LoginListener
         $loginAttempt = $event->getSaml2User();
         $details = $loginAttempt->getAttributes();
 
+        $user = tap(
+            // Find or create a user
+            $this->firstOrNew(['university_email' => $loginAttempt->getUserId()])
+        )->fill([
+            // Update or set attributes
+            'university_email' => $loginAttempt->getUserId(),
+            'first_name' => $details['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'][0],
+            'last_name' => $details['LastName'][0],
+            'university_id' => $details['UniversityID'][0],
+        ]);
 
-        $user = User::updateOrCreate(
-            [
-                'university_email' => $loginAttempt->getUserId()
-            ],
-            [
-                'university_email' => $loginAttempt->getUserId(),
-                'user_type' => $details['Description'][0] == 'Staff Account' ? 'Staff' : 'Student',
-                'first_name' => $details['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'][0],
-                'last_name' => $details['LastName'][0],
-                'university_id' => $details['UniversityID'][0],
-            ]
-        );
+        if (! $user->exists ) $user->user_type = $details['Description'][0] == 'Staff Account' ? 'Staff' : 'Student';
 
+        $user->save();
         // SET USER PERMISSIONS HERE
-        Auth::login($user);
+        if( ! $user->locked) Auth::login($user);
+
+        return redirect()->route('account-locked');
     }
 }
