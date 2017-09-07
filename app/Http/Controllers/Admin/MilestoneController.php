@@ -17,10 +17,9 @@ use Yajra\Datatables\Facades\Datatables;
 class MilestoneController extends Controller
 {
 
-    public function index(Student $student)
+    public function index(Student $student, StudentRecord $record)
     {
-        $milestones = $student->record()->timeline;
-
+        $milestones = $record->timeline;
         $recently_submitted = $milestones->filter->isRecentlySubmitted();
         $overdue = $milestones->filter->isOverdue();
         $submitted = $milestones->filter->isPreviouslySubmitted();
@@ -28,16 +27,14 @@ class MilestoneController extends Controller
         $future = $milestones->filter->isFuture();
 
         return View('student.milestones', 
-                        compact('student', 'milestones', 'recently_submitted',
-                                'overdue', 'submitted', 'upcoming', 'future'));
+            compact('student', 'record', 'milestones', 'recently_submitted',
+                'overdue', 'submitted', 'upcoming', 'future') );
     }
 
     public function overdue(Request $request)
     {
         if ($request->ajax())
-        {
             return $this->data( Milestone::overdue() )->make(true);
-        }
 
         return view('admin.milestone.list', [
             'title' => 'Overdue Milestones',
@@ -48,9 +45,7 @@ class MilestoneController extends Controller
     public function upcoming(Request $request)
     {
         if ($request->ajax())
-        {
             return $this->data( Milestone::upcoming() )->make(true);
-        }
 
         return view('admin.milestone.list', [
             'title' => 'Upcoming Milestones',
@@ -102,7 +97,12 @@ class MilestoneController extends Controller
                 $query->whereRaw("DATE_FORMAT(due_date,'%d/%m/%Y') like ?", ["%%$keyword%%"]);
             })
             ->setRowAttr([ 'data-link' => function(Milestone $ms)
-                { return route('admin.student.show', $ms->student->student->university_id); }]);
+                {
+                    return route('admin.student.record.show',
+                        [$ms->student->student->university_id, $ms->student->slug(),]
+                    );
+                }
+            ]);
     }
 
     /**
@@ -110,10 +110,11 @@ class MilestoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(StudentRecord $student)
+    public function create(Student $student, StudentRecord $record)
     {
+        if ($student->id !== $record->student_id) abort(404);
         $types = MilestoneType::all();
-        return view('admin.milestone.create', compact('student', 'types'));
+        return view('admin.milestone.create', compact('student', 'record', 'types'));
     }
 
     /**
@@ -122,10 +123,11 @@ class MilestoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MilestoneRequest $request, StudentRecord $student)
+    public function store(MilestoneRequest $request, Student $student, StudentRecord $record)
     {
-        $away_days = $student->student->interuptionPeriodSoFar($request->due);
-        $milestone = $student->timeline()->save(
+        if ($student->id !== $record->student_id) abort(404);
+        $away_days = $student->interuptionPeriodSoFar(Carbon::parse($request->due));
+        $milestone = $record->timeline()->save(
             Milestone::make([
                 'due_date' => $request->due,
                 'milestone_type_id' => $request->milestone_type,
@@ -133,7 +135,7 @@ class MilestoneController extends Controller
                 'created_by' => Auth::id(),
             ])
         );
-        return redirect()->route('admin.student.milestone.show', compact('student', 'milestone'));
+        return redirect()->route('admin.student.record.milestone.show', compact('student', 'record', 'milestone'));
     }
 
     /**
@@ -142,10 +144,10 @@ class MilestoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(StudentRecord $student, Milestone $milestone)
+    public function show(Student $student, StudentRecord $record, Milestone $milestone)
     {
-        if ($student->id != $milestone->student_record_id) abort(404);
-        return view('admin.milestone.show', compact('student', 'milestone'));
+        if ($record->id != $milestone->student_record_id) abort(404);
+        return view('admin.milestone.show', compact('student', 'record', 'milestone'));
     }
 
     /**
@@ -154,11 +156,11 @@ class MilestoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(StudentRecord $student, Milestone $milestone)
+    public function edit(Student $student, StudentRecord $record, Milestone $milestone)
     {
-        if ($student->id != $milestone->student_record_id) abort(404);
+        if ($record->id != $milestone->student_record_id) abort(404);
         $types = MilestoneType::all();
-        return view('admin.milestone.edit', compact('student', 'milestone', 'types'));
+        return view('admin.milestone.edit', compact('student', 'record', 'milestone', 'types'));
     }
 
     /**
@@ -168,15 +170,15 @@ class MilestoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MilestoneRequest $request, StudentRecord $student, Milestone $milestone)
+    public function update(MilestoneRequest $request, Student $student, StudentRecord $record, Milestone $milestone)
     {
-        if ($student->id != $milestone->student_record_id) abort(404);
-        $away_days = $student->student->interuptionPeriodSoFar($request->due);
+        if ($record->id !== $milestone->student_record_id) abort(404);
+        $away_days = $student->interuptionPeriodSoFar(Carbon::parse($request->due));
         $milestone->due_date = $request->due;
         $milestone->milestone_type_id = $request->milestone_type;
         $milestone->non_interuptive_date = Carbon::parse($request->due)->subDays($away_days);
         $milestone->save();
-        return redirect()->route('admin.student.milestone.show', compact('student', 'milestone'));
+        return redirect()->route('admin.student.record.milestone.show', compact('student', 'record', 'milestone'));
     }
 
     /**
@@ -185,9 +187,13 @@ class MilestoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Student $student, StudentRecord $record, Milestone $milestone)
     {
-
+        // We are using soft delete so this item will remain in the database
+        $milestone->delete();
+        return redirect()
+            ->route('admin.student.record.milestone.index', [$student->university_id, $record->slug()])
+            ->with('flash', 'Successfully deleted "' . $milestone->name . '"');
     }
 
     public function upload(Request $request, Milestone $milestone)
