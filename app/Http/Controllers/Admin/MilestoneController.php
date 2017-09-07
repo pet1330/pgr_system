@@ -198,18 +198,22 @@ class MilestoneController extends Controller
 
     public function upload(Request $request, Milestone $milestone)
     {
-        if($milestone)
+
+        if($milestone && $request->file( 'file' ) !== null )
         {
             session()->flash("files", 1);
             $media = MediaUploader::fromSource( $request->file( 'file' ) )
                 ->useHashForFilename()
                 ->toDestination( 'public', 'milestone-attachments/' . $milestone->slug() )
                 ->upload();
+            $media->original_filename = $request->file( 'file' )->getClientOriginalName();
+            $media->uploader_id = Auth::id();
+            $media->save();
             $milestone->attachMedia($media, ['submission']);
             $milestone->submitted_date = Carbon::now();
             $milestone->save();
             return "File uploaded successfully";
         }
-        abort(404);
+        abort(422);
     }
 }

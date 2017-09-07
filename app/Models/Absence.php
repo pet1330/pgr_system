@@ -25,7 +25,7 @@ class Absence extends Model
         'duration'
     ];
 
-    protected $with = ['absence_type'];
+    protected $with = ['type'];
 
 
     protected $fillable = [
@@ -41,24 +41,14 @@ class Absence extends Model
         'to',
     ];
 
-    public function absence_type()
+    public function type()
     {
-        return $this->belongsTo(AbsenceType::class);
+        return $this->belongsTo(AbsenceType::class, 'absence_type_id');
     }
 
     public function student()
     {
         return $this->belongsTo(student::class, 'user_id');
-    }
-
-    public function getTypeAttribute()
-    {
-        return $this->type();
-    }
-
-    public function type()
-    {
-        return $this->absence_type->status;
     }
 
     public function isFuture($date=null)

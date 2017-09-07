@@ -92,7 +92,7 @@ class AbsenceTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AbsenceTypeRequest $request, AbsenceType $absence_type)
+    public function destroy(AbsenceType $absence_type)
     {
         // We are using soft delete so this item will remain in the database
         $absence_type->delete();

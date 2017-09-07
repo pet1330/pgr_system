@@ -105,7 +105,7 @@ class Student extends User
     {
 
         return $this->absences->filter(function ( Absence $ab) {
-            return !! $ab->absence_type->interuption;
+            return !! $ab->type->interuption;
         })->filter(function (Absence $ab) use ($at_point, $include_current) {
             return $ab->isPast($at_point) || $ab->isCurrent($at_point) && $include_current;
         })->sum('duration');

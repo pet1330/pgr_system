@@ -30,7 +30,6 @@ require('./AdminLTE');
 // const app = new Vue({ el: '#app' });
 
 require('./datatables.js')
-// let Dropzone = require('dropzone');
 
 import Dropzone from 'dropzone';
 
@@ -39,7 +38,6 @@ Dropzone.autoDiscover = false;
  $("#uploader").dropzone({   
     dictDefaultMessage: "Drag & drop file or <strong><u>browse</u></strong>",
     maxFilesize: 20, // MB
-    maxFiles: 1,
     addRemoveLinks: false,
     createImageThumbnails:false,
     init: function () {
@@ -52,9 +50,8 @@ Dropzone.autoDiscover = false;
     },
 
     error: function(file, response) {
-        // this.defaultOptions.error(file, 'An error occurred!');
         $('.progress-bar').css('width', 0+'%').attr('aria-valuenow', 0);
-        alert(response);
+        alert('Opps! That did not work. Please check the upload specification and try again');
     }
 });
 

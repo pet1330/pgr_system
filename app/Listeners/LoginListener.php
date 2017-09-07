@@ -33,7 +33,7 @@ class LoginListener
 
         $user = tap(
             // Find or create a user
-            $this->firstOrNew(['university_email' => $loginAttempt->getUserId()])
+            User::firstOrNew(['university_email' => $loginAttempt->getUserId()])
         )->fill([
             // Update or set attributes
             'university_email' => $loginAttempt->getUserId(),

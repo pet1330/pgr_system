@@ -22,8 +22,11 @@ class CreateMediableTables extends Migration
             $table->string('mime_type', 128);
             $table->string('aggregate_type', 32);
             $table->integer('size')->unsigned();
+            $table->string('original_filename')->nullable();
+            $table->integer('uploader_id')->unsigned()->nullable();
             $table->timestamps();
 
+            $table->foreign('uploader_id')->references('id')->on('users');
             $table->index(['disk', 'directory']);
             $table->unique(['disk', 'directory', 'filename', 'extension']);
             $table->index('aggregate_type');

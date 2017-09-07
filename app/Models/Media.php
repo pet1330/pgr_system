@@ -23,4 +23,14 @@ class Media extends \Plank\Mediable\Media
             default: return 'fa-file-text-o';
         }
     }
+
+    public function uploader()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function setOriginalNameAttribute($name)
+    {
+        $this->attributes['original_filename'] = str_replace(['#', '?', '\\'], '-', $name);
+    }
 }

@@ -23,47 +23,22 @@ class AbsenceRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
-            case 'DELETE':
-            return [];
-            case 'PATCH':
-            case 'PUT':
-                return [
-                    'absence_type_id' => [
-                        'required',
-                        'exists:absence_types,id',
-                    ],
-                    'from' => [
-                        'date'
-                    ],
-                    'to' => [
-                        'date',
-                        'after:from'
-                    ],
-                    'duration' => [
-                        'required',
-                        'integer'
-                    ]
-                ];
-            case 'POST':
-                return [
-                    'absence_type_id' => [
-                        'required',
-                        'exists:absence_types,id',
-                    ],
-                    'from' => [
-                        'date'
-                    ],
-                    'to' => [
-                        'date',
-                        'after:from'
-                    ],
-                    'duration' => [
-                        'required',
-                        'integer'
-                    ]
-                ];
-        }
+        return [
+            'absence_type_id' => [
+                'required',
+                'exists:absence_types,id',
+            ],
+            'from' => [
+                'date'
+            ],
+            'to' => [
+                'date',
+                'after_or_equal:from'
+            ],
+            'duration' => [
+                'required',
+                'integer'
+            ]
+        ];
     }
 }
