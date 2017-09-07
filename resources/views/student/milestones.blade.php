@@ -7,7 +7,7 @@
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
     </a>
-    <a  href="{{ route('admin.student.milestone.create', $student->record()->id) }}">
+    <a  href="{{ route('admin.student.record.milestone.create', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default pull-right">
             Create New Milestone
         </span>
@@ -24,7 +24,8 @@
         <div class="panel-body">
             <ul>
                 @foreach($overdue->sortBy('due_date') as $m)
-                <a href="{{ route('admin.student.milestone.show', [$student->record()->id, $m->slug()]) }}">
+                <a href="{{ route('admin.student.record.milestone.show',
+                [$student->university_id, $record->slug(), $m->slug()]) }}">
                     <li class="col-md-6 list-unstyled"><b>
                         <span class="fa-stack fa-md" style="margin-right: 20px;">
                             <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
@@ -46,7 +47,8 @@
                 <div class="panel-body">
                     <ul>
                         @foreach($upcoming as $m)
-                        <a href="{{ route('admin.student.milestone.show', [$student->record()->id, $m->slug()]) }}">
+                        <a href="{{ route('admin.student.record.milestone.show',
+                        [$student->university_id, $record->slug(), $m->slug()]) }}">
                             <li class="col-md-6 list-unstyled"><b>
                                 <span class="fa-stack fa-md" style="margin-right: 20px;">
                                     <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
@@ -66,7 +68,8 @@
                     <div class="panel-body">
                         <ul>
                             @foreach($recently_submitted as $m)
-                            <a href="{{ route('admin.student.milestone.show', [$student->record()->id, $m->slug()]) }}">
+                            <a href="{{ route('admin.student.record.milestone.show',
+                            [$student->university_id, $record->slug(), $m->slug()]) }}">
                                 <li class="col-md-6 list-unstyled"><b>
                                     <span class="fa-stack fa-md" style="margin-right: 20px;">
                                         <i class="fa fa-calendar-o fa-stack-2x"
@@ -93,7 +96,8 @@
                     <div class="panel-body">
                         <ul>
                             @foreach($submitted as $m)
-                            <a href="{{ route('admin.student.milestone.show', [$student->record()->id, $m->slug()]) }}">
+                            <a href="{{ route('admin.student.record.milestone.show',
+                            [$student->university_id, $record->slug(), $m->slug()]) }}">
                                 <li class="col-md-6 list-unstyled"><b>
                                     <span class="fa-stack fa-md" style="margin-right: 20px;">
                                         <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
@@ -113,7 +117,8 @@
                         <div class="panel-body">
                             <ul>
                                 @foreach($future as $m)
-                                <a href="{{ route('admin.student.milestone.show', [$student->record()->id, $m->slug()]) }}">
+                                <a href="{{ route('admin.student.record.milestone.show',
+                                [$student->university_id, $record->slug(), $m->slug()]) }}">
                                     <li class="col-md-6 list-unstyled"><b>
                                         <span class="fa-stack fa-md" style="margin-right: 20px;">
                                             <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
@@ -130,7 +135,7 @@
                     <div class="col-md-12 col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ $student->record()->start->format('d M Y') }} to {{ $student->record()->end->format('d M Y') }}
+                                {{ $record->start->format('d M Y') }} to {{ $record->end->format('d M Y') }}
                             </div>
                             <div class="panel-body" style="padding: 0px;">
                                 <div id="milestone_timeline"></div>
@@ -144,7 +149,8 @@
                     var items = new vis.DataSet([
                     @foreach ($milestones as $m)
                     {
-                    content:'<a href="{{ route('admin.student.milestone.show', [$student->record()->id, $m->slug()]) }}" data-toggle="tooltip" data-placement="top" title="{{ $m->name }}"><span class="fa-stack fa-md" style="margin: 0 2px;"><i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i><strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">{{ $m->due_date->format('d/m') }}</strong></span></a>',
+                    content:'<a href="{{ route('admin.student.record.milestone.show',
+                    [$student->university_id, $record->slug(), $m->slug()]) }}" data-toggle="tooltip" data-placement="top" title="{{ $m->name }}"><span class="fa-stack fa-md" style="margin: 0 2px;"><i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i><strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">{{ $m->due_date->format('d/m') }}</strong></span></a>',
                     group: 1,
                     className: 'expected',
                     start: '{{ $m->due_date }}',
@@ -158,8 +164,8 @@
                     var options = {
                     // clickToUse: true,
                     selectable: false,
-                    min: new Date('{{ $student->record()->start->copy()->subWeeks(4) }}'),  {{-- lower limit of visible range --}}
-                    max: new Date('{{ $student->record()->end->copy()->addWeeks(4) }}'),  {{-- upper limit of visible range --}}
+                    min: new Date('{{ $record->start->copy()->subWeeks(4) }}'),  {{-- lower limit of visible range --}}
+                    max: new Date('{{ $record->end->copy()->addWeeks(4) }}'),  {{-- upper limit of visible range --}}
                     zoomMin: 1000 * 60 * 60 * 24 * 10,  {{-- one day in milliseconds --}}
                     height:300
                     };

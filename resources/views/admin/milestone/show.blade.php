@@ -1,15 +1,16 @@
 @extends('layouts.dashboard')
-@section('page_title', "")
-{{-- @section('page_description', $milestone->usefulDate()->format('d m Y')) --}}
+@section('page_title', $milestone->name)
+@section('page_description', $milestone->usefulDate()->format('d m Y'))
 @section('content')
 <div id="app">
   <div class="content">
     <div class="panel-body">
-      <a  href="{{ route('admin.student.show', $student->student->university_id) }}">
+      <a  href="{{ route('admin.student.record.show', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
       </a>
-      <a  href="{{ route('admin.student.milestone.edit', [$student->id, $milestone->slug()]) }}">
+      <a  href="{{ route('admin.student.record.milestone.edit',
+      [$student->university_id, $record->slug(), $milestone->slug()]) }}">
         <span class="btn btn-default pull-right">
         Edit This Milestone</span>
       </a>
@@ -18,7 +19,9 @@
     <div class="box box-primary">
       <div class="box-body">
         Name: {{ $milestone->name }} <br>
-        Start Date: {{ $milestone->start_date->format('d/m/Y') }}<br>
+        @if( $milestone->duration )
+          Start Date: {{ $milestone->start_date->format('d/m/Y') }}<br>
+        @endif
         Due Date: {{ $milestone->due_date->format('d/m/Y') }} <br>
         @if($milestone->submitted_date)
         Submitted Date: {{ $milestone->submitted_date->format('d/m/Y') }}<br>
@@ -45,14 +48,14 @@
         @forelse($milestone->getMedia('submission')->reverse() as $file)
         <a href="{{ $file->getUrl() }}">
           @component('components.infobox')
-          @if($file->id === $milestone->latestMedia('submission')->id)
-          @slot('title', $file->original_name)
-          @else
+          @if($file->id !== $milestone->lastMedia('submission')->id)
           @slot('colour', 'alert-warning')
           @endif
           @slot('icon', 'fa ' . $file->icon )
+          @slot('title', '') 
           {{ $file->created_at->format('g:ia') }}<br>
-          {{ $file->created_at->format('jS F Y') }}
+          {{ $file->created_at->format('jS F Y') }}<br>
+          {{ $file->extension }} - {{ $file->readableSize(2) }}
           @endcomponent
         </a>
         @empty

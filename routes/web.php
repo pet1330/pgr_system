@@ -25,6 +25,11 @@ Route::get('logout', 'SAMLController@logout');
         return redirect('a');
     });
 
+
+Route::name('account-locked')->get('account-locked', function () {
+    return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
+});
+
 Route::middleware('samlauth')
     ->namespace('Admin')
     ->as('admin.')
@@ -37,11 +42,12 @@ Route::middleware('samlauth')
         return redirect(Auth::user()->dashboard_url());
     });
 
+
+
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/upcoming', 'MilestoneController@upcoming')->name('student.upcoming');
     Route::get('student/submitted', 'MilestoneController@submitted')->name('student.submitted');
 
-// =================================================
     Route::get('student/find', 'StudentController@find')->name('student.find');
     Route::post('student/find', 'StudentController@find_post')->name('student.find');
     
@@ -50,13 +56,12 @@ Route::middleware('samlauth')
 
     Route::get('student/confirm_id', 'StudentController@confirm_id')->name('student.confirm_id');
     Route::post('student/confirm_id', 'StudentController@confirm_post_id')->name('student.confirm_id');
-
-    Route::get('student/{student}/record/create', 'StudentController@create_record')->name('student.create_record');
-    Route::post('student/{student}/record/store', 'StudentController@store_record')->name('student.store_record');
     
     Route::resource('student', 'StudentController');
+    
+    Route::resource('student.record', 'StudentRecordController');
 
-    Route::resource('student.milestone', 'MilestoneController');
+    Route::resource('student.record.milestone', 'MilestoneController');
 
     Route::resource('admin', 'AdminController');
     
@@ -103,8 +108,6 @@ Route::middleware('samlauth')
         Route::resource('timeline', 'TimelineTemplateController');
 
         Route::resource('milestone-type', 'MilestoneTypeController', $settings_resource);
-
-        // Route::resource('milestone-template', 'MilestoneTemplateController', $settings_resource);
         
         Route::resource('absence-type', 'AbsenceTypeController', $settings_resource);
 

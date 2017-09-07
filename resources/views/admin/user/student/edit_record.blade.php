@@ -1,22 +1,17 @@
-EDIT RECORD - admin/user/student/edit_record
-
-{{-- @if ($errors->has('university_id'))
-<script>
-window.location = "{{ route('admin.student.find') }}";
-</script>
-@endif
 @extends('layouts.dashboard')
-@section('page_title', 'Create New Student Record')
+@section('page_title', 'Edit Student Record')
 @section('page_description', '')
 @section('content')
 <div class="content">
   <div class="col-md-12">
     <div class="box box box-primary">
       <div class="box-body">
-        <label>Create new Student Record</label>
-        <form action="{{ route('admin.student.store_record', ($student ? $student->university_id : old('university_id'))) }}" method="POST">
+        <label>Edit Student Record</label>
+        <form action="{{ route('admin.student.record.update',
+          [$student->university_id, $record->slug()]) }}" method="POST">
           {{ csrf_field() }}
-          <input type="hidden" name="university_id" value="{{ $student ? $student->university_id : old('university_id') }}">
+          <input type="hidden" name="_method" value="PATCH">
+          {{-- <input type="hidden" name="university_id" value="{{ $student->university_id }}"> --}}
           <div class="row">
             <div class="form-group{{ $errors->has('funding_type_id') ? ' has-error' : '' }} col-md-6">
               <label for="funding_type_id">Funding Type</label>
@@ -24,9 +19,11 @@ window.location = "{{ route('admin.student.find') }}";
                 <option value="">--- Select ---</option>
                 @foreach($funding_types as $t)
                 <option value="{{ $t->id }}"
-                  @if( old('funding_type_id') == $t->id )
-                  selected="selected"
-                  @endif>
+                  @if($errors->any())
+                  {{ (collect(old('funding_type_id'))->contains($t->id)) ? 'selected':'' }}/>
+                  @else
+                  {{ ($record->fundingType->id == $t->id) ? 'selected':'' }}/>
+                  @endif
                   {{ $t->name }}
                 </option>
                 @endforeach
@@ -43,9 +40,11 @@ window.location = "{{ route('admin.student.find') }}";
                 <option value="">--- Select ---</option>
                 @foreach($schools as $s)
                 <option value="{{ $s->id }}"
-                  @if( old('school_id') == $s->id )
-                  selected="selected"
-                  @endif>
+                  @if($errors->any())
+                  {{ (collect(old('school_id'))->contains($s->id)) ? 'selected':'' }}  />
+                  @else
+                  {{ ($record->school->id == $s->id) ? 'selected':'' }} />
+                  @endif
                   {{ $s->name }}
                 </option>
                 @endforeach
@@ -64,9 +63,11 @@ window.location = "{{ route('admin.student.find') }}";
                 <option value="">--- Select ---</option>
                 @foreach($enrolment_statuses as $es)
                 <option value="{{ $es->id }}"
-                  @if( old('enrolment_status_id') == $es->id )
-                  selected="selected"
-                  @endif>
+                  @if($errors->any())
+                  {{ (collect(old('enrolment_status_id'))->contains($es->id)) ? 'selected':'' }}  />
+                  @else
+                  {{ ($record->enrolmentStatus->id == $es->id) ? 'selected':'' }} />
+                  @endif
                   {{ $es->status }}
                 </option>
                 @endforeach
@@ -83,9 +84,11 @@ window.location = "{{ route('admin.student.find') }}";
                 <option value="">--- Select ---</option>
                 @foreach($student_statuses as $t)
                 <option value="{{ $t->id }}"
-                  @if( old('student_status_id') == $t->id )
-                  selected="selected"
-                  @endif>
+                  @if($errors->any())
+                  {{ (collect(old('student_status_id'))->contains($t->id)) ? 'selected':'' }}  />
+                  @else
+                  {{ ($record->studentStatus->id == $t->id) ? 'selected':'' }} />
+                  @endif
                   {{ $t->status }}
                 </option>
                 @endforeach
@@ -104,9 +107,11 @@ window.location = "{{ route('admin.student.find') }}";
                 <option value="">--- Select ---</option>
                 @foreach($modes_of_study as $mos)
                 <option value="{{ $mos->id }}"
-                  @if( old('mode_of_study_id') == $mos->id )
-                  selected="selected"
-                  @endif>
+                  @if($errors->any())
+                  {{ (collect(old('mode_of_study_id'))->contains($mos->id)) ? 'selected':'' }}  />
+                  @else
+                  {{ ($record->modeOfStudy->id == $mos->id) ? 'selected':'' }} />
+                  @endif
                   {{ $mos->name }}
                 </option>
                 @endforeach
@@ -123,9 +128,11 @@ window.location = "{{ route('admin.student.find') }}";
                 <option value="">--- Select ---</option>
                 @foreach($programmes as $p)
                 <option value="{{ $p->id }}"
-                  @if( old('programme_id') == $p->id )
-                  selected="selected"
-                  @endif>
+                  @if($errors->any())
+                  {{ (collect(old('programme_id'))->contains($p->id)) ? 'selected':'' }}  />
+                  @else
+                  {{ ($record->programme->id == $p->id) ? 'selected':'' }} />
+                  @endif
                   {{ $p->name }}
                 </option>
                 @endforeach
@@ -140,7 +147,10 @@ window.location = "{{ route('admin.student.find') }}";
           <div class="row">
             <div class="form-group{{ $errors->has('enrolment_date') ? ' has-error' : '' }} col-md-6">
               <label for="enrolment_date">Enrolment Date</label>
-              <input type="date" class="form-control" placeholder="Name" name="enrolment_date" value="{{ old('enrolment_date') }}">
+              <input type="date"
+              class="form-control"
+              placeholder="Name"
+              name="enrolment_date" value="{{ old('enrolment_date') ?? $record->enrolment_date->format('Y-m-d') }}">
               @if ($errors->has('enrolment_date'))
               <span class="help-block">
                 <strong>{{ $errors->first('enrolment_date') }}</strong>
@@ -150,11 +160,21 @@ window.location = "{{ route('admin.student.find') }}";
             <div class="form-group{{ $errors->has('tierFour') ? ' has-error' : '' }} col-md-6">
               <label class="radio control-label">TierFour</label>
               <label class="radio-inline">
-                <input type="radio" name="tierFour" value="1" {{ old('tierFour') === '1' ? 'checked="checked"' : '' }}>
+                <input type="radio" name="tierFour" value="1"
+                @if($errors->any())
+                {{ old('tierFour') === 1 ? 'checked="checked"' : '' }}>
+                @else
+                {{ $record->tierFour === 1 ? 'checked="checked"' : '' }}>
+                @endif
                 Yes
               </label>
               <label class="radio-inline">
-                <input type="radio" name="tierFour" value="0" {{ old('tierFour') === '0' ? 'checked="checked"' : '' }}>
+                <input type="radio" name="tierFour" value="0"
+                @if($errors->any())
+                {{ old('tierFour') === 0 ? 'checked="checked"' : '' }}>
+                @else
+                {{ $record->tierFour === 0 ? 'checked="checked"' : '' }}>
+                @endif
                 No
               </label>
               @if ($errors->has('tierFour'))
@@ -164,10 +184,10 @@ window.location = "{{ route('admin.student.find') }}";
               @endif
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Add New Student Record</button>
+          <button type="submit" class="btn btn-primary">Update Student Record</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-@endsection --}}
+@endsection

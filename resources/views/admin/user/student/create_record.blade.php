@@ -12,7 +12,7 @@ window.location = "{{ route('admin.student.find') }}";
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new Student Record</label>
-        <form action="{{ route('admin.student.store_record', ($student ? $student->university_id : old('university_id'))) }}" method="POST">
+        <form action="{{ route('admin.student.record.store', ($student ? $student->university_id : old('university_id'))) }}" method="POST">
           {{ csrf_field() }}
           <input type="hidden" name="university_id" value="{{ $student ? $student->university_id : old('university_id') }}">
           <div class="row">

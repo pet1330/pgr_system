@@ -1,12 +1,13 @@
 @extends('layouts.dashboard')
 @section('page_title', 'Create New Milestone')
-@section('page_description', $student->student->name)
+@section('page_description', $student->name)
 @section('content')
 <div id="app">
   <section class="content">
     <div class="box box box-primary">
       <div class="box-body">
-        <form action="{{ route('admin.student.milestone.store', $student->id) }}" method="POST">
+        <form action="{{ route('admin.student.record.milestone.store',
+        [$student->university_id, $record->slug()]) }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-8">
             <label for="milestone_type">Milestone Type</label>
