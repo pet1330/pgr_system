@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MilestoneRequest extends FormRequest
+class MilestoneTemplateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,14 @@ class MilestoneRequest extends FormRequest
     public function rules()
     {
         return [
+            'due' => [
+                'required',
+                'integer',
+            ],
             'milestone_type' => [
                 'required',
                 'exists:milestone_types,id',
             ],
-            'due' => [
-                'date'
-            ]
         ];
     }
 }

@@ -23,6 +23,7 @@ class Milestone extends Model
     protected static $logAttributes = [
         'name',
         'duration',
+        'created_by',
         'submitted_date',
         'milestone_type_id',
         'student_record_id',

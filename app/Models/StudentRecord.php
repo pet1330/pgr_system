@@ -4,40 +4,45 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Milestone;
+use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class StudentRecord extends Model
 {
     protected $dates = [ 'enrolment_date' ];
     
-    use LogsActivity;
+    use HasHashSlug;
     use SoftDeletes;
+    use LogsActivity;
 
     protected static $logOnlyDirty = true;
 
+    protected static $minSlugLength = 11;
+
     protected static $logAttributes = [
-        'student_id',
+        'tierFour',
         'school_id',
-        'enrolment_date',
-        'student_status_id',
+        'student_id',
         'programme_id',
-        'enrolment_status_id',
+        'enrolment_date',
         'funding_type_id',
         'mode_of_study_id',
-        'tierFour'
+        'student_status_id',
+        'enrolment_status_id',
     ];
 
     protected $fillable = [
-        'student_id',
+        'tierFour',
         'school_id',
-        'enrolment_date', 
-        'student_status_id',
+        'student_id',
         'programme_id',
-        'enrolment_status_id',
+        'enrolment_date',
         'funding_type_id',
         'mode_of_study_id',
-        'tierFour',
+        'student_status_id',
+        'enrolment_status_id',
     ];
 
     /**
@@ -148,8 +153,7 @@ class StudentRecord extends Model
     public function calculateEndDate()
     {
         $unit = "add" . ucfirst($this->programme->duration_unit);
-        return $this->enrolment_date
-                    ->copy()
+        return $this->enrolment_date->copy()
                     ->addMonths(
                         $this->programme->duration * 
                         $this->modeOfStudy->timing_factor)

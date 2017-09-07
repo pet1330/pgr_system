@@ -14,6 +14,8 @@ class User extends Authenticatable
     use Notifiable;
     use LogsActivity;
 
+    protected $casts = [ 'locked' => 'boolean', ];
+
     protected $table = "users";
 
     protected static $logOnlyDirty = true;
