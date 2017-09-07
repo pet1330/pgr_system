@@ -33,7 +33,7 @@ use App\Models\Role;
 use App\Models\Permission;
 
 $factory->define(Student::class, function (Faker\Generator $faker) {
-    $unid = $faker->unique()->bothify('???########');
+    $unid = $faker->unique()->bothify('########');
     return [
         'first_name'           => $faker->firstName,
         'last_name'            => $faker->lastName,
