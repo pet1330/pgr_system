@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Session;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\Milestone;
@@ -26,7 +25,7 @@ class StudentController extends Controller
     {
         if ($request->ajax())
         {
-            $students = StudentRecord::with([
+            $records = StudentRecord::with([
                 'student',
                 'fundingType' => function ($query) { $query->withTrashed(); },
                 'modeOfStudy' => function ($query) { $query->withTrashed(); },
@@ -35,7 +34,7 @@ class StudentController extends Controller
                 'school' => function ($query) { $query->withTrashed(); },
                 'enrolmentStatus' => function ($query) { $query->withTrashed(); }
             ])->has('student');
-            return Datatables::eloquent($students)
+            return Datatables::eloquent($records)
                 ->addColumn('first_name', function (StudentRecord $sr)
                     { return $sr->student->first_name; })
                 ->addColumn('school', function (StudentRecord $sr)
@@ -55,18 +54,26 @@ class StudentController extends Controller
                 ->addColumn('enrolmentStatus', function (StudentRecord $sr)
                     { return $sr->enrolmentStatus->status; })
                 ->editColumn('tierFour', '{{$tierFour ? "Yes" : "No" }}')
-                ->setRowAttr([ 'data-link' => function($student)
-                    { return route('admin.student.show', $student->student->university_id); }])
-                ->make(true);
+                ->setRowAttr([ 'data-link' => function(StudentRecord $sr)
+                    { return route('admin.student.record.show',
+                        [ $sr->student->university_id, $sr->slug()]);
+            }])->make(true);
         }
         return View('admin.user.student.index');
     }
 
     public function show(Student $student)
     {
-        $overdue = $student->record()->milestones->filter->isOverdue();
-        $upcoming = $student->record()->milestones->filter->isUpcoming();
-        return view('student.dashboard', compact('student', 'upcoming', 'overdue'));
+        
+        if($student->record() !== null)
+        {
+            $record = $student->record();
+            $overdue = $record->milestones->filter->isOverdue();
+            $upcoming = $record->milestones->filter->isUpcoming();
+            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
+        }
+
+        return view('student.dashboard', compact('student'));
     }
 
     public function find()
@@ -103,7 +110,7 @@ class StudentController extends Controller
         if( session()->has( 'student' ) )
         {
             session()->reflash();
-            return redirect()->route( 'admin.student.create_record', session()->get('student')->university_id );
+            return redirect()->route( 'admin.student.record.create', session()->get('student')->university_id );
         }
         return redirect()->route( 'admin.student.find' );
     }
@@ -133,49 +140,6 @@ class StudentController extends Controller
         }
         redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
         return redirect()->route( 'admin.student.find' );
-    }
-
-    public function create_record(Student $student)
-    {
-        if(session()->has( 'student' ) || session()->hasOldInput('student') )
-        {
-            $funding_types = FundingType::all();
-            $schools = School::all();
-            $enrolment_statuses = EnrolmentStatus::all();
-            $student_statuses = StudentStatus::all();
-            $modes_of_study = ModeOfStudy::all();
-            $programmes = Programme::all();
-
-            if( session()->get( 'student' )->id !== $student->id) abort(404);
-
-            return view( 'admin.user.student.create_record', compact(
-                'student', 'funding_types', 'schools',
-                'enrolment_statuses', 'student_statuses',
-                'modes_of_study', 'programmes' )
-            );
-        }
-        return redirect()->route( 'admin.student.find' );
-    }
-
-    public function store_record(StudentRecordRequest $request, Student $student)
-    {
-        if ($request->university_id != $student->university_id) abort(404);
-
-            $student->records->each->delete();
-
-            $record = $student->records()
-                ->save(StudentRecord::make([
-                    'enrolment_date' => $request->enrolment_date,
-                    'tierFour' => $request->tierFour,
-                    'funding_type_id' => $request->funding_type_id,
-                    'school_id' => $request->school_id,
-                    'enrolment_status_id' => $request->enrolment_status_id,
-                    'student_status_id' => $request->student_status_id,
-                    'mode_of_study_id' => $request->mode_of_study_id,
-                    'programme_id' => $request->programme_id,
-            ])
-        );
-        return redirect()->route('admin.student.show', $student->university_id);
     }
 
     public function create()
