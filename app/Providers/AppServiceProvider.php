@@ -2,6 +2,13 @@
 
 namespace App\Providers;
 
+use View;
+use Bouncer;
+use Blade;
+use Validator;
+use App\Models\Admin;
+use App\Models\Staff;
+use App\Models\Student;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -16,19 +23,22 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191); // Fix for MySQL versions < 5.7.7
 
-        \Validator::extend('student', function ($attribute, $value) {
-            return \App\Models\Student::where('university_id', $value)->exists();
+        Validator::extend('student', function ($attribute, $value) {
+            return Student::where('university_id', $value)->exists();
         });
 
-        \Validator::extend('staff', function ($attribute, $value) {
-            return \App\Models\Staff::where('university_id', $value)->exists();
+        Validator::extend('staff', function ($attribute, $value) {
+            return Staff::where('university_id', $value)->exists();
         });
 
-        \Validator::extend('admin', function ($attribute, $value) {
-            return \App\Models\Admin::where('university_id', $value)->exists();
+        Validator::extend('admin', function ($attribute, $value) {
+            return Admin::where('university_id', $value)->exists();
         });
 
-        \Blade::directive('canany', function ($arguments) {
+        // Bouncer::useAbilityModel(MyAbility::class);
+        // Bouncer::useRoleModel(MyRole::class);
+
+        Blade::directive('canany', function ($arguments) {
             list($permissions, $guard) = explode(',', $arguments . ',');
 
             $permissions = explode('|', str_replace('\'', '', $permissions));
@@ -41,9 +51,9 @@ class AppServiceProvider extends ServiceProvider
             return $expression . ")): ?>";
         });
 
-        \Blade::directive('endcanany', function () { return '<?php endif; ?>'; });
+        Blade::directive('endcanany', function () { return '<?php endif; ?>'; });
 
-        \View::share('app_version', \Cache::remember('app_version', 10, function () { return strtok(shell_exec('git describe --always --tags'), '-'); }) );
+        View::share('app_version', \Cache::remember('app_version', 10, function () { return strtok(shell_exec('git describe --always --tags'), '-'); }) );
     }
 
     /**

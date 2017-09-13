@@ -66,6 +66,7 @@ return [
     'allowed_aggregate_types' => [
         Plank\Mediable\Media::TYPE_PDF,
         Plank\Mediable\Media::TYPE_DOCUMENT,
+        Plank\Mediable\Media::TYPE_SPREADSHEET,
     ],
 
     /*
@@ -170,6 +171,7 @@ return [
             'mime_types' => [
                 'application/vnd.ms-excel',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/wps-office.xls'
             ],
             'extensions' => [
                 'xls',

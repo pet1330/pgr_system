@@ -17,8 +17,10 @@ class CreateSchoolsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('college_id')->unsigned()->index();
+            $table->string('notifications_address');
             $table->timestamps();
             $table->softDeletes();
+
             $table->foreign('college_id')->references('id')->on('colleges');
         });
 
