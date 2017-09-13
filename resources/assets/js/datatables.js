@@ -163,10 +163,9 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-timeline-template-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: false },
-                { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: false },
+                { data: 'name', name: 'name', searchable: false, orderable: true },
+                { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
@@ -179,7 +178,7 @@ $(document).ready(function() {
         _.merge({}, generalSettings, {
             "searching": false,
             columns: [
-                { data: 'name', name: 'milestone_type.name', searchable: true, orderable: true },
+                { data: 'name', name: 'type.name', searchable: true, orderable: true },
                 { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
                 { data: 'first_name', name: 'student_record.student.first_name', searchable: false, orderable: false },
                 { data: 'last_name', name: 'student_record.student.last_name', searchable: false, orderable: false },
@@ -193,7 +192,7 @@ $(document).ready(function() {
         _.merge({}, generalSettings, {
             "searching": false,
             columns: [
-                { data: 'name', name: 'milestone_type.name', searchable: true, orderable: true },
+                { data: 'name', name: 'type.name', searchable: true, orderable: true },
                 { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
                 { data: 'submitted_date', name: 'submitted_date', searchable: true, orderable: true },
                 { data: 'first_name', name: 'student_record.student.first_name', searchable: false, orderable: false },
@@ -207,8 +206,89 @@ $(document).ready(function() {
     $('#admin-milestone-template-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
-                { data: 'name', name: 'milestone_type.name', searchable: true, orderable: true },
-                { data: 'due', name: 'due', searchable: true, orderable: true },
+                { data: 'name', name: 'type.name', searchable: true, orderable: true },
+                { data: 'due', name: 'due', searchable: false, orderable: true },
+                { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of colleges for Admins
+    //==============================================================================================
+    $('#admin-college-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'name', name: 'name', searchable: true, orderable: true },
+                { data: 'schools_count', name: 'schools_count', searchable: false, orderable: true },
+                { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of school for Admins
+    //==============================================================================================
+    $('#admin-school-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'name', name: 'name', searchable: true, orderable: true },
+                { data: 'college', name: 'college.name', searchable: true, orderable: true },
+                { data: 'students_count', name: 'students_count', searchable: false, orderable: true },
+                { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of Staff for Admins
+    //==============================================================================================
+    $('#admin-staff-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
+                { data: 'last_name', name: 'last_name', searchable: true, orderable: true },
+                { data: 'university_id', name: 'university_id', searchable: true, orderable: true }
+            ]
+        })
+    );
+
+    // List of Staff to upgrade for Admins
+    //==============================================================================================
+    $('#admin-staff-upgrade-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
+                { data: 'last_name', name: 'last_name', searchable: true, orderable: true },
+                { data: 'university_id', name: 'university_id', searchable: true, orderable: true },
+                { data: 'upgrade', name: 'upgrade', searchable: false, orderable: false }
+            ]
+        })
+    );
+
+    // List of permissions for each role
+    //==============================================================================================
+    $('#admin-role-permissions-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'name', name: 'name', searchable: true, orderable: true },
+                { data: 'abilities', name: 'abilities', searchable: true, orderable: true },
+                { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+            ]
+        })
+    );
+
+    // List of roles fore each user
+    //==============================================================================================
+    $('#admin-user-roles-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
+                { data: 'last_name', name: 'last_name', searchable: true, orderable: true },
+                { data: 'university_id', name: 'university_id', searchable: true, orderable: true },
+                { data: 'user_type', name: 'user_type', searchable: true, orderable: true },
+                { data: 'college', name: 'college.name', searchable: true, orderable: true },
+                { data: 'students_count', name: 'students_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]

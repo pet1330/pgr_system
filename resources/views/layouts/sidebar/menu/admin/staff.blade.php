@@ -6,13 +6,13 @@
   </a>
   <ul class="treeview-menu">
     <li>
-      <a href="#">Overview</a>
+      <a href="{{ route('admin.staff.index') }}">Overview</a>
     </li>
     <li>
-      <a href="#">Overdue</a>
+      <a href="#">Overdue Training</a>
     </li>
     <li>
-      <a href="#">Upcoming</a>
+      <a href="#">Upcoming Training</a>
     </li>
   </ul>
 </li>

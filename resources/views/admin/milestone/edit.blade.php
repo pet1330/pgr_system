@@ -18,7 +18,7 @@
                 @if($errors->any())
                 {{ (collect(old('milestone_type'))->contains($t->id)) ? 'selected':'' }}  />
                 @else
-                {{ ($milestone->milestone_type->id == $t->id) ? 'selected':'' }} />
+                {{ ($milestone->type->id == $t->id) ? 'selected':'' }} />
                 @endif
                 {{ $t->name }}
               </option>

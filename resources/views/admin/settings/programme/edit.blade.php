@@ -5,7 +5,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Update programme</label>
-        <form action="{{ route('admin.settings.programmes.update', $programme->id) }}" method="POST">
+        <form action="{{ route('admin.settings.programme.update', $programme->id) }}" method="POST">
         <input type="hidden" name="_method" value="PATCH">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-8">

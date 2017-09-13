@@ -15,7 +15,7 @@
           <a href="#">
             <div class="pull-left">
               {{-- User Image --}}
-              <img src="{{ Auth::user()->avatar(40) }}" class="img-circle" alt="User Image">
+              <img src="{{ auth()->user()->avatar(40) }}" class="img-circle" alt="User Image">
             </div>
             {{-- Message title and timestamp --}}
             <h4>
@@ -30,7 +30,7 @@
       </ul>
       {{-- /.menu --}}
     </li>
-    <li class="footer"><a href="#">See All Messages</a></li>
+    <li class="footer"><a href="#">See ll Messages</a></li>
   </ul>
 </li>
 {{-- /.messages-menu --}}

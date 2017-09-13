@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
-@section('page_title', $timeline->name)
-@section('page_description', "")
+@section('page_title', 'Timeline Template: '.$timeline->name)
+@section('page_description', "Milestones on this timeline")
 @section('content')
 <div class="content">
   <div class="col-md-12">
@@ -17,7 +17,6 @@
         <form action="{{ route('admin.settings.timeline.milestone.store', $timeline->id) }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-6">
-            {{-- <label for="milestone_type">Milestone Type</label> --}}
             <select class="form-control" name="milestone_type">
               <option value="">--- Select ---</option>
               @foreach($types as $t)

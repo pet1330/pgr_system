@@ -1,17 +1,25 @@
 <div class="panel-body row">
   <div class="dropdown pull-right">
-    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Manage Student
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Manage Student
     <span class="caret"></span></button>
     <ul class="dropdown-menu" role="menu">
+    @can('create', App\Models\Absence::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.absence.create', $student->university_id) }}">
           Create New Absence
         </a>
       </li>
+      @endcan
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.record.milestone.create',
           [$student->university_id, $record->slug()]) }}">
           Create New Milestone
+        </a>
+      </li>
+      <li role="presentation">
+        <a role="menuitem" href="{{ route('admin.student.record.supervisor.create',
+          [$student->university_id, $record->slug()]) }}">
+          Add Supervisor
         </a>
       </li>
       <li role="separator" class="divider"></li>
@@ -24,22 +32,11 @@
   </div>
 </div>
 <div class="col-md-6">
-  @if($overdue->isNotEmpty() or $upcoming->isNotEmpty())
-  <div class="alert alert-danger text-center">
-    <h4>
-    The following milestones require your attention
-    </h4>
-    <a  href="{{ route('admin.student.record.milestone.index', [$student->university_id, $record->slug()]) }}">
-      <span class="btn btn-default">
-        View All Milestones
-      </span>
-    </a>
-  </div>
   @if($overdue->isNotEmpty())
   <div class="panel panel-danger">
     <div class="panel-heading">
       <h3 class="panel-title">
-      Overdue
+      Overdue Milestones
       </h3>
     </div>
     <div class="panel-body">
@@ -65,7 +62,7 @@
   <div class="panel panel-warning">
     <div class="panel-heading">
       <h3 class="panel-title">
-      Upcoming
+      Upcoming Milestones
       </h3>
     </div>
     <div class="panel-body">
@@ -87,11 +84,12 @@
     </div>
   </div>
   @endif
-  @else
   <div class="box box-primary">
+    @if($overdue->isEmpty() && $upcoming->isEmpty())
     <div class="box-body text-center">
       You have no upcoming or or overdue milestones! Congrats!
     </div>
+    @endif
     <div class="panel-body text-center">
       <a  href="{{ route('admin.student.record.milestone.index', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default">
@@ -100,7 +98,7 @@
       </a>
     </div>
   </div>
-  @endif
+  @if($record->supervisors->isNotEmpty())
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title">
@@ -112,16 +110,19 @@
       @slot('title', 'Director of Study')
       @slot('supervisor', $record->DirectorOfStudy)
       @endcomponent
+      
       @component('components.supervisor')
       @slot('title', 'Second Supervisor')
       @slot('supervisor', $record->secondSupervisor)
       @endcomponent
+      
       @component('components.supervisor')
       @slot('title', 'Third Supervisor')
       @slot('supervisor', $record->thirdSupervisor)
       @endcomponent
     </div>
   </div>
+  @endif
 </div> {{-- end of left column --}}
 <div class="col-md-6">
   <div class="panel panel-primary">
@@ -175,31 +176,41 @@
       </table>
     </div>
   </div>
+  @if($student->absences->isNotEmpty())
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title">Absences</h3>
     </div>
     <div class="panel-body">
       <table class="table">
+        <thead>
+          <td>From</td>
+          <td>To</td>
+          <td>Duration</td>
+          <td>Absence Type</td>
+        </thead>
         <tbody>
+          @foreach($student->absences->sortBy('from') as $a)
           <tr>
-            <td>Start:</td>
-            <td>{{ $student->name }}</td>
+            <td>{{ $a->from->format('d/m/Y') }}</td>
+            <td>{{ $a->to->format('d/m/Y') }}</td>
+            <td>{{ $a->duration }}</td>
+            <td>{{ $a->type->name }}</td>
           </tr>
-          <tr>
-            <td>End:</td>
-            <td>{{ $student->university_email }}</td>
-          </tr>
-          <tr>
-            <td>Duration:</td>
-            <td>{{ $student->university_id }}</td>
-          </tr>
-          <tr>
-            <td>End:</td>
-            <td>{{ $record->enrolment_date->diffInYears()+1 }}</td>
-          </tr>
+          @endforeach
         </tbody>
       </table>
     </div>
   </div>
+  @else
+  <div class="box box-primary">
+    <div class="box-body text-center">
+      You have no absences!
+    </div>
+    <div class="panel-body text-center">
+      <a  href="{{ route('admin.student.record.milestone.index', [$student->university_id, $record->slug()]) }}">
+      </a>
+    </div>
+  </div>
+  @endif
 </div>

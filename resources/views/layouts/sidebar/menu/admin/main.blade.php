@@ -2,7 +2,7 @@
   <li class="header">MAIN MENU</li>
   <li>
     <li>
-      <a href="{{ Auth::user()->dashboard_url() }}">
+      <a href="{{ auth()->user()->dashboard_url() }}">
         <i class="fa fa-dashboard" aria-hidden="true"></i>
         <span>Dashboard</span>
       </a>

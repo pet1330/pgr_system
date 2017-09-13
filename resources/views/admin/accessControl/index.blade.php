@@ -16,18 +16,18 @@
           </thead>
           <tbody class="table-striped">
             <div id="confirm">
-              @foreach($roles as $role)
+              {{-- @foreach($roles as $role) --}}
               <tr>
-                <td>{{ $role->name }}</td>
+                {{-- <td>{{ $role->name }}</td> --}}
                 <td>
-                  @forelse($role->permissions as $permission)
-                  <span class="label label-success label-many">{{ $permission->name }}</span>
-                  @empty
+                  {{-- @forelse($role->permissions as $permission) --}}
+                  {{-- <span class="label label-success label-many">{{ $permission->name }}</span> --}}
+                  {{-- @empty --}}
                   No Assigned Permissions
-                  @endforelse
+                  {{-- @endforelse --}}
                 </td>
                 <td>
-                  <form action="{{ route('admin.settings.access-control.index', $role->name) }}" method="PATCH">
+                  {{-- <form action="{{ route('admin.settings.access-control.index', $role->name) }}" method="PATCH"> --}}
                     {{ csrf_field() }}
                     <button type="submit" class="btn btn-warning">
                     <i class="fa fa-pencil"></i>
@@ -37,7 +37,7 @@
                 <td>
                   <form
                     method="POST"
-                    action="{{ route('admin.settings.access-control.destroy',$role->name) }}"
+                    {{-- action="{{ route('admin.settings.access-control.destroy',$role->name) }}" --}}
                     accept-charset="UTF-8"
                     class="delete-form">
                     <input type="hidden" name="_method" value="DELETE">
@@ -48,7 +48,7 @@
                   </form>
                 </td>
               </tr>
-              @endforeach
+              {{-- @endforeach --}}
             </div>
           </tbody>
         </table>
