@@ -43,7 +43,7 @@ class Absence extends Model
 
     public function type()
     {
-        return $this->belongsTo(AbsenceType::class, 'absence_type_id');
+        return $this->belongsTo(AbsenceType::class, 'absence_type_id')->withTrashed();
     }
 
     public function student()

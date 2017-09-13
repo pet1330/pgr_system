@@ -18,6 +18,8 @@ class AbsenceTypeController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorise('view', AbsenceType::class);
+
         if ($request->ajax())
         {
 
@@ -59,6 +61,8 @@ class AbsenceTypeController extends Controller
      */
     public function store(AbsenceTypeRequest $request)
     {
+        $this->authorise('create', AbsenceType::class);
+
         $abs = AbsenceType::create($request->all());
         return redirect()
             ->route('admin.settings.absence-type.index')
@@ -74,8 +78,10 @@ class AbsenceTypeController extends Controller
      */
     public function update(AbsenceTypeRequest $request, AbsenceType $absence_type)
     {
-      $absence_type->update($request->all());
-      $absence_type->save();
+        $this->authorise('update', $absence_type);
+
+        $absence_type->update($request->all());
+        $absence_type->save();
         return redirect()
             ->route('admin.settings.absence-type.index')
             ->with('flash', 'Successfully updated "' . $absence_type->name . '"');
@@ -83,7 +89,9 @@ class AbsenceTypeController extends Controller
 
     public function edit(AbsenceType $absence_type)
     {
-      return view('admin.settings.absencetype.edit', compact('absence_type'));
+        $this->authorise('update', $absence_type);
+
+        return view('admin.settings.absencetype.edit', compact('absence_type'));
     }
 
     /**
@@ -94,6 +102,8 @@ class AbsenceTypeController extends Controller
      */
     public function destroy(AbsenceType $absence_type)
     {
+        $this->authorise('delete', $absence_type);
+
         // We are using soft delete so this item will remain in the database
         $absence_type->delete();
         return redirect()
@@ -103,7 +113,10 @@ class AbsenceTypeController extends Controller
 
     public function restore($id)
     {
-        $abs = AbsenceType::withTrashed()->find($id);
+        $abs = AbsenceType::withTrashed()->findOrFail($id);
+
+        $this->authorise('delete', $abs);
+        
         if($abs->trashed())
         {
             $abs->restore();
