@@ -11,13 +11,15 @@ class School extends Model
     use SoftDeletes;
     use LogsActivity;
     
+    protected static $minSlugLength = 11;
+
     protected static $logOnlyDirty = true;
     
-    protected static $logAttributes = [ 'name', 'college_id', 'notifications_address_id' ];
+    protected static $logAttributes = [ 'name', 'college_id', 'notifications_address' ];
     
     protected $with = ['college'];
     
-    protected $fillable = [ 'name', 'college_id', 'notifications_address_id' ];
+    protected $fillable = [ 'id', 'name', 'college_id', 'notifications_address' ];
     
     protected $table = 'schools';
 
@@ -26,13 +28,13 @@ class School extends Model
         return $this->belongsTo(College::class)->withTrashed();
     }
 
-    public function student()
+    public function students()
     {
         return $this->hasManyThrough(
-            Student::class, StudentRecord::class, 'school_id', 'id')->withTrashed();
+            Student::class, StudentRecord::class, 'school_id', 'id');
     }
 
-    public function studentRecord()
+    public function studentRecords()
     {
         return $this->hasMany(StudentRecord::class)->withTrashed();
     }
