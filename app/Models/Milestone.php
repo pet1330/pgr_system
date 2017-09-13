@@ -38,7 +38,7 @@ class Milestone extends Model
         'non_interuptive_date'
     ];
 
-    protected $with = [ 'milestone_type' ];
+    protected $with = [ 'type', 'approvals' ];
 
     protected $fillable = [
         'name',
@@ -53,12 +53,12 @@ class Milestone extends Model
 
     public function getNameAttribute()
     {
-        return $this->attributes['name'] ?? $this->milestone_type->name;
+        return $this->attributes['name'] ?? $this->type->name;
     }
 
     public function getDurationAttribute()
     {
-        return $this->attributes['duration'] ?? $this->milestone_type->duration;
+        return $this->attributes['duration'] ?? $this->type->duration;
     }
 
     public function student()
@@ -66,19 +66,9 @@ class Milestone extends Model
         return $this->belongsTo(StudentRecord::class, 'student_record_id');
     }
 
-    public function milestone_type()
+    public function type()
     {
-        return $this->belongsTo(MilestoneType::class);
-    }
-
-    public function scopePreviouslySubmitted($query)
-    {
-        return $query->submitted()->where('submitted_date', '<=', Carbon::parse('-5 weeks'));
-    }
-
-    public function isPreviouslySubmitted()
-    {
-        return $this->isSubmitted() && $this->submitted_date <= Carbon::parse('-5 weeks');
+        return $this->belongsTo(MilestoneType::class, 'milestone_type_id')->withTrashed();
     }
 
     public function scopeSubmitted($query)
@@ -101,37 +91,98 @@ class Milestone extends Model
         return ! $this->isSubmitted();
     }
 
+    public function scopePreviouslySubmitted($query)
+    {
+        return $query->submitted()->where('submitted_date', '<=',
+            Carbon::parse('-5 weeks'))->doesntHave('approvals');
+    }
+
+    public function isPreviouslySubmitted()
+    {
+        return $this->isSubmitted() &&
+            $this->submitted_date <= Carbon::parse('-5 weeks') &&
+            $this->approvals->isEmpty();
+    }
+
     public function scopeRecentlySubmitted($query)
     {
-        return $query->submitted()->where('submitted_date', '>', Carbon::parse('-5 weeks'));
+        return $query->submitted()->where('submitted_date', '>',
+            Carbon::parse('-5 weeks'))->doesntHave('approvals');
     }
 
     public function isRecentlySubmitted()
     {
-        return $this->isSubmitted() && $this->submitted_date > Carbon::parse('-5 weeks');
+        return $this->isSubmitted() &&
+            $this->submitted_date > Carbon::parse('-5 weeks') &&
+            $this->approvals->isEmpty();
     }
 
     public function scopeUpcoming($query)
     {
         return $query->notSubmitted()->where('due_date', '>', Carbon::now())
-                     ->where('due_date', '<', Carbon::parse('+5 weeks'));
+                     ->where('due_date', '<', Carbon::parse('+5 weeks'))
+                     ->doesntHave('approvals');
     }
 
     public function isUpcoming()
     {
         return $this->isNotSubmitted() && 
         $this->due_date > Carbon::now() &&
-        $this->due_date < Carbon::parse('+5 weeks');
+        $this->due_date < Carbon::parse('+5 weeks') &&
+        $this->approvals->isEmpty();
     }
 
     public function scopeOverdue($query)
     {
-        return $query->notSubmitted()->where('due_date', '<=', Carbon::now());
+        return $query->notSubmitted()
+            ->where('due_date', '<=', Carbon::now())
+            ->doesntHave('approvals');;
     }
 
     public function isOverdue()
     {
-        return $this->isNotSubmitted() && $this->due_date <= Carbon::now();
+        return $this->isNotSubmitted() &&
+            $this->due_date <= Carbon::now() &&
+            $this->approvals->isEmpty();
+    }
+
+    public function scopeFuture($query)
+    {
+        return $query->notSubmitted()->where('due_date', '>',
+            Carbon::parse('+5 weeks'))
+            ->doesntHave('approvals');
+    }
+
+    public function isFuture()
+    {
+        return $this->isNotSubmitted() &&
+            $this->due_date > Carbon::parse('+5 weeks') &&
+            $this->approvals->isEmpty();
+    }
+
+    public function scopeAwaitingAmendments($query)
+    {
+        return $query->whereHas('approvals', function($q){
+            $q->where('approved', false);
+        });
+    }
+
+    public function isAwaitingAmendments()
+    {
+        return $this->approvals->isNotEmpty() && ! $this->approvals->last()->approved;
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->whereHas('approvals', function($q)
+        {
+            $q->where('approved', true);
+        });
+    }
+
+    public function isApproved()
+    {
+        return $this->approvals->isNotEmpty() && $this->approvals->last()->approved;
     }
 
     public function getStartDateAttribute()
@@ -146,16 +197,6 @@ class Milestone extends Model
         return $this->submitted_date ?? $this->due_date;
     }
 
-    public function scopeFuture($query)
-    {
-        return $query->notSubmitted()->where('due_date', '>', Carbon::parse('+5 weeks'));
-    }
-
-    public function isFuture()
-    {
-        return $this->isNotSubmitted() && $this->due_date > Carbon::parse('+5 weeks');
-    }
-
     public function getStatusAttribute()
     {
         return snake_case($this->attributes['status_for_humans']);
@@ -168,11 +209,37 @@ class Milestone extends Model
         if ( $this->isPreviouslySubmitted() ) return "Submitted";
         if ( $this->isUpcoming() ) return "Upcoming";
         if ( $this->isFuture() ) return "Future";
-    }  
+        if ( $this->isAwaitingAmendments() ) return "Awaiting Amendments";
+        if ( $this->isApproved() ) return "Approved";
+    }
 
     public function created_by()
     {
         return $this->belongsTo(User::class);
     }  
 
+    public function approvals()
+    {
+        return $this->morphMany(Approval::class, 'approvable');
+    }
+
+    public function approve($approved=true, $feedback=null)
+    {
+        $this->approvals()->save(
+            Approval::make([
+                'approved' => $approved,
+                'reason' => $feedback,
+                'approved_by_id' => auth()->id(),
+            ])
+        );
+        return redirect()->back()->with('flash', 'Successfully approved');
+    }
+
+
+    public function recalculateDueDate()
+    {
+        return $this->update(['due_date' => $this->non_interuptive_date
+            ->copy()->addDays($this->student->student
+                ->interuptionPeriodSoFar()) ]);
+    }
 }

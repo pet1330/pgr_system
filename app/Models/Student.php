@@ -16,11 +16,6 @@ class Student extends User
         static::addGlobalScope(new UserScope('Student'));
     }
 
-    /**
-     * Fetch the Student's record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function records()
     {
         return $this->hasMany(StudentRecord::class);

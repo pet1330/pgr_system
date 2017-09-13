@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use App\Models\Role;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
@@ -10,9 +10,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasRolesAndAbilities;
     use Notifiable;
     use LogsActivity;
+    use HasRolesAndAbilities;
 
     protected $casts = [ 'locked' => 'boolean', ];
 
@@ -87,6 +87,16 @@ class User extends Authenticatable
     public function getRouteKeyName()
     {
         return "university_id";
+    }
+
+    public function routeNotificationForMail()
+    {
+        return $this->university_email;
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
     }
 
     // overload the defualt password and remember me token

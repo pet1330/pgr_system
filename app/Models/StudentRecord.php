@@ -114,6 +114,12 @@ class StudentRecord extends Model
 
     public function removeSupervisor(Staff $supervisor)
     {
+        $this->disallow('view', $this->student);
+
+        $this->timeline->each(function (Milestone $m) use ($supervisor) {
+            $supervisor->disallow('view', $m);
+        });
+
         return $this->supervisors()
                     ->updateExistingPivot(
                         $supervisor->id,
@@ -123,6 +129,12 @@ class StudentRecord extends Model
 
     public function addSupervisor(Staff $supervisor, $type)
     {
+        $supervisor->allow('view', $this->student);
+
+        $this->timeline->each(function (Milestone $m) use ($supervisor) {
+            $supervisor->allow('view', $m);
+        });
+
         return $this->supervisors()->syncWithoutDetaching(
             [
                 $supervisor->id =>  [ "supervisor_type" => $type ]
@@ -161,8 +173,9 @@ class StudentRecord extends Model
                         $this->student->interuptionPeriodSoFar());
     }
 
-    public function milestones()
+
+    public function recalculateMilestonesDueDate()
     {
-        return $this->hasMany(Milestone::class);
+        return $this->timeline()->notSubmitted()->each->recalculateDueDate();
     }
 }

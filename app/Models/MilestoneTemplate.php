@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,14 +17,14 @@ class MilestoneTemplate extends Model
 
     protected $table ='milestone_templates';
 
-    protected $with = ['milestone_type'];
+    protected $with = ['type'];
 
     protected $fillable = ['due', 'milestone_type_id'];
 
 
-    public function milestone_type()
+    public function type()
     {
-        return $this->belongsTo(MilestoneType::class);
+        return $this->belongsTo(MilestoneType::class, 'milestone_type_id')->withTrashed();
     }
 
     public function timeline_template()
@@ -41,11 +40,10 @@ class MilestoneTemplate extends Model
             Milestone::create([
         'non_interuptive_date' => $nid,
         'student_record_id' => $record->id,
-        'created_by' => Auth::id(),
-        'milestone_type_id' => $this->milestone_type->id,
-        'due_date' => $nid->copy()->addDays($record->student
-                                        ->interuptionPeriodSoFar())
-            ])
+        'created_by' => auth()->id(),
+        'milestone_type_id' => $this->type->id,
+        'due_date' => $nid->copy()->addDays(
+            $record->student->interuptionPeriodSoFar())])
         );
     }
 }
