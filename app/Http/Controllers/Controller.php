@@ -2,12 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Bouncer;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs, ValidatesRequests;
+
+    protected function authorise($ability, $parameter)
+    {
+        if($parameter instanceof Model)
+        {
+            if( Bouncer::denies($ability, $parameter) && Bouncer::denies($ability, get_class($parameter)) )
+                abort(403);
+        }
+        else
+            if (Bouncer::denies($ability, $parameter) ) abort(403);
+    }
 }
