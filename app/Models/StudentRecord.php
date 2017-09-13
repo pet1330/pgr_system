@@ -114,7 +114,7 @@ class StudentRecord extends Model
 
     public function removeSupervisor(Staff $supervisor)
     {
-        $this->disallow('view', $this->student);
+        $supervisor->disallow('view', $this->student);
 
         $this->timeline->each(function (Milestone $m) use ($supervisor) {
             $supervisor->disallow('view', $m);
