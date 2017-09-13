@@ -1,17 +1,36 @@
 <?php
 
-auth()->loginUsingId(601);
-// auth()->loginUsingId(App\Models\Student::pluck('id')->first());
 
-Route::get('demo', function (){
-    // auth()->logout();
-    // auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
-    // auth()->loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
-    // auth()->loginUsingId(App\Models\Admin::find(602)->first()->id);
-    // auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
+Route::get('demo/logout', function (){
+    auth()->logout();
+    return redirect('/');
+});
+
+Route::get('demo/admin', function (){
+    auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
+    return redirect('/');
+});
+
+Route::get('demo/staff', function (){
+    auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
+    return redirect('/');
+});
+
+Route::get('demo/student', function (){
     auth()->loginUsingId(App\Models\Student::pluck('id')->first());
     return redirect('/');
 });
+
+
+// Route::get('demo', function (){
+//     // auth()->logout();
+//     // auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
+//     // auth()->loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
+//     // auth()->loginUsingId(App\Models\Admin::find(602)->first()->id);
+//     // auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
+//     auth()->loginUsingId(App\Models\Student::pluck('id')->first());
+//     return redirect('/');
+// });
 
 Route::any('error', function(){
     dd(Request::all());
@@ -156,37 +175,6 @@ Route::middleware('samlauth')
 });
 
 
-
-
-            // Route::resource('timeline-template', 'TimelineTemplateController', $settings_resource);
-
-            // Route::('timeline-template', 'TimelineTemplateController', $settings_resource);
-            // Route::resource('staff-training-type', 'StaffTrainingTypeController', $settings_resource);
-    // }
-
-    // if ( auth()->user()->can('isStaff') ) {  // @TODO: replace with Roles and Permissions
-    //     // =======================================================================
-    //     // ======================== Staff Specific Routes ========================
-    //     // =======================================================================
-    //     Route::get('profile', 'StaffController@ownProfile')->name('profile');
-    //     Route::get('/', 'StaffController@dashboard');
-        
-    // }
-
-    // if ( auth()->user()->can('isStudent') ) {  // @TODO: replace with Roles and Permissions
-    //     // =======================================================================
-    //     // ======================= Student Specific Routes =======================
-    //     // =======================================================================
-    //     Route::get('profile', 'StudentController@ownProfile')->name('profile');
-    //     Route::get('/', 'StudentController@dashboard');
-    // }
-
-
-    // =======================================================================
-    // =================== Guest Routes (Not Authenticated) ==================
-    // =======================================================================
-
-
 // Route::post('report-bug', function () {
 
 //     $message =  Request::input('message');
@@ -197,27 +185,3 @@ Route::middleware('samlauth')
 //             'ip' => $ip
 //         ])->toJson();]
 // })->name('bug-report');
-
-
-// ===============================================================================
-// ===================================  Notes  ===================================
-// ===============================================================================
-
-        // Route::get('/welcome', function () {
-        //     return view('welcome');
-        // });
-
-    // // Admin Specific Routes
-    //     Route::get('/', function () {
-    //         return view('admin.students');
-    //     });
-
-    //     Route::resource('absencetype', 'AbsenceTypeController', ['except' => ['create', 'show']]);
-
-    //     Route::name('student.index')->get('students', function () {
-    //         $students = App\Models\Student::inRandomOrder()->take(20)->get();
-    //         return view('admin.students', compact('students'));
-    //     });
-
-    //     Route::name('staff.index')->get('staff/{staff}', function (App\Models\Staff $staff) {
-    //        dd($staff);
