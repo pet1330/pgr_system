@@ -23,6 +23,8 @@ class StudentRecordController extends Controller
 {
     public function create(Student $student)
     {
+        $this->authorise('create', Student::class);
+
         if(session()->has( 'student' ) || session()->hasOldInput('student') )
         {
             $funding_types = FundingType::all();
@@ -45,6 +47,8 @@ class StudentRecordController extends Controller
 
     public function edit(Student $student, StudentRecord $record)
     {
+        $this->authorise('update', $record->student);
+
         if( $student->id !== $record->student_id) abort(404);
 
             $funding_types = FundingType::all();
@@ -64,6 +68,8 @@ class StudentRecordController extends Controller
 
     public function store(StudentRecordRequest $request, Student $student)
     {
+        $this->authorise('create', $student);
+
         if ($request->university_id != $student->university_id) abort(404);
 
             $student->records->each->delete();
@@ -83,10 +89,12 @@ class StudentRecordController extends Controller
         return redirect()->route('admin.student.show', $student->university_id);
     }
 
-
     public function update(StudentRecordRequest $request, Student $student, StudentRecord $record)
     {
+
         if( $student->id !== $record->student_id) abort(404);
+
+        $this->authorise('update', $student);
         
         $record->update(
             $request->only([
@@ -109,12 +117,52 @@ class StudentRecordController extends Controller
 
     }
 
-
     public function show(Student $student, StudentRecord $record)
     {
+
         if($student->id !== $record->student_id) abort(404);
-        $overdue = $record->milestones->filter->isOverdue();
-        $upcoming = $record->milestones->filter->isUpcoming();
-        return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
+
+        $this->authorise('view', $student);
+
+        if($student->record() !== null)
+        {
+            $record = $student->record();
+            $overdue = $record->timeline->filter->isOverdue();
+            $upcoming = $record->timeline->filter->isUpcoming();
+            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
+        }
+
+        return view('student.dashboard', compact('student'));
     }
+
+    public function addSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
+    {
+        $staff = Staff::where('university_id', $request->university_id);
+
+        if($staff)
+        {
+            $record->addSupervisor($staff, $request->type);
+
+            return redirect()->route('admin.student.record.show',
+                [$student->university_id, $record->slug()]);
+        }
+
+        return redirect()->route('admin.staff.find');
+    }
+
+    public function removeSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
+    {
+        $staff = Staff::where('university_id', $request->university_id);
+
+        if($staff)
+        {
+            $record->addSupervisor($staff, $request->type);
+
+            return redirect()->route('admin.student.record.show',
+                [$student->university_id, $record->slug()]);
+        }
+
+        return redirect()->route('admin.staff.find');
+    }
+
 }
