@@ -18,44 +18,102 @@ class SchoolSeeder extends Seeder
         [
             'College of Arts' => 
             [
-                'School of Architecture & Design',
-                'School of English & Journalism',
-                'Lincoln School of Film & Media',
-                'School of Fine & Performing Arts',
-                'School of History & Heritage',
+                [
+                    'name' => 'School of Architecture & Design',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of English & Journalism',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'Lincoln School of Film & Media',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Fine & Performing Arts',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of History & Heritage',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
             ],
 
             'College of Science' => 
             [
-                'School of Chemistry',
-                'School of Computer Science',
-                'School of Engineering',
-                'School of Geography',
-                'School of Life Sciences',
-                'School of Mathematics and Physics',
-                'School of Pharmacy',
+                [
+                    'name' => 'School of Chemistry',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Computer Science',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Engineering',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Geography',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Life Sciences',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Mathematics and Physics',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Pharmacy',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
             ],
 
             'College of Social Science' => 
             [
-                'School of Education',
-                'School of Health and Social Care ',
-                'Lincoln Law School',
-                'School of Psychology',
-                'School of Social & Political Sciences',
-                'School of Sport and Exercise Science',
-                'International Business School',
+                [
+                    'name' => 'School of Education',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Health and Social Care ' ,
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'Lincoln Law School',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Psychology',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Social & Political Sciences',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'School of Sport and Exercise Science',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
+                [
+                    'name' => 'International Business School',
+                    'contact' => 'school@lincoln.ac.uk'
+                ],
             ]
         ];
 
         foreach($example_schools as $college => $schools)
         {
-            $college_id = College::whereName($college)->pluck('id')->first();
+            $college = College::whereName($college)->pluck('id')->first();
             foreach ($schools as $school)
             {
                 School::create([
-                    'name' => $school,
-                    'college_id' => $college_id,
+                    'name' => $school['name'],
+                    'college_id' => $college,
+                    'notifications_address' => $school['contact'],
                     ]);
             }
         }

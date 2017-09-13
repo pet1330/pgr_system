@@ -22,7 +22,7 @@ class MilestoneSeeder extends Seeder
                 $sub = $faker->optional()->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
                 $due = $faker->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
                 $type = MilestoneType::inRandomOrder()->first();
-                $sr->timeline()->save(Milestone::make(
+                $m = $sr->timeline()->save(Milestone::make(
                     [
                         'submitted_date'        =>   $sub,
                         'duration'              =>   $faker->numberBetween(1,12),
@@ -34,6 +34,15 @@ class MilestoneSeeder extends Seeder
                         'created_by'            =>   Admin::first()->id,
                     ])
                 );
+                $sr->student->allow('view', $m);
+                $sr->student->allow('upload', $m);
+                $sr->supervisors->map->allow('view', $m);
+
+// timeline->each(function (Milestone $m) use ($supervisor) {
+                        // $supervisor->disallow('view', $m);
+                    // });
+
+
             }
         });
     }
