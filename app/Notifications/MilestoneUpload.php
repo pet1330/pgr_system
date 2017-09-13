@@ -61,7 +61,7 @@ class MilestoneUpload extends Notification implements ShouldQueue
         return (new MailMessage)
             ->line('This is an email to confirm that the attached file has been uploaded to the milestone: ' . $this->milestone->name)
             ->action('View Milestone', $url)
-            ->line('Thanks RAWR!')
+            ->line('Thanks!')
             ->attach($this->file->getAbsolutePath(), [
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,

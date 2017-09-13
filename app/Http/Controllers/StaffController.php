@@ -33,9 +33,8 @@ class StaffController extends Controller
     {
 
         $this->authorise('view', $staff);
-        $sr = \App\Models\StudentRecord::first();
-
-        return View('admin.user.staff.show', compact('staff', 'sr'));
+        // $sr = \App\Models\StudentRecord::first();
+        return View('admin.user.staff.show', compact('staff'));
     }
 
     public function find()

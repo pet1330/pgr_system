@@ -1,30 +1,28 @@
 <?php
 
+auth()->loginUsingId(601);
+// auth()->loginUsingId(App\Models\Student::pluck('id')->first());
+
 Route::get('demo', function (){
-    Auth::loginUsingId(App\Models\Admin::pluck('id')->first());
+    // auth()->logout();
+    // auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
+    // auth()->loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
+    // auth()->loginUsingId(App\Models\Admin::find(602)->first()->id);
+    // auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
+    auth()->loginUsingId(App\Models\Student::pluck('id')->first());
     return redirect('/');
-
-    // Auth::logout();
-    // Auth::loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
-    // Auth::loginUsingId(App\Models\Admin::find(602)->first()->id);
-    // Auth::loginUsingId(App\Models\Staff::pluck('id')->first());
-    // Auth::loginUsingId(App\Models\Student::pluck('id')->first());
 });
-
 
 Route::any('error', function(){
     dd(Request::all());
 });
 
-Route::post('milestone/{milestone}/upload', 'Admin\MilestoneController@upload')->name('student.upload');
-
 Route::get('login', 'SAMLController@login');
 Route::get('logout', 'SAMLController@logout');
 
-    Route::get('/', function() {
-        return redirect('a');
-    });
-
+Route::middleware('samlauth')->get('/', function() {
+    return redirect(auth()->user()->dashboard_url());
+});
 
 Route::name('account-locked')->get('account-locked', function () {
     return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
@@ -38,11 +36,6 @@ Route::middleware('samlauth')
     // =======================================================================
     // ======================== Admin Specific Routes ========================
     // =======================================================================
-    Route::get('/', function() {
-        return redirect(Auth::user()->dashboard_url());
-    });
-
-
 
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/upcoming', 'MilestoneController@upcoming')->name('student.upcoming');
@@ -56,16 +49,39 @@ Route::middleware('samlauth')
 
     Route::get('student/confirm_id', 'StudentController@confirm_id')->name('student.confirm_id');
     Route::post('student/confirm_id', 'StudentController@confirm_post_id')->name('student.confirm_id');
+
+    Route::get('staff/find', 'StaffController@find')->name('staff.find');
+    Route::post('staff/find', 'StaffController@find_post')->name('staff.find');
     
-    Route::resource('student', 'StudentController');
-    
+    Route::get('staff/confirm', 'StaffController@confirm_user')->name('staff.confirm');
+    Route::post('staff/confirm', 'StaffController@confirm_post_user')->name('staff.confirm');
+
+    Route::get('staff/confirm_id', 'StaffController@confirm_id')->name('staff.confirm_id');
+    Route::post('staff/confirm_id', 'StaffController@confirm_post_id')->name('staff.confirm_id');
+
+    Route::get('staff/upgrade', 'StaffController@upgrade')->name('staff.upgrade.index');
+    Route::post('staff/{staff}/upgrade', 'StaffController@upgrade_store')->name('staff.upgrade.store');
+
+    Route::resource('student.record.supervisor', 'SupervisorController',
+        [ 'only' => ['create', 'store', 'destroy'] ]);
+
     Route::resource('student.record', 'StudentRecordController');
+
+    Route::post('student/{student}/record/{record}/milestone/{milestone}/upload',
+        'MilestoneController@upload')->name('student.record.milestone.upload');
+
+    Route::post('student/{student}/record/{record}/milestone/{milestone}/approve',
+        'MilestoneController@approve')->name('student.record.milestone.approve');
 
     Route::resource('student.record.milestone', 'MilestoneController');
 
     Route::resource('admin', 'AdminController');
     
     Route::resource('student.absence', 'AbsenceController');
+    
+    Route::resource('student', 'StudentController');
+
+    Route::resource('staff', 'StaffController');
 
     Route::prefix('settings')->as('settings.')->group(function ()
     {
@@ -81,9 +97,17 @@ Route::middleware('samlauth')
                    'FundingTypeController@restore')
             ->name('funding-type.restore');
 
-        Route::get('programmes/{programme}/restore',
+        Route::get('programme/{programme}/restore',
                    'ProgrammeController@restore')
-            ->name('programmes.restore');
+            ->name('programme.restore');
+
+        Route::get('school/{school}/restore',
+                   'SchoolController@restore')
+            ->name('school.restore');
+
+        Route::get('college/{college}/restore',
+                   'CollegeController@restore')
+            ->name('college.restore');
 
         Route::get('mode-of-study/{mode_of_study}/restore',
                    'ModeOfStudyController@restore')
@@ -107,52 +131,29 @@ Route::middleware('samlauth')
         
         Route::resource('timeline', 'TimelineTemplateController');
 
-        Route::resource('milestone-type', 'MilestoneTypeController', $settings_resource);
+        Route::resource('school', 'SchoolController', $settings_resource);
         
+        Route::resource('college', 'CollegeController', $settings_resource);
+
+        Route::resource('programme', 'ProgrammeController', $settings_resource);
+
         Route::resource('absence-type', 'AbsenceTypeController', $settings_resource);
 
         Route::resource('funding-type', 'FundingTypeController',  $settings_resource);
 
-        Route::resource('programmes', 'ProgrammeController', $settings_resource);
-
         Route::resource('mode-of-study', 'ModeOfStudyController', $settings_resource);
 
-        Route::resource('enrolment-status', 'EnrolmentStatusController', $settings_resource);
+        Route::resource('milestone-type', 'MilestoneTypeController', $settings_resource);
 
         Route::resource('student-status', 'StudentStatusController', $settings_resource);
 
-        Route::resource('roles', 'RolesController');
+        Route::resource('enrolment-status', 'EnrolmentStatusController', $settings_resource);
+
+        Route::resource('user-roles', 'UserRolesController');
         
-        Route::resource('permissions', 'PermissionsController');
+        Route::resource('role-permissions', 'RolePermissionsController');
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -163,7 +164,7 @@ Route::middleware('samlauth')
             // Route::resource('staff-training-type', 'StaffTrainingTypeController', $settings_resource);
     // }
 
-    // if ( Auth::user()->can('isStaff') ) {  // @TODO: replace with Roles and Permissions
+    // if ( auth()->user()->can('isStaff') ) {  // @TODO: replace with Roles and Permissions
     //     // =======================================================================
     //     // ======================== Staff Specific Routes ========================
     //     // =======================================================================
@@ -172,7 +173,7 @@ Route::middleware('samlauth')
         
     // }
 
-    // if ( Auth::user()->can('isStudent') ) {  // @TODO: replace with Roles and Permissions
+    // if ( auth()->user()->can('isStudent') ) {  // @TODO: replace with Roles and Permissions
     //     // =======================================================================
     //     // ======================= Student Specific Routes =======================
     //     // =======================================================================
@@ -190,11 +191,11 @@ Route::middleware('samlauth')
 
 //     $message =  Request::input('message');
 //     $ip = Request::ip();
-//     $user = Auth::user()->university_id ?? "unknown";
+//     $user = auth()->user()->university_id ?? "unknown";
 //     $page = Request::input('location');
 //     return collect(['response' => 'Thank you, the message has been logged and will be checked soon',
 //             'ip' => $ip
-//         ])->toJson();
+//         ])->toJson();]
 // })->name('bug-report');
 
 
@@ -220,6 +221,3 @@ Route::middleware('samlauth')
 
     //     Route::name('staff.index')->get('staff/{staff}', function (App\Models\Staff $staff) {
     //        dd($staff);
-
-// Route::get('eloquent/collection', 'CollectionController@index');
-// Route::get('eloquent/collection-data', 'CollectionController@data');
