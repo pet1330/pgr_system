@@ -18,6 +18,9 @@ class EnrolmentStatusController extends Controller
      */
     public function index(Request $request)
     {
+
+        $this->authorise('view', EnrolmentStatus::class);
+
         if ($request->ajax())
         {
             $enrolment_status = EnrolmentStatus::withCount('students')->orderBy('status');
@@ -52,6 +55,9 @@ class EnrolmentStatusController extends Controller
      */
     public function store(EnrolmentStatusRequest $request)
     {
+
+        $this->authorise('create', EnrolmentStatus::class);
+
         $enrolments = EnrolmentStatus::create($request->all());
         return redirect()
             ->route('admin.settings.enrolment-status.index')
@@ -67,6 +73,9 @@ class EnrolmentStatusController extends Controller
      */
     public function update(EnrolmentStatusRequest $request, EnrolmentStatus $enrolment_status)
     {
+
+        $this->authorise('update', $enrolment_status);
+
         $enrolment_status->update($request->all());
         $enrolment_status->save();
         return redirect()
@@ -76,6 +85,9 @@ class EnrolmentStatusController extends Controller
 
     public function edit(EnrolmentStatus $enrolment_status)
     {
+
+        $this->authorise('update', $enrolment_status);
+
         return view('admin.settings.enrolmentstatus.edit', compact('enrolment_status'));
     }
 
@@ -85,19 +97,25 @@ class EnrolmentStatusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EnrolmentStatusRequest $request, $id)
+    public function destroy(EnrolmentStatusRequest $request, EnrolmentStatus $enrolment_status)
     {
+
+        $this->authorise('delete', $enrolment_status);
+
         // We are using soft delete so this item will remain in the database
-        $enrolments = EnrolmentStatus::find($id);
-        $enrolments->delete();
+        $enrolment_status->delete();
         return redirect()
             ->route('admin.settings.enrolment-status.index')
-            ->with('flash', 'Successfully deleted "' . $enrolments->status . '"');
+            ->with('flash', 'Successfully deleted "' . $enrolment_status->status . '"');
     }
 
     public function restore($id)
     {
+
         $enrolment_status = EnrolmentStatus::withTrashed()->find($id);
+        
+        $this->authorise('delete', $enrolment_status);
+
         if($enrolment_status->trashed())
         {
             $enrolment_status->restore();

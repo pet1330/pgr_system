@@ -23,6 +23,9 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
+
+        $this->authorise('view', Student::class);
+
         if ($request->ajax())
         {
             $records = StudentRecord::with([
@@ -64,25 +67,29 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
-        
-        if($student->record() !== null)
-        {
-            $record = $student->record();
-            $overdue = $record->milestones->filter->isOverdue();
-            $upcoming = $record->milestones->filter->isUpcoming();
-            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
-        }
 
+        $this->authorise('view', $student);
+
+        if( $student->records->isNotEmpty() )
+        {
+            return redirect()->route('admin.student.record.show',
+                        [$student->university_id, $student->record()->slug()]);
+        }
         return view('student.dashboard', compact('student'));
     }
 
     public function find()
     {
+
+        $this->authorise('create', Student::class);
+
         return view('admin.user.student.find');
     }
 
     public function find_post(FindStudentRequest $request)
     {
+
+        $this->authorise('create', Student::class);
 
         $student = Student::where('university_id', $request->university_id)->first();
         if ($student)
@@ -96,6 +103,9 @@ class StudentController extends Controller
 
     public function confirm_user()
     {
+
+        $this->authorise('create', Student::class);
+
         if( session()->has( 'student' ) )
         {
             session()->reflash();
@@ -107,6 +117,9 @@ class StudentController extends Controller
 
     public function confirm_post_user(Request $request)
     {
+
+        $this->authorise('create', Student::class);
+
         if( session()->has( 'student' ) )
         {
             session()->reflash();
@@ -117,6 +130,9 @@ class StudentController extends Controller
 
     public function confirm_id()
     {
+
+        $this->authorise('create', Student::class);
+
         if( session()->has( 'student_id' ))
         {
             session()->reflash();
@@ -127,6 +143,9 @@ class StudentController extends Controller
 
     public function confirm_post_id(Request $request)
     {
+
+        $this->authorise('create', Student::class);
+
         if( session()->has( 'student_id' ) )
         {
             if($request->university_id === session()->get('student_id'))
@@ -144,6 +163,9 @@ class StudentController extends Controller
 
     public function create()
     {
+
+        $this->authorise('create', Student::class);
+
         if(session()->has( 'student_id' ) || session()->hasOldInput('university_id') )
         {
             $university_id = session()->get( 'student_id' );   
@@ -154,11 +176,15 @@ class StudentController extends Controller
 
     public function store(StudentRequest $request)
     {
+
+        $this->authorise('create', Student::class);
+
         $student = Student::firstOrCreate([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'university_id' => $request->university_id,
             'university_email' => $request->university_email,
+            'user_type' => 'Student'
         ]);
         
         session()->flash('student', $student);

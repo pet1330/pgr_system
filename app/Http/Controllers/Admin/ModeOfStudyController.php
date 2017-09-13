@@ -18,6 +18,9 @@ class ModeOfStudyController extends Controller
      */
     public function index(Request $request)
     {
+
+        $this->authorise('view', ModeOfStudy::class);
+
         if ($request->ajax())
         {
         $modeOfStudy = ModeOfStudy::withCount('students')->orderBy('name');
@@ -52,6 +55,9 @@ class ModeOfStudyController extends Controller
      */
     public function store(ModeOfStudyRequest $request)
     {
+
+        $this->authorise('create', ModeOfStudy::class);
+
         $modes = ModeOfStudy::create($request->all());
         return redirect()
             ->route('admin.settings.mode-of-study.index')
@@ -67,6 +73,9 @@ class ModeOfStudyController extends Controller
      */
     public function update(ModeOfStudyRequest $request, ModeOfStudy $modeOfStudy)
     {
+
+        $this->authorise('update', $modeOfStudy);
+
         $modeOfStudy->update($request->all());
         $modeOfStudy->save();
         return redirect()
@@ -78,6 +87,9 @@ class ModeOfStudyController extends Controller
 
     public function edit(ModeOfStudy $modeOfStudy)
     {
+
+        $this->authorise('update', $modeOfStudy);
+
         return view('admin.settings.modeofstudy.edit', compact('modeOfStudy'));
     }
 
@@ -87,8 +99,11 @@ class ModeOfStudyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ModeOfStudyRequest $request, $id)
+    public function destroy(ModeOfStudyRequest $request, ModeOfStudy $modeOfStudy)
     {
+
+        $this->authorise('delete', $modeOfStudy);
+
         // We are using soft delete so this item will remain in the database
         $modes = ModeOfStudy::find($id);
         $modes->delete();
@@ -100,6 +115,9 @@ class ModeOfStudyController extends Controller
     public function restore($id)
     {
         $mod = ModeOfStudy::withTrashed()->find($id);
+
+        $this->authorise('delete', $mod);
+
         if($mod->trashed())
         {
             $mod->restore();

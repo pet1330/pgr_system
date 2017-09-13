@@ -12,11 +12,14 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
+
+        $this->authorise('view', Admin::class);
+
         if ($request->ajax())
         {
-            $students = Admin::select();
-            return Datatables::eloquent($students)
-            ->setRowAttr([ 'data-link' => function($admin)
+            $admin = Admin::select();
+            return Datatables::eloquent($admin)
+            ->setRowAttr([ 'data-link' => function(Admin $admin)
                 { return route('admin.admin.show', $admin->university_id); }])
             ->make(true);
         }
@@ -25,11 +28,9 @@ class AdminController extends Controller
 
     public function show(Admin $admin)
     {
-        return View('admin.dashboard', compact('admin'));
-    }
 
-    public function ownProfile()
-    {
-        return View('admin.profile');
+        $this->authorise('view', $admin);
+
+        return View('admin.dashboard', compact('admin'));
     }
 }

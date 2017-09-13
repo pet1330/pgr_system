@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use Auth;
 use App\Models\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,7 +45,7 @@ class LoginListener
 
         $user->save();
         // SET USER PERMISSIONS HERE
-        if( ! $user->locked) Auth::login($user);
+        if( ! $user->locked) auth()->login($user);
 
         return redirect()->route('account-locked');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\StudentRecord;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StudentRecordRequest extends FormRequest
@@ -24,10 +25,6 @@ class StudentRecordRequest extends FormRequest
     public function rules()
     {
         return [
-            "university_id" => [
-                'required',
-                'student',
-            ],
             "funding_type_id" => [
                 'required',
                 'exists:funding_types,id',

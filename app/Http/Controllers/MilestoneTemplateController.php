@@ -31,7 +31,6 @@ class MilestoneTemplateController extends Controller
      */
     public function store(MilestoneTemplateRequest $request, TimelineTemplate $timeline)
     {
-        // dd($timeline);
         $milestone = $timeline->milestone_templates()->save(
             MilestoneTemplate::make([
                 'due' => $request->due,
@@ -42,6 +41,12 @@ class MilestoneTemplateController extends Controller
             ->route('admin.settings.timeline.show', $timeline->id)
             ->with('flash', 'Successfully added "' . $milestone->name . '"');
     }
+
+    public function edit(TimelineTemplate $timeline, MilestoneTemplate $milestone)
+    {
+        return view('admin.settings.milestonetemplate.edit', compact('timeline', 'milestone'));
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -65,7 +70,6 @@ class MilestoneTemplateController extends Controller
      */
     public function destroy(MilestoneTemplate $milestoneTemplate)
     {
-        // milestone delete    remove milestone from timeline (delete milestone)
         
     }
 }

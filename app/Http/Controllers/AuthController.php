@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
-use Redirect;
 
 class AuthController extends Controller
 {
     public function login()
     {
-        return Auth::guest() ? redirect('saml2/login') : Redirect::intended();
+        return auth()->guest() ? redirect('saml2/login') : redirect()->intended();
     }
 
     public function logout()
     {
-            \Auth::logout();
+            auth()->logout();
             return redirect('/');
     }
 }

@@ -20,18 +20,16 @@ class TimelineTemplateController extends Controller
     {
         if ($request->ajax())
         {
-            $timeline = TimelineTemplate::withCount(['milestone_templates'])->orderBy('name');
+            $timeline = TimelineTemplate::withCount(['milestone_templates']);
 
             return Datatables::eloquent($timeline)
                 ->addColumn('editaction', function (TimelineTemplate $tt) {
-                    return '<form method="GET" action="' . route('admin.settings.timeline.edit', $tt->id) . '"
-                      accept-charset="UTF-8" class="delete-form">
+                    return '<form method="GET" action="' . route('admin.settings.timeline.edit', $tt->id) . '" accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (TimelineTemplate $tt) {
-                      return '<form method="POST" action="' . route('admin.settings.timeline.destroy', $tt->id) . '"
-                      accept-charset="UTF-8" class="delete-form">
+                      return '<form method="POST" action="' . route('admin.settings.timeline.destroy', $tt->id) . '" accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">' . 
                       csrf_field() . '<button class="btn btn-danger">
                       <i class="fa fa-trash"></i></button> </form>';
@@ -44,8 +42,6 @@ class TimelineTemplateController extends Controller
 
         $deleted_timelines = TimelineTemplate::onlyTrashed()->get();
         return view('admin.settings.timelinetemplate.index', compact('deleted_timelines'));
-        // $templates = TimelineTemplate::withCount('milestone_templates')->get();
-        // return view('admin.settings.timeline.index', compact('templates'));
     }
 
     /**
@@ -75,6 +71,8 @@ class TimelineTemplateController extends Controller
             $milestones = $timeline->milestone_templates();
 
             return Datatables::eloquent($milestones)
+                ->addColumn('name', function (MilestoneTemplate $mt)
+                    { return $mt->type->name; })
                 ->addColumn('editaction', function (MilestoneTemplate $mt) use ($timeline) {
                     return '<form method="GET" action="' . 
                     route('admin.settings.timeline.milestone.edit', [$timeline->id, $mt->id]) . '"
@@ -89,10 +87,7 @@ class TimelineTemplateController extends Controller
                       csrf_field() . '<button class="btn btn-danger">
                       <i class="fa fa-trash"></i></button> </form>';
                 })
-                ->rawColumns(['editaction', 'deleteaction'])
-                // ->setRowAttr([ 'data-link' => function($mt) use ($timeline)
-                //     { return route('admin.settings.timeline.milestone.show', [$timeline->id, $mt->id]); }])
-                ->make(true);
+                ->rawColumns(['editaction', 'deleteaction'])->make(true);
         }
 
         $deleted_milestones = $timeline->milestone_templates()->onlyTrashed()->get();
