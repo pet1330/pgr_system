@@ -11,14 +11,14 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class MilestoneUpload extends Notification implements ShouldQueue
+class AdminUploadConfirmation extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $student;
-    public $record;
-    public $milestone;
     public $file;
+    public $record;
+    public $student;
+    public $milestone;
 
     /**
      * Create a new notification instance.
@@ -28,10 +28,11 @@ class MilestoneUpload extends Notification implements ShouldQueue
     public function __construct(Student $student,
         StudentRecord $record, Milestone $milestone, Media $file)
     {
-        $this->student = $student;
-        $this->record = $record;
-        $this->milestone = $milestone;
         $this->file = $file;
+        $this->record = $record;
+        $this->student = $student;
+        $this->milestone = $milestone;
+        echo "here?";
     }
 
     /**
@@ -42,7 +43,7 @@ class MilestoneUpload extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['mail'];
     }
 
     /**
@@ -58,21 +59,14 @@ class MilestoneUpload extends Notification implements ShouldQueue
             $this->record->slug(), 
             $this->milestone->slug()
             ]);
-        return (new MailMessage)
-            ->line('This is an email to confirm that the attached file has been uploaded to the milestone: ' . $this->milestone->name)
-            ->action('View Milestone', $url)
-            ->line('Thanks!')
-            ->attach($this->file->getAbsolutePath(), [
-                'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
-                'mime' => $this->file->mime_type,
-            ]);
-    }
-
-    public function toDatabase($notifiable)
-    {
-        return [
-            'subject' => "Milestone Updated!",
-            'body' => "A new file has been uploaded to your milestone"
-            ];
+            return (new MailMessage)
+            ->line('This is an email to confirm that you have successfully uploaded a submittion to '. $this->student->name . '\'s milestone: ' . $this->milestone->name)
+                ->line('A copy of the uploaded file is attached.')
+                ->action('View Milestone', $url)
+                ->line('Thanks!')
+                ->attach($this->file->getAbsolutePath(), [
+                    'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
+                    'mime' => $this->file->mime_type,
+                ]);
     }
 }
