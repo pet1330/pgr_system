@@ -58,8 +58,7 @@ class StudentController extends Controller
                     { return $sr->enrolmentStatus->status; })
                 ->editColumn('tierFour', '{{$tierFour ? "Yes" : "No" }}')
                 ->setRowAttr([ 'data-link' => function(StudentRecord $sr)
-                    { return route('admin.student.record.show',
-                        [ $sr->student->university_id, $sr->slug()]);
+                    { return route('admin.student.show', $sr->student->university_id);
             }])->make(true);
         }
         return View('admin.user.student.index');
