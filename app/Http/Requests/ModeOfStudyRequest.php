@@ -49,7 +49,7 @@ class ModeOfStudyRequest extends FormRequest
                     'name' => [
                     'required',
                     'min:3',
-                    Rule::unique('modes_of_study')
+                    'unique:modes_of_study,name',
                     ],
                     'timing_factor' => [
                         'required',
