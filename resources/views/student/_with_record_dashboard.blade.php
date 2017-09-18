@@ -1,36 +1,57 @@
+@can('update', App\Models\Student::class)
 <div class="panel-body row">
   <div class="dropdown pull-right">
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Manage Student
-    <span class="caret"></span></button>
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+    Manage Student
+    <span class="caret"></span>
+    </button>
     <ul class="dropdown-menu" role="menu">
-    @can('create', App\Models\Absence::class)
+      @can('create', App\Models\Absence::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.absence.create', $student->university_id) }}">
           Create New Absence
         </a>
       </li>
       @endcan
+      @can('create', App\Models\Milestone::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.record.milestone.create',
           [$student->university_id, $record->slug()]) }}">
           Create New Milestone
         </a>
       </li>
+      @endcan
+      @can('create', App\Models\Staff::class)
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.record.supervisor.create',
+        <a role="menuitem" href="{{ route('admin.student.record.supervisor.find',
           [$student->university_id, $record->slug()]) }}">
           Add Supervisor
         </a>
       </li>
+      @endcan
+      @can('update', App\Models\Student::class)
       <li role="separator" class="divider"></li>
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.record.edit', [$student->university_id, $record->slug()]) }}">
+        <a role="menuitem" href="{{ route('admin.student.record.edit',
+          [$student->university_id, $record->slug()]) }}">
           Edit Student Record
         </a>
       </li>
+      @can('create', App\Models\Milestone::class)
+      @can('update', App\Models\Student::class)
+      <li role="presentation">
+        <a role="menuitem" href="{{ route('admin.student.record.mass-assignment',
+          [$student->university_id, $record->slug()]) }}">
+          Assign Regularisation
+        </a>
+      </li>
+      @endcan
+      @endcan
+      @endcan
     </ul>
   </div>
 </div>
+@endcan
 <div class="col-md-6">
   @if($overdue->isNotEmpty())
   <div class="panel panel-danger">
@@ -47,7 +68,8 @@
           <li class="col-md-12 list-unstyled">
             <span class="fa-stack fa-md" style="margin-right: 20px;">
               <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-              <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">{{ $m->due_date->format('d/m') }}
+              <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">
+              {{ $m->due_date->format('d/m') }}
               </strong>
             </span>
             {{ $m->name }}
@@ -73,7 +95,8 @@
           <li class="col-md-12 list-unstyled">
             <span class="fa-stack fa-md" style="margin-right: 20px;">
               <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-              <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">{{ $m->due_date->format('d/m') }}
+              <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">
+              {{ $m->due_date->format('d/m') }}
               </strong>
             </span>
             {{ $m->name }}
@@ -87,18 +110,22 @@
   <div class="box box-primary">
     @if($overdue->isEmpty() && $upcoming->isEmpty())
     <div class="box-body text-center">
+      @if(auth()->user()->isStudent())
       You have no upcoming or or overdue milestones! Congrats!
+      @else
+      This student has no upcoming or overdue milestones
+      @endif
     </div>
     @endif
     <div class="panel-body text-center">
-      <a  href="{{ route('admin.student.record.milestone.index', [$student->university_id, $record->slug()]) }}">
+      <a  href="{{ route('admin.student.record.milestone.index',
+        [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default">
           View All Milestones
         </span>
       </a>
     </div>
   </div>
-  @if($record->supervisors->isNotEmpty())
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title">
@@ -106,23 +133,22 @@
       </h3>
     </div>
     <div class="box-body text-center">
+      @forelse($record->supervisors->sortBy('pivot.supervisor_type') as $sup)
       @component('components.supervisor')
-      @slot('title', 'Director of Study')
-      @slot('supervisor', $record->DirectorOfStudy)
+      @slot('title', $sup->supervisor_types($sup->pivot->supervisor_type))
+      @slot('supervisor', $sup)
+      @slot('student', $student)
+      @slot('record', $record)
       @endcomponent
-      
-      @component('components.supervisor')
-      @slot('title', 'Second Supervisor')
-      @slot('supervisor', $record->secondSupervisor)
-      @endcomponent
-      
-      @component('components.supervisor')
-      @slot('title', 'Third Supervisor')
-      @slot('supervisor', $record->thirdSupervisor)
-      @endcomponent
+      @empty
+      @if(auth()->user()->isStudent())
+      You have not been assigned a supervisor
+      @else
+      No supervisors have been assigned to this student
+      @endif
+      @endforelse
     </div>
   </div>
-  @endif
 </div> {{-- end of left column --}}
 <div class="col-md-6">
   <div class="panel panel-primary">
@@ -182,22 +208,16 @@
       <h3 class="panel-title">Absences</h3>
     </div>
     <div class="panel-body">
-      <table class="table">
+      <table class="table table-striped table-bordered" id="admin-student-absences-table" width="100%">
         <thead>
-          <td>From</td>
-          <td>To</td>
-          <td>Duration</td>
-          <td>Absence Type</td>
+          <tr>
+            <td>From</td>
+            <td>To</td>
+            <td>Duration</td>
+            <td>Absence Type</td>
+          </tr>
         </thead>
         <tbody>
-          @foreach($student->absences->sortBy('from') as $a)
-          <tr>
-            <td>{{ $a->from->format('d/m/Y') }}</td>
-            <td>{{ $a->to->format('d/m/Y') }}</td>
-            <td>{{ $a->duration }}</td>
-            <td>{{ $a->type->name }}</td>
-          </tr>
-          @endforeach
         </tbody>
       </table>
     </div>
@@ -205,10 +225,15 @@
   @else
   <div class="box box-primary">
     <div class="box-body text-center">
-      You have no absences!
+      @if(auth()->user()->isStudent())
+      You have no absences
+      @else
+      This student has no absences
+      @endif
     </div>
     <div class="panel-body text-center">
-      <a  href="{{ route('admin.student.record.milestone.index', [$student->university_id, $record->slug()]) }}">
+      <a  href="{{ route('admin.student.record.milestone.index',
+        [$student->university_id, $record->slug()]) }}">
       </a>
     </div>
   </div>

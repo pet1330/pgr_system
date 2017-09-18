@@ -3,8 +3,14 @@
 @section('page_description', 'example of page descrition')
 @section('content')
 <div id="app">
-    <section class="content">
-        
-    </section>
+  <div class="content">
+    <div class="box box-primary">
+      <div class="panel-body text-center">
+
+
+
+      </div>
+    </div>
+  </div>
 </div>
 @endsection

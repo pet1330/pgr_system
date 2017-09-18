@@ -16,6 +16,7 @@
             @if( isset($show_submitted) && $show_submitted )
                 <td>Submitted Date</td>
             @endif
+            <td>School</td>
             <td>First Name</td>
             <td>Last Name</td>
         @endcomponent

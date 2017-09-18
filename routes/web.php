@@ -1,5 +1,10 @@
 <?php
 
+Route::get('demo', function (){
+    auth()->loginUsingId(621);
+    return redirect('/');
+});
+
 
 Route::get('demo/logout', function (){
     auth()->logout();
@@ -36,8 +41,8 @@ Route::any('error', function(){
     dd(Request::all());
 });
 
-Route::get('login', 'SAMLController@login');
-Route::get('logout', 'SAMLController@logout');
+Route::middleware('guest')->get('login', 'SAMLController@login');
+Route::middleware('samlauth')->get('logout', 'SAMLController@logout');
 
 Route::middleware('samlauth')->get('/', function() {
     return redirect(auth()->user()->dashboard_url());
@@ -81,13 +86,62 @@ Route::middleware('samlauth')
     Route::get('staff/upgrade', 'StaffController@upgrade')->name('staff.upgrade.index');
     Route::post('staff/{staff}/upgrade', 'StaffController@upgrade_store')->name('staff.upgrade.store');
 
-    Route::resource('student.record.supervisor', 'SupervisorController',
-        [ 'only' => ['create', 'store', 'destroy'] ]);
+    // Route::resource('student.record.supervisor', 'SupervisorController',
+        // [ 'only' => ['create', 'store', 'destroy'] ]);
+
+
+
+
+
+
+
+    Route::get('student/{student}/record/{record}/supervisor/find',
+        'SupervisorController@find')
+            ->name('student.record.supervisor.find');
+
+    Route::post('student/{student}/record/{record}/supervisor/find',
+        'SupervisorController@find_post')
+            ->name('student.record.supervisor.find');
+
+
+    Route::get('student/{student}/record/{record}/supervisor/{staff}',
+        'SupervisorController@create')
+            ->name('student.record.supervisor.create');
+
+    Route::post('student/{student}/record/{record}/supervisor/{staff}',
+        'SupervisorController@store')
+            ->name('student.record.supervisor.store');
+
+
+    Route::get('student/{student}/record/{record}/supervisor/confirm_id',
+        'SupervisorController@confirm_id')
+            ->name('student.record.supervisor.confirm_id');
+
+    Route::post('student/{student}/record/{record}/supervisor/confirm_id',
+        'SupervisorController@confirm_post_id')
+            ->name('student.record.supervisor.confirm_id');
+
+    Route::delete('student/{student}/record/{record}/supervisor/{staff}',
+            'SupervisorController@destroy')
+            ->name('student.record.supervisor.destroy');
+
+
+    Route::get('student/{student}/record/{record}/mass-assign',
+        'TimelineTemplateController@create_mass_assignment')
+            ->name('student.record.mass-assignment');
+
+    Route::post('student/{student}/record/{record}/mass-assign',
+        'TimelineTemplateController@store_mass_assignment')
+            ->name('student.record.mass-assignment');
+
 
     Route::resource('student.record', 'StudentRecordController');
 
     Route::post('student/{student}/record/{record}/milestone/{milestone}/upload',
         'MilestoneController@upload')->name('student.record.milestone.upload');
+
+    Route::get('student/{student}/record/{record}/milestone/{milestone}/download/{file}',
+        'MilestoneController@download')->name('student.record.milestone.media');
 
     Route::post('student/{student}/record/{record}/milestone/{milestone}/approve',
         'MilestoneController@approve')->name('student.record.milestone.approve');

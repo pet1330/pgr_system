@@ -5,15 +5,17 @@
 <div id="app">
   <div class="content">
     <div class="panel-body">
-      <a  href="{{ route('admin.student.record.show', [$student->university_id, $record->slug()]) }}">
-        <span class="btn btn-default">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
-      </a>
-      <a  href="{{ route('admin.student.record.milestone.edit',
-        [$student->university_id, $record->slug(), $milestone->slug()]) }}">
-        <span class="btn btn-default pull-right">
-        Edit This Milestone</span>
-      </a>
+        <a  href="{{ route('admin.student.record.show', [$student->university_id, $record->slug()]) }}">
+          <span class="btn btn-default">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
+        </a>
+      @can('update', $milestone)
+        <a  href="{{ route('admin.student.record.milestone.edit',
+          [$student->university_id, $record->slug(), $milestone->slug()]) }}">
+          <span class="btn btn-default pull-right">
+          Edit This Milestone</span>
+        </a>
+      @endcan
     </div>
     <div class="box box-primary">
       <div class="box-body">
@@ -48,6 +50,7 @@
         @endif
       </div>
     </div>
+    @can('create', App\Models\Approval::class)
     <div class="box box-primary">
       <div class="box-body">
         <form action="{{ route('admin.student.record.milestone.approve',
@@ -70,6 +73,7 @@
         </form>
       </div>
     </div>
+    @endcan
     @if($milestone->approvals->isNotEmpty())
     <div class="box box-primary">
       <div class="box-body">
@@ -87,7 +91,8 @@
     <div class="box box box-primary">
       <div class="box-body">
         @forelse($milestone->getMedia('submission')->reverse() as $file)
-        <a href="{{ $file->getUrl() }}" target="_blank">
+        <a href="{{ route('admin.student.record.milestone.media', 
+        [$student->university_id, $record->slug(), $milestone->slug(), $file->slug()]) }}">
           @component('components.infobox')
           @if($file->id !== $milestone->lastMedia('submission')->id)
           @slot('colour', 'alert-warning')
@@ -105,6 +110,7 @@
         @endforelse
       </div>
     </div>
+    @can('upload', $milestone)
     <div class="box box box-primary">
       <div class="box-body">
         <div class="panel-heading">
@@ -120,7 +126,7 @@
               <ul>
                 <li>Only upload a single file</li>
                 <li>The upload must be smaller than 20Mb</li>
-                <li>The upload must be a doc, docx, or pdf</li>
+                <li>The upload must be a Word, Excel or PDF</li>
               </ul>
             </div>
             <div class="col-md-8">
@@ -140,6 +146,7 @@
         </div>
       </div>
     </div>
+    @endif
   </div>
 </div>
 @endsection

@@ -7,11 +7,13 @@
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
     </a>
+    @can('create', App\Models\Milestone::class)
     <a  href="{{ route('admin.student.record.milestone.create', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default pull-right">
             Create New Milestone
         </span>
     </a>
+    @endcan
 </div>
 @if($milestones->isNotEmpty())
 <div class="col-md-12">

@@ -51,7 +51,9 @@
           accept-charset="UTF-8" class="delete-form">
           <input type="hidden" name="_method" value="DELETE">
           {{ csrf_field() }}
-          <button class="btn btn-danger pull-right"><i class="fa fa-trash"></i> DELETE</button>
+          <button class="btn btn-danger pull-right" onsubmit="return confirm('Are you sure?');">
+            <i class="fa fa-trash"></i> DELETE
+          </button>
         </form>
       </div>
     </div>

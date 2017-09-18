@@ -21,7 +21,7 @@
             <li class="user-header">
               <img src="{{ auth()->user()->avatar(200)  }}" class="img-circle" alt="User Image">
               <p>
-                {{ auth()->user()->school->name ?? "hello" }}
+                {{-- {{ auth()->user()->school->name ?? "hello" }} --}}
                 {{-- <small>Since 0000</small> --}}
               </p>
             </li>

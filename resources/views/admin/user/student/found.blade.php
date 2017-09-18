@@ -4,7 +4,7 @@
 @section('content')
 <div class="row">
     @if($student->records->isNotEmpty())
-    <div class="form-group alert alert-danger col-md-8 col-md-offset-2">
+    <div class="form-group alert alert-danger alert-important col-md-8 col-md-offset-2">
         <label>Warning! {{ $student->name }} already has {{ $student->records->count() }} record. Creating a new one, will archive this <a href="{{ $student->dashboard_url() }}">previous record.</label>
     </div>
     @endif

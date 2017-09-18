@@ -176,12 +176,13 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-milestones-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
+            "searching": true,
             columns: [
                 { data: 'name', name: 'type.name', searchable: true, orderable: true },
-                { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
-                { data: 'first_name', name: 'student_record.student.first_name', searchable: false, orderable: false },
-                { data: 'last_name', name: 'student_record.student.last_name', searchable: false, orderable: false },
+                { data: 'due_date', name: 'due_date', searchable: false, orderable: true },
+                { data: 'school', name: 'student.school.name', searchable: true, orderable: true },
+                { data: 'first_name', name: 'student.student.first_name', searchable: false, orderable: true },
+                { data: 'last_name', name: 'student.student.last_name', searchable: false, orderable: true },
             ]
         })
     );
@@ -190,13 +191,14 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-submitted-milestones-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
+            "searching": true,
             columns: [
                 { data: 'name', name: 'type.name', searchable: true, orderable: true },
-                { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
-                { data: 'submitted_date', name: 'submitted_date', searchable: true, orderable: true },
-                { data: 'first_name', name: 'student_record.student.first_name', searchable: false, orderable: false },
-                { data: 'last_name', name: 'student_record.student.last_name', searchable: false, orderable: false },
+                { data: 'due_date', name: 'due_date', searchable: false, orderable: true },
+                { data: 'submitted_date', name: 'submitted_date', searchable: false, orderable: true },
+                { data: 'school', name: 'student.school.name', searchable: true, orderable: true },
+                { data: 'first_name', name: 'student.student.first_name', searchable: false, orderable: true },
+                { data: 'last_name', name: 'student.student.last_name', searchable: false, orderable: true },
             ]
         })
     );
@@ -262,7 +264,11 @@ $(document).ready(function() {
                 { data: 'last_name', name: 'last_name', searchable: true, orderable: true },
                 { data: 'university_id', name: 'university_id', searchable: true, orderable: true },
                 { data: 'upgrade', name: 'upgrade', searchable: false, orderable: false }
-            ]
+            ],
+            "language": {
+                "emptyTable": 'No Staff members are eligable for an Admin upgrade.<br>'+
+                               'Staff members who supervise students cannot be made into admin.<br>'
+            }
         })
     );
 
@@ -291,6 +297,23 @@ $(document).ready(function() {
                 { data: 'students_count', name: 'students_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of absences for student dashboard
+    //==============================================================================================
+    $('#admin-student-absences-table').DataTable(
+        _.merge({}, generalSettings, {
+            "searching": false,
+            dom: 'rt',
+            columns: [
+                { data: 'from', name: 'from', searchable: false, orderable: true },
+                { data: 'to', name: 'to', searchable: false, orderable: true },
+                { data: 'duration', name: 'duration', searchable: false, orderable: true },
+                { data: 'type', name: 'type.name', searchable: false, orderable: true }
+                // { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
+                // { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
     );

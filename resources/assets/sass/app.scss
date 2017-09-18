@@ -37,3 +37,24 @@
 // .feedback.left .dropdown-menu{ left: 0px}
 // .feedback.right .dropdown-menu{ right: 0px}
 // .feedback .hideme{ display: none}
+
+.alert-flash {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 99999;
+}
+
+.slide-fade-enter-active {
+    transition: all 1.0s ease;
+}
+
+.slide-fade-leave-active {
+    transition: all 1.0s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+    transform: translateX(30px);
+    opacity: 0;
+}

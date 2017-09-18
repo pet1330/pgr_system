@@ -1,7 +1,7 @@
 
 window._ = require('lodash');
 
-// global.$ = global.jQuery = require('jquery');
+// window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 require('./AdminLTE');
 
@@ -55,8 +55,4 @@ Dropzone.autoDiscover = false;
     }
 });
 
-// DEAL WITH LATER ========================================================
-// Vue.component('toggle', require('./components/ToggleButton.vue'));
-// Vue.component('simple-toggle', require('./components/simpleToggle.vue'));
-// Vue.component('edit-modal', require('./components/EditModal.vue'));
-
+$('div.alert').not('.alert-important').delay(3000).fadeOut(350);

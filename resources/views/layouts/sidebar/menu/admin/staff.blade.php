@@ -9,10 +9,10 @@
       <a href="{{ route('admin.staff.index') }}">Overview</a>
     </li>
     <li>
-      <a href="#">Overdue Training</a>
+      <a data-toggle="tooltip" title="Coming Soon!" data-placement="right" href="#">Overdue Training</a>
     </li>
     <li>
-      <a href="#">Upcoming Training</a>
+      <a data-toggle="tooltip" title="Coming Soon!" data-placement="right" href="#">Upcoming Training</a>
     </li>
   </ul>
 </li>
