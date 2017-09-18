@@ -40,7 +40,7 @@ class MilestoneTemplateController extends Controller
         return redirect()
             ->route('admin.settings.timeline.show', $timeline->id)
             ->with('flash', [
-                'message' => 'Successfully added "' . $milestone->name . '"',
+                'message' => 'Successfully added "' . $milestone->type->name . '"',
                 'type' => 'success'
             ]);
     }
