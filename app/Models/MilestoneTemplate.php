@@ -36,14 +36,20 @@ class MilestoneTemplate extends Model
     {
         $nid = $record->enrolment_date->copy()->addMonths($this->due);
 
-        return $record->timeline()->save(
+        $m = $record->timeline()->save(
             Milestone::create([
-        'non_interuptive_date' => $nid,
-        'student_record_id' => $record->id,
-        'created_by' => auth()->id(),
-        'milestone_type_id' => $this->type->id,
-        'due_date' => $nid->copy()->addDays(
-            $record->student->interuptionPeriodSoFar())])
+                'non_interuptive_date' => $nid,
+                'student_record_id' => $record->id,
+                'created_by' => auth()->id(),
+                'milestone_type_id' => $this->type->id,
+                'due_date' => $nid->copy()->addDays(
+                    $record->student->interuptionPeriodSoFar())
+            ])
         );
+        $record->student->allow('view', $m);
+        $record->student->allow('upload', $m);
+        $record->supervisors->each(function (Staff $staff) use ($m) {
+            $staff->allow('view', $m);
+        });
     }
 }

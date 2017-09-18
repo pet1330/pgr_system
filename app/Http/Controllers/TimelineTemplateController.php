@@ -195,7 +195,7 @@ class TimelineTemplateController extends Controller
       public function create_mass_assignment(Student $student, StudentRecord $record)
       {
 
-          $this->authorise('update', $record);
+          $this->authorise('update', $student);
           $this->authorise('create', Milestone::class);
           $this->authorise('view', TimelineTemplate::class);
 
@@ -207,7 +207,7 @@ class TimelineTemplateController extends Controller
         Student $student, StudentRecord $record)
       {
 
-          $this->authorise('update', $record);
+          $this->authorise('update', $student);
           $this->authorise('create', Milestone::class);
           $this->authorise('view', TimelineTemplate::class);
 
