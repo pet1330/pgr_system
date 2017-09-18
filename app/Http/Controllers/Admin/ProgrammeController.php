@@ -57,10 +57,13 @@ class ProgrammeController extends Controller
         
         $this->authorise('create', Programme::class);
 
-        $progs = Programme::create($request->all());
+        $progs = Programme::create($request->only(['name', 'duration']));
         return redirect()
             ->route('admin.settings.programme.index')
-            ->with('flash', 'Successfully added "' . $progs->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $progs->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     /**
@@ -75,11 +78,14 @@ class ProgrammeController extends Controller
 
         $this->authorise('update', $programme);
 
-        $programme->update($request->all());
+        $programme->update($request->only('name', 'duration'));
         $programme->save();
         return redirect()
             ->route('admin.settings.programme.index')
-            ->with('flash', 'Successfully updated "' . $programme->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $programme->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(Programme $programme)
@@ -105,7 +111,10 @@ class ProgrammeController extends Controller
         $programme->delete();
         return redirect()
             ->route('admin.settings.programme.index')
-            ->with('flash', 'Successfully deleted "' . $programme->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $programme->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -119,10 +128,16 @@ class ProgrammeController extends Controller
             $prog->restore();
             return redirect()
                 ->route('admin.settings.programme.index')
-                ->with('flash', 'Successfully restored "' . $prog->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully restored "' . $prog->name . '"',
+                'type' => 'success'
+            ]);
         }
         return redirect()
-                ->route('admin.settings.programme.index')
-                ->with('flash', 'Error: Programme is not deleted: "' . $prog->name . '"');
+            ->route('admin.settings.programme.index')
+            ->with('flash', [
+                'message' => 'Error: Programme is not deleted: "' . $prog->name . '"',
+                'type' => 'danger'
+            ]);
     }
 }

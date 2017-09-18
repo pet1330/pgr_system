@@ -57,10 +57,13 @@ class CollegeController extends Controller
 
         $this->authorise('create', College::class);
 
-        $college = College::create($request->all());
+        $college = College::create($request->only( 'name' ));
         return redirect()
             ->route('admin.settings.college.index')
-            ->with('flash', 'Successfully added "' . $college->name . '"');
+            ->with('flash', [
+              'message' => 'Successfully added "' . $college->name . '"',
+              'type' => 'success'
+            ]);
     }
 
     /**
@@ -75,11 +78,14 @@ class CollegeController extends Controller
 
         $this->authorise('update', $college);
 
-        $college->update($request->all());
+        $college->update( $request->only( 'name' ) );
         $college->save();
         return redirect()
             ->route('admin.settings.college.index')
-            ->with('flash', 'Successfully updated "' . $college->name . '"');
+            ->with('flash', [
+              'message' => 'Successfully updated "' . $college->name . '"',
+              'type' => 'success'
+            ]);
     }
 
     public function edit(College $college)
@@ -105,7 +111,10 @@ class CollegeController extends Controller
         $college->delete();
         return redirect()
             ->route('admin.settings.college.index')
-            ->with('flash', 'Successfully deleted "' . $college->name . '"');
+            ->with('flash', [
+              'message' => 'Successfully deleted "' . $college->name . '"',
+              'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -119,10 +128,16 @@ class CollegeController extends Controller
             $college->restore();
             return redirect()
                 ->route('admin.settings.college.index')
-                ->with('flash', 'Successfully restored "' . $college->name . '"');
+                ->with('flash', [
+                  'message' => 'Successfully restored "' . $college->name . '"',
+                  'type' => 'success'
+                ]);
         }
         return redirect()
-                ->route('admin.settings.college.index')
-                ->with('flash', 'Error: College is not deleted: "' . $college->name . '"');
+            ->route('admin.settings.college.index')
+            ->with('flash', [
+              'message' => 'Error: College is not deleted: "' . $college->name . '"',
+              'type' => 'danger'
+            ]);
     }
 }

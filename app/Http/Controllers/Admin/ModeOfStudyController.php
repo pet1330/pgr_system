@@ -58,10 +58,13 @@ class ModeOfStudyController extends Controller
 
         $this->authorise('create', ModeOfStudy::class);
 
-        $modes = ModeOfStudy::create($request->all());
+        $modes = ModeOfStudy::create($request->only(['name', 'timing_factor']));
         return redirect()
             ->route('admin.settings.mode-of-study.index')
-            ->with('flash', 'Successfully added "' . $modes->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $modes->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     /**
@@ -76,11 +79,14 @@ class ModeOfStudyController extends Controller
 
         $this->authorise('update', $modeOfStudy);
 
-        $modeOfStudy->update($request->all());
+        $modeOfStudy->update($request->only( 'name', 'timing_factor' ));
         $modeOfStudy->save();
         return redirect()
             ->route('admin.settings.mode-of-study.index')
-            ->with('flash', 'Successfully updated "' . $modeOfStudy->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $modeOfStudy->name . '"',
+                'type' => 'success'
+            ]);
 
         return "update";
     }
@@ -109,7 +115,10 @@ class ModeOfStudyController extends Controller
         $modes->delete();
         return redirect()
             ->route('admin.settings.mode-of-study.index')
-            ->with('flash', 'Successfully deleted "' . $modes->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $modes->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -123,10 +132,16 @@ class ModeOfStudyController extends Controller
             $mod->restore();
             return redirect()
                 ->route('admin.settings.mode-of-study.index')
-                ->with('flash', 'Successfully restored "' . $mod->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully restored "' . $mod->name . '"',
+                'type' => 'success'
+            ]);
         }
         return redirect()
-                ->route('admin.settings.mode-of-study.index')
-                ->with('flash', 'Error: Mode of Study is not deleted: "' . $mod->name . '"');
+            ->route('admin.settings.mode-of-study.index')
+            ->with('flash', [
+                'message' => 'Error: Mode of Study is not deleted: "' . $mod->name . '"',
+                'type' => 'danger'
+            ]);
     }
 }

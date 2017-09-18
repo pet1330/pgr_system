@@ -39,12 +39,17 @@ class MilestoneTemplateController extends Controller
         );
         return redirect()
             ->route('admin.settings.timeline.show', $timeline->id)
-            ->with('flash', 'Successfully added "' . $milestone->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $milestone->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        return view('admin.settings.milestonetemplate.edit', compact('timeline', 'milestone'));
+        $types = MilestoneType::all();
+
+        return view('admin.settings.milestonetemplate.edit', compact('timeline', 'milestone', 'types'));
     }
 
 
@@ -55,11 +60,20 @@ class MilestoneTemplateController extends Controller
      * @param  \App\Models\TimelineTemplate $timelineTemplate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TimelineTemplate $timeline, MilestoneTemplate $milestone)
+    public function update(MilestoneTemplateRequest $request,
+        TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        dd("HERE");
-        // milestone edit      edit a milestone on a timeline (edit milestone)
+        // $this->authorise('update', $milestone);
         
+        $milestone->update( $request->only( [ 'due', 'milestone_type' ] ) );
+
+        return redirect()
+            ->route('admin.settings.timeline.show', $timeline->id)
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $milestone->type->name . '"',
+                'type' => 'success'
+            ]);
+
     }
 
     /**

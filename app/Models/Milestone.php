@@ -188,7 +188,7 @@ class Milestone extends Model
     public function getStartDateAttribute()
     {
         if($this->duration)
-            return $this->due_date->subMonths($this->duration);
+            return $this->due_date->copy()->subDays($this->duration);
         return $this->due_date;
     }
 
@@ -232,7 +232,6 @@ class Milestone extends Model
                 'approved_by_id' => auth()->id(),
             ])
         );
-        return redirect()->back()->with('flash', 'Successfully approved');
     }
 
 

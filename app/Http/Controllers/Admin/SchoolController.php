@@ -64,10 +64,15 @@ class SchoolController extends Controller
 
         $this->authorise('create', School::class);
 
-        $school = School::create($request->all());
+        $school = School::create($request->only( [ 'name', 'college_id', 'notifications_address' ] ));
+
         return redirect()
             ->route('admin.settings.school.index')
-            ->with('flash', 'Successfully added "' . $school->name . '"');
+            ->with('flash', [
+              'message' => 'Successfully added "' . $school->name . '"',
+              'type' => 'success'
+            ]
+          );
     }
 
     /**
@@ -82,11 +87,14 @@ class SchoolController extends Controller
         
         $this->authorise('update', $school);
 
-        $school->update($request->all());
+        $school->update($request->only( 'name', 'college_id', 'notifications_address' ));
         $school->save();
         return redirect()
             ->route('admin.settings.school.index')
-            ->with('flash', 'Successfully updated "' . $school->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $school->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(School $school)
@@ -113,24 +121,34 @@ class SchoolController extends Controller
         $school->delete();
         return redirect()
             ->route('admin.settings.school.index')
-            ->with('flash', 'Successfully deleted "' . $school->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $school->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
     {
-        
-        $this->authorise('delete', $school);
 
         $school = School::withTrashed()->find($id);
+
+        $this->authorise('delete', $school);
+        
         if($school->trashed())
         {
             $school->restore();
             return redirect()
                 ->route('admin.settings.school.index')
-                ->with('flash', 'Successfully restored "' . $school->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully restored "' . $school->name . '"',
+                'type' => 'success'
+            ]);
         }
         return redirect()
                 ->route('admin.settings.school.index')
-                ->with('flash', 'Error: School is not deleted: "' . $school->name . '"');
+            ->with('flash', [
+                'message' => 'Error: School is not deleted: "' . $school->name . '"',
+                'type' => 'danger'
+            ]);
     }
 }

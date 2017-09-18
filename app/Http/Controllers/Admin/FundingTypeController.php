@@ -59,10 +59,13 @@ class FundingTypeController extends Controller
 
         $this->authorise('create', FundingType::class);
 
-        $fun = FundingType::create($request->all());
+        $fun = FundingType::create($request->only( 'name' ));
         return redirect()
             ->route('admin.settings.funding-type.index')
-            ->with('flash', 'Successfully added "' . $fun->name . '"');
+              ->with('flash', [
+                  'message' => 'Successfully added "' . $fun->name . '"',
+                  'type' => 'success'
+              ]);
     }
 
     /**
@@ -77,11 +80,14 @@ class FundingTypeController extends Controller
 
         $this->authorise('update', $funding_type);
 
-      $funding_type->update($request->all());
+      $funding_type->update($request->only( 'name' ));
       $funding_type->save();
         return redirect()
             ->route('admin.settings.funding-type.index')
-            ->with('flash', 'Successfully updated "' . $funding_type->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $funding_type->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(FundingType $funding_type)
@@ -108,7 +114,10 @@ class FundingTypeController extends Controller
         $funding_type->delete();
         return redirect()
             ->route('admin.settings.funding-type.index')
-            ->with('flash', 'Successfully deleted "' . $funding_type->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $funding_type->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -122,10 +131,16 @@ class FundingTypeController extends Controller
             $funding_type->restore();
             return redirect()
                 ->route('admin.settings.funding-type.index')
-                ->with('flash', 'Successfully restored "' . $funding_type->name . '"');
+                ->with('flash', [
+                    'message' => 'Successfully restored "' . $funding_type->name . '"',
+                    'type' => 'success'
+                ]);
         }
         return redirect()
                 ->route('admin.settings.funding-type.index')
-                ->with('flash', 'Error: Absence Type is not deleted: "' . $funding_type->name . '"');
+                ->with('flash', [
+                    'message' => 'Error: Absence Type is not deleted: "' . $funding_type->name . '"',
+                    'type' => 'danger'
+                ]);
     }
 }

@@ -52,10 +52,13 @@ class MilestoneTypeController extends Controller
      */
     public function store(MilestoneTypeRequest $request)
     {
-        $mt = MilestoneType::create( $request->all() );
+        $mt = MilestoneType::create( $request->only([ 'name', 'duration', 'student_makable' ] ) );
         return redirect()
             ->route('admin.settings.milestone-type.index')
-            ->with('flash', 'Successfully added "' . $mt->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $mt->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     /**
@@ -67,11 +70,14 @@ class MilestoneTypeController extends Controller
      */
     public function update(MilestoneTypeRequest $request, MilestoneType $milestone_type)
     {
-        $milestone_type->update($request->all());
+        $milestone_type->update( $request->only( 'name', 'duration', 'student_makable' ) );
         $milestone_type->save();
         return redirect()
             ->route('admin.settings.milestone-type.index')
-            ->with('flash', 'Successfully updated "' . $milestone_type->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $milestone_type->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(MilestoneType $milestone_type)
@@ -91,7 +97,10 @@ class MilestoneTypeController extends Controller
         $milestone_type->delete();
         return redirect()
             ->route('admin.settings.milestone-type.index')
-            ->with('flash', 'Successfully deleted "' . $milestone_type->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $milestone_type->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -102,10 +111,16 @@ class MilestoneTypeController extends Controller
             $mt->restore();
             return redirect()
                 ->route('admin.settings.milestone-type.index')
-                ->with('flash', 'Successfully restored "' . $mt->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully restored "' . $mt->name . '"',
+                'type' => 'success'
+            ]);
         }
         return redirect()
-                ->route('admin.settings.milestone-type.index')
-                ->with('flash', 'Error: Milestone Type is not deleted: "' . $mt->name . '"');
+            ->route('admin.settings.milestone-type.index')
+            ->with('flash', [
+                'message' => 'Error: Milestone Type is not deleted: "' . $mt->name . '"',
+                'type' => 'danger'
+            ]);
     }
 }

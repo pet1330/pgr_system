@@ -63,10 +63,13 @@ class AbsenceTypeController extends Controller
     {
         $this->authorise('create', AbsenceType::class);
 
-        $abs = AbsenceType::create($request->all());
+        $abs = AbsenceType::create($request->only([ 'name', 'interuption' ]));
         return redirect()
             ->route('admin.settings.absence-type.index')
-            ->with('flash', 'Successfully added "' . $abs->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $abs->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     /**
@@ -80,11 +83,14 @@ class AbsenceTypeController extends Controller
     {
         $this->authorise('update', $absence_type);
 
-        $absence_type->update($request->all());
+        $absence_type->update($request->only( ['name', 'interuption'] ));
         $absence_type->save();
         return redirect()
             ->route('admin.settings.absence-type.index')
-            ->with('flash', 'Successfully updated "' . $absence_type->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $absence_type->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(AbsenceType $absence_type)
@@ -108,7 +114,10 @@ class AbsenceTypeController extends Controller
         $absence_type->delete();
         return redirect()
             ->route('admin.settings.absence-type.index')
-            ->with('flash', 'Successfully deleted "' . $absence_type->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $absence_type->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -121,11 +130,17 @@ class AbsenceTypeController extends Controller
         {
             $abs->restore();
             return redirect()
-                ->route('admin.settings.absence-type.index')
-                ->with('flash', 'Successfully restored "' . $abs->name . '"');
+              ->route('admin.settings.absence-type.index')
+              ->with('flash', [
+                  'message' => 'Successfully restored "' . $abs->name . '"',
+                  'type' => 'success'
+              ]);
         }
         return redirect()
-                ->route('admin.settings.absence-type.index')
-                ->with('flash', 'Error: Absence Type is not deleted: "' . $abs->name . '"');
+            ->route('admin.settings.absence-type.index')
+            ->with('flash', [
+                'message' => 'Error: Absence Type is not deleted: "' . $abs->name . '"',
+                'type' => 'danger'
+            ]);
     }
 }

@@ -33,11 +33,11 @@ class FundingTypeRequest extends FormRequest
             case 'PUT':
                 $ft = FundingType::where('name', '=' ,$this->name)->first();
                 return [
-                        'name' => [
-                            'required',
-                            'min:3',
-                            'unique:funding_types,name' . (is_null($ft)? "" : ",".$ft->id)
-                        ]
+                    'name' => [
+                        'required',
+                        'min:3',
+                        'unique:funding_types,name' . (is_null($ft)? "" : ",".$ft->id)
+                    ]
                 ];
             case 'POST':
                 return 

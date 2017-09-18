@@ -86,7 +86,11 @@ class StudentRecordController extends Controller
                     'programme_id' => $request->programme_id,
             ])
         );
-        return redirect()->route('admin.student.show', $student->university_id);
+        return redirect()->route('admin.student.show', $student->university_id)
+            ->with('flash', [
+              'message' => 'Successfully added a record for "' . $student->name . '"',
+              'type' => 'success'
+            ]);
     }
 
     public function update(StudentRecordRequest $request, Student $student, StudentRecord $record)
@@ -113,8 +117,10 @@ class StudentRecordController extends Controller
     
         return redirect()
             ->route('admin.student.record.show', [$student->university_id, $record->slug()])
-            ->with('flash', 'Successfully updated "' . $record->slug() . '"');
-
+            ->with('flash', [
+              'message' => 'Successfully updated "' . $record->slug() . '"',
+              'type' => 'success'
+            ]);
     }
 
     public function show(Student $student, StudentRecord $record)
@@ -144,7 +150,11 @@ class StudentRecordController extends Controller
             $record->addSupervisor($staff, $request->type);
 
             return redirect()->route('admin.student.record.show',
-                [$student->university_id, $record->slug()]);
+                [$student->university_id, $record->slug()])
+                ->with('flash', [
+                  'message' => $staff->name . ' is now supervising ' . $student->name,
+                  'type' => 'success'
+                ]);
         }
 
         return redirect()->route('admin.staff.find');
@@ -159,10 +169,13 @@ class StudentRecordController extends Controller
             $record->addSupervisor($staff, $request->type);
 
             return redirect()->route('admin.student.record.show',
-                [$student->university_id, $record->slug()]);
+                [$student->university_id, $record->slug()])
+                ->with('flash', [
+                  'message' => $staff->name . ' no longer supervises ' . $student->name,
+                  'type' => 'success'
+                ]);
         }
 
         return redirect()->route('admin.staff.find');
     }
-
 }

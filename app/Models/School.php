@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class School extends Model
 {
+    use Notifiable;
     use SoftDeletes;
     use LogsActivity;
     
@@ -37,5 +39,10 @@ class School extends Model
     public function studentRecords()
     {
         return $this->hasMany(StudentRecord::class)->withTrashed();
+    }
+
+    public function routeNotificationForMail()
+    {
+        return $this->notifications_address;
     }
 }

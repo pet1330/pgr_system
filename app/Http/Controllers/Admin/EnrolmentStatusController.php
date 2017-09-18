@@ -58,10 +58,13 @@ class EnrolmentStatusController extends Controller
 
         $this->authorise('create', EnrolmentStatus::class);
 
-        $enrolments = EnrolmentStatus::create($request->all());
+        $enrolments = EnrolmentStatus::create($request->only( 'status' ));
         return redirect()
             ->route('admin.settings.enrolment-status.index')
-            ->with('flash', 'Successfully added "' . $enrolments->status . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $enrolments->status . '"',
+                'type' => 'success'
+            ]);
     }
 
     /**
@@ -76,11 +79,14 @@ class EnrolmentStatusController extends Controller
 
         $this->authorise('update', $enrolment_status);
 
-        $enrolment_status->update($request->all());
+        $enrolment_status->update($request->only( 'status' ));
         $enrolment_status->save();
         return redirect()
             ->route('admin.settings.enrolment-status.index')
-            ->with('flash', 'Successfully updated "' . $enrolment_status->status . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $enrolment_status->status . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(EnrolmentStatus $enrolment_status)
@@ -106,7 +112,10 @@ class EnrolmentStatusController extends Controller
         $enrolment_status->delete();
         return redirect()
             ->route('admin.settings.enrolment-status.index')
-            ->with('flash', 'Successfully deleted "' . $enrolment_status->status . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $enrolment_status->status . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -121,10 +130,16 @@ class EnrolmentStatusController extends Controller
             $enrolment_status->restore();
             return redirect()
                 ->route('admin.settings.enrolment-status.index')
-                ->with('flash', 'Successfully restored "' . $enrolment_status->status . '"');
+                ->with('flash', [
+                    'message' => 'Successfully restored "' . $enrolment_status->status . '"',
+                    'type' => 'success'
+                ]);
         }
         return redirect()
-                ->route('admin.settings.enrolment-status.index')
-                ->with('flash', 'Error: Status is not deleted: "' . $enrolment_status->status . '"');
+            ->route('admin.settings.enrolment-status.index')
+            ->with('flash', [
+                'message' => 'Error: Status is not deleted: "' . $enrolment_status->status . '"',
+                'type' => 'success'
+            ]);
     }
 }

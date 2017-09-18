@@ -121,10 +121,8 @@ class StudentRecord extends Model
         });
 
         return $this->supervisors()
-                    ->updateExistingPivot(
-                        $supervisor->id,
-                        ['changed_on' => Carbon::now()]
-                    );
+                    ->updateExistingPivot( $supervisor->id,
+                        ['changed_on' => Carbon::now()] );
     }
 
     public function addSupervisor(Staff $supervisor, $type)
@@ -169,13 +167,11 @@ class StudentRecord extends Model
                     ->addMonths(
                         $this->programme->duration * 
                         $this->modeOfStudy->timing_factor)
-                    ->addDays(
-                        $this->student->interuptionPeriodSoFar());
+                    ->addDays($this->student->interuptionPeriodSoFar());
     }
-
 
     public function recalculateMilestonesDueDate()
     {
-        return $this->timeline()->notSubmitted()->each->recalculateDueDate();
+        return $this->timeline()->notSubmitted()->get()->each->recalculateDueDate();
     }
 }

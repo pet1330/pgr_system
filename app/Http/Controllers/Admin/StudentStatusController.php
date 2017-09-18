@@ -56,10 +56,13 @@ class StudentStatusController extends Controller
     {
         $this->authorise('create', StudentStatus::class);
 
-        $stu = StudentStatus::create($request->all());
+        $stu = StudentStatus::create($request->only( 'status' ));
         return redirect()
             ->route('admin.settings.student-status.index')
-            ->with('flash', 'Successfully added "' . $stu->status . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $stu->status . '"',
+                'type' => 'success'
+            ]);
     }
 
     /**
@@ -73,11 +76,14 @@ class StudentStatusController extends Controller
     {
         $this->authorise('update', $student_status);
 
-        $student_status->update($request->all());
+        $student_status->update($request->only( 'status' ));
         $student_status->save();
         return redirect()
             ->route('admin.settings.student-status.index')
-            ->with('flash', 'Successfully updated "' . $student_status->status . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $student_status->status . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(StudentStatus $student_status)
@@ -101,7 +107,10 @@ class StudentStatusController extends Controller
         $student_status->delete();
         return redirect()
             ->route('admin.settings.student-status.index')
-            ->with('flash', 'Successfully deleted "' . $student_status->status . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $student_status->status . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function restore($id)
@@ -114,10 +123,16 @@ class StudentStatusController extends Controller
             $student_status->restore();
             return redirect()
                 ->route('admin.settings.student-status.index')
-                ->with('flash', 'Successfully restored "' . $student_status->status . '"');
+                ->with('flash', [
+                    'message' => 'Successfully restored "' . $student_status->status . '"',
+                    'type' => 'success'
+                ]);
         }
         return redirect()
                 ->route('admin.settings.student-status.index')
-                ->with('flash', 'Error: Status is not deleted: "' . $student_status->status . '"');
+                ->with('flash', [
+                    'message' => 'Error: Status is not deleted: "' . $student_status->status . '"',
+                    'type' => 'danger'
+                ]);
     }
 }

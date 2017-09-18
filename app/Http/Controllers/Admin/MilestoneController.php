@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Log;
 use Carbon\Carbon;
 use MediaUploader;
+use App\Models\Media;
 use App\Models\Student;
+use App\Models\Approval;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
 use App\Models\StudentRecord;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MilestoneRequest;
+use App\Notifications\AdminUploadAlert;
 use Yajra\Datatables\Facades\Datatables;
-use App\Notifications\MilestoneUpload;
-
+use App\Notifications\AdminUploadConfirmation;
+use App\Notifications\StudentUploadConfirmation;
 
 class MilestoneController extends Controller
 {
@@ -84,7 +88,8 @@ class MilestoneController extends Controller
                     $keyword = implode('%%',str_split(str_replace( ['+', '-'], '',
                         filter_var($keyword, FILTER_SANITIZE_NUMBER_INT)
                     )));
-                    $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?", ["%%$keyword%%"]);
+                    $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?",
+                        ["%%$keyword%%"]);
                 })
                 ->make(true);
         }
@@ -101,7 +106,11 @@ class MilestoneController extends Controller
 
         $this->authorise('view', Milestone::class);
 
-        return Datatables::eloquent($milestones->with('type', 'student', 'student.student'))
+        return Datatables::eloquent($milestones->with([
+            'type', 'student', 'student.student', 'student.school'
+        ] ) )
+            ->editColumn('school', function (Milestone $ms)
+                { return $ms->student->school->name; })
             ->editColumn('type', function (Milestone $ms)
                 { return $ms->name; })
             ->editColumn('due_date', function (Milestone $ms)
@@ -165,7 +174,13 @@ class MilestoneController extends Controller
                 'created_by' => auth()->id(),
             ])
         );
-        return redirect()->route('admin.student.record.milestone.show', compact('student', 'record', 'milestone'));
+
+        $student->allow('view', $milestone);
+        $student->allow('upload', $milestone);
+        $student->supervisors->each->allow('view', $milestone);
+
+        return redirect()->route('admin.student.record.milestone.show',
+            compact('student', 'record', 'milestone'));
     }
 
     /**
@@ -238,8 +253,12 @@ class MilestoneController extends Controller
         // We are using soft delete so this item will remain in the database
         $milestone->delete();
         return redirect()
-            ->route('admin.student.record.milestone.index', [$student->university_id, $record->slug()])
-            ->with('flash', 'Successfully deleted "' . $milestone->name . '"');
+            ->route('admin.student.record.milestone.index', 
+                [$student->university_id, $record->slug()])
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $milestone->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function upload(Request $request,
@@ -248,12 +267,14 @@ class MilestoneController extends Controller
 
         $this->authorise('upload', $milestone);
 
+        if($milestone->student_record_id !== $record->id ||
+            $student->id !== $record->student_id) abort(404);
+
         if($milestone && $request->file( 'file' ) !== null )
         {
-            session()->flash("files", 1);
             $media = MediaUploader::fromSource( $request->file( 'file' ) )
                 ->useHashForFilename()
-                ->toDestination( 'public', 'milestone-attachments/' . $milestone->slug() )
+                ->toDestination( 'local', 'milestone-attachments/' . $milestone->slug() )
                 ->upload();
             $media->original_filename = $request->file( 'file' )->getClientOriginalName();
             $media->uploader_id = auth()->id();
@@ -261,12 +282,31 @@ class MilestoneController extends Controller
             $milestone->attachMedia($media, ['submission']);
             $milestone->submitted_date = Carbon::now();
             $milestone->save();
-            $student->notify( new MilestoneUpload( $student, $record, $milestone, $media ) );
+            $this->sendUploadNotifications( $student, $record, $milestone, $media );
             return "File uploaded successfully";
         }
         abort(404);
     }
 
+    public function sendUploadNotifications(
+        Student $student, StudentRecord $record, Milestone $milestone, Media $upload )
+    {
+        if($upload->uploader->id === $student->id)
+        {
+            $student->notify(
+                new StudentUploadConfirmation( $student, $record, $milestone, $upload )
+            );
+            $record->school->notify(
+                new AdminUploadAlert( $student, $record, $milestone, $upload )
+            );
+        }
+        else
+        {
+            $upload->uploader->notify(
+                new AdminUploadConfirmation( $student, $record, $milestone, $upload )
+            );
+        }
+    }
 
     public function download(Request $request,
         Student $student, StudentRecord $record, Milestone $milestone, Media $file)
@@ -275,20 +315,23 @@ class MilestoneController extends Controller
         $this->authorise('view', $milestone);
 
         if($file->fileExists())
-            return response()->download($file->contents());
+            return response()->download($file->getAbsolutePath());
         Log::error('Uploaded file ' . $file->slug() . " appears to be out of sync");
-        abort(404);
+        abort(401);
     }
 
     public function approve(Request $request,
         Student $student, StudentRecord $record, Milestone $milestone)
     {
-        // $this->authorise('upload', $milestone);
+        $this->authorise('create', Approval::class);
 
         $milestone->approve($request->approved, $request->feedback);
 
         return redirect()->route('admin.student.record.milestone.show',
           [$student->university_id, $record->slug(), $milestone->slug()])
-        ->with('flash', 'Successfully approved milestone"');
+            ->with('flash', [
+                'message' => 'Successfully approved milestone',
+                'type' => 'success'
+            ]);
     }
 }

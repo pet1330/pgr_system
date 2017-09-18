@@ -72,6 +72,7 @@ class StudentController extends Controller
 
         if( $student->records->isNotEmpty() )
         {
+            session()->reflash();
             return redirect()->route('admin.student.record.show',
                         [$student->university_id, $student->record()->slug()]);
         }
@@ -123,7 +124,8 @@ class StudentController extends Controller
         if( session()->has( 'student' ) )
         {
             session()->reflash();
-            return redirect()->route( 'admin.student.record.create', session()->get('student')->university_id );
+            return redirect()->route( 'admin.student.record.create', 
+                session()->get('student')->university_id );
         }
         return redirect()->route( 'admin.student.find' );
     }
@@ -187,7 +189,13 @@ class StudentController extends Controller
             'user_type' => 'Student'
         ]);
         
+        $student->allow('view', $student);
+
         session()->flash('student', $student);
-        return redirect()->route('admin.student.confirm');
+        return redirect()->route('admin.student.confirm')
+            ->with('flash', [
+                'message' => 'Successfully added "' . $student->name . '"',
+                'type' => 'success'
+            ]);
     }
 }

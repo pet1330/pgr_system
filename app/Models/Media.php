@@ -9,6 +9,8 @@ class Media extends \Plank\Mediable\Media
 {
     use HasHashSlug;
 
+    protected static $minSlugLength = 11;
+
     public function getIconAttribute()
     {
         switch ($this->aggregate_type) {
