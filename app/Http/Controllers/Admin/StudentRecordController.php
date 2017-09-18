@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\School;
+use App\Models\Absence;
 use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\Programme;
@@ -123,8 +124,9 @@ class StudentRecordController extends Controller
             ]);
     }
 
-    public function show(Student $student, StudentRecord $record)
+    public function show(Request $request, Student $student, StudentRecord $record)
     {
+        if($request->ajax()) return $this->absences($record);
 
         if($student->id !== $record->student_id) abort(404);
 
@@ -135,10 +137,23 @@ class StudentRecordController extends Controller
             $record = $student->record();
             $overdue = $record->timeline->filter->isOverdue();
             $upcoming = $record->timeline->filter->isUpcoming();
+
             return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
         }
 
         return view('student.dashboard', compact('student'));
+    }
+
+    private function absences(StudentRecord $record)
+    {
+        $abs = $record->student->absences()->with([
+            'type' => function ($query) { $query->withTrashed(); }
+        ]);
+        return Datatables::eloquent($abs)
+            ->addColumn('type', function (Absence $ab) { return $ab->type->name; })
+            ->editColumn('from', function (Absence $ab) { return $ab->from->format('d/m/Y'); })
+            ->editColumn('to', function (Absence $ab) { return $ab->to->format('d/m/Y'); })
+            ->make(true);
     }
 
     public function addSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)

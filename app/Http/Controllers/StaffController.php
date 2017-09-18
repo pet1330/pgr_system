@@ -118,9 +118,15 @@ class StaffController extends Controller
                 'university_email' => $request->university_email,
                 'user_type' => 'Staff'
             ]);
+        
+        $staff->assignDefaultPermissions();
 
         session()->flash('staff', $staff);
-        return redirect()->route('admin.staff.show', $staff->university_id);
+        return redirect()->route('admin.staff.show', $staff->university_id)
+            ->with('flash', [
+                'message' => 'Successfully added "' . $staff->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function upgrade(Request $request)
@@ -150,6 +156,14 @@ class StaffController extends Controller
 
         $staff->user_type = "Admin";
         $staff->save();
-        return redirect()->route('admin.staff.upgrade.index');
+        $admin = Admin::find($staff->id);
+        
+        $admin->assignDefaultPermissions(true);
+
+        return redirect()->route('admin.staff.upgrade.index')
+            ->with('flash', [
+                'message' => $admin->name . ' has been upgraded to an Admin',
+                'type' => 'success'
+            ]);
     }
 }

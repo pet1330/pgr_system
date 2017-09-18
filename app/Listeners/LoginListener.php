@@ -16,7 +16,7 @@ class LoginListener
      */
     public function __construct()
     {
-
+        //
     }
 
     /**
@@ -41,10 +41,20 @@ class LoginListener
             'university_id' => $details['UniversityID'][0],
         ]);
 
-        if (! $user->exists ) $user->user_type = $details['Description'][0] == 'Staff Account' ? 'Staff' : 'Student';
+        if (! $user->exists )
+        {
+            $user->user_type = $details['Description'][0] == 'Staff Account' ? 'Staff' : 'Student';
+            $user->save();
+            // Convert $user to the correct type
+            $user = User::find($user->id);
+            $user->assignDefaultPermissions(true);
+        }
 
         $user->save();
-        // SET USER PERMISSIONS HERE
+
+
+
+
         if( ! $user->locked) auth()->login($user);
 
         return redirect()->route('account-locked');

@@ -189,7 +189,7 @@ class StudentController extends Controller
             'user_type' => 'Student'
         ]);
         
-        $student->allow('view', $student);
+        $student->assignDefaultPermissions();
 
         session()->flash('student', $student);
         return redirect()->route('admin.student.confirm')

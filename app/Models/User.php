@@ -99,6 +99,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user');
     }
 
+    public function assignDefaultPermissions()
+    {
+        $user = User::find($this->id);
+        if (get_class($user) !== "App\Models\User")
+            return $user->assignDefaultPermissions();
+        throw new RuntimeException('User of unknown type');
+    }
+
     // overload the defualt password and remember me token
     public function getAuthPassword() {return null; /* not supported*/ }
     public function getRememberToken() {return null; /* not supported*/ }

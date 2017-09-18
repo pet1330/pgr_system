@@ -37,12 +37,6 @@ class MilestoneSeeder extends Seeder
                 $sr->student->allow('view', $m);
                 $sr->student->allow('upload', $m);
                 $sr->supervisors->map->allow('view', $m);
-
-// timeline->each(function (Milestone $m) use ($supervisor) {
-                        // $supervisor->disallow('view', $m);
-                    // });
-
-
             }
         });
     }

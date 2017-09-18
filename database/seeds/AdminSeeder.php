@@ -14,6 +14,7 @@ use App\Models\ModeOfStudy;
 use App\Models\StudentStatus;
 use Illuminate\Database\Seeder;
 use App\Models\EnrolmentStatus;
+use App\Models\TimelineTemplate;
 
 class AdminSeeder extends Seeder
 {
@@ -76,5 +77,10 @@ class AdminSeeder extends Seeder
         Admin::first()->allow('view', StudentStatus::class);
         Admin::first()->allow('update', StudentStatus::class);
         Admin::first()->allow('delete', StudentStatus::class);
+        Admin::first()->allow('view', Approval::class);
+        Admin::first()->allow('create', Approval::class);
+        Admin::first()->allow('view', TimelineTemplate::class);
+        Admin::first()->allow('create', TimelineTemplate::class);
+        Admin::first()->allow('update', TimelineTemplate::class);
     }
 }

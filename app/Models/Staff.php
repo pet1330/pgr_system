@@ -37,4 +37,21 @@ class Staff extends User
     {
         return $this->belongsToMany(App\Models\Training::class);
     }
+
+    public function assignDefaultPermissions($reset=false)
+    {
+        // Remove all abilities
+        if($reset) $this->abilities()->sync([]);
+
+        // Assign a sensable default
+        $this->allow('view', $this);
+        $this->supervising->each(function(StudentRecord $record)
+        {
+            $this->allow('view', $record);
+            $record->timeline->each(function(Milestone $m)
+            {
+                $this->allow('view', $m);
+            });
+        });
+    }
 }

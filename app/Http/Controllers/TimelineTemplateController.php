@@ -1,12 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
+use App\Models\Student;
+use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
-use App\Models\MilestoneTemplate;
+use App\Models\StudentRecord;
 use App\Models\TimelineTemplate;
+use App\Models\MilestoneTemplate;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
+use App\Http\Requests\TimelineCopyRequest;
 use App\Http\Requests\TimelineTemplateRequest;
 
 class TimelineTemplateController extends Controller
@@ -18,18 +23,23 @@ class TimelineTemplateController extends Controller
      */
     public function index(Request $request)
     {
+
+        $this->authorise('view', TimelineTemplate::class);
+
         if ($request->ajax())
         {
             $timeline = TimelineTemplate::withCount(['milestone_templates']);
 
             return Datatables::eloquent($timeline)
                 ->addColumn('editaction', function (TimelineTemplate $tt) {
-                    return '<form method="GET" action="' . route('admin.settings.timeline.edit', $tt->id) . '" accept-charset="UTF-8" class="delete-form">
+                    return '<form method="GET" action="' . route('admin.settings.timeline.edit',
+                      $tt->id) . '" accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (TimelineTemplate $tt) {
-                      return '<form method="POST" action="' . route('admin.settings.timeline.destroy', $tt->id) . '" accept-charset="UTF-8" class="delete-form">
+                      return '<form method="POST" action="' . route('admin.settings.timeline.destroy',
+                        $tt->id) . '" accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">' . 
                       csrf_field() . '<button class="btn btn-danger">
                       <i class="fa fa-trash"></i></button> </form>';
@@ -52,10 +62,17 @@ class TimelineTemplateController extends Controller
      */
     public function store(TimelineTemplateRequest $request)
     {
-        $tt = TimelineTemplate::create($request->all());
+
+        $this->authorise('create', TimelineTemplate::class);
+
+        $tt = TimelineTemplate::create($request->only( 'only' ));
         return redirect()
             ->route('admin.settings.timeline.index')
-            ->with('flash', 'Successfully added "' . $tt->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully added "' . $tt->name . '"',
+                'type' => 'success'
+            ]
+            );
     }
 
     /**
@@ -66,6 +83,9 @@ class TimelineTemplateController extends Controller
      */
     public function show(Request $request, TimelineTemplate $timeline)
     {
+
+        $this->authorise('view', $timeline);
+
         if ($request->ajax())
         {
             $milestones = $timeline->milestone_templates();
@@ -83,7 +103,7 @@ class TimelineTemplateController extends Controller
                 ->addColumn('deleteaction', function (MilestoneTemplate $mt) use ($timeline) {
                       return '<form method="POST" action="' . route('admin.settings.timeline.milestone.destroy', [$timeline->id, $mt->id]) . '"
                       accept-charset="UTF-8" class="delete-form">
-                      <input type="hidden" name="_method" value="DELETE">' . 
+                      <input type="hidden" name="_method" value="DELETE">' .
                       csrf_field() . '<button class="btn btn-danger">
                       <i class="fa fa-trash"></i></button> </form>';
                 })
@@ -105,16 +125,24 @@ class TimelineTemplateController extends Controller
      */
     public function update(TimelineTemplateRequest $request, TimelineTemplate $timeline)
     {
-        // timeline update edit timeline name
+
+        $this->authorise('update', $timeline);
+        
         $timeline->update($request->only('name'));
         $timeline->save();
         return redirect()
             ->route('admin.settings.timeline.index')
-            ->with('flash', 'Successfully updated "' . $timeline->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully updated "' . $timeline->name . '"',
+                'type' => 'success'
+            ]);
     }
 
     public function edit(TimelineTemplate $timeline)
     {
+
+        $this->authorise('update', $timeline);
+
         // timeline update edit timeline name
         return view('admin.settings.timelinetemplate.edit', compact('timeline'));
     }
@@ -127,27 +155,79 @@ class TimelineTemplateController extends Controller
      */
     public function destroy(TimelineTemplate $timeline)
     {
-        // timeline delete     delete a timeline (archive)
-        // We are using soft delete so this item will remain in the datase    
+
+        $this->authorise('delete', $timeline);
+
+        // We are using soft delete so this item will remain in the datase
         $timeline->delete();
         return redirect()
             ->route('admin.settings.timeline.index')
-            ->with('flash', 'Successfully deleted "' . $timeline->name . '"');
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $timeline->name . '"',
+                'type' => 'success'
+            ]);
     }
-
 
     public function restore($id)
     {
         $tt = TimelineTemplate::withTrashed()->find($id);
+
+        $this->authorise('delete', $tt);
+
         if($tt->trashed())
         {
             $tt->restore();
             return redirect()
                 ->route('admin.settings.timeline.index')
-                ->with('flash', 'Successfully restored "' . $tt->name . '"');
+                ->with('flash', [
+                'message' => 'Successfully restored "' . $tt->name . '"',
+                'type' => 'success'
+            ]);
         }
         return redirect()
                 ->route('admin.settings.timeline.index')
-                ->with('flash', 'Error: Timeline Template has not deleted: "' . $tt->name . '"');
+                ->with('flash', [
+                'message' => 'Error: Timeline Template has not deleted: "' . $tt->name . '"',
+                'type' => 'danger'
+            ]);
     }
+
+      public function create_mass_assignment(Student $student, StudentRecord $record)
+      {
+
+          $this->authorise('update', $record);
+          $this->authorise('create', Milestone::class);
+          $this->authorise('view', TimelineTemplate::class);
+
+          $timelines = TimelineTemplate::all();
+          return view('admin.user.student.mass_assignment',  compact('timelines','student', 'record'));
+      }
+
+      public function store_mass_assignment(TimelineCopyRequest $request,
+        Student $student, StudentRecord $record)
+      {
+
+          $this->authorise('update', $record);
+          $this->authorise('create', Milestone::class);
+          $this->authorise('view', TimelineTemplate::class);
+
+          $tt = TimelineTemplate::where('id', $request->timeline_id)->first();
+
+          if($tt){
+            $tt->copyToStudent($record);
+            return redirect()->route('admin.student.record.show', 
+              [$student->university_id, $record->slug()])
+              ->with('flash', [
+                'message' => 'Milestones in '.$tt->name.' successfully copied to '.$student->name.'\'s record',
+                'type' => 'success'
+            ]);
+          }
+
+          return redirect()->route('admin.student.record.show', 
+            [$student->university_id, $record->slug()])
+            ->with('flash', [
+              'message' => 'Error: Something went wrong! please try again',
+              'type' => 'danger'
+            ]);
+      }
 }
