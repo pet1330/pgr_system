@@ -1,30 +1,24 @@
 <?php
 
-Route::get('demo', function (){
-    auth()->loginUsingId(621);
-    return redirect('/');
-});
+// Route::get('demo/logout', function (){
+//     auth()->logout();
+//     return redirect('/');
+// });
 
+// Route::get('demo/admin', function (){
+//     auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
+//     return redirect('/');
+// });
 
-Route::get('demo/logout', function (){
-    auth()->logout();
-    return redirect('/');
-});
+// Route::get('demo/staff', function (){
+//     auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
+//     return redirect('/');
+// });
 
-Route::get('demo/admin', function (){
-    auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
-    return redirect('/');
-});
-
-Route::get('demo/staff', function (){
-    auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
-    return redirect('/');
-});
-
-Route::get('demo/student', function (){
-    auth()->loginUsingId(App\Models\Student::pluck('id')->first());
-    return redirect('/');
-});
+// Route::get('demo/student', function (){
+//     auth()->loginUsingId(App\Models\Student::pluck('id')->first());
+//     return redirect('/');
+// });
 
 
 // Route::get('demo', function (){
@@ -62,6 +56,7 @@ Route::middleware('samlauth')
     // =======================================================================
 
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
+    Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
     Route::get('student/upcoming', 'MilestoneController@upcoming')->name('student.upcoming');
     Route::get('student/submitted', 'MilestoneController@submitted')->name('student.submitted');
 

@@ -4,12 +4,26 @@ namespace App\Models;
 
 use Plank\Mediable\Mediable;
 use Balping\HashSlug\HasHashSlug;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Media extends \Plank\Mediable\Media
 {
     use HasHashSlug;
+    use LogsActivity;
 
-    protected static $minSlugLength = 11;
+    protected static $logOnlyDirty = true;
+
+    protected static $logAttributes = [
+        'disk',
+        'size',
+        'filename',
+        'directory',
+        'extension',
+        'mime_type',
+        'uploader_id',
+        'aggregate_type',
+        'original_filename',
+    ];
 
     public function getIconAttribute()
     {

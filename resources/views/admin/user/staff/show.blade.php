@@ -3,14 +3,6 @@
 @section('page_description', '')
 @section('content')
 <div class="content">
-  <style type="text/css">
-  .hero-widget { text-align: center; padding-top: 20px; padding-bottom: 20px; }
-  .hero-widget .icon { display: block; font-size: 96px; line-height: 96px; margin-bottom: 10px; text-align: center; }
-  .hero-widget var { display: block; height: 64px; font-size: 64px; line-height: 64px; font-style: normal; }
-  .hero-widget label { font-size: 17px; }
-  .hero-widget .options { margin-top: 10px; }
-  
-  </style>
   @forelse($staff->supervising()->orderBy('supervisors.supervisor_type')->get() as $sr)
   <div class="row">
     <div class="box box-primary">
