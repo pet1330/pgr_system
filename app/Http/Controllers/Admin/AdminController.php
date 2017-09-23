@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
+use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\StudentRecord;
 use App\Http\Controllers\Controller;
@@ -31,6 +32,13 @@ class AdminController extends Controller
 
         $this->authorise('view', $admin);
 
-        return View('admin.dashboard', compact('admin'));
+        $awaitingAmendments = Milestone::awaitingAmendments()->count();
+        $overdue = Milestone::overdue()->count();
+        $upcoming = Milestone::upcoming()->count();
+        $recentlySubmitted = Milestone::recentlySubmitted()->count();
+
+        return View('admin.dashboard',
+            compact('admin', 'awaitingAmendments', 'overdue', 'upcoming', 'recentlySubmitted')
+        );
     }
 }

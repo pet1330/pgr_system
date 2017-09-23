@@ -57,6 +57,21 @@ class MilestoneController extends Controller
             ]);
     }
 
+    public function amendments(Request $request)
+    {
+
+        $this->authorise('view', Milestone::class);
+
+        if ($request->ajax())
+            return $this->data( Milestone::awaitingAmendments() )->make(true);
+
+        return view('admin.milestone.list', [
+            'title' => 'Awaiting Amendments',
+            'subtitle' => 'All milestones awaiting amendments',
+            ]);
+    }
+
+
     public function upcoming(Request $request)
     {
 
@@ -111,7 +126,7 @@ class MilestoneController extends Controller
         ] ) )
             ->editColumn('school', function (Milestone $ms)
                 { return $ms->student->school->name; })
-            ->editColumn('type', function (Milestone $ms)
+            ->editColumn('name', function (Milestone $ms)
                 { return $ms->name; })
             ->editColumn('due_date', function (Milestone $ms)
                 { return $ms->due_date->format('d/m/Y') . '  ('.$ms->due_date->diffForHumans().')' ; })
@@ -127,9 +142,11 @@ class MilestoneController extends Controller
             })
             ->setRowAttr([ 'data-link' => function(Milestone $ms)
                 {
-                    return route('admin.student.record.show',
-                        [$ms->student->student->university_id, $ms->student->slug(),]
-                    );
+                    return route('admin.student.record.milestone.show', [
+                            $ms->student->student->university_id,
+                            $ms->student->slug(),
+                            $ms->slug()
+                        ]);
                 }
             ]);
     }

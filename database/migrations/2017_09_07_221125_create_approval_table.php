@@ -23,6 +23,7 @@ class CreateApprovalTable extends Migration
             $table->dateTime('approved_on')->nullable();
             $table->string('approved_name')->nullable();
             $table->timestamps();
+            $table->index(['approvable_id', 'created_at']);
             $table->foreign('approved_by_id')->references('id')->on('users');
         });
     }

@@ -12,8 +12,6 @@ class School extends Model
     use Notifiable;
     use SoftDeletes;
     use LogsActivity;
-    
-    protected static $minSlugLength = 11;
 
     protected static $logOnlyDirty = true;
     

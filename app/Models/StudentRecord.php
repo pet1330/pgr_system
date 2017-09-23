@@ -19,8 +19,6 @@ class StudentRecord extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $minSlugLength = 11;
-
     protected static $logAttributes = [
         'tierFour',
         'school_id',

@@ -178,11 +178,11 @@ $(document).ready(function() {
         _.merge({}, generalSettings, {
             "searching": true,
             columns: [
-                { data: 'name', name: 'type.name', searchable: true, orderable: true },
+                { data: 'name', name: 'name', searchable: true, orderable: true },
                 { data: 'due_date', name: 'due_date', searchable: false, orderable: true },
-                { data: 'school', name: 'student.school.name', searchable: true, orderable: true },
-                { data: 'first_name', name: 'student.student.first_name', searchable: false, orderable: true },
-                { data: 'last_name', name: 'student.student.last_name', searchable: false, orderable: true },
+                { data: 'school', name: 'student.school.name', searchable: true, orderable: false },
+                { data: 'first_name', name: 'student.student.first_name', searchable: false, orderable: false },
+                { data: 'last_name', name: 'student.student.last_name', searchable: false, orderable: false },
             ]
         })
     );
@@ -193,12 +193,12 @@ $(document).ready(function() {
         _.merge({}, generalSettings, {
             "searching": true,
             columns: [
-                { data: 'name', name: 'type.name', searchable: true, orderable: true },
+                { data: 'name', name: 'name', searchable: true, orderable: true },
                 { data: 'due_date', name: 'due_date', searchable: false, orderable: true },
                 { data: 'submitted_date', name: 'submitted_date', searchable: false, orderable: true },
-                { data: 'school', name: 'student.school.name', searchable: true, orderable: true },
-                { data: 'first_name', name: 'student.student.first_name', searchable: false, orderable: true },
-                { data: 'last_name', name: 'student.student.last_name', searchable: false, orderable: true },
+                { data: 'school', name: 'student.school.name', searchable: true, orderable: false },
+                { data: 'first_name', name: 'student.student.first_name', searchable: true, orderable: false },
+                { data: 'last_name', name: 'student.student.last_name', searchable: true, orderable: false },
             ]
         })
     );

@@ -16,8 +16,6 @@ class Milestone extends Model
     use SoftDeletes;
     use LogsActivity;
 
-    protected static $minSlugLength = 11;
-
     protected static $logOnlyDirty = true;
 
     protected static $logAttributes = [
@@ -136,7 +134,7 @@ class Milestone extends Model
     {
         return $query->notSubmitted()
             ->where('due_date', '<=', Carbon::now())
-            ->doesntHave('approvals');;
+            ->doesntHave('approvals');
     }
 
     public function isOverdue()
@@ -162,9 +160,7 @@ class Milestone extends Model
 
     public function scopeAwaitingAmendments($query)
     {
-        return $query->whereHas('approvals', function($q){
-            $q->where('approved', false);
-        });
+        return $query->approved(false);
     }
 
     public function isAwaitingAmendments()
@@ -172,12 +168,15 @@ class Milestone extends Model
         return $this->approvals->isNotEmpty() && ! $this->approvals->last()->approved;
     }
 
-    public function scopeApproved($query)
+    public function scopeApproved($query, $accepted=true)
     {
-        return $query->whereHas('approvals', function($q)
-        {
-            $q->where('approved', true);
-        });
+        return $query->select('milestones.*')
+            ->join('approvals', 'milestones.id', '=', 'approvals.approvable_id')
+            ->join(\DB::raw('(SELECT approvable_id, MAX(created_at) created_at
+                FROM approvals GROUP BY approvable_id) aa' ), function($join) {
+                $join->on('approvals.approvable_id', '=', 'aa.approvable_id')
+                     ->on('approvals.created_at', '=', 'aa.created_at');
+            })->where('approvals.approved', $accepted);
     }
 
     public function isApproved()
@@ -233,7 +232,6 @@ class Milestone extends Model
             ])
         );
     }
-
 
     public function recalculateDueDate()
     {

@@ -65,7 +65,7 @@ class TimelineTemplateController extends Controller
 
         $this->authorise('create', TimelineTemplate::class);
 
-        $tt = TimelineTemplate::create($request->only( 'only' ));
+        $tt = TimelineTemplate::create($request->only( 'name' ));
         return redirect()
             ->route('admin.settings.timeline.index')
             ->with('flash', [
