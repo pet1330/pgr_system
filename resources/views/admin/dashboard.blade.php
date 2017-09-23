@@ -22,6 +22,21 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
+          <a href="{{ route('admin.student.overdue') }}">
+            <div class="hero-widget well well-sm{{ $overdue ? ' text-danger' : ' text-muted' }}">
+              <div class="icon">
+                <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
+              </div>
+              <div class="text">
+                <var>{{ $overdue }}</var>
+              </div>
+              <div class="options">
+                <span class="btn btn-lg">Overdue</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-3 col-sm-6">
           <a href="{{ route('admin.student.upcoming') }}">
             <div class="hero-widget well well-sm{{ $upcoming ? ' text-warning' : ' text-muted' }}">
               <div class="icon">
@@ -33,21 +48,6 @@
               </div>
               <div class="options">
                 <span class="btn btn-lg">Upcoming Milestones</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <a href="{{ route('admin.student.overdue') }}">
-            <div class="hero-widget well well-sm{{ $overdue ? ' text-danger' : ' text-muted' }}">
-              <div class="icon">
-                <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
-              </div>
-              <div class="text">
-                <var>{{ $overdue }}</var>
-              </div>
-              <div class="options">
-                <span class="btn btn-lg">Overdue</span>
               </div>
             </div>
           </a>
