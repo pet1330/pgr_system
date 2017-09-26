@@ -32,7 +32,6 @@ $(document).ready(function() {
                 { data: 'school', name: 'school.name', searchable: true, orderable: true },
                 { data: 'tierFour', name: 'tierFour', searchable: true, orderable: true },
                 { data: 'fundingType', name: 'fundingType.name', searchable: true, orderable: true },
-                { data: 'modeOfStudy', name: 'modeOfStudy.name', searchable: true, orderable: true },
                 { data: 'programme', name: 'programme.name', searchable: true, orderable: true },
                 { data: 'enrolmentStatus', name: 'enrolmentStatus.status', searchable: true, orderable: true },
                 { data: 'studentStatus', name: 'studentStatus.status', searchable: true, orderable: true }
@@ -91,21 +90,6 @@ $(document).ready(function() {
             columns: [
                 { data: 'name', name: 'name', searchable: false, orderable: false},
                 { data: 'duration', name: 'duration', searchable: false, orderable: false},
-                { data: 'students_count', name: 'students_count', searchable: false, orderable: false},
-                { data: 'editaction', name: 'editaction', orderable: false, searchable: false},
-                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
-            ]
-        })
-    );
-
-    // Modes of study for Admins
-    //==============================================================================================
-    $('#admin-mode-of-study-table').DataTable(
-        _.merge({}, generalSettings, {
-            "searching": false,
-            columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: false},
-                { data: 'timing_factor', name: 'timing_factor', searchable: false, orderable: false},
                 { data: 'students_count', name: 'students_count', searchable: false, orderable: false},
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false},
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}

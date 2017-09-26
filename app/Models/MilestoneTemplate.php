@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Bouncer;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -51,5 +52,6 @@ class MilestoneTemplate extends Model
         $record->supervisors->each(function (Staff $staff) use ($m) {
             $staff->allow('view', $m);
         });
+        Bouncer::refresh();
     }
 }

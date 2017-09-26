@@ -101,27 +101,6 @@
             </div>
           </div>
           <div class="row">
-            <div class="form-group{{ $errors->has('mode_of_study_id') ? ' has-error' : '' }} col-md-6">
-              <label for="mode_of_study_id">Mode of Study</label>
-              <select class="form-control" name="mode_of_study_id">
-                <option value="">--- Select ---</option>
-                @foreach($modes_of_study as $mos)
-                <option value="{{ $mos->id }}"
-                  @if($errors->any())
-                  {{ (collect(old('mode_of_study_id'))->contains($mos->id)) ? 'selected':'' }}  />
-                  @else
-                  {{ ($record->modeOfStudy->id == $mos->id) ? 'selected':'' }} />
-                  @endif
-                  {{ $mos->name }}
-                </option>
-                @endforeach
-              </select>
-              @if ($errors->has('mode_of_study_id'))
-              <span class="help-block">
-                <strong>{{ $errors->first('mode_of_study_id') }}</strong>
-              </span>
-              @endif
-            </div>
             <div class="form-group{{ $errors->has('programme_id') ? ' has-error' : '' }} col-md-6">
               <label for="programme_id">Programme</label>
               <select class="form-control" name="programme_id">

@@ -129,11 +129,6 @@
     {{ App\Models\Programme::count() }}
     @endcomponent
     @component('components.infobox')
-    @slot('title', 'Study Modes')
-    @slot('icon', 'fa fa-gear')
-    {{ App\Models\ModeOfStudy::count() }}
-    @endcomponent
-    @component('components.infobox')
     @slot('title', 'funding types')
     @slot('icon', 'fa fa-gear')
     {{ App\Models\FundingType::count() }}

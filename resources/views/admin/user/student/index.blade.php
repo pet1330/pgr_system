@@ -20,7 +20,6 @@
         <td>Funding Type</td>
         <td>Enrolment Status</td>
         <td>Programme</td>
-        <td>Mode of Study</td>
         <td>Student Status</td>
     @endcomponent
 </div>

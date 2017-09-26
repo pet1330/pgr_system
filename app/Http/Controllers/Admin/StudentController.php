@@ -7,7 +7,6 @@ use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\Programme;
 use App\Models\FundingType;
-use App\Models\ModeOfStudy;
 use Illuminate\Http\Request;
 use App\Models\StudentRecord;
 use App\Models\StudentStatus;
@@ -31,7 +30,6 @@ class StudentController extends Controller
             $records = StudentRecord::with([
                 'student',
                 'fundingType' => function ($query) { $query->withTrashed(); },
-                'modeOfStudy' => function ($query) { $query->withTrashed(); },
                 'studentStatus' => function ($query) { $query->withTrashed(); },
                 'programme' => function ($query) { $query->withTrashed(); },
                 'school' => function ($query) { $query->withTrashed(); },
@@ -48,8 +46,6 @@ class StudentController extends Controller
                     { return $sr->student->university_id; })
                 ->addColumn('fundingType', function (StudentRecord $sr)
                     { return $sr->fundingType->name; })
-                ->addColumn('modeOfStudy', function (StudentRecord $sr)
-                    { return $sr->modeOfStudy->name; })
                 ->addColumn('studentStatus', function (StudentRecord $sr)
                     { return $sr->studentStatus->status; })
                 ->addColumn('programme', function (StudentRecord $sr)

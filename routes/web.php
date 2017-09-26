@@ -1,42 +1,7 @@
 <?php
 
-// Route::get('demo/logout', function (){
-//     auth()->logout();
-//     return redirect('/');
-// });
-
-// Route::get('demo/admin', function (){
-//     auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
-//     return redirect('/');
-// });
-
-// Route::get('demo/staff', function (){
-//     auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
-//     return redirect('/');
-// });
-
-// Route::get('demo/student', function (){
-//     auth()->loginUsingId(App\Models\Student::pluck('id')->first());
-//     return redirect('/');
-// });
-
-
-// Route::get('demo', function (){
-//     // auth()->logout();
-//     // auth()->loginUsingId(App\Models\Admin::pluck('id')->first());
-//     // auth()->loginUsingId(App\Models\Admin::whereId(604)->pluck('id')->first());
-//     // auth()->loginUsingId(App\Models\Admin::find(602)->first()->id);
-//     // auth()->loginUsingId(App\Models\Staff::pluck('id')->first());
-//     auth()->loginUsingId(App\Models\Student::pluck('id')->first());
-//     return redirect('/');
-// });
-
-Route::any('error', function(){
-    dd(Request::all());
-});
-
-Route::middleware('guest')->get('login', 'SAMLController@login');
-Route::middleware('samlauth')->get('logout', 'SAMLController@logout');
+Route::middleware('guest')->get('login', 'SAMLController@login')->name('login');
+Route::middleware('samlauth')->get('logout', 'SAMLController@logout')->name('logout');
 
 Route::middleware('samlauth')->get('/', function() {
     return redirect(auth()->user()->dashboard_url());
@@ -81,44 +46,34 @@ Route::middleware('samlauth')
     Route::get('staff/upgrade', 'StaffController@upgrade')->name('staff.upgrade.index');
     Route::post('staff/{staff}/upgrade', 'StaffController@upgrade_store')->name('staff.upgrade.store');
 
-    // Route::resource('student.record.supervisor', 'SupervisorController',
-        // [ 'only' => ['create', 'store', 'destroy'] ]);
-
-
-
-
-
-
 
     Route::get('student/{student}/record/{record}/supervisor/find',
         'SupervisorController@find')
-            ->name('student.record.supervisor.find');
+            ->name('supervisor.find');
 
     Route::post('student/{student}/record/{record}/supervisor/find',
         'SupervisorController@find_post')
-            ->name('student.record.supervisor.find');
+            ->name('supervisor.find');
 
-
-    Route::get('student/{student}/record/{record}/supervisor/{staff}',
+    Route::get('student/{student}/record/{record}/supervisor/{staff}/create',
         'SupervisorController@create')
-            ->name('student.record.supervisor.create');
+            ->name('supervisor.create');
 
-    Route::post('student/{student}/record/{record}/supervisor/{staff}',
+    Route::post('student/{student}/record/{record}/supervisor',
         'SupervisorController@store')
-            ->name('student.record.supervisor.store');
-
+            ->name('supervisor.store');
 
     Route::get('student/{student}/record/{record}/supervisor/confirm_id',
         'SupervisorController@confirm_id')
-            ->name('student.record.supervisor.confirm_id');
+            ->name('supervisor.confirm_id');
 
     Route::post('student/{student}/record/{record}/supervisor/confirm_id',
         'SupervisorController@confirm_post_id')
-            ->name('student.record.supervisor.confirm_id');
+            ->name('supervisor.confirm_id');
 
     Route::delete('student/{student}/record/{record}/supervisor/{staff}',
             'SupervisorController@destroy')
-            ->name('student.record.supervisor.destroy');
+            ->name('supervisor.destroy');
 
 
     Route::get('student/{student}/record/{record}/mass-assign',
@@ -177,10 +132,6 @@ Route::middleware('samlauth')
                    'CollegeController@restore')
             ->name('college.restore');
 
-        Route::get('mode-of-study/{mode_of_study}/restore',
-                   'ModeOfStudyController@restore')
-            ->name('mode-of-study.restore');
-
         Route::get('student-status/{student_status}/restore',
                    'StudentStatusController@restore')
             ->name('student-status.restore');
@@ -208,8 +159,6 @@ Route::middleware('samlauth')
         Route::resource('absence-type', 'AbsenceTypeController', $settings_resource);
 
         Route::resource('funding-type', 'FundingTypeController',  $settings_resource);
-
-        Route::resource('mode-of-study', 'ModeOfStudyController', $settings_resource);
 
         Route::resource('milestone-type', 'MilestoneTypeController', $settings_resource);
 

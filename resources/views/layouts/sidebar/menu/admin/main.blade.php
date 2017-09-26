@@ -20,7 +20,6 @@
       auth()->user()->can('update', App\Models\College::class) ||
       auth()->user()->can('update', App\Models\EnrolmentStatus::class) ||
       auth()->user()->can('update', App\Models\FundingType::class) ||
-      auth()->user()->can('update', App\Models\ModeOfStudy::class) ||
       auth()->user()->can('update', App\Models\School::class) ||
       auth()->user()->can('update', App\Models\StudentStatus::class)
       )

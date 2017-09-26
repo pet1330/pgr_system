@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Bouncer;
 use Carbon\Carbon;
 use App\Models\Milestone;
 use Balping\HashSlug\HasHashSlug;
@@ -26,7 +27,6 @@ class StudentRecord extends Model
         'programme_id',
         'enrolment_date',
         'funding_type_id',
-        'mode_of_study_id',
         'student_status_id',
         'enrolment_status_id',
     ];
@@ -38,7 +38,6 @@ class StudentRecord extends Model
         'programme_id',
         'enrolment_date',
         'funding_type_id',
-        'mode_of_study_id',
         'student_status_id',
         'enrolment_status_id',
     ];
@@ -59,11 +58,6 @@ class StudentRecord extends Model
     public function school()
     {
         return $this->belongsTo(School::class)->withTrashed();
-    }
-
-    public function modeOfStudy()
-    {
-        return $this->belongsTo(ModeOfStudy::class)->withTrashed();
     }
 
     public function studentStatus()
@@ -117,7 +111,7 @@ class StudentRecord extends Model
         $this->timeline->each(function (Milestone $m) use ($supervisor) {
             $supervisor->disallow('view', $m);
         });
-
+        Bouncer::refresh();
         return $this->supervisors()
                     ->updateExistingPivot( $supervisor->id,
                         ['changed_on' => Carbon::now()] );
@@ -130,7 +124,7 @@ class StudentRecord extends Model
         $this->timeline->each(function (Milestone $m) use ($supervisor) {
             $supervisor->allow('view', $m);
         });
-
+        Bouncer::refresh();
         return $this->supervisors()->syncWithoutDetaching(
             [
                 $supervisor->id =>  [ "supervisor_type" => $type ]
@@ -162,9 +156,7 @@ class StudentRecord extends Model
     {
         $unit = "add" . ucfirst($this->programme->duration_unit);
         return $this->enrolment_date->copy()
-                    ->addMonths(
-                        $this->programme->duration * 
-                        $this->modeOfStudy->timing_factor)
+                    ->addMonths($this->programme->duration)
                     ->addDays($this->student->interuptionPeriodSoFar());
     }
 

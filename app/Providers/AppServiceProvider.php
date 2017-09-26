@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191); // Fix for MySQL versions < 5.7.7
 
+        Bouncer::cache();
+
         Validator::extend('student', function ($attribute, $value) {
             return Student::where('university_id', $value)->exists();
         });

@@ -16,5 +16,6 @@ class StaffSeeder extends Seeder
         Staff::all()->each(function(Staff $s) {
             $s->allow('view', $s);
         });
+        Bouncer::refresh();
     }
 }

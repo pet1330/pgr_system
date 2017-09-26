@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Bouncer;
 use App\Scopes\UserScope;
 use App\Models\Training;
 
@@ -53,5 +54,6 @@ class Staff extends User
                 $this->allow('view', $m);
             });
         });
+        Bouncer::refresh();
     }
 }

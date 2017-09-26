@@ -39,13 +39,6 @@
       </a>
     </li>
     @endcan
-    @can('update', App\Models\ModeOfStudy::class)
-    <li>
-      <a href="{{ route('admin.settings.mode-of-study.index') }}">
-        Modes of Study
-      </a>
-    </li>
-    @endcan
     @can('update', App\Models\StudentStatus::class)
     <li>
       <a href="{{ route('admin.settings.student-status.index') }}">

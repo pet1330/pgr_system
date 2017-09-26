@@ -176,7 +176,7 @@ class Milestone extends Model
                 FROM approvals GROUP BY approvable_id) aa' ), function($join) {
                 $join->on('approvals.approvable_id', '=', 'aa.approvable_id')
                      ->on('approvals.created_at', '=', 'aa.created_at');
-            })->where('approvals.approved', $accepted);
+            })->where('approvals.approved', !! $accepted);
     }
 
     public function isApproved()

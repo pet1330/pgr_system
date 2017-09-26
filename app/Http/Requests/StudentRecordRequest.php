@@ -41,10 +41,6 @@ class StudentRecordRequest extends FormRequest
                 'required',
                 'exists:student_statuses,id',
             ],
-            "mode_of_study_id" => [
-                'required',
-                'exists:modes_of_study,id',
-            ],
             "programme_id" => [
                 'required',
                 'exists:programmes,id',

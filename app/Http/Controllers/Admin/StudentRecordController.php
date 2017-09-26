@@ -8,7 +8,6 @@ use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\Programme;
 use App\Models\FundingType;
-use App\Models\ModeOfStudy;
 use Illuminate\Http\Request;
 use App\Models\StudentRecord;
 use App\Models\StudentStatus;
@@ -32,15 +31,13 @@ class StudentRecordController extends Controller
             $schools = School::all();
             $enrolment_statuses = EnrolmentStatus::all();
             $student_statuses = StudentStatus::all();
-            $modes_of_study = ModeOfStudy::all();
             $programmes = Programme::all();
 
             if( session()->get( 'student' )->id !== $student->id) abort(404);
 
             return view( 'admin.user.student.create_record', compact(
                 'student', 'funding_types', 'schools',
-                'enrolment_statuses', 'student_statuses',
-                'modes_of_study', 'programmes' )
+                'enrolment_statuses', 'student_statuses', 'programmes' )
             );
         }
         return redirect()->route( 'admin.student.find' );
@@ -56,13 +53,11 @@ class StudentRecordController extends Controller
             $schools = School::all();
             $enrolment_statuses = EnrolmentStatus::all();
             $student_statuses = StudentStatus::all();
-            $modes_of_study = ModeOfStudy::all();
             $programmes = Programme::all();
 
             return view('admin.user.student.edit_record', compact(
                 'student', 'record', 'funding_types', 'schools',
-                'enrolment_statuses', 'student_statuses',
-                'modes_of_study', 'programmes' )
+                'enrolment_statuses', 'student_statuses', 'programmes' )
             );
         return redirect()->route( 'admin.student.find' );
     }
@@ -83,7 +78,6 @@ class StudentRecordController extends Controller
                     'school_id' => $request->school_id,
                     'enrolment_status_id' => $request->enrolment_status_id,
                     'student_status_id' => $request->student_status_id,
-                    'mode_of_study_id' => $request->mode_of_study_id,
                     'programme_id' => $request->programme_id,
             ])
         );
@@ -109,7 +103,6 @@ class StudentRecordController extends Controller
                 'school_id',
                 'enrolment_status_id',
                 'student_status_id',
-                'mode_of_study_id',
                 'programme_id'
             ])
         );

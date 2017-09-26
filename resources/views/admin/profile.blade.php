@@ -78,10 +78,6 @@ No Longer used: see views: admin.profile
                 <td>{{ ucfirst(auth()->user()->record()->programme->name) ?? 'unknown' }}</td>
               </tr>
               <tr>
-                <td>Mode of study</td>
-                <td>{{ auth()->user()->modeOfStudy->name ?? 'unknown'}}</td>
-              </tr>
-              <tr>
                 <td>Enrolment status</td>
                 <td>
                   {{ auth()->user()->enrolmentStatus->status ?? 'unknown' }}

@@ -17,5 +17,6 @@ class StudentSeeder extends Seeder
         Student::all()->each(function(Student $s) {
             $s->allow('view', $s);
         });
+        Bouncer::refresh();
     }
 }

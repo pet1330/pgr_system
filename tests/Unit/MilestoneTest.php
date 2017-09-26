@@ -18,7 +18,6 @@ class MilestoneTest extends TestCase
     public function seedDatabaseWithStudentRecordInformation()
     {
         $this->artisan('db:seed', [ '--class' => 'EnrolmentStatusSeeder']);
-        $this->artisan('db:seed', [ '--class' => 'ModeOfStudySeeder']);
         $this->artisan('db:seed', [ '--class' => 'StudentStatusSeeder']);
         $this->artisan('db:seed', [ '--class' => 'ProgrammeSeeder']);
         $this->artisan('db:seed', [ '--class' => 'CollegeSeeder']);

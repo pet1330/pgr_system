@@ -21,7 +21,6 @@ use App\Models\EnrolmentStatus;
 use App\Models\StudentStatus;
 use App\Models\Programme;
 use App\Models\FundingType;
-use App\Models\ModeOfStudy;
 use App\Models\Absence;
 use App\Models\AbsenceType;
 use Carbon\Carbon;
@@ -89,7 +88,6 @@ $factory->define(StudentRecord::class, function (Faker\Generator $faker) {
         'enrolment_date'       => Carbon::instance($faker->dateTimeBetween('-3 years', 'now')),
         'programme_id'         => Programme::inRandomOrder()->pluck('id')->first(),
         'funding_type_id'      => FundingType::inRandomOrder()->pluck('id')->first(),
-        'mode_of_study_id'     => ModeOfStudy::inRandomOrder()->pluck('id')->first(),
         'tierFour'             => $faker->boolean,
     ];
 });
@@ -172,10 +170,3 @@ $factory->define(Permission::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
     ];
 });
-
-
-// APPROVAL Model
-// 'approval_required'    => $faker->boolean(),
-        // 'approval_granted'     => $approval,
-        // 'approved_by'          => $approval ? Staff::inRandomOrder()->pluck('id')->first() : null,
-        // 'approved_on'          => $approval ? Carbon::now()->copy()->addMonths($faker->numberBetween(1,12))->format('Y-m-d H:i:s') : null,

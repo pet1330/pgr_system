@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Log;
+use Bouncer;
 use Carbon\Carbon;
 use MediaUploader;
 use App\Models\Media;
@@ -195,6 +196,7 @@ class MilestoneController extends Controller
         $student->allow('view', $milestone);
         $student->allow('upload', $milestone);
         $student->supervisors->each->allow('view', $milestone);
+        Bouncer::refresh();
 
         return redirect()->route('admin.student.record.milestone.show',
             compact('student', 'record', 'milestone'));

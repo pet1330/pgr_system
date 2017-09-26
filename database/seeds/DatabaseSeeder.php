@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
 
         // Student Record Seeders
         $this->call(EnrolmentStatusSeeder::class);
-        $this->call(ModeOfStudySeeder::class);
         $this->call(StudentStatusSeeder::class);
         $this->call(ProgrammeSeeder::class);
         $this->call(CollegeSeeder::class);

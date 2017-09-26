@@ -23,7 +23,7 @@
       @endcan
       @can('create', App\Models\Staff::class)
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.record.supervisor.find',
+        <a role="menuitem" href="{{ route('admin.supervisor.find',
           [$student->university_id, $record->slug()]) }}">
           Add Supervisor
         </a>
@@ -189,10 +189,6 @@
           <tr>
             <td>Student Status:</td>
             <td>{{ $record->studentStatus->status }}</td>
-          </tr>
-          <tr>
-            <td>Mode of Study:</td>
-            <td>{{ $record->modeOfStudy->name }}</td>
           </tr>
           <tr>
             <td>Programme:</td>

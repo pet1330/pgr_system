@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Bouncer;
 use App\Scopes\UserScope;
 
 class Admin extends User
@@ -49,10 +50,6 @@ class Admin extends User
         $this->allow('view', FundingType::class);
         $this->allow('update', FundingType::class);
         $this->allow('delete', FundingType::class);
-        $this->allow('create', ModeOfStudy::class);
-        $this->allow('view', ModeOfStudy::class);
-        $this->allow('update', ModeOfStudy::class);
-        $this->allow('delete', ModeOfStudy::class);
         $this->allow('create', School::class);
         $this->allow('view', School::class);
         $this->allow('update', School::class);
@@ -70,5 +67,6 @@ class Admin extends User
         $this->allow('view', TimelineTemplate::class);
         $this->allow('create', TimelineTemplate::class);
         $this->allow('update', TimelineTemplate::class);
+        Bouncer::refresh();
     }
 }

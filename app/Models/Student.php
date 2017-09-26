@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Bouncer;
 use Carbon\Carbon;
 use App\Scopes\UserScope;
 
@@ -59,11 +60,6 @@ class Student extends User
     public function getEnrolmentStatusAttribute()
     {
         return $this->record()->EnrolmentStatus;
-    }
-
-    public function getModeOfStudyAttribute()
-    {
-        return $this->record()->ModeOfStudy;
     }
 
     public function getDirectorOfStudyAttribute()
@@ -126,11 +122,6 @@ class Student extends User
         return $this->record()->programme();
     }
 
-    public function modeOfStudy()
-    {
-        return $this->record()->modeOfStudy();
-    }
-
     public function absences()
     {
         return $this->hasMany(Absence::class, 'user_id');
@@ -157,5 +148,7 @@ class Student extends User
             $this->allow('view', $m);
             $this->allow('upload', $m);
         });
+
+        Bouncer::refresh();
     }
 }

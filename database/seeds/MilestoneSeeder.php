@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Milestone;
 use App\Models\Admin;
+use App\Models\Milestone;
 use App\Models\MilestoneType;
 use App\Models\StudentRecord;
 use Illuminate\Database\Seeder;
@@ -39,5 +39,6 @@ class MilestoneSeeder extends Seeder
                 $sr->supervisors->map->allow('view', $m);
             }
         });
+        Bouncer::refresh();
     }
 }
