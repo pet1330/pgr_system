@@ -30,11 +30,11 @@ class SupervisorController extends Controller
 
         if ($staff)
         {
-            return redirect()->route('admin.student.record.supervisor.create',
+            return redirect()->route('admin.supervisor.create',
                 [$student->university_id, $record->slug(), $staff->university_id]);
         }
         session()->flash('staff_id', $request->university_id);
-        return redirect()->route('admin.student.record.supervisor.confirm_id', 
+        return redirect()->route('admin.supervisor.confirm_id',
             [$student->university_id, $record->slug()]);
     }
 
@@ -46,87 +46,55 @@ class SupervisorController extends Controller
         return view( 'supervisor.found', compact( 'staff', 'student', 'record' ) );
     }
 
-    public function store(SupervisorRequest $request, 
-        Student $student, StudentRecord $record, Staff $staff)
+    public function store(SupervisorRequest $request, Student $student, StudentRecord $record)
     {
 
         $this->authorise('create', Staff::class);
 
+        $staff = Staff::where('university_id', $request->supervisor)->first();
+
         if($student->id !== $record->student_id ||
-            $staff->university_id !== $request->supervisor) abort(404);
+            $staff->university_id !== $request->supervisor ) abort(404);
 
             $record->addSupervisor($staff, $request->type);
             return redirect()->route('admin.student.record.show',
                 [$student->university_id, $record->slug()])
             ->with('flash', [
-                'message' => $staff->name . ' is now a supervisor of ' . $student->name . '"',
+                'message' => $staff->name . ' now supervises ' . $student->name,
                 'type' => 'success'
             ]);
-        return redirect()->route( 'admin.student.find' );
     }
 
-    // public function confirm_id()
-    // {
+    public function confirm_id(Student $student, StudentRecord $record)
+    {
 
-    //     $this->authorise('create', Student::class);
+        $this->authorise('create', Staff::class);
 
-    //     if( session()->has( 'student_id' ))
-    //     {
-    //         session()->reflash();
-    //         return view( 'admin.user.student.notfound');
-    //     }
-    //     return redirect()->route('admin.student.find');
-    // }
+        if( session()->has( 'staff_id' ) )
+        {
+            session()->reflash();
+            return view( 'supervisor.notfound', compact('student', 'record'));
+        }
 
-    // public function confirm_post_id(Request $request)
-    // {
+        return redirect()->route('admin.supervisor.find', [$student->university_id, $record->slug()]);
+    }
 
-    //     $this->authorise('create', Student::class);
+    public function confirm_post_id(Request $request, Student $student, Staff $staff)
+    {
 
-    //     if( session()->has( 'student_id' ) )
-    //     {
-    //         if($request->university_id === session()->get('student_id'))
-    //         {
-    //             session()->reflash();
-    //             return redirect()->route( 'admin.student.create', $request->student_id );
-    //         }
+        $this->authorise('create', Staff::class);
 
-    //         session()->reflash();
-    //         redirect()->back()->withErrors(['student', 'WHAT IS THIS?']);
-    //     }
-    //     redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
-    //     return redirect()->route( 'admin.student.find' );
-    // }
-
-
-
-// -------------------------------------------------------------------------------------------
-
-    // public function create(Student $student, StudentRecord $record)
-    // {
-    //     $this->authorise('update', $student);
-    //     $this->authorise('update', Staff::class);
-    //     $staff = Staff::all();
-    //     return view('student.add_supervisor', compact('student','record'));
-    // }
-
-    // public function store(SupervisorRequest $request,
-    //     Student $student, StudentRecord $record)
-    // {
-
-    //     $this->authorise('update', $student);
-    //     $this->authorise('create', Staff::class);
-
-    //     if( $student->id !== $record->student_id ) abort(404);
-
-    //     if ($staff = Staff::where('university_id', $request->staff_id)->first() )
-    //     {
-    //         $record->addSupervisor($staff, $request->type);
-    //         return redirect()->route('student.record.show', 
-    //             [$student->university_id, $record->slug()]);
-    //     }
-    //     abort(404);
-    // }
+        if( session()->has( 'staff_id' ) )
+        {
+            if($request->university_id === session()->get('student_id'))
+            {
+                session()->reflash();
+                return redirect()->route( 'admin.staff.create', $request->student_id );
+            }
+        }
+        redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
+        return redirect()->route( 'admin.student.find' );
+    }
 
     public function destroy(Request $request, 
         Student $student, StudentRecord $record, Staff $staff)
@@ -135,15 +103,13 @@ class SupervisorController extends Controller
         $this->authorise('update', $student);
         $this->authorise('create', Staff::class);
 
-        if( $student->id === $record->student_id )
-        {
-            if( $record->supervisors()->pluck('id')->contains($staff->id) )
-            {
-                    $record->removeSupervisor($staff);
-                    return redirect()->route('admin.student.record.show',
-                        [$student->university_id, $record->slug()]);
-            }
-        }
-        abort(404);
+        if( $student->id !== $record->student_id &&
+            ! $record->supervisors()->pluck('id')
+            ->contains($staff->id) )
+                abort(404);
+
+        $record->removeSupervisor($staff);
+        return redirect()->route('admin.student.record.show',
+            [$student->university_id, $record->slug()]);
     }
 }
