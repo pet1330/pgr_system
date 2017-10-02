@@ -27,14 +27,11 @@
       </div>
       @include('layouts.footer')
       @include('layouts.sidebar.right_sidebar')
-      {{-- <flash message="{{ session('flash') }}"></flash> --}}
       @if( session()->has('flash') )
-        <div class="alert alert-flash alert-{{ session('flash')['type'] }}" role="alert">
-            {{ session('flash')['message'] }}
-        </div>
+      <div class="alert alert-flash alert-{{ session('flash')['type'] }}" role="alert">
+        {{ session('flash')['message'] }}
+      </div>
       @endif
-
-      {{-- <bug-report></bug-report> --}}
     </div>
     @stack('footer_scripts')
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -48,5 +45,14 @@
     <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+    <script>
+    $(function() {
+    $('#datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
+    dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
+    $('#enrolment_date').change(function(){ $('#datepicker').datepicker('setDate', $(this).val()); });
+    $('#datepicker').change(function(){ $('#enrolment_date').attr('value',$(this).val()); });
+    $('#datepicker').datepicker('setDate', $('#enrolment_date').val());
+    });
+    </script>
   </body>
 </html>
