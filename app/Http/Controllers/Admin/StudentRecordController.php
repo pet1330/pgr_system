@@ -25,15 +25,14 @@ class StudentRecordController extends Controller
     {
         $this->authorise('create', Student::class);
 
-        if(session()->has( 'student' ) || session()->hasOldInput('student') )
+        if( session()->has( 'student' ) || session()->hasOldInput('university_id') )
         {
+
             $funding_types = FundingType::all();
             $schools = School::all();
             $enrolment_statuses = EnrolmentStatus::all();
             $student_statuses = StudentStatus::all();
             $programmes = Programme::all();
-
-            if( session()->get( 'student' )->id !== $student->id) abort(404);
 
             return view( 'admin.user.student.create_record', compact(
                 'student', 'funding_types', 'schools',
@@ -45,9 +44,10 @@ class StudentRecordController extends Controller
 
     public function edit(Student $student, StudentRecord $record)
     {
-        $this->authorise('update', $record->student);
 
-        if( $student->id !== $record->student_id) abort(404);
+        if( $student->id !== $record->student_id ) abort(404);
+
+        $this->authorise('update', $student);
 
             $funding_types = FundingType::all();
             $schools = School::all();
@@ -64,6 +64,7 @@ class StudentRecordController extends Controller
 
     public function store(StudentRecordRequest $request, Student $student)
     {
+
         $this->authorise('create', $student);
 
         if ($request->university_id != $student->university_id) abort(404);
