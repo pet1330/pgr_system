@@ -3,7 +3,7 @@
 @section('page_description', '')
 @section('content')
 <div class="content">
-  @forelse($staff->supervising()->orderBy('supervisors.supervisor_type')->get() as $sr)
+  @forelse($staff->supervising()->with('timeline')->orderBy('supervisors.supervisor_type')->get() as $sr)
   <div class="row">
     <div class="box box-primary">
       <div class="panel-body ">
@@ -23,12 +23,12 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="hero-widget well well-sm{{ $sr->timeline()->overdue()->count() ? ' text-danger' : '' }}">
+          <div class="hero-widget well well-sm{{ $sr->timeline->filter->isOverdue()->count() ? ' text-danger' : '' }}">
             <div class="icon">
               <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
             </div>
             <div class="text">
-              <var>{{ $sr->timeline()->overdue()->count() }}</var>
+              <var>{{ $sr->timeline->filter->isOverdue()->count() }}</var>
             </div>
             <div class="options">
               <span class="btn btn-lg">
@@ -37,12 +37,12 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="hero-widget well well-sm{{ $sr->timeline()->upcoming()->count() ? ' text-warning' : '' }}">
+          <div class="hero-widget well well-sm{{ $sr->timeline->filter->isUpcoming()->count() ? ' text-warning' : '' }}">
             <div class="icon">
               <i class="fa fa-clock-o" aria-hidden="true"></i>
             </div>
             <div class="text">
-              <var>{{ $sr->timeline()->upcoming()->count() }}</var>
+              <var>{{ $sr->timeline->filter->isUpcoming()->count() }}</var>
               {{-- <label class="text-muted">total orders</label> --}}
             </div>
             <div class="options">
@@ -51,12 +51,12 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="hero-widget well well-sm{{ $sr->timeline()->recentlySubmitted()->count() ? ' text-success' : '' }}">
+          <div class="hero-widget well well-sm{{ $sr->timeline->filter->isRecentlySubmitted()->count() ? ' text-success' : '' }}">
             <div class="icon">
               <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
             </div>
             <div class="text">
-              <var>{{ $sr->timeline()->recentlySubmitted()->count() }}</var>
+              <var>{{ $sr->timeline->filter->isRecentlySubmitted()->count() }}</var>
             </div>
             <div class="options">
               <span class="btn btn-lg">Submitted Milestones</span>
