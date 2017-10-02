@@ -18,8 +18,8 @@
         <td>school</td>
         <td>Tier Four</td>
         <td>Funding Type</td>
-        <td>Enrolment Status</td>
         <td>Programme</td>
+        <td>Enrolment Status</td>
         <td>Student Status</td>
     @endcomponent
 </div>
