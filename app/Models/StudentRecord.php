@@ -164,4 +164,12 @@ class StudentRecord extends Model
     {
         return $this->timeline()->notSubmitted()->get()->each->recalculateDueDate();
     }
+
+    public function ordinal($number)
+    {
+        if ((($number % 100) >= 11) && (($number%100) <= 13))
+            return $number. 'th';
+        else
+            return $number. ['th','st','nd','rd','th','th','th','th','th','th'][$number % 10];
+    }
 }

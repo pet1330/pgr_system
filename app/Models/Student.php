@@ -143,12 +143,13 @@ class Student extends User
         $this->abilities()->sync([]);
         // Assign a sensable default
         $this->allow('view', $this);
-        $this->records->each->timeline->each(function(Milestone $m)
-        {
-            $this->allow('view', $m);
-            $this->allow('upload', $m);
-        });
 
+        $this->records->each( function (StudentRecord $sr){
+            $sr->timeline->each( function (Milestone $m){
+                $this->allow('view', $m);
+                $this->allow('upload', $m);
+            });
+        });
         Bouncer::refresh();
     }
 }
