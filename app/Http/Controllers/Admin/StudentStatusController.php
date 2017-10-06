@@ -22,7 +22,7 @@ class StudentStatusController extends Controller
 
         if ($request->ajax())
         {
-        $student_status = StudentStatus::withCount('students')->orderBy('status');
+        $student_status = StudentStatus::select('student_statuses.*')->withCount('students');
 
           return Datatables::eloquent($student_status)
               ->addColumn('editaction', function (StudentStatus $student_status) {

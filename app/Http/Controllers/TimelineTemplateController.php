@@ -28,7 +28,7 @@ class TimelineTemplateController extends Controller
 
         if ($request->ajax())
         {
-            $timeline = TimelineTemplate::withCount(['milestone_templates']);
+            $timeline = TimelineTemplate::select('timeline_templates.*')->withCount(['milestone_templates']);
 
             return Datatables::eloquent($timeline)
                 ->addColumn('editaction', function (TimelineTemplate $tt) {
@@ -88,7 +88,7 @@ class TimelineTemplateController extends Controller
 
         if ($request->ajax())
         {
-            $milestones = $timeline->milestone_templates();
+            $milestones = $timeline->milestone_templates()->select('milestone_templates.*');
 
             return Datatables::eloquent($milestones)
                 ->addColumn('name', function (MilestoneTemplate $mt)

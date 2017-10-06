@@ -19,7 +19,7 @@ class MilestoneTypeController extends Controller
     {
         if ($request->ajax())
         {
-            $miletypes = MilestoneType::withCount(['milestones', 'milestone_templates'])->orderBy('name');
+            $miletypes = MilestoneType::select('milestone_types.*')->withCount(['milestones', 'milestone_templates']);
 
             return Datatables::eloquent($miletypes)
                 ->editColumn('student_makable', '{{ $student_makable ? "Yes" : "No" }}')

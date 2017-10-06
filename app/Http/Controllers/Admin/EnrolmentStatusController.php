@@ -23,7 +23,7 @@ class EnrolmentStatusController extends Controller
 
         if ($request->ajax())
         {
-            $enrolment_status = EnrolmentStatus::withCount('students')->orderBy('status');
+            $enrolment_status = EnrolmentStatus::select('enrolment_statuses.*')->withCount('students');
 
             return Datatables::eloquent($enrolment_status)
               ->addColumn('editaction', function (EnrolmentStatus $enrolment_status) {

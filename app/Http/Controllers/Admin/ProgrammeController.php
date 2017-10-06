@@ -22,7 +22,7 @@ class ProgrammeController extends Controller
 
         if ($request->ajax())
         {
-        $programmes = Programme::withCount('students')->orderBy('name');
+        $programmes = Programme::select('programmes.*')->withCount('students');
 
           return Datatables::eloquent($programmes)
               ->addColumn('editaction', function (Programme $programme) {

@@ -62,10 +62,10 @@
           <div class="panel-body">
               @foreach($deleted_milestones as $dms)
               <div class="col-md-12">
-                <a href="{{ route('admin.settings.timeline.milestone.store', $dms->id) }}">
+                <a href="{{ route('admin.settings.timeline.milestone.restore', [$timeline->id, $dms->id]) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
-                {{ $dms->name }}
+                {{ $dms->type->name }}
               </div>
                 @endforeach
             </div>

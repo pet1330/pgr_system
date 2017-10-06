@@ -22,7 +22,7 @@ class CollegeController extends Controller
 
         if ($request->ajax())
         {
-        $colleges = College::withCount('schools');
+        $colleges = College::select('colleges.*')->withCount('schools');
 
           return Datatables::eloquent($colleges)
               ->addColumn('editaction', function (College $college) {

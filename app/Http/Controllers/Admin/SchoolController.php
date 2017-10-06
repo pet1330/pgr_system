@@ -24,7 +24,7 @@ class SchoolController extends Controller
 
         if ($request->ajax())
         {
-        $schools = School::with([
+        $schools = School::select('schools.*')->with([
             'college' => function ($q) { $q->withTrashed(); }
             ])->withCount('students');
 

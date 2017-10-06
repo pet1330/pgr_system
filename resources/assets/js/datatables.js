@@ -56,12 +56,11 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-absence-type-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: false },
-                { data: 'interuption', name: 'interuption', searchable: false, orderable: false },
-                { data: 'currentabsence_count', name: 'currentabsence_count', searchable: false, orderable: false },
-                { data: 'absence_count', name: 'absence_count', searchable: false, orderable: false },
+                { data: 'name', name: 'name', searchable: true, orderable: true },
+                { data: 'interuption', name: 'interuption', searchable: false, orderable: true },
+                { data: 'currentabsence_count', name: 'currentabsence_count', searchable: false, orderable: true },
+                { data: 'absence_count', name: 'absence_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
@@ -72,10 +71,9 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-funding-type-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: false },
-                { data: 'students_count', name: 'students_count', searchable: false, orderable: false },
+                { data: 'name', name: 'name', searchable: true, orderable: true },
+                { data: 'students_count', name: 'students_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
@@ -86,11 +84,10 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-programme-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: false},
-                { data: 'duration', name: 'duration', searchable: false, orderable: false},
-                { data: 'students_count', name: 'students_count', searchable: false, orderable: false},
+                { data: 'name', name: 'name', searchable: true, orderable: true},
+                { data: 'duration', name: 'duration', searchable: true, orderable: true},
+                { data: 'students_count', name: 'students_count', searchable: false, orderable: true},
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false},
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
             ]
@@ -101,10 +98,9 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-student-status-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'status', name: 'status', searchable: false, orderable: false},
-                { data: 'students_count', name: 'students_count', searchable: false, orderable: false},
+                { data: 'status', name: 'status', searchable: true, orderable: true},
+                { data: 'students_count', name: 'students_count', searchable: false, orderable: true},
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false},
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
             ]
@@ -116,10 +112,9 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-enrolment-status-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'status', name: 'status', searchable: false, orderable: false},
-                { data: 'students_count', name: 'students_count', searchable: false, orderable: false},
+                { data: 'status', name: 'status', searchable: true, orderable: true},
+                { data: 'students_count', name: 'students_count', searchable: false, orderable: true},
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false},
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
             ]
@@ -130,13 +125,12 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-milestone-type-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": false,
             columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: false },
-                { data: 'duration', name: 'interuption', searchable: false, orderable: false },
-                { data: 'student_makable', name: 'student_makable', searchable: false, orderable: false },
-                { data: 'milestones_count', name: 'milestones_count', searchable: false, orderable: false },
-                { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: false },
+                { data: 'name', name: 'name', searchable: true, orderable: true },
+                { data: 'duration', name: 'duration', searchable: true, orderable: true },
+                { data: 'student_makable', name: 'student_makable', searchable: true, orderable: true },
+                { data: 'milestones_count', name: 'milestones_count', searchable: false, orderable: true },
+                { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
@@ -148,7 +142,7 @@ $(document).ready(function() {
     $('#admin-timeline-template-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
-                { data: 'name', name: 'name', searchable: false, orderable: true },
+                { data: 'name', name: 'name', searchable: true, orderable: true },
                 { data: 'milestone_templates_count', name: 'milestone_templates_count', searchable: false, orderable: true },
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
@@ -160,13 +154,12 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-milestones-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": true,
             columns: [
-                { data: 'name', name: 'name', searchable: true, orderable: true },
-                { data: 'due_date', name: 'due_date', searchable: false, orderable: true },
-                { data: 'school', name: 'student.school.name', searchable: true, orderable: false },
-                { data: 'first_name', name: 'student.student.first_name', searchable: false, orderable: false },
-                { data: 'last_name', name: 'student.student.last_name', searchable: false, orderable: false },
+                { data: 'name', name: 'type.name', searchable: true, orderable: true },
+                { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
+                { data: 'school', name: 'student.school.name', searchable: true, orderable: true },
+                { data: 'first_name', name: 'student.student.first_name', searchable: true, orderable: true },
+                { data: 'last_name', name: 'student.student.last_name', searchable: true, orderable: true },
             ]
         })
     );
@@ -175,14 +168,13 @@ $(document).ready(function() {
     //==============================================================================================
     $('#admin-submitted-milestones-table').DataTable(
         _.merge({}, generalSettings, {
-            "searching": true,
             columns: [
                 { data: 'name', name: 'name', searchable: true, orderable: true },
-                { data: 'due_date', name: 'due_date', searchable: false, orderable: true },
-                { data: 'submitted_date', name: 'submitted_date', searchable: false, orderable: true },
-                { data: 'school', name: 'student.school.name', searchable: true, orderable: false },
-                { data: 'first_name', name: 'student.student.first_name', searchable: true, orderable: false },
-                { data: 'last_name', name: 'student.student.last_name', searchable: true, orderable: false },
+                { data: 'due_date', name: 'due_date', searchable: true, orderable: true },
+                { data: 'submitted_date', name: 'submitted_date', searchable: true, orderable: true },
+                { data: 'school', name: 'student.school.name', searchable: true, orderable: true },
+                { data: 'first_name', name: 'student.student.first_name', searchable: true, orderable: true },
+                { data: 'last_name', name: 'student.student.last_name', searchable: true, orderable: true },
             ]
         })
     );

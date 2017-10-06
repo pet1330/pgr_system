@@ -18,7 +18,7 @@ class AdminController extends Controller
 
         if ($request->ajax())
         {
-            $admin = Admin::select();
+            $admin = Admin::select('users.*');
             return Datatables::eloquent($admin)
             ->setRowAttr([ 'data-link' => function(Admin $admin)
                 { return route('admin.admin.show', $admin->university_id); }])

@@ -25,7 +25,7 @@ class FundingTypeController extends Controller
         if ($request->ajax())
         {
 
-        $fundingTypes = FundingType::withCount('students')->orderBy('name');
+        $fundingTypes = FundingType::select('funding_types.*')->withCount('students');
 
           return Datatables::eloquent($fundingTypes)
               ->addColumn('editaction', function (FundingType $ft) {

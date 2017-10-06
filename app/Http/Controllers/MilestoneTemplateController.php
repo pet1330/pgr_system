@@ -19,6 +19,9 @@ class MilestoneTemplateController extends Controller
      */
     public function create(TimelineTemplate $timeline)
     {
+
+        $this->authorise('create', $timeline);
+
         $types = MilestoneType::all();
         return view('admin.settings.milestonetemplate.create', compact('timeline', 'types'));
     }
@@ -31,6 +34,9 @@ class MilestoneTemplateController extends Controller
      */
     public function store(MilestoneTemplateRequest $request, TimelineTemplate $timeline)
     {
+
+        $this->authorise('create', $timeline);
+
         $milestone = $timeline->milestone_templates()->save(
             MilestoneTemplate::make([
                 'due' => $request->due,
@@ -47,6 +53,8 @@ class MilestoneTemplateController extends Controller
 
     public function edit(TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
+        $this->authorise('update', $timeline);
+
         $types = MilestoneType::all();
 
         return view('admin.settings.milestonetemplate.edit', compact('timeline', 'milestone', 'types'));
@@ -63,7 +71,7 @@ class MilestoneTemplateController extends Controller
     public function update(MilestoneTemplateRequest $request,
         TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        // $this->authorise('update', $milestone);
+        $this->authorise('update', $timeline);
         
         $milestone->update( $request->only( [ 'due', 'milestone_type' ] ) );
 
@@ -73,7 +81,6 @@ class MilestoneTemplateController extends Controller
                 'message' => 'Successfully updated "' . $milestone->type->name . '"',
                 'type' => 'success'
             ]);
-
     }
 
     /**
@@ -82,8 +89,42 @@ class MilestoneTemplateController extends Controller
      * @param  \App\Models\TimelineTemplate $timelineTemplate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MilestoneTemplate $milestoneTemplate)
+    public function destroy(TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        
+        $this->authorise('delete', $timeline);
+
+        $milestone->delete();
+
+        return redirect()
+            ->route('admin.settings.timeline.show', $timeline->id)
+            ->with('flash', [
+                'message' => 'Successfully deleted "' . $milestone->type->name . '"',
+                'type' => 'success'
+            ]);
+    }
+
+
+    public function restore($id)
+    {
+        $mt = MilestoneTemplate::withTrashed()->find($id);
+
+        $this->authorise('delete', $mt->timeline_template);
+
+        if($mt->trashed())
+        {
+            $mt->restore();
+            return redirect()
+                ->route('admin.settings.timeline.show', $mt->timeline_template->id)
+                ->with('flash', [
+                'message' => 'Successfully restored "' . $mt->type->name . '"',
+                'type' => 'success'
+            ]);
+        }
+        return redirect()
+                ->route('admin.settings.timeline.show', $mt->timeline_template->id)
+                ->with('flash', [
+                'message' => 'Error: Milestone Template has not deleted: "' . $mt->type->name . '"',
+                'type' => 'danger'
+            ]);
     }
 }

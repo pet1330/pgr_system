@@ -23,12 +23,12 @@ class AbsenceTypeController extends Controller
         if ($request->ajax())
         {
 
-        $absencetypes = AbsenceType::withCount([
+        $absencetypes = AbsenceType::select('absence_types.*')->withCount([
             'absence',
             'absence AS currentabsence' => function ($query) {
                 $query->where('from', '<=', Carbon::now())
                       ->where('to', '>=', Carbon::now());
-            }])->orderBy('name');
+            }]);
 
           return Datatables::eloquent($absencetypes)
               ->editColumn('interuption', '{{$interuption ? "Yes" : "No" }}')

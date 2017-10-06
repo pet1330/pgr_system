@@ -27,7 +27,7 @@ class StudentController extends Controller
 
         if ($request->ajax())
         {
-            $records = StudentRecord::with([
+            $records = StudentRecord::select('student_records.*')->with([
                 'student',
                 'fundingType' => function ($query) { $query->withTrashed(); },
                 'studentStatus' => function ($query) { $query->withTrashed(); },

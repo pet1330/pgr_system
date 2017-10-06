@@ -140,7 +140,7 @@ class StudentRecordController extends Controller
 
     private function absences(StudentRecord $record)
     {
-        $abs = $record->student->absences()->with([
+        $abs = $record->student->absences()->select('absences.*')->with([
             'type' => function ($query) { $query->withTrashed(); }
         ]);
         return Datatables::eloquent($abs)

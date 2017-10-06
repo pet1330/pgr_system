@@ -50,7 +50,7 @@ class MilestoneController extends Controller
         $this->authorise('view', Milestone::class);
 
         if ($request->ajax())
-            return $this->data( Milestone::overdue() )->make(true);
+            return $this->data( Milestone::select('milestones.*')->overdue() )->make(true);
 
         return view('admin.milestone.list', [
             'title' => 'Overdue Milestones',
@@ -64,7 +64,7 @@ class MilestoneController extends Controller
         $this->authorise('view', Milestone::class);
 
         if ($request->ajax())
-            return $this->data( Milestone::awaitingAmendments() )->make(true);
+            return $this->data( Milestone::select('milestones.*')->awaitingAmendments() )->make(true);
 
         return view('admin.milestone.list', [
             'title' => 'Awaiting Amendments',
@@ -79,7 +79,7 @@ class MilestoneController extends Controller
         $this->authorise('view', Milestone::class);
 
         if ($request->ajax())
-            return $this->data( Milestone::upcoming() )->make(true);
+            return $this->data( Milestone::select('milestones.*')->upcoming() )->make(true);
 
         return view('admin.milestone.list', [
             'title' => 'Upcoming Milestones',
@@ -94,7 +94,7 @@ class MilestoneController extends Controller
 
         if ($request->ajax())
         {
-            return $this->data( Milestone::submitted() )
+            return $this->data( Milestone::select('milestones.*')->submitted() )
                 ->editColumn('submitted_date', function (Milestone $ms)
                 { 
                     return $ms->submitted_date->format('d/m/Y') .

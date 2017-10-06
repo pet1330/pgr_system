@@ -112,6 +112,10 @@ Route::middleware('samlauth')
                    'TimelineTemplateController@restore')
             ->name('timeline.restore');
 
+        Route::get('timeline/{timeline}/milestone/{milestone}/restore',
+                   'MilestoneTemplateController@restore')
+            ->name('timeline.milestone.restore');
+
         Route::get('absence-type/{absence_type}/restore',
                    'AbsenceTypeController@restore')
             ->name('absence-type.restore');

@@ -67,6 +67,7 @@ class Admin extends User
         $this->allow('view', TimelineTemplate::class);
         $this->allow('create', TimelineTemplate::class);
         $this->allow('update', TimelineTemplate::class);
+        $this->allow('delete', TimelineTemplate::class);
         Bouncer::refresh();
     }
 }

@@ -19,7 +19,7 @@ class StaffController extends Controller
 
         if ($request->ajax())
         {
-            $staff = Staff::select();
+            $staff = Staff::select('users.*');
             return Datatables::eloquent($staff)
                 ->rawColumns(['editaction', 'deleteaction'])
             ->setRowAttr([ 'data-link' => function(Staff $staff)
@@ -136,7 +136,7 @@ class StaffController extends Controller
 
         if ($request->ajax())
         {
-            $staff = Staff::doesntHave('supervising');
+            $staff = Staff::select('users.*')->doesntHave('supervising');
             return Datatables::eloquent($staff)
                 ->addColumn('upgrade', function (Staff $staff) {
                     return '<form method="POST" action="' . route('admin.staff.upgrade.store', $staff->university_id) . '" accept-charset="UTF-8" class="success-form text-center">' . 
