@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use Auth;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use \Aacotroneo\Saml2\Events\Saml2LogoutEvent;
@@ -27,7 +26,7 @@ class LogoutListener
      */
     public function handle(Saml2LogoutEvent $event)
     {
-        Auth::logout();
+        auth()->logout();
         session()->save();
     }
 }
