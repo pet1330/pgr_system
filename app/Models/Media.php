@@ -11,6 +11,8 @@ class Media extends \Plank\Mediable\Media
     use HasHashSlug;
     use LogsActivity;
 
+    protected $with = ['uploader'];
+
     protected static $logOnlyDirty = true;
 
     protected static $logAttributes = [

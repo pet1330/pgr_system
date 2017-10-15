@@ -5,16 +5,16 @@
 <div id="app">
   <div class="content">
     <div class="panel-body">
-        <a  href="{{ route('admin.student.record.show', [$student->university_id, $record->slug()]) }}">
-          <span class="btn btn-default">
-          <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
-        </a>
+      <a  href="{{ route('admin.student.record.show', [$student->university_id, $record->slug()]) }}">
+        <span class="btn btn-default">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
+      </a>
       @can('update', $milestone)
-        <a  href="{{ route('admin.student.record.milestone.edit',
-          [$student->university_id, $record->slug(), $milestone->slug()]) }}">
-          <span class="btn btn-default pull-right">
-          Edit This Milestone</span>
-        </a>
+      <a  href="{{ route('admin.student.record.milestone.edit',
+        [$student->university_id, $record->slug(), $milestone->slug()]) }}">
+        <span class="btn btn-default pull-right">
+        Edit This Milestone</span>
+      </a>
       @endcan
     </div>
     <div class="box box-primary">
@@ -56,18 +56,25 @@
         <form action="{{ route('admin.student.record.milestone.approve',
           [$student->university_id, $record->slug(), $milestone->slug()]) }}" method="POST">
           {{ csrf_field() }}
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="input-group">
               <div class="input-group-addon">Feedback (optional)</div>
-              <input type="text" name="feedback" class="form-control">
+              <input type="text" name="feedback" class="form-control" value="{{ old('feedback') }}">
             </div>
           </div>
-          <div class="col-md-2">
-            <select class="form-control col-md-4" name="approved">
-              <option value="">--- Select ---</option>
-              <option value="1"><i class="fa fa-check" aria-hidden="true"></i> Accept</option>
-              <option value="0"><i class="fa fa-times" aria-hidden="true"></i> Reject</option>
-            </select>
+          <div class="col-md-3">
+            <div class="form-group{{ $errors->has('approved') ? ' has-error' : '' }}">
+              <select class="form-control col-md-4" name="approved">
+                <option value="">--- Select ---</option>
+                <option value="1"><i class="fa fa-check" aria-hidden="true"></i> Accept</option>
+                <option value="0"><i class="fa fa-times" aria-hidden="true"></i> Reject</option>
+              </select>
+              @if ($errors->has('approved'))
+              <span class="help-block">
+                <strong>{{ $errors->first('approved') }}</strong>
+              </span>
+              @endif
+            </div>
           </div>
           <button class="btn btn-default col-md-2">Approve Milestone</button>
         </form>
@@ -91,8 +98,8 @@
     <div class="box box box-primary">
       <div class="box-body">
         @forelse($milestone->getMedia('submission')->reverse() as $file)
-        <a href="{{ route('admin.student.record.milestone.media', 
-        [$student->university_id, $record->slug(), $milestone->slug(), $file->slug()]) }}">
+        <a href="{{ route('admin.student.record.milestone.media',
+          [$student->university_id, $record->slug(), $milestone->slug(), $file->slug()]) }}">
           @component('components.infobox')
           @if($file->id !== $milestone->lastMedia('submission')->id)
           @slot('colour', 'alert-warning')

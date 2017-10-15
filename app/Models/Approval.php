@@ -15,6 +15,8 @@ class Approval extends Model
         'approved_name',
     ];
 
+    protected $with = [ 'approved_by' ];
+
     protected $casts = [ 'approved' => 'boolean' ];
 
     public function approvable()

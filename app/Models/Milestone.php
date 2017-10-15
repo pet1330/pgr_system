@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Carbon\Carbon;
 use Plank\Mediable\Mediable;
 use Balping\HashSlug\HasHashSlug;
@@ -172,7 +173,7 @@ class Milestone extends Model
     {
         return $query->select('milestones.*')
             ->join('approvals', 'milestones.id', '=', 'approvals.approvable_id')
-            ->join(\DB::raw('(SELECT approvable_id, MAX(created_at) created_at
+            ->join(DB::raw('(SELECT approvable_id, MAX(created_at) created_at
                 FROM approvals GROUP BY approvable_id) aa' ), function($join) {
                 $join->on('approvals.approvable_id', '=', 'aa.approvable_id')
                      ->on('approvals.created_at', '=', 'aa.created_at');
