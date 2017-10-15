@@ -2,22 +2,33 @@
 
 namespace App\Models;
 
+use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-    use Spatie\Activitylog\Traits\LogsActivity;
 
 class MilestoneType extends Model
 {
+    use Mediable;
     use LogsActivity;
     use SoftDeletes;
 
     protected static $logOnlyDirty = true;
+
+    protected $casts = [
+        'student_makable' => 'boolean',
+    ];
 
     protected static $logAttributes = [ 'name', 'duration', 'student_makable'];
     
     protected $table ='milestone_types';
 
     protected $fillable = [ 'name', 'duration', 'student_makable' ];
+
+    public function scopeStudentMakable($query)
+    {
+        return $query->where('student_makable', true);
+    }
 
     public function milestones()
     {

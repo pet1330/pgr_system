@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentRecord extends Model
 {
+
+    protected $with = [ 'supervisors' ];
+
     protected $dates = [ 'enrolment_date' ];
     
     use HasHashSlug;

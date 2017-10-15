@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Bouncer;
-use App\Scopes\UserScope;
 use App\Models\Training;
+use App\Scopes\UserScope;
 
 class Staff extends User
 {

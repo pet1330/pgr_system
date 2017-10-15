@@ -9,6 +9,7 @@ use Validator;
 use App\Models\Admin;
 use App\Models\Staff;
 use App\Models\Student;
+use App\Models\Milestone;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -37,23 +38,14 @@ class AppServiceProvider extends ServiceProvider
             return Admin::where('university_id', $value)->exists();
         });
 
-        // Bouncer::useAbilityModel(MyAbility::class);
-        // Bouncer::useRoleModel(MyRole::class);
+        // Validator::extend('milestone_makable', function ($attribute, $value) {
 
-        Blade::directive('canany', function ($arguments) {
-            list($permissions, $guard) = explode(',', $arguments . ',');
+        //     $m = Milestone::where('id', $value)->first();
 
-            $permissions = explode('|', str_replace('\'', '', $permissions));
+        //     if($m) return auth()->user()->isStudent() && $m->type->student_makable;
 
-            $expression = "<?php if(auth({$guard})->check() && ( false";
-            foreach ($permissions as $permission) {
-                $expression .= " || auth({$guard})->user()->can('{$permission}')";
-            }
-
-            return $expression . ")): ?>";
-        });
-
-        Blade::directive('endcanany', function () { return '<?php endif; ?>'; });
+        //     return false;
+        // });
 
         View::share('app_version', \Cache::remember('app_version', 10, function () { return strtok(shell_exec('git describe --always --tags'), '-'); }) );
     }

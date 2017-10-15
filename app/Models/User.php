@@ -102,7 +102,7 @@ class User extends Authenticatable
     public function assignDefaultPermissions()
     {
         $user = User::find($this->id);
-        if (get_class($user) !== "App\Models\User")
+        if ( $user && get_class($user) !== "App\Models\User")
             return $user->assignDefaultPermissions();
         throw new RuntimeException('User of unknown type');
     }

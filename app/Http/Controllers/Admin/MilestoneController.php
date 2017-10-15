@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Log;
 use Bouncer;
+use Validator;
 use Carbon\Carbon;
 use MediaUploader;
 use App\Models\Media;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\MilestoneType;
 use App\Models\StudentRecord;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ApprovalRequest;
 use App\Http\Requests\MilestoneRequest;
 use App\Notifications\AdminUploadAlert;
 use Yajra\Datatables\Facades\Datatables;
@@ -71,7 +73,6 @@ class MilestoneController extends Controller
             'subtitle' => 'All milestones awaiting amendments',
             ]);
     }
-
 
     public function upcoming(Request $request)
     {
@@ -160,12 +161,14 @@ class MilestoneController extends Controller
     public function create(Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Milestone::class);
-        $this->authorise('view', $student);
-
         if ($student->id !== $record->student_id) abort(404);
 
-        $types = MilestoneType::all();
+        $this->authorise('view', $student);
+        $this->authorise('createMilestone');
+
+        $types = auth()->user()->can('create', Milestone::class) ?
+            MilestoneType::all() : MilestoneType::studentMakable()->get();
+
         return view('admin.milestone.create', compact('student', 'record', 'types'));
     }
 
@@ -175,32 +178,96 @@ class MilestoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MilestoneRequest $request, Student $student, StudentRecord $record)
+    public function store(Request $request, Student $student, StudentRecord $record)
     {
-
-        $this->authorise('create', Milestone::class);
-        $this->authorise('view', $student);
 
         if ($student->id !== $record->student_id) abort(404);
 
-        $away_days = $student->interuptionPeriodSoFar(Carbon::parse($request->due));
-        $milestone = $record->timeline()->save(
-            Milestone::make([
-                'due_date' => $request->due,
-                'milestone_type_id' => $request->milestone_type,
-                'non_interuptive_date' => Carbon::parse($request->due)->subDays($away_days),
-                'created_by' => auth()->id(),
-            ])
-        );
+        $this->authorise('view', $student);
 
-        $student->allow('view', $milestone);
-        $student->allow('upload', $milestone);
-        $student->supervisors->each->allow('view', $milestone);
-        Bouncer::refresh();
+        $milestone = auth()->user()->can('create', Milestone::class) ?
+            $this->storeAdminMilestone($request, $student, $record) :
+            $this->storeStudentMilestone($request, $student, $record);
 
-        return redirect()->route('admin.student.record.milestone.show',
-            compact('student', 'record', 'milestone'));
+        if($milestone instanceof Milestone)
+        {
+            $student->allow('view', $milestone);
+            $student->allow('upload', $milestone);
+            $student->supervisors->each->allow('view', $milestone);
+            Bouncer::refresh();
+            return redirect()->route('admin.student.record.milestone.show',
+                compact('student', 'record', 'milestone'));
+        }
+        return $milestone;
     }
+
+    private function storeStudentMilestone(Request $request, Student $student, StudentRecord $record)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'milestone_type' => [ 'required', 'exists:milestone_types,id,student_makable,1' ],
+            'file' => [ 'required', 'max:20000']
+        ]);
+
+        if($validator->fails()) return redirect()->back()->withErrors($validator)->withInput();
+
+        $m = Milestone::make([
+            'due_date' => Carbon::now()->format('Y-m-d'),
+            'milestone_type_id' => $request->milestone_type,
+            'created_by' => auth()->id()
+            ]);
+
+        $m->submitted_date = $m->due_date;
+        $away_days = $student->interuptionPeriodSoFar();
+        $m->non_interuptive_date = Carbon::parse($m->due_date)->subDays($away_days);
+        $milestone = $record->timeline()->save($m);
+
+        try {
+            $media = MediaUploader::fromSource( $request->file( 'file' ) )
+                ->useHashForFilename()
+                ->toDestination( 'local', 'milestone-attachments/' . $milestone->slug() )
+                ->upload();
+            $media->original_filename = $request->file( 'file' )->getClientOriginalName();
+            $media->uploader_id = auth()->id();
+            $media->save();
+
+            if( $media->exists() )
+            {
+                $milestone->attachMedia($media, ['submission']);
+                $milestone->save();
+                return $milestone;
+            }
+        } catch(MediaUploadException $e) {} catch(\Exception $ex) {}
+
+            $milestone->forceDelete();
+            $validator->errors()->add('file', 'The attached file is invalid.');
+            return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    private function storeAdminMilestone(Request $request, Student $student, StudentRecord $record)
+    {
+
+        $this->authorise('create', Milestone::class);
+
+        $validator = Validator::make($request->all(), [
+            'milestone_type' => [ 'required', 'exists:milestone_types,id' ],
+            'due' => [ 'date' ]
+        ]);
+
+        if($validator->fails()) return redirect()->back()->withErrors($validator)->withInput();
+
+        $m = Milestone::make([
+            'due_date' => $request->due,
+            'milestone_type_id' => $request->milestone_type,
+            'non_interuptive_date' => Carbon::parse($request->due)->subDays( $student->interuptionPeriodSoFar() ),
+            'created_by' => auth()->id(),
+            ]);
+
+        $milestone = $record->timeline()->save($m);
+
+        return $milestone;
+    }
+
 
     /**
      * Display the specified resource.
@@ -339,7 +406,7 @@ class MilestoneController extends Controller
         abort(401);
     }
 
-    public function approve(Request $request,
+    public function approve(ApprovalRequest $request,
         Student $student, StudentRecord $record, Milestone $milestone)
     {
         $this->authorise('create', Approval::class);

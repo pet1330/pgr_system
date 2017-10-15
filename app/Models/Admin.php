@@ -68,6 +68,11 @@ class Admin extends User
         $this->allow('create', TimelineTemplate::class);
         $this->allow('update', TimelineTemplate::class);
         $this->allow('delete', TimelineTemplate::class);
+        $this->allow('create', MilestoneType::class);
+        $this->allow('view', MilestoneType::class);
+        $this->allow('delete', MilestoneType::class);
+        $this->allow('update', MilestoneType::class);
+        $this->allow('upload', MilestoneType::class);
         Bouncer::refresh();
     }
 }

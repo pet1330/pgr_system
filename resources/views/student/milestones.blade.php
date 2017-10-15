@@ -7,7 +7,7 @@
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
     </a>
-    @can('create', App\Models\Milestone::class)
+    @can('createMilestone')
     <a  href="{{ route('admin.student.record.milestone.create', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default pull-right">
             Create New Milestone

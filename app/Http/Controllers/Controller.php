@@ -12,7 +12,7 @@ class Controller extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
 
-    protected function authorise($ability, $parameter)
+    protected function authorise($ability, $parameter=null)
     {
         if($parameter instanceof Model)
         {

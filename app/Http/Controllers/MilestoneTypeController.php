@@ -17,6 +17,9 @@ class MilestoneTypeController extends Controller
      */
     public function index(Request $request)
     {
+
+      $this->authorise('view', MilestoneType::class);
+
         if ($request->ajax())
         {
             $miletypes = MilestoneType::select('milestone_types.*')->withCount(['milestones', 'milestone_templates']);
@@ -52,6 +55,9 @@ class MilestoneTypeController extends Controller
      */
     public function store(MilestoneTypeRequest $request)
     {
+
+      $this->authorise('create', MilestoneType::class);
+
         $mt = MilestoneType::create( $request->only([ 'name', 'duration', 'student_makable' ] ) );
         return redirect()
             ->route('admin.settings.milestone-type.index')
@@ -70,6 +76,9 @@ class MilestoneTypeController extends Controller
      */
     public function update(MilestoneTypeRequest $request, MilestoneType $milestone_type)
     {
+
+        $this->authorise('update', $milestone_type);
+
         $milestone_type->update( $request->only( 'name', 'duration', 'student_makable' ) );
         $milestone_type->save();
         return redirect()
@@ -82,7 +91,10 @@ class MilestoneTypeController extends Controller
 
     public function edit(MilestoneType $milestone_type)
     {
-      return view('admin.settings.milestonetype.edit', compact('milestone_type'));
+
+        $this->authorise('update', $milestone_type);
+
+        return view('admin.settings.milestonetype.edit', compact('milestone_type'));
     }
 
     /**
@@ -93,6 +105,9 @@ class MilestoneTypeController extends Controller
      */
     public function destroy(MilestoneType $milestone_type)
     {
+
+        $this->authorise('delete', $milestone_type);
+
         // We are using soft delete so this item will remain in the database
         $milestone_type->delete();
         return redirect()
@@ -106,6 +121,9 @@ class MilestoneTypeController extends Controller
     public function restore($id)
     {
         $mt = MilestoneType::withTrashed()->find($id);
+
+        $this->authorise('delete', $mt);
+
         if($mt->trashed())
         {
             $mt->restore();

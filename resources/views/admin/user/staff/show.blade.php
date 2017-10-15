@@ -32,7 +32,20 @@
             </div>
             <div class="options">
               <span class="btn btn-lg">
-                Overdue Milestones</span>
+              Overdue Milestones</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="hero-widget well well-sm{{ $sr->timeline->filter->isAwaitingAmendments()->count() ? ' text-warning' : '' }}">
+            <div class="icon">
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+            </div>
+            <div class="text">
+              <var>{{ $sr->timeline->filter->isAwaitingAmendments()->count() }}</var>
+            </div>
+            <div class="options">
+              <span class="btn btn-lg">Awaiting Amendments</span>
             </div>
           </div>
         </div>
@@ -47,19 +60,6 @@
             </div>
             <div class="options">
               <span class="btn btn-lg">Upcoming Milestones</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="hero-widget well well-sm{{ $sr->timeline->filter->isRecentlySubmitted()->count() ? ' text-success' : '' }}">
-            <div class="icon">
-              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-            </div>
-            <div class="text">
-              <var>{{ $sr->timeline->filter->isRecentlySubmitted()->count() }}</var>
-            </div>
-            <div class="options">
-              <span class="btn btn-lg">Submitted Milestones</span>
             </div>
           </div>
         </div>
