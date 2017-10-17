@@ -39,7 +39,7 @@
           <div class="col-sm-3">
             <div class="hero-widget well well-sm{{ $sr->amendments_count ? ' text-warning' : '' }}">
               <div class="icon">
-                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </div>
               <div class="text">
                 <var>{{ $sr->amendments_count }}</var>
