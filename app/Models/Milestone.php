@@ -159,9 +159,9 @@ class Milestone extends Model
             $this->approvals->isEmpty();
     }
 
-    public function scopeAwaitingAmendments($query)
+    public function scopeAwaitingAmendments($query, $selector=null)
     {
-        return $query->approved(false);
+        return $query->filterApprovals(false, $selector);
     }
 
     public function isAwaitingAmendments()
@@ -169,20 +169,25 @@ class Milestone extends Model
         return $this->approvals->isNotEmpty() && ! $this->approvals->last()->approved;
     }
 
-    public function scopeApproved($query, $accepted=true)
+    public function scopeApproved($query, $selector=null)
     {
-        return $query->select('milestones.*')
+        return $query->filterApprovals(true, $selector);
+    }
+
+    public function isApproved()
+    {
+        return $this->approvals->isNotEmpty() && $this->approvals->last()->approved;
+    }
+
+    public function scopeFilterApprovals($query, $accepted=true, $selector=null)
+    {
+        return $query->select($selector ?? 'milestones.*')
             ->join('approvals', 'milestones.id', '=', 'approvals.approvable_id')
             ->join(DB::raw('(SELECT approvable_id, MAX(created_at) created_at
                 FROM approvals GROUP BY approvable_id) aa' ), function($join) {
                 $join->on('approvals.approvable_id', '=', 'aa.approvable_id')
                      ->on('approvals.created_at', '=', 'aa.created_at');
             })->where('approvals.approved', !! $accepted);
-    }
-
-    public function isApproved()
-    {
-        return $this->approvals->isNotEmpty() && $this->approvals->last()->approved;
     }
 
     public function getStartDateAttribute()

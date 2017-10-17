@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
+use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentRecord;
-use App\Models\Staff;
+use Illuminate\Database\Seeder;
 
 class SupervisorSeeder extends Seeder
 {

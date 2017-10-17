@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
 use App\Models\Staff;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use App\Models\StudentRecord;
 use App\Http\Requests\StaffRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FindStaffRequest;
@@ -19,8 +21,7 @@ class StaffController extends Controller
 
         if ($request->ajax())
         {
-            $staff = Staff::select('users.*');
-            return Datatables::eloquent($staff)
+            return Datatables::eloquent( Staff::select('users.*') )
                 ->rawColumns(['editaction', 'deleteaction'])
             ->setRowAttr([ 'data-link' => function(Staff $staff)
                 { return route('admin.staff.show', $staff->university_id); }])
@@ -34,7 +35,16 @@ class StaffController extends Controller
 
         $this->authorise('view', $staff);
 
-        return View('admin.user.staff.show', compact('staff'));
+        $supervisees = $staff->supervising()->with('timeline')
+            ->orderBy('supervisors.supervisor_type')
+            ->withCount([
+                'timeline AS overdue' => function ($query) { $query->overdue(); },
+                'timeline AS upcoming' => function ($query) { $query->upcoming(); },
+                'timeline AS amendments' => function ($query) {
+                    $query->AwaitingAmendments(DB::raw('count(*) as amendments_count') ); }
+            ])->get()->groupBy('pivot.supervisor_type');
+
+        return View('admin.user.staff.show', compact('staff', 'supervisees'));
     }
 
     public function find()
