@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="col-sm-3">
-            <div class="hero-widget well well-sm{{ $sr->overdue_count ? ' text-danger' : '' }}">
+            <div class="hero-widget well well-sm {{ $sr->overdue_count ? 'text-danger' : 'text-muted' }}">
               <div class="icon">
                 <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
               </div>
@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="col-sm-3">
-            <div class="hero-widget well well-sm{{ $sr->amendments_count ? ' text-warning' : '' }}">
+            <div class="hero-widget well well-sm {{ $sr->amendments_count ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </div>
@@ -50,13 +50,12 @@
             </div>
           </div>
           <div class="col-sm-3">
-            <div class="hero-widget well well-sm{{ $sr->upcoming_count ? ' text-warning' : '' }}">
+            <div class="hero-widget well well-sm {{ $sr->upcoming_count ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
               </div>
               <div class="text">
                 <var>{{ $sr->upcoming_count }}</var>
-                {{-- <label class="text-muted">total orders</label> --}}
               </div>
               <div class="options">
                 <span class="btn btn-lg">Upcoming Milestones</span>
@@ -65,8 +64,6 @@
           </div>
         </div>
       </div>
-
-
     @endforeach
   @empty
   <div class="col-md-6 col-md-offset-3">
