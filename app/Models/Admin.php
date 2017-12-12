@@ -75,7 +75,7 @@ class Admin extends User
         $this->allow('delete', MilestoneType::class);
         $this->allow('update', MilestoneType::class);
         $this->allow('upload', MilestoneType::class);
-        $this->authorise('view', Note::class);
+        $this->allow('view', Note::class);
         Bouncer::refresh();
     }
 }

@@ -181,7 +181,7 @@
     @component('components.infobox')
     @slot('title', 'Notes')
     @slot('icon', 'fa fa-gear')
-    {{ App\Models\note::count() }}
+    {{ App\Models\Note::count() }}
     @endcomponent
     </div>
   </div>
