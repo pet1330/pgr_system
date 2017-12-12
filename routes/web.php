@@ -7,6 +7,14 @@ Route::middleware('samlauth')->get('/', function() {
     return redirect(auth()->user()->dashboard_url());
 });
 
+Route::get('auth-status', function() {
+    return auth()->check() ? "logged-in" : "logged-out";
+});
+
+Route::get('downtime-robot', function(){
+    return "All Systems Operational";
+});
+
 Route::name('account-locked')->get('account-locked', function () {
     return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
 });
@@ -23,7 +31,7 @@ Route::middleware('samlauth')
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
     Route::get('student/upcoming', 'MilestoneController@upcoming')->name('student.upcoming');
-    Route::get('student/submitted', 'MilestoneController@submitted')->name('student.submitted');
+    Route::get('student/submitted', 'MilestoneController@recent')->name('student.submitted');
 
     Route::get('student/find', 'StudentController@find')->name('student.find');
     Route::post('student/find', 'StudentController@find_post')->name('student.find');
@@ -45,7 +53,6 @@ Route::middleware('samlauth')
 
     Route::get('staff/upgrade', 'StaffController@upgrade')->name('staff.upgrade.index');
     Route::post('staff/{staff}/upgrade', 'StaffController@upgrade_store')->name('staff.upgrade.store');
-
 
     Route::get('student/{student}/record/{record}/supervisor/find',
         'SupervisorController@find')
@@ -75,7 +82,6 @@ Route::middleware('samlauth')
             'SupervisorController@destroy')
             ->name('supervisor.destroy');
 
-
     Route::get('student/{student}/record/{record}/mass-assign',
         'TimelineTemplateController@create_mass_assignment')
             ->name('student.record.mass-assignment');
@@ -84,8 +90,10 @@ Route::middleware('samlauth')
         'TimelineTemplateController@store_mass_assignment')
             ->name('student.record.mass-assignment');
 
-
     Route::resource('student.record', 'StudentRecordController');
+
+    Route::post('student/{student}/record/{record}/note',
+        'StudentRecordController@note')->name('student.record.note');
 
     Route::post('student/{student}/record/{record}/milestone/{milestone}/upload',
         'MilestoneController@upload')->name('student.record.milestone.upload');
@@ -100,7 +108,7 @@ Route::middleware('samlauth')
 
     Route::resource('admin', 'AdminController');
     
-    Route::resource('student.absence', 'AbsenceController');
+    Route::resource('student.absence', 'AbsenceController', ['except' => 'index' ]);
     
     Route::resource('student', 'StudentController');
 

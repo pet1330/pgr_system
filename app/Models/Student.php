@@ -137,10 +137,10 @@ class Student extends User
         return ! $this->isAbsent();
     }
 
-    public function assignDefaultPermissions()
+    public function assignDefaultPermissions($reset=false)
     {
         // Remove all abilities
-        $this->abilities()->sync([]);
+        if($reset) $this->abilities()->sync([]);
         // Assign a sensable default
         $this->allow('view', $this);
 

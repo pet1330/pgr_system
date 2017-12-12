@@ -118,6 +118,40 @@ class MilestoneController extends Controller
             ]);
     }
 
+    public function recent(Request $request)
+    {
+
+        $this->authorise('view', Milestone::class);
+
+        if ($request->ajax())
+        {
+            return $this->data( Milestone::select('milestones.*')->recentlySubmitted() )
+                ->editColumn('submitted_date', function (Milestone $ms)
+                { 
+                    return $ms->submitted_date->format('d/m/Y') .
+                           ' (' . $ms->submitted_date->diffForHumans() . ')';
+                })
+                ->filterColumn('submitted_date', function ($query, $keyword) {
+                    $keyword = implode('%%',str_split(str_replace( ['+', '-'], '',
+                        filter_var($keyword, FILTER_SANITIZE_NUMBER_INT)
+                    )));
+                    $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?",
+                        ["%%$keyword%%"]);
+                })
+                ->make(true);
+        }
+
+        return view('admin.milestone.list', [
+            'title' => 'Submitted Milestones',
+            'subtitle' => 'Recently submitted milestones',
+            'show_submitted' => true,
+            ]);
+    }
+
+
+
+
+
     public function data($milestones)
     {
 
@@ -185,20 +219,20 @@ class MilestoneController extends Controller
 
         $this->authorise('view', $student);
 
-        $milestone = auth()->user()->can('create', Milestone::class) ?
+        $res = auth()->user()->can('create', Milestone::class) ?
             $this->storeAdminMilestone($request, $student, $record) :
             $this->storeStudentMilestone($request, $student, $record);
 
-        if($milestone instanceof Milestone)
+        if($res instanceof Milestone) // else redirect is returned
         {
-            $student->allow('view', $milestone);
-            $student->allow('upload', $milestone);
-            $student->supervisors->each->allow('view', $milestone);
+            $student->allow('view', $res);
+            $student->allow('upload', $res);
+            $student->supervisors->each->allow('view', $res);
             Bouncer::refresh();
             return redirect()->route('admin.student.record.milestone.show',
                 compact('student', 'record', 'milestone'));
         }
-        return $milestone;
+        return $res;
     }
 
     private function storeStudentMilestone(Request $request, Student $student, StudentRecord $record)

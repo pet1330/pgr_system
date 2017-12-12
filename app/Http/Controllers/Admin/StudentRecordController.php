@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Note;
 use App\Models\School;
 use App\Models\Absence;
 use App\Models\Student;
@@ -120,11 +121,9 @@ class StudentRecordController extends Controller
 
     public function show(Request $request, Student $student, StudentRecord $record)
     {
-        if($request->ajax()) return $this->absences($record);
-
         if($student->id !== $record->student_id) abort(404);
 
-        $this->authorise('view', $student);
+        if($request->ajax()) return $this->absences($record);
 
         if($student->record() !== null)
         {
@@ -140,6 +139,9 @@ class StudentRecordController extends Controller
 
     private function absences(StudentRecord $record)
     {
+
+        $this->authorise('view', $record->student);
+
         $abs = $record->student->absences()->select('absences.*')->with([
             'type' => function ($query) { $query->withTrashed(); }
         ]);
@@ -152,6 +154,9 @@ class StudentRecordController extends Controller
 
     public function addSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
     {
+
+        $this->authorise('create', Staff::class);
+
         $staff = Staff::where('university_id', $request->university_id);
 
         if($staff)
@@ -171,6 +176,9 @@ class StudentRecordController extends Controller
 
     public function removeSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
     {
+
+        $this->authorise('create', Staff::class);
+
         $staff = Staff::where('university_id', $request->university_id);
 
         if($staff)
@@ -186,5 +194,14 @@ class StudentRecordController extends Controller
         }
 
         return redirect()->route('admin.staff.find');
+    }
+
+    public function note(Request $request, Student $student, StudentRecord $record)
+    {
+
+        $this->authorise('view', Note::class);
+
+        $record->updateNote($request->content);
+        return "Note Updated Successfully.";
     }
 }

@@ -16,6 +16,8 @@ class Admin extends User
 
     public function assignDefaultPermissions($reset=false)
     {
+        if($reset) $this->abilities()->sync([]);
+
         $this->allow('create', Absence::class);
         $this->allow('view', Absence::class);
         $this->allow('update', Absence::class);
@@ -73,6 +75,7 @@ class Admin extends User
         $this->allow('delete', MilestoneType::class);
         $this->allow('update', MilestoneType::class);
         $this->allow('upload', MilestoneType::class);
+        $this->authorise('view', Note::class);
         Bouncer::refresh();
     }
 }

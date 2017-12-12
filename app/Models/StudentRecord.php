@@ -175,4 +175,16 @@ class StudentRecord extends Model
         else
             return $number. ['th','st','nd','rd','th','th','th','th','th','th'][$number % 10];
     }
+
+    public function note()
+    {
+        return $this->morphOne(Note::class, 'noteable')->withDefault();
+    }
+
+    public function updateNote($content="")
+    {
+        $this->note->exists ?
+            $this->note->update(['content' => $content]) :
+            $this->note()->save(Note::make(['content' => $content]));
+    }
 }

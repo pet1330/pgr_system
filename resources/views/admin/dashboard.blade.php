@@ -178,6 +178,11 @@
     @slot('icon', 'fa fa-gear')
     {{ App\Models\Approval::count() }}
     @endcomponent
+    @component('components.infobox')
+    @slot('title', 'Notes')
+    @slot('icon', 'fa fa-gear')
+    {{ App\Models\note::count() }}
+    @endcomponent
     </div>
   </div>
     @endif

@@ -234,4 +234,16 @@
     </div>
   </div>
   @endif
+  @can('view', App\Models\Note::class)
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Notes <small>( not visable to students )</small></h3>
+      </div>
+      <div class="panel-body">
+        <p id="note">
+          {{ $record->note->content }}
+        </p>
+      </div>
+    </div>
+  @endcan
 </div>

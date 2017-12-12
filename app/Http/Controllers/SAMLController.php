@@ -14,6 +14,7 @@ class SAMLController extends Controller
 	public function logout()
 	{
 		auth()->logout();
+        session()->save();
         return redirect('saml2/logout');
 	}
 }
