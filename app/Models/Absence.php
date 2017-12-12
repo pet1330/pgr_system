@@ -84,12 +84,4 @@ class Absence extends Model
         return $query->where('from', '>', Carbon::now())
         ->orderBy('from', 'asc')->get();
     }
-
-    // public function calculateDuration()
-    // {
-    //     return $this->from
-    //             ->diffInDaysFiltered(function(Carbon $date) {
-    //                 return !$date->isWeekend();
-    //             }, $this->to);
-    // }
 }

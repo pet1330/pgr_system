@@ -14,16 +14,6 @@ class AbsenceController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Student $student)
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -59,17 +49,6 @@ class AbsenceController extends Controller
 
         $student->records->each->recalculateMilestonesDueDate();
         return redirect()->route('admin.student.show', $student->university_id);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Student $student, Absence $absence)
-    {
-        $this->authorise('view', $absence);
     }
 
     /**
