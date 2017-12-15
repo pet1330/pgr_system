@@ -10,6 +10,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get -y update && apt-get -y install nodejs yarn libapache2-mod-php7.1 && apt-get -y upgrade
 RUN a2enmod  php7.1
 
+COPY docker/apache/sites-available/* /etc/apache2/sites-available/
+
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
 
 #RUN useradd -d /home/app -m app
