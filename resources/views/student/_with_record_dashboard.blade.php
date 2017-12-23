@@ -240,9 +240,7 @@
         <h3 class="panel-title">Notes <small>( not visable to students )</small></h3>
       </div>
       <div class="panel-body">
-        <p id="note">
-          {{ $record->note->content }}
-        </p>
+        <p id="note">{{ trim($record->note->content) }}</p>
       </div>
     </div>
   @endcan
