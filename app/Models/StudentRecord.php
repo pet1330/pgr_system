@@ -160,7 +160,7 @@ class StudentRecord extends Model
         $unit = "add" . ucfirst($this->programme->duration_unit);
         return $this->enrolment_date->copy()
                     ->addMonths($this->programme->duration)
-                    ->addDays($this->student->interuptionPeriodSoFar());
+                    ->addDays($this->student->totalInteruptionPeriod());
     }
 
     public function recalculateMilestonesDueDate()

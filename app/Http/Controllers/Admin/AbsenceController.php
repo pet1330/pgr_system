@@ -67,21 +67,6 @@ class AbsenceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(AbsenceRequest $request, Student $student, Absence $absence)
-    {
-        
-        $this->authorise('update', $absence);
-
-
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -90,5 +75,8 @@ class AbsenceController extends Controller
     public function destroy(Student $student, Absence $absence)
     {
         $this->authorise('delete', $absence);
+        $absence->delete();
+        $student->records->each->recalculateMilestonesDueDate();
+        return redirect()->route('admin.student.show', $student->university_id);
     }
 }
