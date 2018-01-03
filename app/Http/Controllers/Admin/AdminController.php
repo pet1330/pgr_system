@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
+use App\Models\Staff;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\StudentRecord;
@@ -40,5 +41,41 @@ class AdminController extends Controller
         return View('admin.dashboard',
             compact('admin', 'awaitingAmendments', 'overdue', 'upcoming', 'recentlySubmitted')
         );
+    }
+
+    public function downgrade(Request $request)
+    {
+
+        $this->authorise('create', Admin::class);
+
+        if ($request->ajax())
+        {
+            $admin = Admin::select('users.*');
+            return Datatables::eloquent($admin)
+                ->addColumn('downgrade', function (Admin $admin) {
+                    return '<form method="POST" action="' . route('admin.admin.downgrade.store', $admin->university_id) . '" accept-charset="UTF-8" class="success-form text-center">' . 
+                    csrf_field() . '<button class="btn btn-default" onclick="return confirm(\'Are you sure?\')">
+                    <i class="fa fa-user-times" aria-hidden="true"></i> Remove Admin Abilities</button> </form>';
+                })->rawColumns(['downgrade'])->make(true);
+        }
+        return View('admin.settings.accesscontrol.downgrade');
+    }
+
+    public function downgrade_store(Request $request, Admin $admin)
+    {
+
+        $this->authorise('create', Admin::class);
+
+        $admin->user_type = "Staff";
+        $admin->save();
+        $staff = Staff::find($admin->id);
+
+        $staff->assignDefaultPermissions(true);
+
+        return redirect()->route('admin.admin.downgrade.index')
+            ->with('flash', [
+                'message' => $staff->name . ' is no longer an Admin',
+                'type' => 'success'
+            ]);
     }
 }

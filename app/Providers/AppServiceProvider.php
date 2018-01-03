@@ -38,15 +38,6 @@ class AppServiceProvider extends ServiceProvider
             return Admin::where('university_id', $value)->exists();
         });
 
-        // Validator::extend('milestone_makable', function ($attribute, $value) {
-
-        //     $m = Milestone::where('id', $value)->first();
-
-        //     if($m) return auth()->user()->isStudent() && $m->type->student_makable;
-
-        //     return false;
-        // });
-
         View::share('app_version', \Cache::remember('app_version', 10, function () { return strtok(shell_exec('git describe --always --tags'), '-'); }) );
     }
 
