@@ -14,7 +14,6 @@
 use App\Models\Admin;
 use App\Models\Student;
 use App\Models\Staff;
-use App\Models\Wizard;
 use App\Models\StudentRecord;
 use App\Models\School;
 use App\Models\EnrolmentStatus;
@@ -64,18 +63,6 @@ $factory->define(Admin::class, function (Faker\Generator $faker) {
         'university_email'     => $fName[0] . $lName . "@lincoln.ac.uk",
         'university_id'        => $fName[0] . $lName,
         'user_type'            => 'admin',
-    ];
-});
-
-$factory->define(Wizard::class, function (Faker\Generator $faker) {
-    $fName = $faker->firstName;
-    $lName = $faker->unique()->lastName;
-    return [
-        'first_name'           => $fName,
-        'last_name'            => $lName,
-        'university_email'     => $fName[0] . $lName . "@lincoln.ac.uk",
-        'university_id'        => $fName[0] . $lName,
-        'user_type'            => 'wizard',
     ];
 });
 
