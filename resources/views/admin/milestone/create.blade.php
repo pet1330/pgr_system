@@ -28,16 +28,16 @@
             </span>
             @endif
           </div>
-          @if(auth()->user()->isAdmin())
-          <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-5">
-            <label for="due">Due On</label>
-            <input type="date" class="form-control" name="due" value="{{ old('due') }}">
-            @if ($errors->has('due'))
-            <span class="help-block">
-              <strong>{{ $errors->first('due') }}</strong>
-            </span>
-            @endif
-          </div>
+          @can('create', App\Models\Milestone::class)
+            <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-5">
+              <label for="due">Due On</label>
+              <input type="date" class="form-control" name="due" value="{{ old('due') }}">
+              @if ($errors->has('due'))
+              <span class="help-block">
+                <strong>{{ $errors->first('due') }}</strong>
+              </span>
+              @endif
+            </div>
           @else
           <div class="form-group{{ $errors->has('file') ? ' has-error' : '' }} col-md-5">
             <label for="file">Submission</label>
@@ -48,7 +48,7 @@
             </span>
             @endif
           </div>
-          @endif
+          @endcan
           <div class="form-group col-md-12">
             <button type="submit" class="btn btn-primary" id="submit-all">Add Milestone</button>
           </div>

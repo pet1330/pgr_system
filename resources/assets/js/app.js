@@ -134,5 +134,11 @@ $(function() {
       alert("Opps! It looks like that note did not save.\nIf this keeps happening, please contact your site adminstrator");
     });
     });
-});
 
+    $('#datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
+        dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
+    $('#enrolment_date').change(function(){ $('#datepicker').datepicker('setDate', $(this).val()); });
+    $('#datepicker').change(function(){ $('#enrolment_date').attr('value',$(this).val()); });
+    $('#datepicker').datepicker('setDate', $('#enrolment_date').val());
+
+});

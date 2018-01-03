@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
   @include('layouts.header')
-  {{--
-  SKINS: skin-blue, skin-black, skin-purple, skin-yellow, skin-red, skin-green
-  LAYOUT OPTIONS fixed, layout-boxed, layout-top-nav, sidebar-collapse, sidebar-mini
-  --}}
   <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="app">
       @include('layouts.nav.header')
       <aside class="main-sidebar">
-        {{-- sidebar: style can be found in sidebar.scss --}}
         <section class="sidebar">
-          @include('layouts.sidebar.user')
-          @include('layouts.sidebar.search')
-          @include('layouts.sidebar.menu.' . lcfirst(auth()->user()->user_type) . '.main')
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="{{ auth()->user()->avatar(40) }}" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+              <p>{{ auth()->user()->name }}</p>
+              <a href="#">
+              <i class="fa fa-circle text-success"></i> {{ auth()->user()->user_type }}</a>
+            </div>
+          </div>
+          @include('layouts.menu')
         </section>
       </aside>
       <div class="content-wrapper">
@@ -26,7 +29,6 @@
         </section>
       </div>
       @include('layouts.footer')
-      @include('layouts.sidebar.right_sidebar')
       @if( session()->has('flash') )
       <div class="alert alert-flash alert-{{ session('flash')['type'] }}" role="alert">
         {{ session('flash')['message'] }}
@@ -45,14 +47,5 @@
     <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
-    <script>
-    $(function() {
-    $('#datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
-    dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
-    $('#enrolment_date').change(function(){ $('#datepicker').datepicker('setDate', $(this).val()); });
-    $('#datepicker').change(function(){ $('#enrolment_date').attr('value',$(this).val()); });
-    $('#datepicker').datepicker('setDate', $('#enrolment_date').val());
-    });
-    </script>
   </body>
 </html>
