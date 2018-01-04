@@ -6,7 +6,7 @@ $(document).ready(function() {
         language: {
             "processing": '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>'
             },
-        ajax: window.location.href,
+        ajax: window.location.protocol + "//" + window.location.hostname + window.location.pathname,
         info: true,
         // stateSave: true,
         bProcessing: true,

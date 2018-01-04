@@ -124,7 +124,7 @@ $(function() {
 
     $("#note").editable({type : "textarea", action : "click"}, function(e){
     $.ajax({
-      url: window.location.href + "/note",
+      url: window.location.protocol + "//" + window.location.hostname + window.location.pathname + "/note",
       method: "POST",
       data: {
         content: e.value
