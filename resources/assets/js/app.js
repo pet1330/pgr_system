@@ -141,4 +141,24 @@ $(function() {
     $('#datepicker').change(function(){ $('#enrolment_date').attr('value',$(this).val()); });
     $('#datepicker').datepicker('setDate', $('#enrolment_date').val());
 
+
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#3c8dbc"
+    },
+    "button": {
+      "background": "#3c8dbc",
+      border: "solid 2px"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right",
+  "content": {
+    "message": "This University of Lincoln service uses cookies to ensure you get the best experience."
+  }
+})});
+
+
 });

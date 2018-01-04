@@ -47,5 +47,7 @@
     <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+    <script defer src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+
   </body>
 </html>
