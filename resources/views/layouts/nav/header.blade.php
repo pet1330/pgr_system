@@ -9,9 +9,6 @@
     </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-        @if(auth()->user()->isAdmin())  {{-- CHANGE TO @CAN('See Notifications') --}}
-        @include('layouts.nav.notification')
-        @endif
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="{{ auth()->user()->avatar(80)  }}" class="user-image" alt="User Image">
@@ -20,10 +17,7 @@
           <ul class="dropdown-menu">
             <li class="user-header">
               <img src="{{ auth()->user()->avatar(200)  }}" class="img-circle" alt="User Image">
-              <p>
-                {{-- {{ auth()->user()->school->name ?? "hello" }} --}}
-                {{-- <small>Since 0000</small> --}}
-              </p>
+              <p>{{ auth()->user()->university_id }}</p>
             </li>
             <li class="user-footer">
               <div class="pull-left">

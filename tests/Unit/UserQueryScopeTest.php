@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Student;
 use App\Models\Staff;
 use App\Models\Admin;
-use App\Models\Wizard;
 use App\Models\User;
 
 class UserQueryScopeTest extends TestCase
@@ -50,26 +49,12 @@ class UserQueryScopeTest extends TestCase
     }
 
     /**
-     * Test Wizard Query Scope
-     *
-     * @return void
-     */
-    public function testWizardUserQueryScope()
-    {
-        factory(Wizard::class,2)->create();
-        $this->assertEquals(Wizard::count(), 2);
-    }
-
-    /**
      * Test a admin user type is returned when base class is instanciated
      * @return void
      */
     public function testUserClassResolvesAdminCorrectly()
     {
-        // factory(Student::class, 1)->create();
-        // factory(Staff::class, 1)->create();
         factory(Admin::class, 1)->create();
-        // factory(Wizard::class, 1)->create();
         return $this->assertTrue(User::first() instanceof Admin);
     }
 
@@ -91,15 +76,5 @@ class UserQueryScopeTest extends TestCase
     {
         factory(Student::class, 1)->create();
         return $this->assertTrue(User::first() instanceof Student);
-    }
-
-    /**
-     * Test a wizard user type is returned when base class is instanciated
-     * @return void
-     */
-    public function testUserClassResolvesWizardCorrectly()
-    {
-        factory(Wizard::class, 1)->create();
-        return $this->assertTrue(User::first() instanceof Wizard);
     }
 }

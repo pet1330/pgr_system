@@ -3,10 +3,6 @@
 Route::middleware('guest')->get('login', 'SAMLController@login')->name('login');
 Route::middleware('samlauth')->get('logout', 'SAMLController@logout')->name('logout');
 
-Route::middleware('samlauth')->get('/', function() {
-    return redirect(auth()->user()->dashboard_url());
-});
-
 Route::get('auth-status', function() {
     return auth()->check() ? "logged-in" : "logged-out";
 });
@@ -19,14 +15,9 @@ Route::name('account-locked')->get('account-locked', function () {
     return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
 });
 
-Route::middleware('samlauth')
-    ->namespace('Admin')
-    ->as('admin.')
-    ->prefix('a')
-    ->group( function() {
-    // =======================================================================
-    // ======================== Admin Specific Routes ========================
-    // =======================================================================
+Route::middleware('samlauth')->namespace('Admin')->as('admin.')->group( function() {
+
+    Route::get('/', function() { return redirect(auth()->user()->dashboard_url()); });
 
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
@@ -54,41 +45,37 @@ Route::middleware('samlauth')
     Route::get('staff/upgrade', 'StaffController@upgrade')->name('staff.upgrade.index');
     Route::post('staff/{staff}/upgrade', 'StaffController@upgrade_store')->name('staff.upgrade.store');
 
+    Route::get('admin/downgrade', 
+        'AdminController@downgrade')->name('admin.downgrade.index');
+    Route::post('admin/{admin}/downgrade', 
+        'AdminController@downgrade_store')->name('admin.downgrade.store');
+
     Route::get('student/{student}/record/{record}/supervisor/find',
-        'SupervisorController@find')
-            ->name('supervisor.find');
+        'SupervisorController@find')->name('supervisor.find');
 
     Route::post('student/{student}/record/{record}/supervisor/find',
-        'SupervisorController@find_post')
-            ->name('supervisor.find');
+        'SupervisorController@find_post')->name('supervisor.find');
 
     Route::get('student/{student}/record/{record}/supervisor/{staff}/create',
-        'SupervisorController@create')
-            ->name('supervisor.create');
+        'SupervisorController@create')->name('supervisor.create');
 
     Route::post('student/{student}/record/{record}/supervisor',
-        'SupervisorController@store')
-            ->name('supervisor.store');
+        'SupervisorController@store')->name('supervisor.store');
 
     Route::get('student/{student}/record/{record}/supervisor/confirm_id',
-        'SupervisorController@confirm_id')
-            ->name('supervisor.confirm_id');
+        'SupervisorController@confirm_id')->name('supervisor.confirm_id');
 
     Route::post('student/{student}/record/{record}/supervisor/confirm_id',
-        'SupervisorController@confirm_post_id')
-            ->name('supervisor.confirm_id');
+        'SupervisorController@confirm_post_id')->name('supervisor.confirm_id');
 
     Route::delete('student/{student}/record/{record}/supervisor/{staff}',
-            'SupervisorController@destroy')
-            ->name('supervisor.destroy');
+            'SupervisorController@destroy')->name('supervisor.destroy');
 
     Route::get('student/{student}/record/{record}/mass-assign',
-        'TimelineTemplateController@create_mass_assignment')
-            ->name('student.record.mass-assignment');
+        'TimelineTemplateController@create_mass_assignment')->name('student.record.mass-assignment');
 
     Route::post('student/{student}/record/{record}/mass-assign',
-        'TimelineTemplateController@store_mass_assignment')
-            ->name('student.record.mass-assignment');
+        'TimelineTemplateController@store_mass_assignment')->name('student.record.mass-assignment');
 
     Route::resource('student.record', 'StudentRecordController');
 
@@ -117,44 +104,34 @@ Route::middleware('samlauth')
     Route::prefix('settings')->as('settings.')->group(function ()
     {
         Route::get('timeline/{timeline}/restore',
-                   'TimelineTemplateController@restore')
-            ->name('timeline.restore');
+                   'TimelineTemplateController@restore')->name('timeline.restore');
 
         Route::get('timeline/{timeline}/milestone/{milestone}/restore',
-                   'MilestoneTemplateController@restore')
-            ->name('timeline.milestone.restore');
+                   'MilestoneTemplateController@restore')->name('timeline.milestone.restore');
 
         Route::get('absence-type/{absence_type}/restore',
-                   'AbsenceTypeController@restore')
-            ->name('absence-type.restore');
+                   'AbsenceTypeController@restore')->name('absence-type.restore');
 
         Route::get('funding-type/{funding_type}/restore',
-                   'FundingTypeController@restore')
-            ->name('funding-type.restore');
+                   'FundingTypeController@restore')->name('funding-type.restore');
 
         Route::get('programme/{programme}/restore',
-                   'ProgrammeController@restore')
-            ->name('programme.restore');
+                   'ProgrammeController@restore')->name('programme.restore');
 
         Route::get('school/{school}/restore',
-                   'SchoolController@restore')
-            ->name('school.restore');
+                   'SchoolController@restore')->name('school.restore');
 
         Route::get('college/{college}/restore',
-                   'CollegeController@restore')
-            ->name('college.restore');
+                   'CollegeController@restore')->name('college.restore');
 
         Route::get('student-status/{student_status}/restore',
-                   'StudentStatusController@restore')
-            ->name('student-status.restore');
+            'StudentStatusController@restore')->name('student-status.restore');
 
         Route::get('enrolment-status/{enrolment_status}/restore',
-                   'EnrolmentStatusController@restore')
-            ->name('enrolment-status.restore');
+            'EnrolmentStatusController@restore')->name('enrolment-status.restore');
 
         Route::get('milestone-type/{milestone_type}/restore',
-                   'MilestoneTypeController@restore')
-            ->name('milestone-type.restore');
+            'MilestoneTypeController@restore')->name('milestone-type.restore');
 
         $settings_resource = [ 'except' => [ 'create', 'show' ] ];
         
@@ -183,15 +160,3 @@ Route::middleware('samlauth')
         Route::resource('role-permissions', 'RolePermissionsController');
     });
 });
-
-
-// Route::post('report-bug', function () {
-
-//     $message =  Request::input('message');
-//     $ip = Request::ip();
-//     $user = auth()->user()->university_id ?? "unknown";
-//     $page = Request::input('location');
-//     return collect(['response' => 'Thank you, the message has been logged and will be checked soon',
-//             'ip' => $ip
-//         ])->toJson();]
-// })->name('bug-report');

@@ -110,7 +110,7 @@
   <div class="box box-primary">
     @if($overdue->isEmpty() && $upcoming->isEmpty())
     <div class="box-body text-center">
-      @if(auth()->user()->isStudent())
+      @if(auth()->id() === $student->id)
       You have no upcoming or or overdue milestones! Congrats!
       @else
       This student has no upcoming or overdue milestones
@@ -141,7 +141,7 @@
       @slot('record', $record)
       @endcomponent
       @empty
-      @if(auth()->user()->isStudent())
+      @if(auth()->id() === $student->id)
       You have not been assigned a supervisor
       @else
       No supervisors have been assigned to this student
@@ -194,6 +194,18 @@
             <td>Programme:</td>
             <td>{{ $record->programme->name }}</td>
           </tr>
+          <tr>
+            <td>Is Tier Four:</td>
+            <td>{{ $record->tierFour ? 'Yes' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td>Funding Type:</td>
+            <td>{{ $record->fundingType->name }}</td>
+          </tr>
+          <tr>
+            <td>Estimated End Date:</td>
+            <td>{{ $record->end->format('d/m/Y') }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -204,24 +216,40 @@
       <h3 class="panel-title">Absences</h3>
     </div>
     <div class="panel-body">
-      <table class="table table-striped table-bordered" id="admin-student-absences-table" width="100%">
+      @can('delete', App\Models\Absence::class)
+      <table class="table table-striped table-bordered" id="admin-absences-table" width="100%">
         <thead>
           <tr>
             <td>From</td>
             <td>To</td>
             <td>Duration</td>
-            <td>Absence Type</td>
+            <td>Type</td>
+            <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
           </tr>
         </thead>
         <tbody>
         </tbody>
       </table>
+      @else
+      <table class="table table-striped table-bordered" id="student-absences-table" width="100%">
+        <thead>
+          <tr>
+            <td>From</td>
+            <td>To</td>
+            <td>Duration</td>
+            <td>Type</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      @endcan
     </div>
   </div>
   @else
   <div class="box box-primary">
     <div class="box-body text-center">
-      @if(auth()->user()->isStudent())
+      @if(auth()->id() === $student->id)
       You have no absences
       @else
       This student has no absences
@@ -240,9 +268,7 @@
         <h3 class="panel-title">Notes <small>( not visable to students )</small></h3>
       </div>
       <div class="panel-body">
-        <p id="note">
-          {{ $record->note->content }}
-        </p>
+        <p id="note">{{ trim($record->note->content) }}</p>
       </div>
     </div>
   @endcan

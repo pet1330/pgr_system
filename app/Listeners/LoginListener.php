@@ -52,9 +52,6 @@ class LoginListener
 
         $user->save();
 
-
-
-
         if( ! $user->locked) auth()->login($user);
 
         return redirect()->route('account-locked');

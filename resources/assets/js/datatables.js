@@ -6,7 +6,7 @@ $(document).ready(function() {
         language: {
             "processing": '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>'
             },
-        ajax: window.location.href,
+        ajax: window.location.protocol + "//" + window.location.hostname + window.location.pathname,
         info: true,
         // stateSave: true,
         bProcessing: true,
@@ -21,6 +21,7 @@ $(document).ready(function() {
             'colvis'
         ]
     }
+
     // LIST OF ALL STUDENTS FOR ADMINS
     // ==========================================================================
     $('#admin-student-table').DataTable(
@@ -106,7 +107,6 @@ $(document).ready(function() {
             ]
         })
     );
-
 
     // List of enrolment statuses for Admins
     //==============================================================================================
@@ -248,6 +248,19 @@ $(document).ready(function() {
         })
     );
 
+    // List of Admins to downgrade
+    //==============================================================================================
+    $('#admin-staff-downgrade-table').DataTable(
+        _.merge({}, generalSettings, {
+            columns: [
+                { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
+                { data: 'last_name', name: 'last_name', searchable: true, orderable: true },
+                { data: 'university_id', name: 'university_id', searchable: true, orderable: true },
+                { data: 'downgrade', name: 'downgrade', searchable: false, orderable: false }
+            ]
+        })
+    );
+
     // List of permissions for each role
     //==============================================================================================
     $('#admin-role-permissions-table').DataTable(
@@ -279,7 +292,7 @@ $(document).ready(function() {
 
     // List of absences for student dashboard
     //==============================================================================================
-    $('#admin-student-absences-table').DataTable(
+    $('#student-absences-table').DataTable(
         _.merge({}, generalSettings, {
             "searching": false,
             dom: 'rt',
@@ -288,8 +301,22 @@ $(document).ready(function() {
                 { data: 'to', name: 'to', searchable: false, orderable: true },
                 { data: 'duration', name: 'duration', searchable: false, orderable: true },
                 { data: 'type', name: 'type.name', searchable: false, orderable: true }
-                // { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
-                // { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
+            ]
+        })
+    );
+
+    // List of absences for student dashboard for admin
+    //==============================================================================================
+    $('#admin-absences-table').DataTable(
+        _.merge({}, generalSettings, {
+            "searching": false,
+            dom: 'rt',
+            columns: [
+                { data: 'from', name: 'from', searchable: false, orderable: true },
+                { data: 'to', name: 'to', searchable: false, orderable: true },
+                { data: 'duration', name: 'duration', searchable: false, orderable: true },
+                { data: 'type', name: 'type.name', searchable: false, orderable: true },
+                { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
     );
@@ -297,6 +324,4 @@ $(document).ready(function() {
     $('.dataTables_wrapper tbody').on( 'click', 'tr', function () {
         if ($(this).data().link != null) window.location = $(this).data().link;
     });
-
-//---------------------------------
 });

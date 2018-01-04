@@ -2,7 +2,6 @@
 @section('page_title', $admin->name)
 @section('page_description', 'Dashboard')
 @section('content')
-{{-- Main content --}}
     <div class="box box-primary">
       <div class="panel-body ">
         <div class="col-md-3 col-sm-6">
@@ -44,7 +43,6 @@
               </div>
               <div class="text">
                 <var>{{ $upcoming }}</var>
-                {{-- <label class="text-muted">total orders</label> --}}
               </div>
               <div class="options">
                 <span class="btn btn-lg">Upcoming Milestones</span>
@@ -181,7 +179,7 @@
     @component('components.infobox')
     @slot('title', 'Notes')
     @slot('icon', 'fa fa-gear')
-    {{ App\Models\note::count() }}
+    {{ App\Models\Note::count() }}
     @endcomponent
     </div>
   </div>

@@ -19,6 +19,7 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\FindStudentRequest;
 use App\Http\Requests\StudentRecordRequest;
 use App\Http\Requests\ConfirmStudentIdRequest;
+use Yajra\Datatables\Engines\EloquentEngine;
 
 class StudentRecordController extends Controller
 {
@@ -121,9 +122,16 @@ class StudentRecordController extends Controller
 
     public function show(Request $request, Student $student, StudentRecord $record)
     {
+
         if($student->id !== $record->student_id) abort(404);
 
-        if($request->ajax()) return $this->absences($record);
+        $this->authorise('view', $student);
+
+        if($request->ajax())
+        {
+            return $this->absences_controls(
+                $this->absences($record), $student)->make(true);
+        }
 
         if($student->record() !== null)
         {
@@ -137,19 +145,33 @@ class StudentRecordController extends Controller
         return view('student.dashboard', compact('student'));
     }
 
+    private function absences_controls(EloquentEngine $dt, Student $student)
+    {
+        if( auth()->user()->can('delete', Absence::class) )
+        {
+            $dt->addColumn('deleteaction', function (Absence $abs) use ($student) {
+              return '<form method="POST" action="' . route('admin.student.absence.destroy', [$student, $abs->slug()]) . '"
+              accept-charset="UTF-8" class="delete-form">
+              <input type="hidden" name="_method" value="DELETE">' .
+              csrf_field() . '<button class="btn btn-danger">
+              <i class="fa fa-trash"></i></button> </form>';
+            })->rawColumns(['deleteaction']);
+        }
+        return $dt;
+    }
+
     private function absences(StudentRecord $record)
     {
 
         $this->authorise('view', $record->student);
 
         $abs = $record->student->absences()->select('absences.*')->with([
-            'type' => function ($query) { $query->withTrashed(); }
-        ]);
+            'type' => function ($query) { $query->withTrashed(); } ]);
+
         return Datatables::eloquent($abs)
             ->addColumn('type', function (Absence $ab) { return $ab->type->name; })
             ->editColumn('from', function (Absence $ab) { return $ab->from->format('d/m/Y'); })
-            ->editColumn('to', function (Absence $ab) { return $ab->to->format('d/m/Y'); })
-            ->make(true);
+            ->editColumn('to', function (Absence $ab) { return $ab->to->format('d/m/Y'); });
     }
 
     public function addSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)

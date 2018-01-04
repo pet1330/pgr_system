@@ -156,7 +156,7 @@ class StaffController extends Controller
                 ->rawColumns(['upgrade'])
                 ->make(true);
         }
-        return View('admin.settings.userupgrade.index');
+        return View('admin.settings.accesscontrol.upgrade');
         }
 
     public function upgrade_store(Request $request, Staff $staff)
