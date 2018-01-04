@@ -1,6 +1,6 @@
 FROM khanhicetea/php7-fpm-docker
 
-RUN apt-get -y update && apt-get install -y supervisor nodejs npm apache2 curl
+RUN apt-get -y update && apt-get install -y vim nano supervisor nodejs npm apache2 curl
 
 RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add -
 RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" |  tee /etc/apt/sources.list.d/yarn.list
