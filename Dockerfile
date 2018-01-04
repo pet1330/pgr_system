@@ -8,7 +8,10 @@ RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" |  tee /etc/apt/sources
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 RUN apt-get -y update && apt-get -y install nodejs yarn libapache2-mod-php7.1 && apt-get -y upgrade
+
 RUN a2enmod  php7.1
+RUN a2enmod  rewrite
+RUN a2enconf php7.1-fpm
 
 COPY docker/apache/sites-available/* /etc/apache2/sites-available/
 
