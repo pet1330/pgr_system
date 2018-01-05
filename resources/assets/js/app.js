@@ -1,4 +1,10 @@
 
+if (!window.location.origin) {
+        window.location.origin = window.location.protocol +
+        '//' + window.location.hostname +
+        (window.location.port ? (':' + window.location.port) : '');
+}
+
 window._ = require('lodash');
 
 // window.$ = window.jQuery = require('jquery');
@@ -124,7 +130,7 @@ $(function() {
 
     $("#note").editable({type : "textarea", action : "click"}, function(e){
     $.ajax({
-      url: window.location.protocol + "//" + window.location.hostname + window.location.pathname + "/note",
+      url: window.location.origin + window.location.pathname + "/note",
       method: "POST",
       data: {
         content: e.value
