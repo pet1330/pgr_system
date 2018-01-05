@@ -25,6 +25,17 @@ services:
       - .:/var/www/html/pgr/
       - pgrdata:/var/www/pgr/storage
       - /srv/pgr/config:/srv/config
+      # For access by each user
+      - /home:/home
+      # Authentication
+      # passwd/group should be mounted into any container
+      # needing to share the user/group IDs
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      # Shadow should only be mounted into containers
+      # needing to authenticate against PAM
+      - /etc/shadow:/etc/shadow:ro
+
 volumes:
   pgrdata: 
   pgrdb: 

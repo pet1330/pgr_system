@@ -22,6 +22,8 @@ WORKDIR /var/www/html/pgr
 
 EXPOSE 8080
 
+COPY docker/supervisor/conf.d/* /etc/supervisor/conf.d/
+
 #CMD 'php artisan serve --port=8080 --host=0.0.0.0'
 
 #USER root
