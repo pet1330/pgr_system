@@ -42,7 +42,7 @@ class StudentUploadConfirmation extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['mail'];
     }
 
     /**
@@ -66,13 +66,5 @@ class StudentUploadConfirmation extends Notification implements ShouldQueue
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
             ]);
-    }
-
-    public function toDatabase($notifiable)
-    {
-        return [
-            'subject' => "Milestone Updated!",
-            'body' => "A new file has been uploaded to your milestone"
-            ];
     }
 }
