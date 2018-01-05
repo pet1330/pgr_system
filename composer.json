@@ -8,14 +8,15 @@
         "php": ">=7.0.21",
         "aacotroneo/laravel-saml2": "^0.8.1",
         "balping/laravel-hashslug": "^1.0",
+        "barryvdh/laravel-debugbar": "^2.4",
+        "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "plank/laravel-mediable": "^2.5",
         "silber/bouncer": "v1.0.0-beta.3",
         "spatie/laravel-activitylog": "^1.15",
         "yajra/laravel-datatables-buttons": "^2.0",
-        "yajra/laravel-datatables-oracle": "^7.5",
-        "barryvdh/laravel-debugbar": "^2.4"
+        "yajra/laravel-datatables-oracle": "^7.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
