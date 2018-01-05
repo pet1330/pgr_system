@@ -219,20 +219,21 @@ class MilestoneController extends Controller
 
         $this->authorise('view', $student);
 
-        $res = auth()->user()->can('create', Milestone::class) ?
+        $milestone = auth()->user()->can('create', Milestone::class) ?
             $this->storeAdminMilestone($request, $student, $record) :
             $this->storeStudentMilestone($request, $student, $record);
 
-        if($res instanceof Milestone) // else redirect is returned
+        if($milestone instanceof Milestone) // else redirect is returned
         {
-            $student->allow('view', $res);
-            $student->allow('upload', $res);
-            $student->supervisors->each->allow('view', $res);
+            $student->allow('view', $milestone);
+            $student->allow('upload', $milestone);
+            $student->supervisors->each->allow('view', $milestone);
+
             Bouncer::refresh();
             return redirect()->route('admin.student.record.milestone.show',
                 compact('student', 'record', 'milestone'));
         }
-        return $res;
+        return $milestone;
     }
 
     private function storeStudentMilestone(Request $request, Student $student, StudentRecord $record)
