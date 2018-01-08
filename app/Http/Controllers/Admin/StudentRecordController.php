@@ -138,8 +138,9 @@ class StudentRecordController extends Controller
             $record = $student->record();
             $overdue = $record->timeline->filter->isOverdue();
             $upcoming = $record->timeline->filter->isUpcoming();
+            $awaiting = $record->timeline->filter->isAwaitingAmendments();
 
-            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
+            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue', 'awaiting'));
         }
 
         return view('student.dashboard', compact('student'));

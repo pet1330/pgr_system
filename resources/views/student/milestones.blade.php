@@ -156,6 +156,30 @@
                         </div>
                     </div>
                     @endif
+
+        @if($approved->isNotEmpty())
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Approved</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    @foreach($approved as $m)
+                    <a href="{{ route('admin.student.record.milestone.show',
+                        [$student->university_id, $record->slug(), $m->slug()]) }}">
+                        <li class="col-md-6 list-unstyled"><b>
+                            <span class="fa-stack fa-md" style="margin-right: 20px;">
+                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
+                                <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">{{ $m->due_date->format('d/m') }}</strong>
+                            </span>
+                        {{ $m->name }}</li></a>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            @endif
+
+
                 </div>
                 @endif
                 <div class="col-md-12 col-xs-12">

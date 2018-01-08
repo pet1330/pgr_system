@@ -80,6 +80,35 @@
     </div>
   </div>
   @endif
+
+  @if($awaiting->isNotEmpty())
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+      Awaiting Amendments
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul>
+        @foreach($awaiting->sortBy('due_date') as $m)
+        <a href="{{ route('admin.student.record.milestone.show',
+          [$student->university_id, $record->slug(), $m->slug()]) }}">
+          <li class="col-md-12 list-unstyled">
+            <span class="fa-stack fa-md" style="margin-right: 20px;">
+              <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
+              <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">
+              {{ $m->due_date->format('d/m') }}
+              </strong>
+            </span>
+            {{ $m->name }}
+          </li>
+        </a>
+        @endforeach
+      </ul>
+    </div>
+  </div>
+  @endif
+
   @if($upcoming->isNotEmpty())
   <div class="panel panel-warning">
     <div class="panel-heading">
