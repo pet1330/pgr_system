@@ -18,8 +18,9 @@
 @if($milestones->isNotEmpty())
 <div class="col-md-12">
     <h2>Milestones</h2>
+
     @if($overdue->isNotEmpty())
-    <div class="panel panel-danger">
+    <div class="panel panel-danger" id="overdue">
         <div class="panel-heading">
             <h3 class="panel-title">Overdue</h3>
         </div>
@@ -40,9 +41,8 @@
         </div>
         @endif
 
-
         @if($awaiting->isNotEmpty())
-        <div class="panel panel-warning">
+        <div class="panel panel-warning" id="amendments">
             <div class="panel-heading">
                 <h3 class="panel-title">Awaiting Amendments</h3>
             </div>
@@ -63,10 +63,8 @@
             </div>
             @endif
 
-
-
         @if($upcoming->isNotEmpty())
-        <div class="panel panel-warning">
+        <div class="panel panel-warning" id="upcoming">
             <div class="panel-heading">
                 <h3 class="panel-title">Upcoming</h3>
             </div>
