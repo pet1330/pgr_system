@@ -81,13 +81,13 @@
   </li>
   @endif
   @if(
-  auth()->user()->can('update', App\Models\Programme::class) ||
-  auth()->user()->can('update', App\Models\AbsenceType::class) ||
-  auth()->user()->can('update', App\Models\College::class) ||
-  auth()->user()->can('update', App\Models\EnrolmentStatus::class) ||
-  auth()->user()->can('update', App\Models\FundingType::class) ||
-  auth()->user()->can('update', App\Models\School::class) ||
-  auth()->user()->can('update', App\Models\StudentStatus::class)
+  auth()->user()->can('manage', App\Models\Programme::class) ||
+  auth()->user()->can('manage', App\Models\AbsenceType::class) ||
+  auth()->user()->can('manage', App\Models\College::class) ||
+  auth()->user()->can('manage', App\Models\EnrolmentStatus::class) ||
+  auth()->user()->can('manage', App\Models\FundingType::class) ||
+  auth()->user()->can('manage', App\Models\School::class) ||
+  auth()->user()->can('manage', App\Models\StudentStatus::class)
   )
   
   <li class="treeview">
@@ -117,49 +117,49 @@
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          @can('update', App\Models\College::class)
+          @can('manage', App\Models\College::class)
           <li>
             <a href="{{ route('admin.settings.college.index') }}">
               Colleges
             </a>
           </li>
           @endcan
-          @can('update', App\Models\School::class)
+          @can('manage', App\Models\School::class)
           <li>
             <a href="{{ route('admin.settings.school.index') }}">
               Schools
             </a>
           </li>
           @endcan
-          @can('update', App\Models\FundingType::class)
+          @can('manage', App\Models\FundingType::class)
           <li>
             <a href="{{ route('admin.settings.funding-type.index') }}">
               Funding Types
             </a>
           </li>
           @endcan
-          @can('update', App\Models\AbsenceType::class)
+          @can('manage', App\Models\AbsenceType::class)
           <li>
             <a href="{{ route('admin.settings.absence-type.index') }}">
               Absence Types
             </a>
           </li>
           @endcan
-          @can('update', App\Models\Programme::class)
+          @can('manage', App\Models\Programme::class)
           <li>
             <a href="{{ route('admin.settings.programme.index') }}">
               Programmes
             </a>
           </li>
           @endcan
-          @can('update', App\Models\StudentStatus::class)
+          @can('manage', App\Models\StudentStatus::class)
           <li>
             <a href="{{ route('admin.settings.student-status.index') }}">
               Student Statuses
             </a>
           </li>
           @endcan
-          @can('update', App\Models\EnrolmentStatus::class)
+          @can('manage', App\Models\EnrolmentStatus::class)
           <li>
             <a href="{{ route('admin.settings.enrolment-status.index') }}">
               Enrolment Statuses
@@ -171,7 +171,7 @@
     </ul>
   </li>
   @endif
-  @can('view', App\Models\Milestone::class)
+  @can('manage', App\Models\Admin::class)
   <li class="treeview">
     <a href="{{ route('admin.staff.upgrade.index') }}">
       <i class="fa fa-lock" aria-hidden="true"></i>

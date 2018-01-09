@@ -19,7 +19,7 @@ class EnrolmentStatusController extends Controller
     public function index(Request $request)
     {
 
-        $this->authorise('view', EnrolmentStatus::class);
+        $this->authorise('manage', EnrolmentStatus::class);
 
         if ($request->ajax())
         {
@@ -56,7 +56,7 @@ class EnrolmentStatusController extends Controller
     public function store(EnrolmentStatusRequest $request)
     {
 
-        $this->authorise('create', EnrolmentStatus::class);
+        $this->authorise('manage', EnrolmentStatus::class);
 
         $enrolments = EnrolmentStatus::create($request->only( 'status' ));
         return redirect()
@@ -77,7 +77,7 @@ class EnrolmentStatusController extends Controller
     public function update(EnrolmentStatusRequest $request, EnrolmentStatus $enrolment_status)
     {
 
-        $this->authorise('update', $enrolment_status);
+        $this->authorise('manage', $enrolment_status);
 
         $enrolment_status->update($request->only( 'status' ));
         $enrolment_status->save();
@@ -92,7 +92,7 @@ class EnrolmentStatusController extends Controller
     public function edit(EnrolmentStatus $enrolment_status)
     {
 
-        $this->authorise('update', $enrolment_status);
+        $this->authorise('manage', $enrolment_status);
 
         return view('admin.settings.enrolmentstatus.edit', compact('enrolment_status'));
     }
@@ -106,7 +106,7 @@ class EnrolmentStatusController extends Controller
     public function destroy(EnrolmentStatusRequest $request, EnrolmentStatus $enrolment_status)
     {
 
-        $this->authorise('delete', $enrolment_status);
+        $this->authorise('manage', $enrolment_status);
 
         // We are using soft delete so this item will remain in the database
         $enrolment_status->delete();
@@ -123,7 +123,7 @@ class EnrolmentStatusController extends Controller
 
         $enrolment_status = EnrolmentStatus::withTrashed()->find($id);
         
-        $this->authorise('delete', $enrolment_status);
+        $this->authorise('manage', $enrolment_status);
 
         if($enrolment_status->trashed())
         {

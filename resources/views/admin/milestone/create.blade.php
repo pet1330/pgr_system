@@ -28,7 +28,7 @@
             </span>
             @endif
           </div>
-          @can('create', App\Models\Milestone::class)
+          @can('manage', App\Models\Milestone::class)
             <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-5">
               <label for="due">Due On</label>
               <input type="date" class="form-control" name="due" value="{{ old('due') }}">

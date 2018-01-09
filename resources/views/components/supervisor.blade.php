@@ -2,8 +2,8 @@
 <h3 style="margin-top: 2px;">{{ $title or '' }}</h3>
 <div class="box box-primary">
   <div class="panel-body text-center">
-    @can('update', $student)
-    @can('create', App\Models\Staff::class)
+    @can('manage', $student)
+    @can('manage', App\Models\Staff::class)
     <form method="POST" action="{{ route('admin.supervisor.destroy',
       [$student->university_id, $record->slug(), $supervisor->university_id]) }}"
       accept-charset="UTF-8" class="delete-form" onsubmit="return confirm('Are you sure?');">

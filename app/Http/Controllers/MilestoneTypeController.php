@@ -18,7 +18,7 @@ class MilestoneTypeController extends Controller
     public function index(Request $request)
     {
 
-      $this->authorise('view', MilestoneType::class);
+      $this->authorise('manage', MilestoneType::class);
 
         if ($request->ajax())
         {
@@ -56,7 +56,7 @@ class MilestoneTypeController extends Controller
     public function store(MilestoneTypeRequest $request)
     {
 
-      $this->authorise('create', MilestoneType::class);
+      $this->authorise('manage', MilestoneType::class);
 
         $mt = MilestoneType::create( $request->only([ 'name', 'duration', 'student_makable' ] ) );
         return redirect()
@@ -77,7 +77,7 @@ class MilestoneTypeController extends Controller
     public function update(MilestoneTypeRequest $request, MilestoneType $milestone_type)
     {
 
-        $this->authorise('update', $milestone_type);
+        $this->authorise('manage', $milestone_type);
 
         $milestone_type->update( $request->only( 'name', 'duration', 'student_makable' ) );
         $milestone_type->save();
@@ -92,7 +92,7 @@ class MilestoneTypeController extends Controller
     public function edit(MilestoneType $milestone_type)
     {
 
-        $this->authorise('update', $milestone_type);
+        $this->authorise('manage', $milestone_type);
 
         return view('admin.settings.milestonetype.edit', compact('milestone_type'));
     }
@@ -106,7 +106,7 @@ class MilestoneTypeController extends Controller
     public function destroy(MilestoneType $milestone_type)
     {
 
-        $this->authorise('delete', $milestone_type);
+        $this->authorise('manage', $milestone_type);
 
         // We are using soft delete so this item will remain in the database
         $milestone_type->delete();
@@ -122,7 +122,7 @@ class MilestoneTypeController extends Controller
     {
         $mt = MilestoneType::withTrashed()->find($id);
 
-        $this->authorise('delete', $mt);
+        $this->authorise('manage', $mt);
 
         if($mt->trashed())
         {

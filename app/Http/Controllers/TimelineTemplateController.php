@@ -24,7 +24,7 @@ class TimelineTemplateController extends Controller
     public function index(Request $request)
     {
 
-        $this->authorise('view', TimelineTemplate::class);
+        $this->authorise('manage', TimelineTemplate::class);
 
         if ($request->ajax())
         {
@@ -63,7 +63,7 @@ class TimelineTemplateController extends Controller
     public function store(TimelineTemplateRequest $request)
     {
 
-        $this->authorise('create', TimelineTemplate::class);
+        $this->authorise('manage', TimelineTemplate::class);
 
         $tt = TimelineTemplate::create($request->only( 'name' ));
         return redirect()
@@ -84,7 +84,7 @@ class TimelineTemplateController extends Controller
     public function show(Request $request, TimelineTemplate $timeline)
     {
 
-        $this->authorise('view', $timeline);
+        $this->authorise('manage', $timeline);
 
         if ($request->ajax())
         {
@@ -126,7 +126,7 @@ class TimelineTemplateController extends Controller
     public function update(TimelineTemplateRequest $request, TimelineTemplate $timeline)
     {
 
-        $this->authorise('update', $timeline);
+        $this->authorise('manage', $timeline);
         
         $timeline->update($request->only('name'));
         $timeline->save();
@@ -141,7 +141,7 @@ class TimelineTemplateController extends Controller
     public function edit(TimelineTemplate $timeline)
     {
 
-        $this->authorise('update', $timeline);
+        $this->authorise('manage', $timeline);
 
         // timeline update edit timeline name
         return view('admin.settings.timelinetemplate.edit', compact('timeline'));
@@ -156,7 +156,7 @@ class TimelineTemplateController extends Controller
     public function destroy(TimelineTemplate $timeline)
     {
 
-        $this->authorise('delete', $timeline);
+        $this->authorise('manage', $timeline);
 
         // We are using soft delete so this item will remain in the datase
         $timeline->delete();
@@ -172,7 +172,7 @@ class TimelineTemplateController extends Controller
     {
         $tt = TimelineTemplate::withTrashed()->find($id);
 
-        $this->authorise('delete', $tt);
+        $this->authorise('manage', $tt);
 
         if($tt->trashed())
         {
@@ -195,8 +195,8 @@ class TimelineTemplateController extends Controller
       public function create_mass_assignment(Student $student, StudentRecord $record)
       {
 
-          $this->authorise('update', $student);
-          $this->authorise('create', Milestone::class);
+          $this->authorise('manage', $student);
+          $this->authorise('manage', Milestone::class);
           $this->authorise('view', TimelineTemplate::class);
 
           $timelines = TimelineTemplate::all();
@@ -207,8 +207,8 @@ class TimelineTemplateController extends Controller
         Student $student, StudentRecord $record)
       {
 
-          $this->authorise('update', $student);
-          $this->authorise('create', Milestone::class);
+          $this->authorise('manage', $student);
+          $this->authorise('manage', Milestone::class);
           $this->authorise('view', TimelineTemplate::class);
 
           $tt = TimelineTemplate::where('id', $request->timeline_id)->first();

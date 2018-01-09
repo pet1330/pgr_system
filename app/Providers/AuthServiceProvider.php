@@ -36,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('createMilestone', function ($user, $m=null)
         {
 
-            if( $user->can('create', Milestone::class) ) return true;
+            if( $user->can('manage', Milestone::class) ) return true;
 
             if( is_null($m) ) return $user->isStudent() && MilestoneType::StudentMakable()->count();
 

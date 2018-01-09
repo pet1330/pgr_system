@@ -46,7 +46,7 @@ class AdminController extends Controller
     public function downgrade(Request $request)
     {
 
-        $this->authorise('create', Admin::class);
+        $this->authorise('manage', Admin::class);
 
         if ($request->ajax())
         {
@@ -64,7 +64,7 @@ class AdminController extends Controller
     public function downgrade_store(Request $request, Admin $admin)
     {
 
-        $this->authorise('create', Admin::class);
+        $this->authorise('manage', Admin::class);
 
         $admin->user_type = "Staff";
         $admin->save();

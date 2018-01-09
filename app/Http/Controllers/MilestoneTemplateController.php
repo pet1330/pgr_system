@@ -20,7 +20,7 @@ class MilestoneTemplateController extends Controller
     public function create(TimelineTemplate $timeline)
     {
 
-        $this->authorise('create', $timeline);
+        $this->authorise('manage', $timeline);
 
         $types = MilestoneType::all();
         return view('admin.settings.milestonetemplate.create', compact('timeline', 'types'));
@@ -35,7 +35,7 @@ class MilestoneTemplateController extends Controller
     public function store(MilestoneTemplateRequest $request, TimelineTemplate $timeline)
     {
 
-        $this->authorise('create', $timeline);
+        $this->authorise('manage', $timeline);
 
         $milestone = $timeline->milestone_templates()->save(
             MilestoneTemplate::make([
@@ -53,7 +53,7 @@ class MilestoneTemplateController extends Controller
 
     public function edit(TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        $this->authorise('update', $timeline);
+        $this->authorise('manage', $timeline);
 
         $types = MilestoneType::all();
 
@@ -71,7 +71,7 @@ class MilestoneTemplateController extends Controller
     public function update(MilestoneTemplateRequest $request,
         TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        $this->authorise('update', $timeline);
+        $this->authorise('manage', $timeline);
         
         $milestone->update( $request->only( [ 'due', 'milestone_type' ] ) );
 
@@ -91,7 +91,7 @@ class MilestoneTemplateController extends Controller
      */
     public function destroy(TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
-        $this->authorise('delete', $timeline);
+        $this->authorise('manage', $timeline);
 
         $milestone->delete();
 
@@ -108,7 +108,7 @@ class MilestoneTemplateController extends Controller
     {
         $mt = MilestoneTemplate::withTrashed()->find($id);
 
-        $this->authorise('delete', $mt->timeline_template);
+        $this->authorise('manage', $mt->timeline_template);
 
         if($mt->trashed())
         {

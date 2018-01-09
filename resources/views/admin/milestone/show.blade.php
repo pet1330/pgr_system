@@ -9,7 +9,7 @@
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
       </a>
-      @can('update', $milestone)
+      @can('manage', $milestone)
       <a  href="{{ route('admin.student.record.milestone.edit',
         [$student->university_id, $record->slug(), $milestone->slug()]) }}">
         <span class="btn btn-default pull-right">
@@ -50,7 +50,7 @@
         @endif
       </div>
     </div>
-    @can('create', App\Models\Approval::class)
+    @can('manage', App\Models\Approval::class)
     <div class="box box-primary">
       <div class="box-body">
         <form action="{{ route('admin.student.record.milestone.approve',
