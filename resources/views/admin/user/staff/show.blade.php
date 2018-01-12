@@ -78,11 +78,15 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-primary">
       <div class="box-body text-center">
-        <h4>{{ ucfirst($staff->first_name) }} does not currently supervise any student</h4>
-        <p>If you are a postgraduate student, please login with your student account</p>
+        @if($staff->id === auth()->id())
+          <h4>You do not currently supervise any students</h4>
+          <p>If you are a postgraduate student, please login with your student account</p>
+        @else
+          <h4>{{ ucfirst($staff->first_name) }} does not currently supervise any students</h4>
+        @endif
       </div>
     </div>
-  </div> -->
+  </div>
   @endforelse
 </div>
 @endsection
