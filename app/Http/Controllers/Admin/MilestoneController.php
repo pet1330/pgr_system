@@ -49,7 +49,7 @@ class MilestoneController extends Controller
     public function overdue(Request $request)
     {
 
-        $this->authorise('view', Milestone::class);
+        // permissions checked in data function
 
         if ($request->ajax())
             return $this->data( Milestone::select('milestones.*')->overdue() )->make(true);
@@ -63,7 +63,7 @@ class MilestoneController extends Controller
     public function amendments(Request $request)
     {
 
-        $this->authorise('view', Milestone::class);
+        // permissions checked in data function
 
         if ($request->ajax())
             return $this->data( Milestone::select('milestones.*')->awaitingAmendments() )->make(true);
@@ -77,7 +77,7 @@ class MilestoneController extends Controller
     public function upcoming(Request $request)
     {
 
-        $this->authorise('view', Milestone::class);
+        // permissions checked in data function
 
         if ($request->ajax())
             return $this->data( Milestone::select('milestones.*')->upcoming() )->make(true);
@@ -91,7 +91,7 @@ class MilestoneController extends Controller
     public function submitted(Request $request)
     {
 
-        $this->authorise('view', Milestone::class);
+        // permissions checked in data function
 
         if ($request->ajax())
         {
@@ -121,7 +121,7 @@ class MilestoneController extends Controller
     public function recent(Request $request)
     {
 
-        $this->authorise('view', Milestone::class);
+        // permissions checked in data function
 
         if ($request->ajax())
         {
@@ -219,20 +219,21 @@ class MilestoneController extends Controller
 
         $this->authorise('view', $student);
 
-        $res = auth()->user()->can('create', Milestone::class) ?
+        $milestone = auth()->user()->can('create', Milestone::class) ?
             $this->storeAdminMilestone($request, $student, $record) :
             $this->storeStudentMilestone($request, $student, $record);
 
-        if($res instanceof Milestone) // else redirect is returned
+        if($milestone instanceof Milestone) // else redirect is returned
         {
-            $student->allow('view', $res);
-            $student->allow('upload', $res);
-            $student->supervisors->each->allow('view', $res);
+            $student->allow('view', $milestone);
+            $student->allow('upload', $milestone);
+            $student->supervisors->each->allow('view', $milestone);
+
             Bouncer::refresh();
             return redirect()->route('admin.student.record.milestone.show',
                 compact('student', 'record', 'milestone'));
         }
-        return $res;
+        return $milestone;
     }
 
     private function storeStudentMilestone(Request $request, Student $student, StudentRecord $record)
@@ -281,7 +282,7 @@ class MilestoneController extends Controller
     private function storeAdminMilestone(Request $request, Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Milestone::class);
+        $this->authorise('manage', Milestone::class);
 
         $validator = Validator::make($request->all(), [
             'milestone_type' => [ 'required', 'exists:milestone_types,id' ],
@@ -328,7 +329,7 @@ class MilestoneController extends Controller
     public function edit(Student $student, StudentRecord $record, Milestone $milestone)
     {
 
-        $this->authorise('update', $milestone);
+        $this->authorise('manage', $milestone);
 
         if ($record->id != $milestone->student_record_id) abort(404);
 
@@ -347,7 +348,7 @@ class MilestoneController extends Controller
         Student $student, StudentRecord $record, Milestone $milestone)
     {
 
-        $this->authorise('update', $milestone);
+        $this->authorise('manage', $milestone);
 
         if ($record->id !== $milestone->student_record_id) abort(404);
 
@@ -368,7 +369,7 @@ class MilestoneController extends Controller
     public function destroy(Student $student, StudentRecord $record, Milestone $milestone)
     {
 
-        $this->authorise('delete', $milestone);
+        $this->authorise('manage', $milestone);
 
         // We are using soft delete so this item will remain in the database
         $milestone->delete();
@@ -443,7 +444,7 @@ class MilestoneController extends Controller
     public function approve(ApprovalRequest $request,
         Student $student, StudentRecord $record, Milestone $milestone)
     {
-        $this->authorise('create', Approval::class);
+        $this->authorise('manage', Approval::class);
 
         $milestone->approve($request->approved, $request->feedback);
 

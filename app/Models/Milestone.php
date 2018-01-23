@@ -118,7 +118,7 @@ class Milestone extends Model
 
     public function scopeUpcoming($query)
     {
-        return $query->notSubmitted()->where('due_date', '>', Carbon::now())
+        return $query->notSubmitted()->where('due_date', '>=', Carbon::today())
                      ->where('due_date', '<', Carbon::parse('+5 weeks'))
                      ->doesntHave('approvals');
     }
@@ -126,7 +126,7 @@ class Milestone extends Model
     public function isUpcoming()
     {
         return $this->isNotSubmitted() && 
-        $this->due_date > Carbon::now() &&
+        $this->due_date >= Carbon::today() &&
         $this->due_date < Carbon::parse('+5 weeks') &&
         $this->approvals->isEmpty();
     }
@@ -134,14 +134,14 @@ class Milestone extends Model
     public function scopeOverdue($query)
     {
         return $query->notSubmitted()
-            ->where('due_date', '<=', Carbon::now())
+            ->where('due_date', '<', Carbon::today())
             ->doesntHave('approvals');
     }
 
     public function isOverdue()
     {
         return $this->isNotSubmitted() &&
-            $this->due_date <= Carbon::now() &&
+            $this->due_date < Carbon::today() &&
             $this->approvals->isEmpty();
     }
 
@@ -195,6 +195,11 @@ class Milestone extends Model
         if($this->duration)
             return $this->due_date->copy()->subDays($this->duration);
         return $this->due_date;
+    }
+
+    public function startsToday()
+    {
+        return $this->start_date->isToday();
     }
 
     public function usefulDate()

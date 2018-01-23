@@ -52,8 +52,12 @@ class LoginListener
 
         $user->save();
 
-        if( ! $user->locked) auth()->login($user);
+        if( $user->locked) return redirect()->route('account-locked');
 
-        return redirect()->route('account-locked');
+        //login user
+        auth()->login($user);
+        //insert sessionIndex and nameId into session
+        session(['sessionIndex' => $loginAttempt->getSessionIndex()]);
+        session(['nameId' => $loginAttempt->getNameId()]);
     }
 }

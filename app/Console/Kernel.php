@@ -30,8 +30,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('reminders:duetoday')
+            ->dailyAt('08:30')->pingBefore(
+                'https://hchk.io/' . env('UPCOMING_STATUS_CHECK'));
+
+        $schedule->command('reminders:starttoday')
+            ->dailyAt('08:30')->pingBefore(
+                'https://hchk.io/' . env('DUE_STATUS_CHECK'));
     }
 
     /**

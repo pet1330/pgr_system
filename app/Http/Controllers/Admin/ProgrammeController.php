@@ -18,7 +18,7 @@ class ProgrammeController extends Controller
     public function index(Request $request)
     {
 
-        $this->authorise('view', Programme::class);
+        $this->authorise('manage', Programme::class);
 
         if ($request->ajax())
         {
@@ -55,7 +55,7 @@ class ProgrammeController extends Controller
     public function store(ProgrammeRequest $request)
     {
         
-        $this->authorise('create', Programme::class);
+        $this->authorise('manage', Programme::class);
 
         $progs = Programme::create($request->only(['name', 'duration']));
         return redirect()
@@ -76,7 +76,7 @@ class ProgrammeController extends Controller
     public function update(ProgrammeRequest $request, Programme $programme)
     {
 
-        $this->authorise('update', $programme);
+        $this->authorise('manage', $programme);
 
         $programme->update($request->only('name', 'duration'));
         $programme->save();
@@ -91,7 +91,7 @@ class ProgrammeController extends Controller
     public function edit(Programme $programme)
     {
 
-        $this->authorise('update', $programme);
+        $this->authorise('manage', $programme);
 
         return view('admin.settings.programme.edit', compact('programme'));
     }
@@ -105,7 +105,7 @@ class ProgrammeController extends Controller
     public function destroy(ProgrammeRequest $request, Programme $programme)
     {
 
-        $this->authorise('delete', $programme);
+        $this->authorise('manage', $programme);
 
         // We are using soft delete so this item will remain in the database
         $programme->delete();
@@ -120,7 +120,7 @@ class ProgrammeController extends Controller
     public function restore($id)
     {
 
-        $this->authorise('delete', $programme);
+        $this->authorise('manage', $programme);
 
         $prog = Programme::withTrashed()->find($id);
         if($prog->trashed())

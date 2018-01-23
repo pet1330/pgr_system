@@ -16,7 +16,7 @@ class SupervisorController extends Controller
     public function find(Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         return view('supervisor.find', compact('student', 'record'));
     }
@@ -24,7 +24,7 @@ class SupervisorController extends Controller
     public function find_post(FindStaffRequest $request, Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         $staff = Staff::where('university_id', $request->university_id)->first();
 
@@ -41,7 +41,7 @@ class SupervisorController extends Controller
     public function create(Student $student, StudentRecord $record, Staff $staff)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         return view( 'supervisor.found', compact( 'staff', 'student', 'record' ) );
     }
@@ -49,7 +49,7 @@ class SupervisorController extends Controller
     public function store(SupervisorRequest $request, Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         $staff = Staff::where('university_id', $request->supervisor)->first();
 
@@ -68,7 +68,7 @@ class SupervisorController extends Controller
     public function confirm_id(Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         if( session()->has( 'staff_id' ) )
         {
@@ -82,7 +82,7 @@ class SupervisorController extends Controller
     public function confirm_post_id(Request $request, Student $student, Staff $staff)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         if( session()->has( 'staff_id' ) )
         {
@@ -100,8 +100,8 @@ class SupervisorController extends Controller
         Student $student, StudentRecord $record, Staff $staff)
     {
 
-        $this->authorise('update', $student);
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', $student);
+        $this->authorise('manage', Staff::class);
 
         if( $student->id !== $record->student_id &&
             ! $record->supervisors()->pluck('id')

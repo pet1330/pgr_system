@@ -1,18 +1,32 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
+use App\Models\Milestone;
+use App\Models\StudentRecord;
+use App\Notifications\DueTodayReminder;
+use App\Notifications\StartTodayReminder;
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+Artisan::command('reminders:starttoday', function () {
+    Milestone::upcoming()->whereHas('type', function($q) {
+        $q->whereNotNull('duration');
+    })->get()->filter->startsToday()->each(function(Milestone $m) {
+        $m->student->student->notify(
+            new StartTodayReminder(
+                $m->student->student, $m->student, $m
+            )
+        );
+    });
+})->describe('Send upcoming milestone reminders');
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->describe('Display an inspiring quote');
+
+Artisan::command('reminders:duetoday', function () {
+    Milestone::upcoming()
+        ->where('due_date', Carbon\Carbon::today())
+        ->get()->each(function(Milestone $m) {
+            $m->student->student->notify(
+                new DueTodayReminder(
+                    $m->student->student, $m->student, $m
+                )
+            );
+        }
+    );
+})->describe('Send upcoming milestone reminders');

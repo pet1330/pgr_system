@@ -21,7 +21,7 @@ class AbsenceController extends Controller
     public function create(Student $student)
     {
 
-        $this->authorise('create', Absence::class);
+        $this->authorise('manage', Absence::class);
 
         $types = AbsenceType::all();
         return view('admin.absence.create', compact('student', 'types'));
@@ -36,7 +36,7 @@ class AbsenceController extends Controller
     public function store(AbsenceRequest $request, Student $student)
     {
 
-        $this->authorise('create', Absence::class);
+        $this->authorise('manage', Absence::class);
 
         $absence = $student->absences()->save(
             Absence::make([
@@ -60,7 +60,7 @@ class AbsenceController extends Controller
     public function edit(Student $student, Absence $absence)
     {
         
-        $this->authorise('update', $absence);
+        $this->authorise('manage', $absence);
 
         $types = AbsenceType::all();
         return view('admin.absence.edit', compact('absence', 'student', 'types'));
@@ -74,7 +74,7 @@ class AbsenceController extends Controller
      */
     public function destroy(Student $student, Absence $absence)
     {
-        $this->authorise('delete', $absence);
+        $this->authorise('manage', $absence);
         $absence->delete();
         $student->records->each->recalculateMilestonesDueDate();
         return redirect()->route('admin.student.show', $student->university_id);

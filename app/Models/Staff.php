@@ -48,7 +48,7 @@ class Staff extends User
         $this->allow('view', $this);
         $this->supervising->each(function(StudentRecord $record)
         {
-            $this->allow('view', $record);
+            $this->allow('view', $record->student);
             $record->timeline->each(function(Milestone $m)
             {
                 $this->allow('view', $m);

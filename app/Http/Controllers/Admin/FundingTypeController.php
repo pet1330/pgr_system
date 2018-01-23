@@ -20,7 +20,7 @@ class FundingTypeController extends Controller
     public function index(Request $request)
     {
 
-        $this->authorise('view', FundingType::class);
+        $this->authorise('manage', FundingType::class);
 
         if ($request->ajax())
         {
@@ -57,7 +57,7 @@ class FundingTypeController extends Controller
     public function store(FundingTypeRequest $request)
     {
 
-        $this->authorise('create', FundingType::class);
+        $this->authorise('manage', FundingType::class);
 
         $fun = FundingType::create($request->only( 'name' ));
         return redirect()
@@ -78,7 +78,7 @@ class FundingTypeController extends Controller
     public function update(FundingTypeRequest $request, FundingType $funding_type)
     {
 
-        $this->authorise('update', $funding_type);
+        $this->authorise('manage', $funding_type);
 
       $funding_type->update($request->only( 'name' ));
       $funding_type->save();
@@ -93,7 +93,7 @@ class FundingTypeController extends Controller
     public function edit(FundingType $funding_type)
     {
 
-        $this->authorise('update', $funding_type);
+        $this->authorise('manage', $funding_type);
 
         return view('admin.settings.fundingtype.edit', compact('funding_type'));
     }
@@ -108,7 +108,7 @@ class FundingTypeController extends Controller
     public function destroy(FundingTypeRequest $request, FundingType $funding_type)
     {
 
-        $this->authorise('delete', $funding_type);
+        $this->authorise('manage', $funding_type);
 
         // We are using soft delete so this item will remain in the database
         $funding_type->delete();
@@ -124,7 +124,7 @@ class FundingTypeController extends Controller
     {
         $funding_type = FundingType::withTrashed()->find($id);
 
-        $this->authorise('delete', $funding_type);
+        $this->authorise('manage', $funding_type);
 
         if($funding_type->trashed())
         {

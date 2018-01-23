@@ -18,7 +18,7 @@ class AbsenceTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorise('view', AbsenceType::class);
+        $this->authorise('manage', AbsenceType::class);
 
         if ($request->ajax())
         {
@@ -61,7 +61,7 @@ class AbsenceTypeController extends Controller
      */
     public function store(AbsenceTypeRequest $request)
     {
-        $this->authorise('create', AbsenceType::class);
+        $this->authorise('manage', AbsenceType::class);
 
         $abs = AbsenceType::create($request->only([ 'name', 'interuption' ]));
         return redirect()
@@ -81,7 +81,7 @@ class AbsenceTypeController extends Controller
      */
     public function update(AbsenceTypeRequest $request, AbsenceType $absence_type)
     {
-        $this->authorise('update', $absence_type);
+        $this->authorise('manage', $absence_type);
 
         $absence_type->update($request->only( ['name', 'interuption'] ));
         $absence_type->save();
@@ -95,7 +95,7 @@ class AbsenceTypeController extends Controller
 
     public function edit(AbsenceType $absence_type)
     {
-        $this->authorise('update', $absence_type);
+        $this->authorise('manage', $absence_type);
 
         return view('admin.settings.absencetype.edit', compact('absence_type'));
     }
@@ -108,7 +108,7 @@ class AbsenceTypeController extends Controller
      */
     public function destroy(AbsenceType $absence_type)
     {
-        $this->authorise('delete', $absence_type);
+        $this->authorise('manage', $absence_type);
 
         // We are using soft delete so this item will remain in the database
         $absence_type->delete();
@@ -124,7 +124,7 @@ class AbsenceTypeController extends Controller
     {
         $abs = AbsenceType::withTrashed()->findOrFail($id);
 
-        $this->authorise('delete', $abs);
+        $this->authorise('manage', $abs);
         
         if($abs->trashed())
         {

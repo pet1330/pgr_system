@@ -20,7 +20,7 @@ class SchoolController extends Controller
     public function index(Request $request)
     {
         
-        $this->authorise('view', School::class);
+        $this->authorise('manage', School::class);
 
         if ($request->ajax())
         {
@@ -62,7 +62,7 @@ class SchoolController extends Controller
     public function store(SchoolRequest $request)
     {
 
-        $this->authorise('create', School::class);
+        $this->authorise('manage', School::class);
 
         $school = School::create($request->only( [ 'name', 'college_id', 'notifications_address' ] ));
 
@@ -85,7 +85,7 @@ class SchoolController extends Controller
     public function update(SchoolRequest $request, School $school)
     {
         
-        $this->authorise('update', $school);
+        $this->authorise('manage', $school);
 
         $school->update($request->only( 'name', 'college_id', 'notifications_address' ));
         $school->save();
@@ -115,7 +115,7 @@ class SchoolController extends Controller
     public function destroy(SchoolRequest $request, School $school)
     {
 
-        $this->authorise('delete', $school);
+        $this->authorise('manage', $school);
 
         // We are using soft delete so this item will remain in the database
         $school->delete();
@@ -132,7 +132,7 @@ class SchoolController extends Controller
 
         $school = School::withTrashed()->find($id);
 
-        $this->authorise('delete', $school);
+        $this->authorise('manage', $school);
         
         if($school->trashed())
         {

@@ -1,4 +1,4 @@
-@can('update', App\Models\Student::class)
+@can('manage', App\Models\Student::class)
 <div class="panel-body row">
   <div class="dropdown pull-right">
     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -6,14 +6,14 @@
     <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-      @can('create', App\Models\Absence::class)
+      @can('manage', App\Models\Absence::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.absence.create', $student->university_id) }}">
           Create New Absence
         </a>
       </li>
       @endcan
-      @can('create', App\Models\Milestone::class)
+      @can('manage', App\Models\Milestone::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.record.milestone.create',
           [$student->university_id, $record->slug()]) }}">
@@ -21,7 +21,7 @@
         </a>
       </li>
       @endcan
-      @can('create', App\Models\Staff::class)
+      @can('manage', App\Models\Staff::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.supervisor.find',
           [$student->university_id, $record->slug()]) }}">
@@ -29,7 +29,7 @@
         </a>
       </li>
       @endcan
-      @can('update', App\Models\Student::class)
+      @can('manage', App\Models\Student::class)
       <li role="separator" class="divider"></li>
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.record.edit',
@@ -37,8 +37,8 @@
           Edit Student Record
         </a>
       </li>
-      @can('create', App\Models\Milestone::class)
-      @can('update', App\Models\Student::class)
+      @can('manage', App\Models\Milestone::class)
+      @can('manage', App\Models\Student::class)
       <li role="presentation">
         <a role="menuitem" href="{{ route('admin.student.record.mass-assignment',
           [$student->university_id, $record->slug()]) }}">
@@ -80,6 +80,35 @@
     </div>
   </div>
   @endif
+
+  @if($awaiting->isNotEmpty())
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+      Awaiting Amendments
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul>
+        @foreach($awaiting->sortBy('due_date') as $m)
+        <a href="{{ route('admin.student.record.milestone.show',
+          [$student->university_id, $record->slug(), $m->slug()]) }}">
+          <li class="col-md-12 list-unstyled">
+            <span class="fa-stack fa-md" style="margin-right: 20px;">
+              <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
+              <strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">
+              {{ $m->due_date->format('d/m') }}
+              </strong>
+            </span>
+            {{ $m->name }}
+          </li>
+        </a>
+        @endforeach
+      </ul>
+    </div>
+  </div>
+  @endif
+
   @if($upcoming->isNotEmpty())
   <div class="panel panel-warning">
     <div class="panel-heading">
@@ -216,7 +245,7 @@
       <h3 class="panel-title">Absences</h3>
     </div>
     <div class="panel-body">
-      @can('delete', App\Models\Absence::class)
+      @can('manage', App\Models\Absence::class)
       <table class="table table-striped table-bordered" id="admin-absences-table" width="100%">
         <thead>
           <tr>
@@ -265,10 +294,15 @@
   @can('view', App\Models\Note::class)
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">Notes <small>( not visable to students )</small></h3>
+        <h3 class="panel-title">Notes <small>( not visable to students )</small>
+          @cannot('manage', App\Models\Note::class)
+            <div class="pull-right panel-title"><small>Read Only</small></div>
+          @endcan
+        </h3>
+
       </div>
       <div class="panel-body">
-        <p id="note">{{ trim($record->note->content) }}</p>
+      <p @can('manage', App\Models\Note::class) id="note" @endcan class="note">{{ trim($record->note->content) }}</p>
       </div>
     </div>
   @endcan

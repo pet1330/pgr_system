@@ -18,7 +18,7 @@ class StudentStatusController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorise('view', StudentStatus::class);
+        $this->authorise('manage', StudentStatus::class);
 
         if ($request->ajax())
         {
@@ -54,7 +54,7 @@ class StudentStatusController extends Controller
      */
     public function store(StudentStatusRequest $request)
     {
-        $this->authorise('create', StudentStatus::class);
+        $this->authorise('manage', StudentStatus::class);
 
         $stu = StudentStatus::create($request->only( 'status' ));
         return redirect()
@@ -74,7 +74,7 @@ class StudentStatusController extends Controller
      */
     public function update(StudentStatusRequest $request, StudentStatus $student_status)
     {
-        $this->authorise('update', $student_status);
+        $this->authorise('manage', $student_status);
 
         $student_status->update($request->only( 'status' ));
         $student_status->save();
@@ -88,7 +88,7 @@ class StudentStatusController extends Controller
 
     public function edit(StudentStatus $student_status)
     {
-        $this->authorise('update', $student_status);
+        $this->authorise('manage', $student_status);
 
         return view('admin.settings.studentstatus.edit', compact('student_status'));
     }
@@ -101,7 +101,7 @@ class StudentStatusController extends Controller
      */
     public function destroy(StudentStatusRequest $request, StudentStatus $student_status)
     {
-        $this->authorise('delete', $student_status);
+        $this->authorise('manage', $student_status);
 
         // We are using soft delete so this item will remain in the database
         $student_status->delete();
@@ -115,7 +115,7 @@ class StudentStatusController extends Controller
 
     public function restore($id)
     {
-        $this->authorise('delete', $student_status);
+        $this->authorise('manage', $student_status);
 
         $student_status = StudentStatus::withTrashed()->find($id);
         if($student_status->trashed())

@@ -14,12 +14,11 @@ class SupervisorSeeder extends Seeder
      */
     public function run()
     {
-        StudentRecord::all()->each(function($sr)
+        $staff = Staff::all();
+
+        StudentRecord::all()->each(function(StudentRecord $sr) use ($staff)
         {
-            Staff::inRandomOrder()
-            ->take(3)
-            ->get()
-            ->each(function($s) use ($sr)
+            $staff->random(3)->each(function(Staff $s) use ($sr)
             {
                 $sr->addSupervisor( $s, $sr->supervisors()->count()+1 );
             });

@@ -25,7 +25,7 @@ class StudentRecordController extends Controller
 {
     public function create(Student $student)
     {
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         if( session()->has( 'student' ) || session()->hasOldInput('university_id') )
         {
@@ -49,7 +49,7 @@ class StudentRecordController extends Controller
 
         if( $student->id !== $record->student_id ) abort(404);
 
-        $this->authorise('update', $student);
+        $this->authorise('manage', $student);
 
             $funding_types = FundingType::all();
             $schools = School::all();
@@ -67,7 +67,7 @@ class StudentRecordController extends Controller
     public function store(StudentRecordRequest $request, Student $student)
     {
 
-        $this->authorise('create', $student);
+        $this->authorise('manage', $student);
 
         if ($request->university_id != $student->university_id) abort(404);
 
@@ -96,7 +96,7 @@ class StudentRecordController extends Controller
 
         if( $student->id !== $record->student_id) abort(404);
 
-        $this->authorise('update', $student);
+        $this->authorise('manage', $student);
         
         $record->update(
             $request->only([
@@ -138,8 +138,9 @@ class StudentRecordController extends Controller
             $record = $student->record();
             $overdue = $record->timeline->filter->isOverdue();
             $upcoming = $record->timeline->filter->isUpcoming();
+            $awaiting = $record->timeline->filter->isAwaitingAmendments();
 
-            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue'));
+            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue', 'awaiting'));
         }
 
         return view('student.dashboard', compact('student'));
@@ -147,7 +148,7 @@ class StudentRecordController extends Controller
 
     private function absences_controls(EloquentEngine $dt, Student $student)
     {
-        if( auth()->user()->can('delete', Absence::class) )
+        if( auth()->user()->can('manage', Absence::class) )
         {
             $dt->addColumn('deleteaction', function (Absence $abs) use ($student) {
               return '<form method="POST" action="' . route('admin.student.absence.destroy', [$student, $abs->slug()]) . '"
@@ -177,7 +178,7 @@ class StudentRecordController extends Controller
     public function addSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         $staff = Staff::where('university_id', $request->university_id);
 
@@ -199,7 +200,7 @@ class StudentRecordController extends Controller
     public function removeSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         $staff = Staff::where('university_id', $request->university_id);
 

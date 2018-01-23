@@ -50,7 +50,7 @@ class StaffController extends Controller
     public function find()
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         return view('admin.user.staff.find');
     }
@@ -58,7 +58,7 @@ class StaffController extends Controller
     public function find_post(FindStaffRequest $request)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         $staff = Staff::where('university_id', $request->university_id)->first();
         if ($staff)
@@ -73,7 +73,7 @@ class StaffController extends Controller
     public function confirm_id()
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         if( session()->has( 'staff_id' ))
         {
@@ -86,7 +86,7 @@ class StaffController extends Controller
     public function confirm_post_id(Request $request)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         if( session()->has( 'staff_id' ) )
         {
@@ -106,7 +106,7 @@ class StaffController extends Controller
     public function create()
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         if(session()->has( 'staff_id' ) || session()->hasOldInput('university_id') )
         {
@@ -119,7 +119,7 @@ class StaffController extends Controller
     public function store(StaffRequest $request)
     {
 
-        $this->authorise('create', Staff::class);
+        $this->authorise('manage', Staff::class);
 
         $staff = Staff::firstOrCreate([
                 'first_name' => $request->first_name,
@@ -142,7 +142,7 @@ class StaffController extends Controller
     public function upgrade(Request $request)
     {
 
-        $this->authorise('create', Admin::class);
+        $this->authorise('manage', Admin::class);
 
         if ($request->ajax())
         {
@@ -162,7 +162,7 @@ class StaffController extends Controller
     public function upgrade_store(Request $request, Staff $staff)
     {
 
-        $this->authorise('create', Admin::class);
+        $this->authorise('manage', Admin::class);
 
         $staff->user_type = "Admin";
         $staff->save();

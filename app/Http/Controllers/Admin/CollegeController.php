@@ -18,7 +18,7 @@ class CollegeController extends Controller
     public function index(Request $request)
     {
 
-        $this->authorise('view', College::class);
+        $this->authorise('manage', College::class);
 
         if ($request->ajax())
         {
@@ -55,7 +55,7 @@ class CollegeController extends Controller
     public function store(CollegeRequest $request)
     {
 
-        $this->authorise('create', College::class);
+        $this->authorise('manage', College::class);
 
         $college = College::create($request->only( 'name' ));
         return redirect()
@@ -76,7 +76,7 @@ class CollegeController extends Controller
     public function update(CollegeRequest $request, College $college)
     {
 
-        $this->authorise('update', $college);
+        $this->authorise('manage', $college);
 
         $college->update( $request->only( 'name' ) );
         $college->save();
@@ -91,7 +91,7 @@ class CollegeController extends Controller
     public function edit(College $college)
     {
 
-        $this->authorise('update', $college);
+        $this->authorise('manage', $college);
 
         return view('admin.settings.college.edit', compact('college'));
     }
@@ -105,7 +105,7 @@ class CollegeController extends Controller
     public function destroy(CollegeRequest $request, College $college)
     {
 
-        $this->authorise('delete', $college);
+        $this->authorise('manage', $college);
 
         // We are using soft delete so this item will remain in the database
         $college->delete();
@@ -121,7 +121,7 @@ class CollegeController extends Controller
     {
         $college = College::withTrashed()->find($id);
 
-        $this->authorise('delete', $college);
+        $this->authorise('manage', $college);
 
         if($college->trashed())
         {

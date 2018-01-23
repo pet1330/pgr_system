@@ -7,7 +7,6 @@ if (!window.location.origin) {
 
 window._ = require('lodash');
 
-// window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 require('./AdminLTE');
 require('./datatables.js')

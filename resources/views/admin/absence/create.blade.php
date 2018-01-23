@@ -46,7 +46,7 @@
             @endif
           </div>
           <div class="form-group{{ $errors->has('duration') ? ' has-error' : '' }} col-md-2">
-            <label for="duration">Duration</label>
+            <label for="duration">Duration (days)</label>
             <input type="number" step="1" class="form-control" name="duration" value="{{ old('duration') }}">
             @if ($errors->has('duration'))
             <span class="help-block">

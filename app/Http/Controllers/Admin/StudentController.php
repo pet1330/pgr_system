@@ -77,7 +77,7 @@ class StudentController extends Controller
     public function find()
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         return view('admin.user.student.find');
     }
@@ -85,7 +85,7 @@ class StudentController extends Controller
     public function find_post(FindStudentRequest $request)
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         $student = Student::where('university_id', $request->university_id)->first();
         if ($student)
@@ -100,7 +100,7 @@ class StudentController extends Controller
     public function confirm_user()
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         if( session()->has( 'student' ) )
         {
@@ -114,7 +114,7 @@ class StudentController extends Controller
     public function confirm_post_user(Request $request)
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         if( session()->has( 'student' ) )
         {
@@ -128,7 +128,7 @@ class StudentController extends Controller
     public function confirm_id()
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         if( session()->has( 'student_id' ))
         {
@@ -141,7 +141,7 @@ class StudentController extends Controller
     public function confirm_post_id(Request $request)
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         if( session()->has( 'student_id' ) )
         {
@@ -161,7 +161,7 @@ class StudentController extends Controller
     public function create()
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         if(session()->has( 'student_id' ) || session()->hasOldInput('university_id') )
         {
@@ -174,7 +174,7 @@ class StudentController extends Controller
     public function store(StudentRequest $request)
     {
 
-        $this->authorise('create', Student::class);
+        $this->authorise('manage', Student::class);
 
         $student = Student::firstOrCreate([
             'first_name' => $request->first_name,

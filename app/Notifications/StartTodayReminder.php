@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Media;
+use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\StudentRecord;
@@ -11,11 +11,10 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentUploadConfirmation extends Notification implements ShouldQueue
+class StartTodayReminder extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $file;
     public $record;
     public $student;
     public $milestone;
@@ -26,9 +25,8 @@ class StudentUploadConfirmation extends Notification implements ShouldQueue
      * @return void
      */
     public function __construct(Student $student,
-        StudentRecord $record, Milestone $milestone, Media $file)
+        StudentRecord $record, Milestone $milestone)
     {
-        $this->file = $file;
         $this->record = $record;
         $this->student = $student;
         $this->milestone = $milestone;
@@ -53,18 +51,21 @@ class StudentUploadConfirmation extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('admin.student.record.milestone.show',
-            [$this->student->university_id,
-            $this->record->slug(), 
+        $url = route('admin.student.record.milestone.show', [
+            $this->student->university_id,
+            $this->record->slug(),
             $this->milestone->slug()
-            ]);
+        ]);
+
+        
+        $duediff = Carbon::today()->diffForHumans(
+            $this->milestone->due_date->copy()
+            ->addDay(1)->startOfDay(), true);
+
         return (new MailMessage)
-            ->line('This is an email to confirm that the attached file has been uploaded to the milestone: ' . $this->milestone->name)
+            ->subject('Reminder: Upcoming Milestone')
+            ->line('This email is to remind you that the following milestone is due in ' . $duediff . '.')
             ->action('View Milestone', $url)
-            ->line('Thanks!')
-            ->attach($this->file->getAbsolutePath(), [
-                'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
-                'mime' => $this->file->mime_type,
-            ]);
+            ->line('Thanks!');
     }
 }

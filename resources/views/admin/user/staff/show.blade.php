@@ -22,6 +22,8 @@
               </div>
             </div>
           </div>
+
+          @if($sr->overdue_count) <a href="{{ route('admin.student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#overdue' }}"> @endif
           <div class="col-sm-3">
             <div class="hero-widget well well-sm {{ $sr->overdue_count ? 'text-danger' : 'text-muted' }}">
               <div class="icon">
@@ -36,6 +38,9 @@
               </div>
             </div>
           </div>
+          @if($sr->overdue_count) </a> @endif
+
+          @if($sr->amendments_count) <a href="{{ route('admin.student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#amendments' }}"> @endif
           <div class="col-sm-3">
             <div class="hero-widget well well-sm {{ $sr->amendments_count ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
@@ -49,6 +54,9 @@
               </div>
             </div>
           </div>
+        @if($sr->amendments_count) </a> @endif
+
+        @if($sr->upcoming_count) <a href="{{ route('admin.student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#upcoming' }}"> @endif
           <div class="col-sm-3">
             <div class="hero-widget well well-sm {{ $sr->upcoming_count ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
@@ -62,6 +70,7 @@
               </div>
             </div>
           </div>
+        @if($sr->upcoming_count) </a> @endif
         </div>
       </div>
     @endforeach
@@ -69,11 +78,15 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-primary">
       <div class="box-body text-center">
-        <h4>{{ ucfirst($staff->first_name) }} does not currently supervise any student</h4>
-        <p>If you are a postgraduate student, please login with your student account</p>
+        @if($staff->id === auth()->id())
+          <h4>You do not currently supervise any students</h4>
+          <p>If you are a postgraduate student, please login with your student account</p>
+        @else
+          <h4>{{ ucfirst($staff->first_name) }} does not currently supervise any students</h4>
+        @endif
       </div>
     </div>
-  </div> -->
+  </div>
   @endforelse
 </div>
 @endsection
