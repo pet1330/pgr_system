@@ -17,6 +17,7 @@ services:
     command: "bash -c 'ln -fs /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
     links:
       - db
+      - redis
     ports:
       - 80:80
       - 443:443

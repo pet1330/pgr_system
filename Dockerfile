@@ -26,6 +26,7 @@ RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/b
 COPY . /var/www/html/pgr
 RUN chown -R www-data:www-data /var/www/html/pgr
 COPY docker/supervisor/conf.d/* /etc/supervisor/conf.d/
+RUN a2enmod ssl
 
 WORKDIR /var/www/html/pgr
 
