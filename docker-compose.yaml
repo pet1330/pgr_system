@@ -6,7 +6,7 @@ services:
   db:
     image: mysql
     volumes:
-      - pgrdb:/var/lib/mysql
+      - /srv/pgr/db:/var/lib/mysql
     expose:
       - "3306"
     environment:
@@ -18,10 +18,7 @@ services:
     links:
       - db
     ports:
-      - 9989:80
+      - 80:80
     volumes:
-      - pgrdata:/var/www/pgr/storage
+      - /srv/pgr/storage:/var/www/pgr/storage
       - /srv/pgr/config:/srv/config
-volumes:
-  pgrdata: 
-  pgrdb: 
