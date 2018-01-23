@@ -195,11 +195,11 @@ return $settings = array(
     'contactPerson' => array(
         'technical' => array(
             'givenName' => 'name',
-            'emailAddress' => 'pet1330@gmail.com'
+            'emailAddress' => env('TECH_SUPPORT_ADDRESS')
         ),
         'support' => array(
             'givenName' => 'Support',
-            'emailAddress' => 'pet1330@gmail.com'
+            'emailAddress' => env('TECH_SUPPORT_ADDRESS')
         ),
     ),
 
@@ -208,7 +208,7 @@ return $settings = array(
         'en-GB' => array(
             'name' => 'Name',
             'displayname' => 'PGR System',
-            'url' => 'http://saml.lcas.group'
+            'url' => env('APP_URL')
         ),
     ),
 

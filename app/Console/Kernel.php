@@ -32,11 +32,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('reminders:duetoday')
             ->dailyAt('08:30')->pingBefore(
-                'https://hchk.io/' . env('UPCOMING_STATUS_CHECK'));
+                'https://hchk.io/' . env('UPCOMING_STATUS_CHECK_KEY'));
 
         $schedule->command('reminders:starttoday')
             ->dailyAt('08:30')->pingBefore(
-                'https://hchk.io/' . env('DUE_STATUS_CHECK'));
+                'https://hchk.io/' . env('DUE_STATUS_CHECK_KEY'));
     }
 
     /**
