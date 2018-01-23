@@ -13,6 +13,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "plank/laravel-mediable": "^2.5",
+        "predis/predis": "^1.1",
         "silber/bouncer": "v1.0.0-beta.3",
         "spatie/laravel-activitylog": "^1.15",
         "yajra/laravel-datatables-buttons": "^2.0",
