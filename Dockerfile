@@ -17,6 +17,8 @@ COPY docker/apache/sites-available/* /etc/apache2/sites-available/
 COPY docker/apache/mysitename.crt /etc/apache2
 COPY docker/apache/mysitename.key /etc/apache2
 RUN chmod 600 /etc/apache2/mysite*
+COPY docker/cron/crontab /root/crontab
+RUN crontab /root/crontab
 
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
 
