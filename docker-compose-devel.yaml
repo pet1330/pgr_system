@@ -1,0 +1,41 @@
+
+version: '2'
+services:
+  redis:
+    image: redis
+  db:
+    image: mysql
+    volumes:
+      - pgrdb:/var/lib/mysql
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+
+  pgr_devel:
+    build: 
+      context: .
+      dockerfile: Dockerfile.devel 
+    command: "bash -c 'ln -fs /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
+    links:
+      - db
+    ports:
+      - 9989:80
+    volumes:
+      - .:/var/www/html/pgr/
+      - pgrdata:/var/www/pgr/storage
+      - /srv/pgr/config:/srv/config
+      # For access by each user
+      - /home:/home
+      # Authentication
+      # passwd/group should be mounted into any container
+      # needing to share the user/group IDs
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      # Shadow should only be mounted into containers
+      # needing to authenticate against PAM
+      - /etc/shadow:/etc/shadow:ro
+
+volumes:
+  pgrdata: 
+  pgrdb: 
