@@ -1,7 +1,5 @@
 <?php
 
-//auth()->loginUsingId(App\Models\Admin::first()->id);
-
 Route::middleware('guest')->get('login', 'SAMLController@login')->name('login');
 Route::middleware('samlauth')->get('logout', 'SAMLController@logout')->name('logout');
 
