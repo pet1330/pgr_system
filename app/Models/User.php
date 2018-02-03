@@ -99,12 +99,66 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user');
     }
 
-    public function assignDefaultPermissions()
+    public function assignDefaultPermissions($reset=false)
     {
         $user = User::find($this->id);
         if ( $user && get_class($user) !== "App\Models\User")
-            return $user->assignDefaultPermissions();
+            return $user->assignDefaultPermissions($reset);
         throw new RuntimeException('User of unknown type');
+    }
+
+    public function assignBasicAdminPermissions($reset=false)
+    {
+        if($reset) $this->abilities()->sync([]);
+
+        $this->allow('view', $this);
+        $this->allow('view', Note::class);
+        $this->allow('view', Staff::class);
+        $this->allow('manage', Note::class);
+        $this->allow('manage', Staff::class);
+        $this->allow('view', Student::class);
+        $this->allow('manage', Absence::class);
+        $this->allow('view', Milestone::class);
+        $this->allow('manage', Student::class);
+        $this->allow('manage', Approval::class);
+        $this->allow('upload', Milestone::class);
+        $this->allow('manage', Milestone::class);
+        $this->allow('view', TimelineTemplate::class);
+        Bouncer::refresh();
+    }
+
+    public function assignReadOnlyAdminPermissions($reset=true)
+    {
+        if($reset) $this->abilities()->sync([]);
+
+        $this->allow('view', $this);
+        $this->allow('view', Note::class);
+        $this->allow('view', Staff::class);
+        $this->allow('view', Absence::class);
+        $this->allow('view', Student::class);
+        $this->allow('view', Milestone::class);
+        $this->allow('view', Approval::class);
+        $this->allow('view', TimelineTemplate::class);
+        $this->allow('view', Admin::class);
+        Bouncer::refresh();
+    }
+
+    public function assignElevatedAdminPermissions($reset=false)
+    {
+        $this->assignBasicAdminPermissions($reset);
+
+        $this->allow('view', Admin::class);
+        $this->allow('manage', Admin::class);
+        $this->allow('manage', School::class);
+        $this->allow('manage', College::class);
+        $this->allow('manage', Programme::class);
+        $this->allow('manage', AbsenceType::class);
+        $this->allow('manage', FundingType::class);
+        $this->allow('manage', StudentStatus::class);
+        $this->allow('manage', MilestoneType::class);
+        $this->allow('manage', EnrolmentStatus::class);
+        $this->allow('manage', TimelineTemplate::class);
+        Bouncer::refresh();
     }
 
     // overload the defualt password and remember me token
