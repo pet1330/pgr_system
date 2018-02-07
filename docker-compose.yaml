@@ -23,5 +23,5 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /srv/pgr/storage:/var/www/pgr/storage
+      - /srv/pgr/storage:/var/www/html/pgr/storage
       - /srv/pgr/config:/srv/config
