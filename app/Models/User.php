@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Bouncer;
 use App\Models\Role;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
