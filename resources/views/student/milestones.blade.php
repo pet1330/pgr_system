@@ -209,8 +209,8 @@
                     var options = {
                     {{--  clickToUse: true, --}}
                     selectable: false,
-                    min: new Date('{{ $record->start->copy()->subWeeks(4) }}'),  {{-- lower limit of visible range --}}
-                    max: new Date('{{ $record->end->copy()->addWeeks(4) }}'),  {{-- upper limit of visible range --}}
+                    min: new Date('{{ $record->visualTimelineStart()->copy()->subWeeks(4) }}'),  {{-- lower limit of visible range --}}
+                    max: new Date('{{ $record->visualTimelineEnd()->copy()->addWeeks(4) }}'),  {{-- upper limit of visible range --}}
                     zoomMin: 1000 * 60 * 60 * 24 * 10,  {{-- one day in milliseconds --}}
                     height:300
                     };

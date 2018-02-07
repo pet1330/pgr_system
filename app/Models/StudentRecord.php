@@ -157,7 +157,6 @@ class StudentRecord extends Model
 
     public function calculateEndDate()
     {
-        $unit = "add" . ucfirst($this->programme->duration_unit);
         return $this->enrolment_date->copy()
                     ->addMonths($this->programme->duration)
                     ->addDays($this->student->totalInteruptionPeriod());
@@ -186,5 +185,19 @@ class StudentRecord extends Model
         $this->note->exists ?
             $this->note->update(['content' => $content]) :
             $this->note()->save(Note::make(['content' => $content]));
+    }
+
+    public function visualTimelineEnd()
+    {
+        $e = $this->timeline()->orderBy('due_date', 'desc')->pluck('due_date')->first();
+        if($e) return max($e, $this->end);
+        return $this->end;
+    }
+
+    public function visualTimelineStart()
+    {
+        $s = $this->timeline()->orderBy('due_date')->pluck('due_date')->first();
+        if($s) return min($s, $this->start);
+        return $this->start;
     }
 }
