@@ -17,7 +17,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new milestone type</label>
-        <form action="{{ route('admin.settings.milestone-type.store') }}" method="POST">
+        <form action="{{ route('settings.milestone-type.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-6">
           <label for="milestone_type">Name</label>
@@ -71,7 +71,7 @@
           <div class="panel-body">
             @foreach($deletedMilestoneType as $dmt)
             <div class="col-md-12">
-              <a href="{{ route('admin.settings.milestone-type.restore', $dmt->id) }}">
+              <a href="{{ route('settings.milestone-type.restore', $dmt->id) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $dmt->name }}

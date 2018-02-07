@@ -8,14 +8,14 @@
     <ul class="dropdown-menu" role="menu">
       @can('manage', App\Models\Absence::class)
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.absence.create', $student->university_id) }}">
+        <a role="menuitem" href="{{ route('student.absence.create', $student->university_id) }}">
           Create New Absence
         </a>
       </li>
       @endcan
       @can('manage', App\Models\Milestone::class)
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.record.milestone.create',
+        <a role="menuitem" href="{{ route('student.record.milestone.create',
           [$student->university_id, $record->slug()]) }}">
           Create New Milestone
         </a>
@@ -23,7 +23,7 @@
       @endcan
       @can('manage', App\Models\Staff::class)
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.supervisor.find',
+        <a role="menuitem" href="{{ route('supervisor.find',
           [$student->university_id, $record->slug()]) }}">
           Add Supervisor
         </a>
@@ -32,7 +32,7 @@
       @can('manage', App\Models\Student::class)
       <li role="separator" class="divider"></li>
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.record.edit',
+        <a role="menuitem" href="{{ route('student.record.edit',
           [$student->university_id, $record->slug()]) }}">
           Edit Student Record
         </a>
@@ -40,7 +40,7 @@
       @can('manage', App\Models\Milestone::class)
       @can('manage', App\Models\Student::class)
       <li role="presentation">
-        <a role="menuitem" href="{{ route('admin.student.record.mass-assignment',
+        <a role="menuitem" href="{{ route('student.record.mass-assignment',
           [$student->university_id, $record->slug()]) }}">
           Assign Regularisation
         </a>
@@ -63,7 +63,7 @@
     <div class="panel-body">
       <ul>
         @foreach($overdue->sortBy('due_date') as $m)
-        <a href="{{ route('admin.student.record.milestone.show',
+        <a href="{{ route('student.record.milestone.show',
           [$student->university_id, $record->slug(), $m->slug()]) }}">
           <li class="col-md-12 list-unstyled">
             <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -91,7 +91,7 @@
     <div class="panel-body">
       <ul>
         @foreach($awaiting->sortBy('due_date') as $m)
-        <a href="{{ route('admin.student.record.milestone.show',
+        <a href="{{ route('student.record.milestone.show',
           [$student->university_id, $record->slug(), $m->slug()]) }}">
           <li class="col-md-12 list-unstyled">
             <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -119,7 +119,7 @@
     <div class="panel-body">
       <ul>
         @foreach($upcoming as $m)
-        <a href="{{ route('admin.student.record.milestone.show',
+        <a href="{{ route('student.record.milestone.show',
           [$student->university_id, $record->slug(),$m->slug()]) }}">
           <li class="col-md-12 list-unstyled">
             <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -147,7 +147,7 @@
     </div>
     @endif
     <div class="panel-body text-center">
-      <a  href="{{ route('admin.student.record.milestone.index',
+      <a  href="{{ route('student.record.milestone.index',
         [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default">
           View All Milestones
@@ -285,7 +285,7 @@
       @endif
     </div>
     <div class="panel-body text-center">
-      <a  href="{{ route('admin.student.record.milestone.index',
+      <a  href="{{ route('student.record.milestone.index',
         [$student->university_id, $record->slug()]) }}">
       </a>
     </div>

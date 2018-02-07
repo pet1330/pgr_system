@@ -7,7 +7,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Update Milestone</label>
-        <form action="{{ route('admin.settings.timeline.milestone.update', 
+        <form action="{{ route('settings.timeline.milestone.update',
         [$timeline->id, $milestone->id]) }}" method="POST">
           {{ csrf_field() }}
           <input type="hidden" name="_method" value="PATCH">

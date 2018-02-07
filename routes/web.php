@@ -15,7 +15,7 @@ Route::name('account-locked')->get('account-locked', function () {
     return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
 });
 
-Route::middleware('samlauth')->as('admin.')->group( function() {
+Route::middleware('samlauth')->group( function() {
 
     Route::get('/', function() { return redirect(auth()->user()->dashboard_url()); });
 

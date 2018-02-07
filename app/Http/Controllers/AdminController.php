@@ -22,7 +22,7 @@ class AdminController extends Controller
             $admin = Admin::select('users.*');
             return Datatables::eloquent($admin)
             ->setRowAttr([ 'data-link' => function(Admin $admin)
-                { return route('admin.admin.show', $admin->university_id); }])
+                { return route('admin.show', $admin->university_id); }])
             ->make(true);
         }
         return View('admin.user.admin.index');
@@ -53,7 +53,7 @@ class AdminController extends Controller
             $admin = Admin::select('users.*');
             return Datatables::eloquent($admin)
                 ->addColumn('downgrade', function (Admin $admin) {
-                    return '<form method="POST" action="' . route('admin.admin.downgrade.store', $admin->university_id) . '" accept-charset="UTF-8" class="success-form text-center">' . 
+                    return '<form method="POST" action="' . route('admin.downgrade.store', $admin->university_id) . '" accept-charset="UTF-8" class="success-form text-center">' . 
                     csrf_field() . '<button class="btn btn-default" onclick="return confirm(\'Are you sure?\')">
                     <i class="fa fa-user-times" aria-hidden="true"></i> Remove Admin Abilities</button> </form>';
                 })->rawColumns(['downgrade'])->make(true);
@@ -72,7 +72,7 @@ class AdminController extends Controller
 
         $staff->assignDefaultPermissions(true);
 
-        return redirect()->route('admin.admin.downgrade.index')
+        return redirect()->route('admin.downgrade.index')
             ->with('flash', [
                 'message' => $staff->name . ' is no longer an Admin',
                 'type' => 'success'

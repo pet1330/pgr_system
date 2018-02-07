@@ -14,7 +14,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Add a Milestone</label>
-        <form action="{{ route('admin.settings.timeline.milestone.store', $timeline->id) }}" method="POST">
+        <form action="{{ route('settings.timeline.milestone.store', $timeline->id) }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-6">
             <select class="form-control" name="milestone_type">
@@ -62,7 +62,7 @@
           <div class="panel-body">
               @foreach($deleted_milestones as $dms)
               <div class="col-md-12">
-                <a href="{{ route('admin.settings.timeline.milestone.restore', [$timeline->id, $dms->id]) }}">
+                <a href="{{ route('settings.timeline.milestone.restore', [$timeline->id, $dms->id]) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
                 {{ $dms->type->name }}

@@ -9,7 +9,7 @@
       <div class="caption">
         <h3>{{ $staff->name }}</h3>
         <div class="form-group text-center">
-          <form action="{{ route('admin.supervisor.store',
+          <form action="{{ route('supervisor.store',
             [$student->university_id, $record->slug(), $staff->university_id]) }}" method="POST">
             <input type="hidden" name="supervisor" value="{{ $staff->university_id }}">
             {{ csrf_field() }}

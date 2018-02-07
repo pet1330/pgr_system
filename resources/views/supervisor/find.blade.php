@@ -6,7 +6,7 @@
   <div class="box box box-primary">
     <div class="box-body">
       <label>Please enter the staff members univeristy ID</label>
-      <form action="{{ route('admin.supervisor.find',
+      <form action="{{ route('supervisor.find',
         [$student->university_id, $record->slug()]) }}" method="POST">
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('university_id') || $errors->has('nomatch') ? ' has-error' : '' }}">

@@ -27,7 +27,7 @@
                   @endforelse
                 </td>
                 <td>
-                  <form action="{{ route('admin.settings.access-control.index', $role->name) }}" method="PATCH">
+                  <form action="{{ route('settings.access-control.index', $role->name) }}" method="PATCH">
                     {{ csrf_field() }}
                     <button type="submit" class="btn btn-warning">
                     <i class="fa fa-pencil"></i>
@@ -37,7 +37,7 @@
                 <td>
                   <form
                     method="POST"
-                    action="{{ route('admin.settings.access-control.destroy',$role->name) }}"
+                    action="{{ route('settings.access-control.destroy',$role->name) }}"
                     accept-charset="UTF-8"
                     class="delete-form">
                     <input type="hidden" name="_method" value="DELETE">

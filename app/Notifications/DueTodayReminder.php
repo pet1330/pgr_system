@@ -50,7 +50,7 @@ class DueTodayReminder extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('admin.student.record.milestone.show', [
+        $url = route('student.record.milestone.show', [
             $this->student->university_id,
             $this->record->slug(),
             $this->milestone->slug()

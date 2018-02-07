@@ -33,13 +33,13 @@ class AbsenceTypeController extends Controller
           return Datatables::eloquent($absencetypes)
               ->editColumn('interuption', '{{$interuption ? "Yes" : "No" }}')
               ->addColumn('editaction', function (AbsenceType $at) {
-                return '<form method="GET" action="' . route('admin.settings.absence-type.edit', $at->id) . '"
+                return '<form method="GET" action="' . route('settings.absence-type.edit', $at->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (AbsenceType $at) {
-                  return '<form method="POST" action="' . route('admin.settings.absence-type.destroy', $at->id) . '"
+                  return '<form method="POST" action="' . route('settings.absence-type.destroy', $at->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">' . 
                   csrf_field() . '<button class="btn btn-danger">
@@ -65,7 +65,7 @@ class AbsenceTypeController extends Controller
 
         $abs = AbsenceType::create($request->only([ 'name', 'interuption' ]));
         return redirect()
-            ->route('admin.settings.absence-type.index')
+            ->route('settings.absence-type.index')
             ->with('flash', [
                 'message' => 'Successfully added "' . $abs->name . '"',
                 'type' => 'success'
@@ -86,7 +86,7 @@ class AbsenceTypeController extends Controller
         $absence_type->update($request->only( ['name', 'interuption'] ));
         $absence_type->save();
         return redirect()
-            ->route('admin.settings.absence-type.index')
+            ->route('settings.absence-type.index')
             ->with('flash', [
                 'message' => 'Successfully updated "' . $absence_type->name . '"',
                 'type' => 'success'
@@ -113,7 +113,7 @@ class AbsenceTypeController extends Controller
         // We are using soft delete so this item will remain in the database
         $absence_type->delete();
         return redirect()
-            ->route('admin.settings.absence-type.index')
+            ->route('settings.absence-type.index')
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $absence_type->name . '"',
                 'type' => 'success'
@@ -130,14 +130,14 @@ class AbsenceTypeController extends Controller
         {
             $abs->restore();
             return redirect()
-              ->route('admin.settings.absence-type.index')
+              ->route('settings.absence-type.index')
               ->with('flash', [
                   'message' => 'Successfully restored "' . $abs->name . '"',
                   'type' => 'success'
               ]);
         }
         return redirect()
-            ->route('admin.settings.absence-type.index')
+            ->route('settings.absence-type.index')
             ->with('flash', [
                 'message' => 'Error: Absence Type is not deleted: "' . $abs->name . '"',
                 'type' => 'danger'

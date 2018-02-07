@@ -54,7 +54,7 @@ class StudentController extends Controller
                     { return $sr->enrolmentStatus->status; })
                 ->editColumn('tierFour', '{{$tierFour ? "Yes" : "No" }}')
                 ->setRowAttr([ 'data-link' => function(StudentRecord $sr)
-                    { return route('admin.student.show', $sr->student->university_id);
+                    { return route('student.show', $sr->student->university_id);
             }])->make(true);
         }
         return View('admin.user.student.index');
@@ -68,7 +68,7 @@ class StudentController extends Controller
         if( $student->records->isNotEmpty() )
         {
             session()->reflash();
-            return redirect()->route('admin.student.record.show',
+            return redirect()->route('student.record.show',
                         [$student->university_id, $student->record()->slug()]);
         }
         return view('student.dashboard', compact('student'));
@@ -91,10 +91,10 @@ class StudentController extends Controller
         if ($student)
         {
             session()->flash('student', $student);
-            return redirect()->route('admin.student.confirm');
+            return redirect()->route('student.confirm');
         }
         session()->flash('student_id', $request->university_id);
-        return redirect()->route('admin.student.confirm_id');
+        return redirect()->route('student.confirm_id');
     }
 
     public function confirm_user()
@@ -108,7 +108,7 @@ class StudentController extends Controller
             $student = session()->get( 'student' );
             return view( 'admin.user.student.found', compact( 'student' ) );
         }
-        return redirect()->route('admin.student.find');
+        return redirect()->route('student.find');
     }
 
     public function confirm_post_user(Request $request)
@@ -135,7 +135,7 @@ class StudentController extends Controller
             session()->reflash();
             return view( 'admin.user.student.notfound');
         }
-        return redirect()->route('admin.student.find');
+        return redirect()->route('student.find');
     }
 
     public function confirm_post_id(Request $request)
@@ -187,7 +187,7 @@ class StudentController extends Controller
         $student->assignDefaultPermissions();
 
         session()->flash('student', $student);
-        return redirect()->route('admin.student.confirm')
+        return redirect()->route('student.confirm')
             ->with('flash', [
                 'message' => 'Successfully added "' . $student->name . '"',
                 'type' => 'success'

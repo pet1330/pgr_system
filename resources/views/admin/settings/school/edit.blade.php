@@ -4,7 +4,7 @@
 @section('content')
 <div class="box box box-primary">
   <div class="box-body">
-    <form action="{{ route('admin.settings.school.update', $school->id) }}" method="POST">
+    <form action="{{ route('settings.school.update', $school->id) }}" method="POST">
       <input type="hidden" name="_method" value="PATCH">
       {{ csrf_field() }}
       <div class="row">

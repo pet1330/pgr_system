@@ -4,7 +4,7 @@
   <div class="panel-body text-center">
     @can('manage', $student)
     @can('manage', App\Models\Staff::class)
-    <form method="POST" action="{{ route('admin.supervisor.destroy',
+    <form method="POST" action="{{ route('supervisor.destroy',
       [$student->university_id, $record->slug(), $supervisor->university_id]) }}"
       accept-charset="UTF-8" class="delete-form" onsubmit="return confirm('Are you sure?');">
         <input type="hidden" name="_method" value="DELETE">

@@ -14,7 +14,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new Student Statuses</label>
-        <form action="{{ route('admin.settings.student-status.store') }}" method="POST">
+        <form action="{{ route('settings.student-status.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }} col-md-12">
             <input type="text" class="form-control" placeholder="Status" name="status" value="{{ old('status') }}">
@@ -41,7 +41,7 @@
           <div class="panel-body">
               @foreach($deletedStatuses as $status)
               <div class="col-md-12">
-                <a href="{{ route('admin.settings.student-status.restore', $status->id) }}">
+                <a href="{{ route('settings.student-status.restore', $status->id) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
                 {{ $status->status }}

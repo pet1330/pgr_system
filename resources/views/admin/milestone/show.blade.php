@@ -5,12 +5,12 @@
 <div id="app">
   <div class="content">
     <div class="panel-body">
-      <a  href="{{ route('admin.student.record.show', [$student->university_id, $record->slug()]) }}">
+      <a  href="{{ route('student.record.show', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
       </a>
       @can('manage', $milestone)
-      <a  href="{{ route('admin.student.record.milestone.edit',
+      <a  href="{{ route('student.record.milestone.edit',
         [$student->university_id, $record->slug(), $milestone->slug()]) }}">
         <span class="btn btn-default pull-right">
         Edit This Milestone</span>
@@ -53,7 +53,7 @@
     @can('manage', App\Models\Approval::class)
     <div class="box box-primary">
       <div class="box-body">
-        <form action="{{ route('admin.student.record.milestone.approve',
+        <form action="{{ route('student.record.milestone.approve',
           [$student->university_id, $record->slug(), $milestone->slug()]) }}" method="POST">
           {{ csrf_field() }}
           <div class="col-md-7">
@@ -98,7 +98,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         @forelse($milestone->getMedia('submission')->reverse() as $file)
-        <a href="{{ route('admin.student.record.milestone.media',
+        <a href="{{ route('student.record.milestone.media',
           [$student->university_id, $record->slug(), $milestone->slug(), $file->slug()]) }}">
           @component('components.infobox')
           @if($file->id !== $milestone->lastMedia('submission')->id)
@@ -137,7 +137,7 @@
               </ul>
             </div>
             <div class="col-md-8">
-              <form action="{{ route('admin.student.record.milestone.upload',
+              <form action="{{ route('student.record.milestone.upload',
                 [$student->university_id, $record->slug(), $milestone->slug()]) }}" id="uploader" class="dropzone" method="POST">
                 <div class="dz-progress progress" style="background-color: inherit;">
                   <span class="dz-upload" data-dz-uploadprogress></span>

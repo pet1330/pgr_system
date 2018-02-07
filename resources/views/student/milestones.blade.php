@@ -3,12 +3,12 @@
 @section('page_description', 'Milestones through '. $student->first_name .'\'s study')
 @section('content')
 <div class="panel-body">
-    <a  href="{{ route('admin.student.show', $student->university_id) }}">
+    <a  href="{{ route('student.show', $student->university_id) }}">
         <span class="btn btn-default">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> Profile</span>
     </a>
     @can('createMilestone')
-    <a  href="{{ route('admin.student.record.milestone.create', [$student->university_id, $record->slug()]) }}">
+    <a  href="{{ route('student.record.milestone.create', [$student->university_id, $record->slug()]) }}">
         <span class="btn btn-default pull-right">
             Create New Milestone
         </span>
@@ -27,7 +27,7 @@
         <div class="panel-body">
             <ul>
                 @foreach($overdue->sortBy('due_date') as $m)
-                <a href="{{ route('admin.student.record.milestone.show',
+                <a href="{{ route('student.record.milestone.show',
                     [$student->university_id, $record->slug(), $m->slug()]) }}">
                     <li class="col-md-6 list-unstyled"><b>
                         <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -49,7 +49,7 @@
             <div class="panel-body">
                 <ul>
                     @foreach($awaiting as $m)
-                    <a href="{{ route('admin.student.record.milestone.show',
+                    <a href="{{ route('student.record.milestone.show',
                         [$student->university_id, $record->slug(), $m->slug()]) }}">
                         <li class="col-md-6 list-unstyled"><b>
                             <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -71,7 +71,7 @@
             <div class="panel-body">
                 <ul>
                     @foreach($upcoming as $m)
-                    <a href="{{ route('admin.student.record.milestone.show',
+                    <a href="{{ route('student.record.milestone.show',
                         [$student->university_id, $record->slug(), $m->slug()]) }}">
                         <li class="col-md-6 list-unstyled"><b>
                             <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -92,7 +92,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach($recently_submitted as $m)
-                        <a href="{{ route('admin.student.record.milestone.show',
+                        <a href="{{ route('student.record.milestone.show',
                             [$student->university_id, $record->slug(), $m->slug()]) }}">
                             <li class="col-md-6 list-unstyled"><b>
                                 <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -120,7 +120,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach($submitted as $m)
-                        <a href="{{ route('admin.student.record.milestone.show',
+                        <a href="{{ route('student.record.milestone.show',
                             [$student->university_id, $record->slug(), $m->slug()]) }}">
                             <li class="col-md-6 list-unstyled"><b>
                                 <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -141,7 +141,7 @@
                     <div class="panel-body">
                         <ul>
                             @foreach($future as $m)
-                            <a href="{{ route('admin.student.record.milestone.show',
+                            <a href="{{ route('student.record.milestone.show',
                                 [$student->university_id, $record->slug(), $m->slug()]) }}">
                                 <li class="col-md-6 list-unstyled"><b>
                                     <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -163,7 +163,7 @@
             <div class="panel-body">
                 <ul>
                     @foreach($approved as $m)
-                    <a href="{{ route('admin.student.record.milestone.show',
+                    <a href="{{ route('student.record.milestone.show',
                         [$student->university_id, $record->slug(), $m->slug()]) }}">
                         <li class="col-md-6 list-unstyled"><b>
                             <span class="fa-stack fa-md" style="margin-right: 20px;">
@@ -195,7 +195,7 @@
                 var items = new vis.DataSet([
                 @foreach ($milestones as $m)
                 {
-                content:'<a href="{{ route('admin.student.record.milestone.show',
+                content:'<a href="{{ route('student.record.milestone.show',
                     [$student->university_id, $record->slug(), $m->slug()]) }}" data-toggle="tooltip" data-placement="top" title="{{ $m->name }}"><span class="fa-stack fa-md" style="margin: 0 2px;"><i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i><strong class="fa-stack-1x calendar-text" style="font-size: 12px;margin-top:2.5px;">{{ $m->due_date->format('d/m') }}</strong></span></a>',
                     group: 1,
                     className: 'expected',

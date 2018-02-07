@@ -15,7 +15,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new programme</label>
-        <form action="{{ route('admin.settings.programme.store') }}" method="POST">
+        <form action="{{ route('settings.programme.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-8">
             <input type="text" class="form-control" placeholder="Name" name="name" value="{{ old('name') }}">
@@ -50,7 +50,7 @@
           <div class="panel-body">
               @foreach($deletedProgrammes as $progs)
               <div class="col-md-12">
-                <a href="{{ route('admin.settings.programme.restore', $progs->id) }}">
+                <a href="{{ route('settings.programme.restore', $progs->id) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
                 {{ $progs->name }}

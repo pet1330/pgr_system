@@ -79,9 +79,9 @@ class User extends Authenticatable
         if( $user instanceof static ) $user = $user->id;
 
         switch ($this->user_type) {
-            case 'Admin': return route('admin.admin.show', $user ?? $this->university_id);
-            case 'Staff': return route('admin.staff.show', $user ?? $this->university_id);
-            case 'Student': return route('admin.student.show', $user ?? $this->university_id);
+            case 'Admin': return route('admin.show', $user ?? $this->university_id);
+            case 'Staff': return route('staff.show', $user ?? $this->university_id);
+            case 'Student': return route('student.show', $user ?? $this->university_id);
         }
     }
 

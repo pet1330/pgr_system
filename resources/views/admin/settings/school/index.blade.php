@@ -15,7 +15,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new School</label>
-        <form action="{{ route('admin.settings.school.store') }}" method="POST">
+        <form action="{{ route('settings.school.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="row">
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-4">
@@ -70,7 +70,7 @@
           <div class="panel-body">
             @foreach($deletedSchools as $s)
             <div class="col-md-12">
-              <a href="{{ route('admin.settings.school.restore', $s->id) }}">
+              <a href="{{ route('settings.school.restore', $s->id) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $s->name }}

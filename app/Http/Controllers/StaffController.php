@@ -24,7 +24,7 @@ class StaffController extends Controller
             return Datatables::eloquent( Staff::select('users.*') )
                 ->rawColumns(['editaction', 'deleteaction'])
             ->setRowAttr([ 'data-link' => function(Staff $staff)
-                { return route('admin.staff.show', $staff->university_id); }])
+                { return route('staff.show', $staff->university_id); }])
             ->make(true);
         }
         return View('admin.user.staff.index');
@@ -64,10 +64,10 @@ class StaffController extends Controller
         if ($staff)
         {
             session()->flash('staff', $staff);
-            return redirect()->route('admin.staff.show', $staff->university_id);
+            return redirect()->route('staff.show', $staff->university_id);
         }
         session()->flash('staff_id', $request->university_id);
-        return redirect()->route('admin.staff.confirm_id');
+        return redirect()->route('staff.confirm_id');
     }
 
     public function confirm_id()
@@ -80,7 +80,7 @@ class StaffController extends Controller
             session()->reflash();
             return view( 'admin.user.staff.notfound');
         }
-        return redirect()->route('admin.staff.find');
+        return redirect()->route('staff.find');
     }
 
     public function confirm_post_id(Request $request)
@@ -132,7 +132,7 @@ class StaffController extends Controller
         $staff->assignDefaultPermissions();
 
         session()->flash('staff', $staff);
-        return redirect()->route('admin.staff.show', $staff->university_id)
+        return redirect()->route('staff.show', $staff->university_id)
             ->with('flash', [
                 'message' => 'Successfully added "' . $staff->name . '"',
                 'type' => 'success'
@@ -149,7 +149,7 @@ class StaffController extends Controller
             $staff = Staff::select('users.*')->doesntHave('supervising');
             return Datatables::eloquent($staff)
                 ->addColumn('upgrade', function (Staff $staff) {
-                    return '<form method="POST" action="' . route('admin.staff.upgrade.store', $staff->university_id) . '" accept-charset="UTF-8" class="success-form text-center">' . 
+                    return '<form method="POST" action="' . route('staff.upgrade.store', $staff->university_id) . '" accept-charset="UTF-8" class="success-form text-center">' . 
                     csrf_field() . '<button class="btn btn-default" onclick="return confirm(\'Are you sure?\')">
                     <i class="fa fa-user-plus" aria-hidden="true"></i> Make Admin</button> </form>';
                 })
@@ -170,7 +170,7 @@ class StaffController extends Controller
         
         $admin->assignDefaultPermissions(true);
 
-        return redirect()->route('admin.staff.upgrade.index')
+        return redirect()->route('staff.upgrade.index')
             ->with('flash', [
                 'message' => $admin->name . ' has been upgraded to an Admin',
                 'type' => 'success'

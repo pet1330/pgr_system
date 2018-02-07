@@ -16,7 +16,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new absence type</label>
-        <form action="{{ route('admin.settings.absence-type.store') }}" method="POST">
+        <form action="{{ route('settings.absence-type.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-8">
             <input type="text" class="form-control" placeholder="Name" name="name" value="{{ old('name') }}">
@@ -59,7 +59,7 @@
           <div class="panel-body">
             @foreach($deletedAbsenceType as $dat)
             <div class="col-md-12">
-              <a href="{{ route('admin.settings.absence-type.restore', $dat->id) }}">
+              <a href="{{ route('settings.absence-type.restore', $dat->id) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $dat->name }}

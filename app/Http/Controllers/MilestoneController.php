@@ -178,7 +178,7 @@ class MilestoneController extends Controller
             })
             ->setRowAttr([ 'data-link' => function(Milestone $ms)
                 {
-                    return route('admin.student.record.milestone.show', [
+                    return route('student.record.milestone.show', [
                             $ms->student->student->university_id,
                             $ms->student->slug(),
                             $ms->slug()
@@ -230,7 +230,7 @@ class MilestoneController extends Controller
             $student->supervisors->each->allow('view', $milestone);
 
             Bouncer::refresh();
-            return redirect()->route('admin.student.record.milestone.show',
+            return redirect()->route('student.record.milestone.show',
                 compact('student', 'record', 'milestone'));
         }
         return $milestone;
@@ -357,7 +357,7 @@ class MilestoneController extends Controller
         $milestone->milestone_type_id = $request->milestone_type;
         $milestone->non_interuptive_date = Carbon::parse($request->due)->subDays($away_days);
         $milestone->save();
-        return redirect()->route('admin.student.record.milestone.show', compact('student', 'record', 'milestone'));
+        return redirect()->route('student.record.milestone.show', compact('student', 'record', 'milestone'));
     }
 
     /**
@@ -374,7 +374,7 @@ class MilestoneController extends Controller
         // We are using soft delete so this item will remain in the database
         $milestone->delete();
         return redirect()
-            ->route('admin.student.record.milestone.index', 
+            ->route('student.record.milestone.index', 
                 [$student->university_id, $record->slug()])
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $milestone->name . '"',
@@ -448,7 +448,7 @@ class MilestoneController extends Controller
 
         $milestone->approve($request->approved, $request->feedback);
 
-        return redirect()->route('admin.student.record.milestone.show',
+        return redirect()->route('student.record.milestone.show',
           [$student->university_id, $record->slug(), $milestone->slug()])
             ->with('flash', [
                 'message' => 'Successfully approved milestone',

@@ -1,6 +1,6 @@
 @if ($errors->has('university_id'))
 <script>
-window.location = "{{ route('admin.student.find') }}";
+window.location = "{{ route('student.find') }}";
 </script>
 @endif
 @extends('layouts.dashboard')
@@ -12,7 +12,7 @@ window.location = "{{ route('admin.student.find') }}";
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new Student</label>
-        <form action="{{ route('admin.student.store') }}" method="POST">
+        <form action="{{ route('student.store') }}" method="POST">
           {{ csrf_field() }}
           <input type="hidden" name="university_id" value="{{ $university_id or old('university_id') }}">
           <div class="row">

@@ -15,11 +15,11 @@
                 <h3>{{ $student->name }}</h3>
                 <div class="form-group text-center">
                 Is this the correct student?
-                    <form action="{{ route('admin.student.confirm') }}" method="POST">
+                    <form action="{{ route('student.confirm') }}" method="POST">
                         {{ csrf_field() }}
                     <button class="col-md-4 col-md-offset-1 btn btn-primary" role="button">Yes</button>
                     </form>
-                    <p><a href="{{ route('admin.student.find') }}" class="col-md-4 col-md-offset-1 btn btn-default" role="button">No</a></p>
+                    <p><a href="{{ route('student.find') }}" class="col-md-4 col-md-offset-1 btn btn-default" role="button">No</a></p>
                 </div>
             </div>
         </div>

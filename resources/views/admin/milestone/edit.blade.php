@@ -6,7 +6,7 @@
   <section class="content">
     <div class="box box box-primary">
       <div class="box-body">
-        <form action="{{ route('admin.student.record.milestone.update',
+        <form action="{{ route('student.record.milestone.update',
           [$student->university_id, $record->slug(), $milestone->slug()]) }}" method="POST">
           {{ csrf_field() }}
           <input type="hidden" name="_method" value="PATCH">
@@ -46,7 +46,7 @@
             <button type="submit" class="btn btn-primary">Update Milestone</button>
           </div>
         </form>
-        <form method="POST" action="{{ route('admin.student.record.milestone.destroy',
+        <form method="POST" action="{{ route('student.record.milestone.destroy',
           [$student->university_id, $record->slug(), $milestone->slug()]) }}"
           accept-charset="UTF-8" class="delete-form">
           <input type="hidden" name="_method" value="DELETE">

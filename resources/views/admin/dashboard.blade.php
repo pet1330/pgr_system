@@ -5,7 +5,7 @@
     <div class="box box-primary">
       <div class="panel-body ">
         <div class="col-md-3 col-sm-6">
-          <a href="{{ route('admin.student.amendments') }}">
+          <a href="{{ route('student.amendments') }}">
             <div class="hero-widget well well-sm{{ $awaitingAmendments ? ' text-warning' : ' text-muted' }}">
               <div class="icon">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -21,7 +21,7 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
-          <a href="{{ route('admin.student.overdue') }}">
+          <a href="{{ route('student.overdue') }}">
             <div class="hero-widget well well-sm{{ $overdue ? ' text-danger' : ' text-muted' }}">
               <div class="icon">
                 <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
@@ -36,7 +36,7 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
-          <a href="{{ route('admin.student.upcoming') }}">
+          <a href="{{ route('student.upcoming') }}">
             <div class="hero-widget well well-sm{{ $upcoming ? ' text-warning' : ' text-muted' }}">
               <div class="icon">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
@@ -51,7 +51,7 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
-          <a href="{{ route('admin.student.submitted') }}">
+          <a href="{{ route('student.submitted') }}">
             <div class="hero-widget well well-sm{{ $recentlySubmitted ? ' text-success' : ' text-muted' }}">
               <div class="icon">
                 <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
@@ -67,7 +67,7 @@
         </div>
         @can('view', App\Models\Student::class)
         <div class="col-sm-6">
-          <a href="{{ route('admin.student.index') }}">
+          <a href="{{ route('student.index') }}">
             <div class="hero-widget well well-sm text-muted">
               <div class="icon">
                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -85,7 +85,7 @@
         @endcan
         @can('view', App\Models\Staff::class)
         <div class="col-sm-6">
-          <a href="{{ route('admin.staff.index') }}">
+          <a href="{{ route('staff.index') }}">
             <div class="hero-widget well well-sm text-muted">
               <div class="icon">
                 <i class="fa fa-user" aria-hidden="true"></i>

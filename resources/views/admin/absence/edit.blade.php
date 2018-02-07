@@ -6,7 +6,7 @@
     <section class="content">
         <div class="box box box-primary">
             <div class="box-body">
-                <form action="{{ route('admin.student.absence.store', $student->university_id) }}" method="POST">
+                <form action="{{ route('student.absence.store', $student->university_id) }}" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group{{ $errors->has('from') ? ' has-error' : '' }} col-md-3">
                         <label for="from">From</label>

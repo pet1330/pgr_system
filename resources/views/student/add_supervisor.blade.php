@@ -5,7 +5,7 @@
 <div class="box box box-primary">
   <div class="box-body">
     <label>Add Supervisor</label>
-    <form action="{{ route('admin.student.record.supervisor.store',
+    <form action="{{ route('student.record.supervisor.store',
       [$student->university_id, $record->slug()]) }}" method="POST">
       <input type="hidden" name="_method" value="PATCH">
       {{ csrf_field() }}

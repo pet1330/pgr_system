@@ -14,7 +14,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Create new funding type</label>
-        <form action="{{ route('admin.settings.funding-type.store') }}" method="POST">
+        <form action="{{ route('settings.funding-type.store') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-12">
             <input type="text" class="form-control" placeholder="Name" name="name" value="{{ old('name') }}">
@@ -41,7 +41,7 @@
           <div class="panel-body">
               @foreach($deletedFundingType as $dat)
               <div class="col-md-12">
-                <a href="{{ route('admin.settings.funding-type.restore', $dat->id) }}">
+                <a href="{{ route('settings.funding-type.restore', $dat->id) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
                 {{ $dat->name }}

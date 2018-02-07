@@ -48,7 +48,7 @@ class AbsenceController extends Controller
         );
 
         $student->records->each->recalculateMilestonesDueDate();
-        return redirect()->route('admin.student.show', $student->university_id);
+        return redirect()->route('student.show', $student->university_id);
     }
 
     /**
@@ -77,6 +77,6 @@ class AbsenceController extends Controller
         $this->authorise('manage', $absence);
         $absence->delete();
         $student->records->each->recalculateMilestonesDueDate();
-        return redirect()->route('admin.student.show', $student->university_id);
+        return redirect()->route('student.show', $student->university_id);
     }
 }

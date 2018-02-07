@@ -30,11 +30,11 @@ class SupervisorController extends Controller
 
         if ($staff)
         {
-            return redirect()->route('admin.supervisor.create',
+            return redirect()->route('supervisor.create',
                 [$student->university_id, $record->slug(), $staff->university_id]);
         }
         session()->flash('staff_id', $request->university_id);
-        return redirect()->route('admin.supervisor.confirm_id',
+        return redirect()->route('supervisor.confirm_id',
             [$student->university_id, $record->slug()]);
     }
 
@@ -57,7 +57,7 @@ class SupervisorController extends Controller
             $staff->university_id !== $request->supervisor ) abort(404);
 
             $record->addSupervisor($staff, $request->type);
-            return redirect()->route('admin.student.record.show',
+            return redirect()->route('student.record.show',
                 [$student->university_id, $record->slug()])
             ->with('flash', [
                 'message' => $staff->name . ' now supervises ' . $student->name,
@@ -76,7 +76,7 @@ class SupervisorController extends Controller
             return view( 'supervisor.notfound', compact('student', 'record'));
         }
 
-        return redirect()->route('admin.supervisor.find', [$student->university_id, $record->slug()]);
+        return redirect()->route('supervisor.find', [$student->university_id, $record->slug()]);
     }
 
     public function confirm_post_id(Request $request, Student $student, Staff $staff)
@@ -109,7 +109,7 @@ class SupervisorController extends Controller
                 abort(404);
 
         $record->removeSupervisor($staff);
-        return redirect()->route('admin.student.record.show',
+        return redirect()->route('student.record.show',
             [$student->university_id, $record->slug()]);
     }
 }

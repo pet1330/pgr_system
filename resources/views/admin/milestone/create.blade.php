@@ -6,7 +6,7 @@
   <section class="content">
     <div class="box box box-primary">
       <div class="box-body">
-        <form id="studentUploaderForm" action="{{ route('admin.student.record.milestone.store',
+        <form id="studentUploaderForm" action="{{ route('student.record.milestone.store',
           [$student->university_id, $record->slug()]) }}" enctype="multipart/form-data" method="POST">
           <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
           <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-7">
