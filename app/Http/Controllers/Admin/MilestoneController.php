@@ -200,7 +200,7 @@ class MilestoneController extends Controller
         $this->authorise('view', $student);
         $this->authorise('createMilestone');
 
-        $types = auth()->user()->can('create', Milestone::class) ?
+        $types = auth()->user()->can('manage', Milestone::class) ?
             MilestoneType::all() : MilestoneType::studentMakable()->get();
 
         return view('admin.milestone.create', compact('student', 'record', 'types'));
@@ -219,7 +219,7 @@ class MilestoneController extends Controller
 
         $this->authorise('view', $student);
 
-        $milestone = auth()->user()->can('create', Milestone::class) ?
+        $milestone = auth()->user()->can('manage', Milestone::class) ?
             $this->storeAdminMilestone($request, $student, $record) :
             $this->storeStudentMilestone($request, $student, $record);
 
