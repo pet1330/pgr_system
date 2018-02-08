@@ -43,7 +43,7 @@ class User extends Authenticatable
         if (static::class === "App\Models\User")
         {
             if(!isset($attributes->user_type))
-                throw new Exception("User Type Not Defined", 1);
+                throw new \Exception("User Type Not Defined", 1);
             $userType = __NAMESPACE__ . '\\' . $attributes->user_type;
             $factory = (new $userType)->newFromBuilder($attributes, $connection);
             $factory->setRawAttributes((array) $attributes, true);
