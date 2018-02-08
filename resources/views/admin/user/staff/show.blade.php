@@ -17,13 +17,13 @@
                 <label class="text-muted">{{ $sr->student->name }}</label>
               </div>
               <div class="options">
-                <a href="{{ route('admin.student.show', [$sr->student->university_id]) }}" class="btn btn-default btn-lg">
+                <a href="{{ route('student.show', [$sr->student->university_id]) }}" class="btn btn-default btn-lg">
                 View Student</a>
               </div>
             </div>
           </div>
 
-          @if($sr->overdue_count) <a href="{{ route('admin.student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#overdue' }}"> @endif
+          @if($sr->overdue_count) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#overdue' }}"> @endif
           <div class="col-sm-3">
             <div class="hero-widget well well-sm {{ $sr->overdue_count ? 'text-danger' : 'text-muted' }}">
               <div class="icon">
@@ -40,7 +40,7 @@
           </div>
           @if($sr->overdue_count) </a> @endif
 
-          @if($sr->amendments_count) <a href="{{ route('admin.student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#amendments' }}"> @endif
+          @if($sr->amendments_count) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#amendments' }}"> @endif
           <div class="col-sm-3">
             <div class="hero-widget well well-sm {{ $sr->amendments_count ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
@@ -56,7 +56,7 @@
           </div>
         @if($sr->amendments_count) </a> @endif
 
-        @if($sr->upcoming_count) <a href="{{ route('admin.student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#upcoming' }}"> @endif
+        @if($sr->upcoming_count) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#upcoming' }}"> @endif
           <div class="col-sm-3">
             <div class="hero-widget well well-sm {{ $sr->upcoming_count ? 'text-warning' : 'text-muted' }}">
               <div class="icon">

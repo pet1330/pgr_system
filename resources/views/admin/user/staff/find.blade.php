@@ -6,7 +6,7 @@
   <div class="box box box-primary">
     <div class="box-body">
       <label>Please enter the staff univeristy ID</label>
-      <form action="{{ route('admin.staff.find') }}" method="POST">
+      <form action="{{ route('staff.find') }}" method="POST">
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('university_id') || $errors->has('nomatch') ? ' has-error' : '' }}">
           <input type="text" class="form-control" placeholder="University ID" name="university_id" value="{{ old('university_id') }}">

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
@@ -27,13 +27,13 @@ class MilestoneTypeController extends Controller
             return Datatables::eloquent($miletypes)
                 ->editColumn('student_makable', '{{ $student_makable ? "Yes" : "No" }}')
                 ->addColumn('editaction', function (MilestoneType $mt) {
-                    return '<form method="GET" action="' . route('admin.settings.milestone-type.edit', $mt->id) . '"
+                    return '<form method="GET" action="' . route('settings.milestone-type.edit', $mt->id) . '"
                       accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (MilestoneType $mt) {
-                      return '<form method="POST" action="' . route('admin.settings.milestone-type.destroy', $mt->id) . '"
+                      return '<form method="POST" action="' . route('settings.milestone-type.destroy', $mt->id) . '"
                       accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">' . 
                       csrf_field() . '<button class="btn btn-danger">
@@ -60,7 +60,7 @@ class MilestoneTypeController extends Controller
 
         $mt = MilestoneType::create( $request->only([ 'name', 'duration', 'student_makable' ] ) );
         return redirect()
-            ->route('admin.settings.milestone-type.index')
+            ->route('settings.milestone-type.index')
             ->with('flash', [
                 'message' => 'Successfully added "' . $mt->name . '"',
                 'type' => 'success'
@@ -82,7 +82,7 @@ class MilestoneTypeController extends Controller
         $milestone_type->update( $request->only( 'name', 'duration', 'student_makable' ) );
         $milestone_type->save();
         return redirect()
-            ->route('admin.settings.milestone-type.index')
+            ->route('settings.milestone-type.index')
             ->with('flash', [
                 'message' => 'Successfully updated "' . $milestone_type->name . '"',
                 'type' => 'success'
@@ -111,7 +111,7 @@ class MilestoneTypeController extends Controller
         // We are using soft delete so this item will remain in the database
         $milestone_type->delete();
         return redirect()
-            ->route('admin.settings.milestone-type.index')
+            ->route('settings.milestone-type.index')
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $milestone_type->name . '"',
                 'type' => 'success'
@@ -128,14 +128,14 @@ class MilestoneTypeController extends Controller
         {
             $mt->restore();
             return redirect()
-                ->route('admin.settings.milestone-type.index')
+                ->route('settings.milestone-type.index')
             ->with('flash', [
                 'message' => 'Successfully restored "' . $mt->name . '"',
                 'type' => 'success'
             ]);
         }
         return redirect()
-            ->route('admin.settings.milestone-type.index')
+            ->route('settings.milestone-type.index')
             ->with('flash', [
                 'message' => 'Error: Milestone Type is not deleted: "' . $mt->name . '"',
                 'type' => 'danger'

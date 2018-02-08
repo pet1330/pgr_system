@@ -5,7 +5,7 @@
 <div class="box box box-primary">
     <div class="box-body">
         <label>Update Timeline</label>
-            <form action="{{ route('admin.settings.timeline.update', $timeline->id) }}" method="POST">
+            <form action="{{ route('settings.timeline.update', $timeline->id) }}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="PATCH">
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-12">

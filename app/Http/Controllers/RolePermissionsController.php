@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Silber\Bouncer\Database\Role;
@@ -36,7 +36,7 @@ class RolePermissionsController extends Controller
                       <i class="fa fa-pencil"></i></button> </form>';
                     })
                     // ->setRowAttr([ 'data-link' => function(Role $role)
-                    //     { return route('admin.student.record.show',
+                    //     { return route('student.record.show',
                     //         [ $role->student->university_id, $role->slug()]); }])
                     ->rawColumns(['editaction', 'abilities'])
                     ->make(true);
@@ -54,7 +54,7 @@ class RolePermissionsController extends Controller
 
         Bouncer::allow($role)->to($request->name, $request->model);
         $role->allow($request->input('abilities'));
-        return redirect()->route('admin.settings.rolepermissions.index');
+        return redirect()->route('settings.rolepermissions.index');
     }
 
 
@@ -89,7 +89,7 @@ class RolePermissionsController extends Controller
         }
         $role->allow($request->input('abilities'));
 
-        return redirect()->route('admin.settings.rolepermissions.index');
+        return redirect()->route('settings.rolepermissions.index');
     }
 
     /**
@@ -103,6 +103,6 @@ class RolePermissionsController extends Controller
         $role = Role::findOrFail($id);
         $role->delete();
 
-        return redirect()->route('admin.settings.rolepermissions.index');
+        return redirect()->route('settings.rolepermissions.index');
     }
 }

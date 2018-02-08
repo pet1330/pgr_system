@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Models\User;
 use Silber\Bouncer\Database\Role;
@@ -54,7 +54,7 @@ class UserRolesController extends Controller
             $user->assign($role);
         }
 
-        return redirect()->route('admin.settings.userroles.index');
+        return redirect()->route('settings.userroles.index');
     }
 
     /**
@@ -86,7 +86,7 @@ class UserRolesController extends Controller
             $user->assign($role);
         }
 
-        return redirect()->route('admin.settings.userroles.index');
+        return redirect()->route('settings.userroles.index');
     }
 
     /**
@@ -100,6 +100,6 @@ class UserRolesController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.settings.userroles.index');
+        return redirect()->route('settings.userroles.index');
     }
 }

@@ -6,7 +6,7 @@
   <div class="box box box-primary">
     <div class="box-body">
       <label>Edit Student Record</label>
-      <form action="{{ route('admin.student.record.update',
+      <form action="{{ route('student.record.update',
         [$student->university_id, $record->slug()]) }}" method="POST">
         {{ csrf_field() }}
         <input type="hidden" name="_method" value="PATCH">

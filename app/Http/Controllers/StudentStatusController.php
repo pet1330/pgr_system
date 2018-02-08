@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,13 +26,13 @@ class StudentStatusController extends Controller
 
           return Datatables::eloquent($student_status)
               ->addColumn('editaction', function (StudentStatus $student_status) {
-                return '<form method="GET" action="' . route('admin.settings.student-status.edit', $student_status->id) . '"
+                return '<form method="GET" action="' . route('settings.student-status.edit', $student_status->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (StudentStatus $student_status) {
-                  return '<form method="POST" action="' . route('admin.settings.student-status.destroy', $student_status->id) . '"
+                  return '<form method="POST" action="' . route('settings.student-status.destroy', $student_status->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">' . 
                   csrf_field() . '<button class="btn btn-danger">
@@ -58,7 +58,7 @@ class StudentStatusController extends Controller
 
         $stu = StudentStatus::create($request->only( 'status' ));
         return redirect()
-            ->route('admin.settings.student-status.index')
+            ->route('settings.student-status.index')
             ->with('flash', [
                 'message' => 'Successfully added "' . $stu->status . '"',
                 'type' => 'success'
@@ -79,7 +79,7 @@ class StudentStatusController extends Controller
         $student_status->update($request->only( 'status' ));
         $student_status->save();
         return redirect()
-            ->route('admin.settings.student-status.index')
+            ->route('settings.student-status.index')
             ->with('flash', [
                 'message' => 'Successfully updated "' . $student_status->status . '"',
                 'type' => 'success'
@@ -106,7 +106,7 @@ class StudentStatusController extends Controller
         // We are using soft delete so this item will remain in the database
         $student_status->delete();
         return redirect()
-            ->route('admin.settings.student-status.index')
+            ->route('settings.student-status.index')
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $student_status->status . '"',
                 'type' => 'success'
@@ -122,14 +122,14 @@ class StudentStatusController extends Controller
         {
             $student_status->restore();
             return redirect()
-                ->route('admin.settings.student-status.index')
+                ->route('settings.student-status.index')
                 ->with('flash', [
                     'message' => 'Successfully restored "' . $student_status->status . '"',
                     'type' => 'success'
                 ]);
         }
         return redirect()
-                ->route('admin.settings.student-status.index')
+                ->route('settings.student-status.index')
                 ->with('flash', [
                     'message' => 'Error: Status is not deleted: "' . $student_status->status . '"',
                     'type' => 'danger'

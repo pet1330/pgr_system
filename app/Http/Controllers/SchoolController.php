@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Models\School;
 use App\Models\College;
@@ -32,13 +32,13 @@ class SchoolController extends Controller
           ->addColumn('college', function (School $s)
                     { return $s->college->name; })
               ->addColumn('editaction', function (School $school) {
-                return '<form method="GET" action="' . route('admin.settings.school.edit', $school->id) . '"
+                return '<form method="GET" action="' . route('settings.school.edit', $school->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (School $school) {
-                  return '<form method="POST" action="' . route('admin.settings.school.destroy', $school->id) . '"
+                  return '<form method="POST" action="' . route('settings.school.destroy', $school->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">' . 
                   csrf_field() . '<button class="btn btn-danger">
@@ -67,7 +67,7 @@ class SchoolController extends Controller
         $school = School::create($request->only( [ 'name', 'college_id', 'notifications_address' ] ));
 
         return redirect()
-            ->route('admin.settings.school.index')
+            ->route('settings.school.index')
             ->with('flash', [
               'message' => 'Successfully added "' . $school->name . '"',
               'type' => 'success'
@@ -90,7 +90,7 @@ class SchoolController extends Controller
         $school->update($request->only( 'name', 'college_id', 'notifications_address' ));
         $school->save();
         return redirect()
-            ->route('admin.settings.school.index')
+            ->route('settings.school.index')
             ->with('flash', [
                 'message' => 'Successfully updated "' . $school->name . '"',
                 'type' => 'success'
@@ -100,7 +100,7 @@ class SchoolController extends Controller
     public function edit(School $school)
     {
 
-        $this->authorise('view', $school);
+        $this->authorise('manage', $school);
 
         $colleges = College::all();
         return view('admin.settings.school.edit', compact('school', 'colleges'));
@@ -120,7 +120,7 @@ class SchoolController extends Controller
         // We are using soft delete so this item will remain in the database
         $school->delete();
         return redirect()
-            ->route('admin.settings.school.index')
+            ->route('settings.school.index')
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $school->name . '"',
                 'type' => 'success'
@@ -138,14 +138,14 @@ class SchoolController extends Controller
         {
             $school->restore();
             return redirect()
-                ->route('admin.settings.school.index')
+                ->route('settings.school.index')
             ->with('flash', [
                 'message' => 'Successfully restored "' . $school->name . '"',
                 'type' => 'success'
             ]);
         }
         return redirect()
-                ->route('admin.settings.school.index')
+                ->route('settings.school.index')
             ->with('flash', [
                 'message' => 'Error: School is not deleted: "' . $school->name . '"',
                 'type' => 'danger'

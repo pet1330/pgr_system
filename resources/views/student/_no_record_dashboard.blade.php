@@ -9,7 +9,7 @@
         <div class="box-body text-center">
           <h4>{{ ucfirst($student->first_name) }} does not currently have a student record</h4>
           @can('manage', App\Models\Student::class)
-          <form action="{{ route('admin.student.find') }}" method="POST">
+          <form action="{{ route('student.find') }}" method="POST">
             {{ csrf_field() }}
             <input type="hidden" name="university_id" value="{{ $student->university_id }}">
             <button type="submit" class="btn btn-primary">Create one now?</button>

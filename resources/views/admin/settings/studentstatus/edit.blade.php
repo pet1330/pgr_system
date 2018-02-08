@@ -5,7 +5,7 @@
 <div class="box box box-primary">
   <div class="box-body">
     <label>Update Student Status</label>
-    <form action="{{ route('admin.settings.student-status.update', $student_status->id) }}" method="POST">
+    <form action="{{ route('settings.student-status.update', $student_status->id) }}" method="POST">
     <input type="hidden" name="_method" value="PATCH">
       {{ csrf_field() }}
       <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }} col-md-12">

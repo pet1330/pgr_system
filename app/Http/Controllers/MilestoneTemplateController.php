@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
@@ -44,7 +44,7 @@ class MilestoneTemplateController extends Controller
             ])
         );
         return redirect()
-            ->route('admin.settings.timeline.show', $timeline->id)
+            ->route('settings.timeline.show', $timeline->id)
             ->with('flash', [
                 'message' => 'Successfully added "' . $milestone->type->name . '"',
                 'type' => 'success'
@@ -76,7 +76,7 @@ class MilestoneTemplateController extends Controller
         $milestone->update( $request->only( [ 'due', 'milestone_type' ] ) );
 
         return redirect()
-            ->route('admin.settings.timeline.show', $timeline->id)
+            ->route('settings.timeline.show', $timeline->id)
             ->with('flash', [
                 'message' => 'Successfully updated "' . $milestone->type->name . '"',
                 'type' => 'success'
@@ -96,7 +96,7 @@ class MilestoneTemplateController extends Controller
         $milestone->delete();
 
         return redirect()
-            ->route('admin.settings.timeline.show', $timeline->id)
+            ->route('settings.timeline.show', $timeline->id)
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $milestone->type->name . '"',
                 'type' => 'success'
@@ -114,14 +114,14 @@ class MilestoneTemplateController extends Controller
         {
             $mt->restore();
             return redirect()
-                ->route('admin.settings.timeline.show', $mt->timeline_template->id)
+                ->route('settings.timeline.show', $mt->timeline_template->id)
                 ->with('flash', [
                 'message' => 'Successfully restored "' . $mt->type->name . '"',
                 'type' => 'success'
             ]);
         }
         return redirect()
-                ->route('admin.settings.timeline.show', $mt->timeline_template->id)
+                ->route('settings.timeline.show', $mt->timeline_template->id)
                 ->with('flash', [
                 'message' => 'Error: Milestone Template has not deleted: "' . $mt->type->name . '"',
                 'type' => 'danger'

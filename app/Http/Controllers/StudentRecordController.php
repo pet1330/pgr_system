@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\School;
@@ -84,7 +84,7 @@ class StudentRecordController extends Controller
                     'programme_id' => $request->programme_id,
             ])
         );
-        return redirect()->route('admin.student.show', $student->university_id)
+        return redirect()->route('student.show', $student->university_id)
             ->with('flash', [
               'message' => 'Successfully added a record for "' . $student->name . '"',
               'type' => 'success'
@@ -113,7 +113,7 @@ class StudentRecordController extends Controller
         $record->save();
     
         return redirect()
-            ->route('admin.student.record.show', [$student->university_id, $record->slug()])
+            ->route('student.record.show', [$student->university_id, $record->slug()])
             ->with('flash', [
               'message' => 'Successfully updated "' . $record->slug() . '"',
               'type' => 'success'
@@ -151,7 +151,7 @@ class StudentRecordController extends Controller
         if( auth()->user()->can('manage', Absence::class) )
         {
             $dt->addColumn('deleteaction', function (Absence $abs) use ($student) {
-              return '<form method="POST" action="' . route('admin.student.absence.destroy', [$student, $abs->slug()]) . '"
+              return '<form method="POST" action="' . route('student.absence.destroy', [$student, $abs->slug()]) . '"
               accept-charset="UTF-8" class="delete-form">
               <input type="hidden" name="_method" value="DELETE">' .
               csrf_field() . '<button class="btn btn-danger">
@@ -186,7 +186,7 @@ class StudentRecordController extends Controller
         {
             $record->addSupervisor($staff, $request->type);
 
-            return redirect()->route('admin.student.record.show',
+            return redirect()->route('student.record.show',
                 [$student->university_id, $record->slug()])
                 ->with('flash', [
                   'message' => $staff->name . ' is now supervising ' . $student->name,
@@ -194,7 +194,7 @@ class StudentRecordController extends Controller
                 ]);
         }
 
-        return redirect()->route('admin.staff.find');
+        return redirect()->route('staff.find');
     }
 
     public function removeSupervisor(SupervisorRequest $request, Student $student, StudentRecord $record)
@@ -208,7 +208,7 @@ class StudentRecordController extends Controller
         {
             $record->addSupervisor($staff, $request->type);
 
-            return redirect()->route('admin.student.record.show',
+            return redirect()->route('student.record.show',
                 [$student->university_id, $record->slug()])
                 ->with('flash', [
                   'message' => $staff->name . ' no longer supervises ' . $student->name,
@@ -216,7 +216,7 @@ class StudentRecordController extends Controller
                 ]);
         }
 
-        return redirect()->route('admin.staff.find');
+        return redirect()->route('staff.find');
     }
 
     public function note(Request $request, Student $student, StudentRecord $record)

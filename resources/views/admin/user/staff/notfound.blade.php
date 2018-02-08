@@ -7,7 +7,7 @@
         <div class="box-body">
             This staff member does not appear to be in our system yet.<br><br>
             <label>Please confirm the staff ID</label>
-            <form action="{{ route('admin.staff.confirm_id') }}" method="POST">
+            <form action="{{ route('staff.confirm_id') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="form-group{{ $errors->has('university_id') ? ' has-error' : '' }}">
                     <input type="text" class="form-control" placeholder="University ID" name="university_id" value="{{ old('university_id') }}">

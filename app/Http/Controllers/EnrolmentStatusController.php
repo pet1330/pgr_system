@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,13 +27,13 @@ class EnrolmentStatusController extends Controller
 
             return Datatables::eloquent($enrolment_status)
               ->addColumn('editaction', function (EnrolmentStatus $enrolment_status) {
-                return '<form method="GET" action="' . route('admin.settings.enrolment-status.edit', $enrolment_status->id) . '"
+                return '<form method="GET" action="' . route('settings.enrolment-status.edit', $enrolment_status->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (EnrolmentStatus $enrolment_status) {
-                  return '<form method="POST" action="' . route('admin.settings.enrolment-status.destroy', $enrolment_status->id) . '"
+                  return '<form method="POST" action="' . route('settings.enrolment-status.destroy', $enrolment_status->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">' . 
                   csrf_field() . '<button class="btn btn-danger">
@@ -60,7 +60,7 @@ class EnrolmentStatusController extends Controller
 
         $enrolments = EnrolmentStatus::create($request->only( 'status' ));
         return redirect()
-            ->route('admin.settings.enrolment-status.index')
+            ->route('settings.enrolment-status.index')
             ->with('flash', [
                 'message' => 'Successfully added "' . $enrolments->status . '"',
                 'type' => 'success'
@@ -82,7 +82,7 @@ class EnrolmentStatusController extends Controller
         $enrolment_status->update($request->only( 'status' ));
         $enrolment_status->save();
         return redirect()
-            ->route('admin.settings.enrolment-status.index')
+            ->route('settings.enrolment-status.index')
             ->with('flash', [
                 'message' => 'Successfully updated "' . $enrolment_status->status . '"',
                 'type' => 'success'
@@ -111,7 +111,7 @@ class EnrolmentStatusController extends Controller
         // We are using soft delete so this item will remain in the database
         $enrolment_status->delete();
         return redirect()
-            ->route('admin.settings.enrolment-status.index')
+            ->route('settings.enrolment-status.index')
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $enrolment_status->status . '"',
                 'type' => 'success'
@@ -129,14 +129,14 @@ class EnrolmentStatusController extends Controller
         {
             $enrolment_status->restore();
             return redirect()
-                ->route('admin.settings.enrolment-status.index')
+                ->route('settings.enrolment-status.index')
                 ->with('flash', [
                     'message' => 'Successfully restored "' . $enrolment_status->status . '"',
                     'type' => 'success'
                 ]);
         }
         return redirect()
-            ->route('admin.settings.enrolment-status.index')
+            ->route('settings.enrolment-status.index')
             ->with('flash', [
                 'message' => 'Error: Status is not deleted: "' . $enrolment_status->status . '"',
                 'type' => 'success'

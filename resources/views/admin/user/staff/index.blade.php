@@ -4,7 +4,7 @@
 @section('content')
 <div class="content">
     <div class="panel-body">
-        <a  href="{{ route('admin.staff.find') }}">
+        <a  href="{{ route('staff.find') }}">
             <span class="btn btn-default pull-right">
             Add A New Staff Member</span>
         </a>

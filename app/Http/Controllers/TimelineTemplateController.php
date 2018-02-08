@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Milestone;
@@ -32,13 +32,13 @@ class TimelineTemplateController extends Controller
 
             return Datatables::eloquent($timeline)
                 ->addColumn('editaction', function (TimelineTemplate $tt) {
-                    return '<form method="GET" action="' . route('admin.settings.timeline.edit',
+                    return '<form method="GET" action="' . route('settings.timeline.edit',
                       $tt->id) . '" accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (TimelineTemplate $tt) {
-                      return '<form method="POST" action="' . route('admin.settings.timeline.destroy',
+                      return '<form method="POST" action="' . route('settings.timeline.destroy',
                         $tt->id) . '" accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">' . 
                       csrf_field() . '<button class="btn btn-danger">
@@ -46,7 +46,7 @@ class TimelineTemplateController extends Controller
                 })
                 ->rawColumns(['editaction', 'deleteaction'])
                 ->setRowAttr([ 'data-link' => function($tt)
-                    { return route('admin.settings.timeline.show', $tt->id); }])
+                    { return route('settings.timeline.show', $tt->id); }])
                 ->make(true);
         }
 
@@ -67,7 +67,7 @@ class TimelineTemplateController extends Controller
 
         $tt = TimelineTemplate::create($request->only( 'name' ));
         return redirect()
-            ->route('admin.settings.timeline.index')
+            ->route('settings.timeline.index')
             ->with('flash', [
                 'message' => 'Successfully added "' . $tt->name . '"',
                 'type' => 'success'
@@ -95,13 +95,13 @@ class TimelineTemplateController extends Controller
                     { return $mt->type->name; })
                 ->addColumn('editaction', function (MilestoneTemplate $mt) use ($timeline) {
                     return '<form method="GET" action="' . 
-                    route('admin.settings.timeline.milestone.edit', [$timeline->id, $mt->id]) . '"
+                    route('settings.timeline.milestone.edit', [$timeline->id, $mt->id]) . '"
                       accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (MilestoneTemplate $mt) use ($timeline) {
-                      return '<form method="POST" action="' . route('admin.settings.timeline.milestone.destroy', [$timeline->id, $mt->id]) . '"
+                      return '<form method="POST" action="' . route('settings.timeline.milestone.destroy', [$timeline->id, $mt->id]) . '"
                       accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">' .
                       csrf_field() . '<button class="btn btn-danger">
@@ -131,7 +131,7 @@ class TimelineTemplateController extends Controller
         $timeline->update($request->only('name'));
         $timeline->save();
         return redirect()
-            ->route('admin.settings.timeline.index')
+            ->route('settings.timeline.index')
             ->with('flash', [
                 'message' => 'Successfully updated "' . $timeline->name . '"',
                 'type' => 'success'
@@ -161,7 +161,7 @@ class TimelineTemplateController extends Controller
         // We are using soft delete so this item will remain in the datase
         $timeline->delete();
         return redirect()
-            ->route('admin.settings.timeline.index')
+            ->route('settings.timeline.index')
             ->with('flash', [
                 'message' => 'Successfully deleted "' . $timeline->name . '"',
                 'type' => 'success'
@@ -178,14 +178,14 @@ class TimelineTemplateController extends Controller
         {
             $tt->restore();
             return redirect()
-                ->route('admin.settings.timeline.index')
+                ->route('settings.timeline.index')
                 ->with('flash', [
                 'message' => 'Successfully restored "' . $tt->name . '"',
                 'type' => 'success'
             ]);
         }
         return redirect()
-                ->route('admin.settings.timeline.index')
+                ->route('settings.timeline.index')
                 ->with('flash', [
                 'message' => 'Error: Timeline Template has not deleted: "' . $tt->name . '"',
                 'type' => 'danger'
@@ -215,7 +215,7 @@ class TimelineTemplateController extends Controller
 
           if($tt){
             $tt->copyToStudent($record);
-            return redirect()->route('admin.student.record.show', 
+            return redirect()->route('student.record.show', 
               [$student->university_id, $record->slug()])
               ->with('flash', [
                 'message' => 'Milestones in '.$tt->name.' successfully copied to '.$student->name.'\'s record',
@@ -223,7 +223,7 @@ class TimelineTemplateController extends Controller
             ]);
           }
 
-          return redirect()->route('admin.student.record.show', 
+          return redirect()->route('student.record.show', 
             [$student->university_id, $record->slug()])
             ->with('flash', [
               'message' => 'Error: Something went wrong! please try again',

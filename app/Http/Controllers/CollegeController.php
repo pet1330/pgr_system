@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Models\College;
 use Illuminate\Http\Request;
@@ -26,13 +26,13 @@ class CollegeController extends Controller
 
           return Datatables::eloquent($colleges)
               ->addColumn('editaction', function (College $college) {
-                return '<form method="GET" action="' . route('admin.settings.college.edit', $college->id) . '"
+                return '<form method="GET" action="' . route('settings.college.edit', $college->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (College $college) {
-                  return '<form method="POST" action="' . route('admin.settings.college.destroy', $college->id) . '"
+                  return '<form method="POST" action="' . route('settings.college.destroy', $college->id) . '"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">' . 
                   csrf_field() . '<button class="btn btn-danger">
@@ -59,7 +59,7 @@ class CollegeController extends Controller
 
         $college = College::create($request->only( 'name' ));
         return redirect()
-            ->route('admin.settings.college.index')
+            ->route('settings.college.index')
             ->with('flash', [
               'message' => 'Successfully added "' . $college->name . '"',
               'type' => 'success'
@@ -81,7 +81,7 @@ class CollegeController extends Controller
         $college->update( $request->only( 'name' ) );
         $college->save();
         return redirect()
-            ->route('admin.settings.college.index')
+            ->route('settings.college.index')
             ->with('flash', [
               'message' => 'Successfully updated "' . $college->name . '"',
               'type' => 'success'
@@ -110,7 +110,7 @@ class CollegeController extends Controller
         // We are using soft delete so this item will remain in the database
         $college->delete();
         return redirect()
-            ->route('admin.settings.college.index')
+            ->route('settings.college.index')
             ->with('flash', [
               'message' => 'Successfully deleted "' . $college->name . '"',
               'type' => 'success'
@@ -127,14 +127,14 @@ class CollegeController extends Controller
         {
             $college->restore();
             return redirect()
-                ->route('admin.settings.college.index')
+                ->route('settings.college.index')
                 ->with('flash', [
                   'message' => 'Successfully restored "' . $college->name . '"',
                   'type' => 'success'
                 ]);
         }
         return redirect()
-            ->route('admin.settings.college.index')
+            ->route('settings.college.index')
             ->with('flash', [
               'message' => 'Error: College is not deleted: "' . $college->name . '"',
               'type' => 'danger'
