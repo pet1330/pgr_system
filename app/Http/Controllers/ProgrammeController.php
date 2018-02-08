@@ -120,9 +120,10 @@ class ProgrammeController extends Controller
     public function restore($id)
     {
 
-        $this->authorise('manage', $programme);
-
         $prog = Programme::withTrashed()->find($id);
+
+        $this->authorise('manage', $prog);
+
         if($prog->trashed())
         {
             $prog->restore();
