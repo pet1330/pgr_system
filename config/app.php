@@ -53,6 +53,9 @@ return [
 
     'url' => env('APP_URL', 'http://pgr.lcas.group'),
 
+    'url_prefix' => env('URL_PREFIX', ''),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

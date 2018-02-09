@@ -2,6 +2,7 @@
 
 //This is variable is an example - Just make sure that the urls in the 'idp' config are ok.
 $idp_host = 'https://adfs.lincoln.ac.uk:443';
+$prefix = str_finish(config('app.url_prefix'), '/');
 
 return $settings = array(
 
@@ -18,7 +19,7 @@ return $settings = array(
      */
     'useRoutes' => true,
 
-    'routesPrefix' => '/saml2',
+    'routesPrefix' => $prefix . 'saml2',
 
     /**
      * which middleware group to use for the saml routes
@@ -35,18 +36,18 @@ return $settings = array(
     /**
      * Where to redirect after logout
      */
-    'logoutRoute' => '/',
+    'logoutRoute' => $prefix,
 
     /**
      * Where to redirect after login if no other option was provided
      */
-    'loginRoute' => '/',
+    'loginRoute' => $prefix,
 
 
     /**
      * Where to redirect after login if no other option was provided
      */
-    'errorRoute' => '/error',
+    'errorRoute' => $prefix . '/error',
 
 
 
