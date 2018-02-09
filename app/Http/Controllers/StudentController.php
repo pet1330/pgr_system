@@ -119,10 +119,10 @@ class StudentController extends Controller
         if( session()->has( 'student' ) )
         {
             session()->reflash();
-            return redirect()->route( 'admin.student.record.create', 
+            return redirect()->route( 'student.record.create',
                 session()->get('student')->university_id );
         }
-        return redirect()->route( 'admin.student.find' );
+        return redirect()->route('student.find' );
     }
 
     public function confirm_id()
@@ -148,14 +148,14 @@ class StudentController extends Controller
             if($request->university_id === session()->get('student_id'))
             {
                 session()->reflash();
-                return redirect()->route( 'admin.student.create', $request->student_id );
+                return redirect()->route( 'student.create', $request->student_id );
             }
 
             session()->reflash();
             redirect()->back()->withErrors(['student', 'WHAT IS THIS?']);
         }
         redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
-        return redirect()->route( 'admin.student.find' );
+        return redirect()->route( 'student.find' );
     }
 
     public function create()
@@ -168,7 +168,7 @@ class StudentController extends Controller
             $university_id = session()->get( 'student_id' );   
             return view( 'admin.user.student.create', compact('university_id') );
         }
-        return redirect()->route( 'admin.student.find' );
+        return redirect()->route( 'student.find' );
     }
 
     public function store(StudentRequest $request)
