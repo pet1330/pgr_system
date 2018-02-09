@@ -12,6 +12,7 @@ $(document).ready(function() {
         bProcessing: true,
         deferRender: false,
         lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500], [10, 20, 30, 40, 50, 100, 200, 500]],
+        pageLength: 50,
         dom: 'lfrtBip',
         buttons: [
             { extend: 'copy', exportOptions: { columns: ':visible' } },
