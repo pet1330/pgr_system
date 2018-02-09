@@ -19,7 +19,7 @@ class SamlAuth
 		{
 			if($request->ajax())
                 return response('Unauthorized.', 401);
-			return \Redirect::guest('login');
+			return redirect()->route('login');
 		}
 		return $next($request);
     }
