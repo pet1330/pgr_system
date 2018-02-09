@@ -89,11 +89,11 @@ class SupervisorController extends Controller
             if($request->university_id === session()->get('student_id'))
             {
                 session()->reflash();
-                return redirect()->route( 'admin.staff.create', $request->student_id );
+                return redirect()->route('staff.create', $request->student_id );
             }
         }
         redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
-        return redirect()->route( 'admin.student.find' );
+        return redirect()->route('student.find' );
     }
 
     public function destroy(Request $request, 

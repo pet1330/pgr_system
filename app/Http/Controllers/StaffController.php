@@ -93,14 +93,14 @@ class StaffController extends Controller
             if($request->university_id === session()->get('staff_id'))
             {
                 session()->reflash();
-                return redirect()->route( 'admin.staff.create', $request->staff_id );
+                return redirect()->route('staff.create', $request->staff_id );
             }
 
             session()->reflash();
             redirect()->back()->withErrors(['staff', 'WHAT IS THIS?']);
         }
         redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
-        return redirect()->route( 'admin.staff.find' );
+        return redirect()->route('staff.find' );
     }
 
     public function create()
@@ -113,7 +113,7 @@ class StaffController extends Controller
             $university_id = session()->get( 'staff_id' );
             return view( 'admin.user.staff.create', compact('university_id') );
         }
-        return redirect()->route( 'admin.staff.find' );
+        return redirect()->route('staff.find' );
     }
 
     public function store(StaffRequest $request)
