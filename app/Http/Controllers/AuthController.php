@@ -8,7 +8,7 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return auth()->guest() ? redirect('saml2/login') : redirect()->intended();
+        return auth()->guest() ? redirect()->route('login') : redirect()->intended();
     }
 
     public function logout()
