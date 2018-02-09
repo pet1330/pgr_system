@@ -41,7 +41,7 @@ class StudentRecordController extends Controller
                 'enrolment_statuses', 'student_statuses', 'programmes' )
             );
         }
-        return redirect()->route( 'admin.student.find' );
+        return redirect()->route('student.find');
     }
 
     public function edit(Student $student, StudentRecord $record)
@@ -61,7 +61,7 @@ class StudentRecordController extends Controller
                 'student', 'record', 'funding_types', 'schools',
                 'enrolment_statuses', 'student_statuses', 'programmes' )
             );
-        return redirect()->route( 'admin.student.find' );
+        return redirect()->route('student.find');
     }
 
     public function store(StudentRecordRequest $request, Student $student)
