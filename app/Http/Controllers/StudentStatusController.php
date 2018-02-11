@@ -115,9 +115,10 @@ class StudentStatusController extends Controller
 
     public function restore($id)
     {
+        $student_status = StudentStatus::withTrashed()->find($id);
+
         $this->authorise('manage', $student_status);
 
-        $student_status = StudentStatus::withTrashed()->find($id);
         if($student_status->trashed())
         {
             $student_status->restore();
