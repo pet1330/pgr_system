@@ -12,6 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-		'*/saml2/acs',
+		'*saml2/acs',
     ];
 }
