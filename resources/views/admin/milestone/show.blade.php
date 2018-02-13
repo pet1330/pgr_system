@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('page_title', $milestone->name)
+@section('page_title', $milestone->name . ' - ' . $milestone->student->student->name)
 @section('page_description', $milestone->usefulDate()->format('d/m/ Y'))
 @section('content')
 <div id="app">

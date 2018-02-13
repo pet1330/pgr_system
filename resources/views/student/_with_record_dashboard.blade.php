@@ -232,7 +232,7 @@
             <td>{{ $record->fundingType->name }}</td>
           </tr>
           <tr>
-            <td>Estimated End Date:</td>
+            <td>Max End Date:</td>
             <td>{{ $record->end->format('d/m/Y') }}</td>
           </tr>
         </tbody>
