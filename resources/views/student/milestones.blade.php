@@ -205,6 +205,15 @@
                     @endif
                     },
                     @endforeach
+
+                    @foreach($student->absences as $abs)
+                        {content:'{{ $abs->type->name }}',
+                        start: '{{ $abs->from }}',
+                        end: '{{ $abs->to }}',
+                        type: 'background',
+                        className: 'absence'},
+                    @endforeach
+
                     ]);
                     var options = {
                     {{--  clickToUse: true, --}}
