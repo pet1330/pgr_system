@@ -3,7 +3,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>PGR System</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+  <link rel="stylesheet" href="{{ url(config('app.url_prefix') . mix('css/app.css')) }}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   
   <script>
@@ -13,8 +13,8 @@
   </script>
   @stack('header_scripts')
 
-<link rel="stylesheet" href="{{ asset('visjs/vis.min.css') }}"/>
-<script src="{{ asset('visjs/vis.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset(str_finish(config('app.url_prefix'), '/') . 'visjs/vis.min.css') }}"/>
+<script src="{{ asset(str_finish(config('app.url_prefix'), '/') . 'visjs/vis.min.js') }}"></script>
 
 <link rel="stylesheet"
       href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
