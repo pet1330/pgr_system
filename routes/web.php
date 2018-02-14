@@ -17,7 +17,7 @@ Route::name('account-locked')->get('account-locked', function () {
 
 Route::middleware('samlauth')->group( function() {
 
-    Route::get('/', function() { return redirect(auth()->user()->dashboard_url()); });
+    Route::get('/', function() { return redirect(auth()->user()->dashboard_url()); })->name('home');
 
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
