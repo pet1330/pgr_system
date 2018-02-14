@@ -1,5 +1,5 @@
 <header class="main-header">
-  <a href="{{ url('/') }}" class="logo">
+  <a href="{{ route('home') }}" class="logo">
     <span class="logo-mini"><b>PGR</b></span>
     <span class="logo-lg"><b>PGR</b> System</span>
   </a>
@@ -21,12 +21,12 @@
             </li>
             <li class="user-footer">
               <div class="pull-left">
-                <a href="{{ auth()->user()->dashboard_url() }}" class="btn btn-default btn-flat">
+                <a href="{{ route('home') }}" class="btn btn-default btn-flat">
                   Profile
                 </a>
               </div>
               <div class="pull-right">
-                <a href="{{ url('logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                <a href="{{ route('logout') }}" class="btn btn-default btn-flat">Sign out</a>
               </div>
             </li>
           </ul>
