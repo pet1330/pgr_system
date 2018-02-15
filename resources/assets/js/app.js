@@ -44,11 +44,35 @@ $(function() {
     });
 
     $('div.alert').not('.alert-important').delay(6000).fadeOut(350);
+
+
     $('#datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
         dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
     $('#enrolment_date').change(function(){ $('#datepicker').datepicker('setDate', $(this).val()); });
     $('#datepicker').change(function(){ $('#enrolment_date').attr('value',$(this).val()); });
     $('#datepicker').datepicker('setDate', $('#enrolment_date').val());
+
+
+    $('#from_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
+        dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
+    $('#from').change(function(){ $('#from_datepicker').datepicker('setDate', $(this).val()); });
+    $('#from_datepicker').change(function(){ $('#from').attr('value',$(this).val()); });
+    $('#from_datepicker').datepicker('setDate', $('#from').val());
+
+
+    $('#to_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
+        dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
+    $('#to').change(function(){ $('#to_datepicker').datepicker('setDate', $(this).val()); });
+    $('#to_datepicker').change(function(){ $('#to').attr('value',$(this).val()); });
+    $('#to_datepicker').datepicker('setDate', $('#to').val());
+
+
+    $('#due_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
+        dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
+    $('#due').change(function(){ $('#due_datepicker').datepicker('setDate', $(this).val()); });
+    $('#due_datepicker').change(function(){ $('#due').attr('value',$(this).val()); });
+    $('#due_datepicker').datepicker('setDate', $('#due').val());
+
 
     (function($) {
         var escape_html = function(str) {

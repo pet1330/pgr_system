@@ -29,15 +29,24 @@
             @endif
           </div>
           @can('manage', App\Models\Milestone::class)
-            <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-5">
-              <label for="due">Due On</label>
-              <input type="date" class="form-control" name="due" value="{{ old('due') }}">
-              @if ($errors->has('due'))
-              <span class="help-block">
-                <strong>{{ $errors->first('due') }}</strong>
-              </span>
-              @endif
+          <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-5">
+            <label for="due">Due</label>
+            <input type="hidden"
+            name="due"
+            id="due"
+            value="{{ old('due') }}">
+            <div id="datepicker-container">
+              <div id="datepicker-center">
+                <div id="due_datepicker">
+                </div>
+              </div>
             </div>
+            @if ($errors->has('due'))
+            <span class="help-block">
+              <strong>{{ $errors->first('due') }}</strong>
+            </span>
+            @endif
+          </div>
           @else
           <div class="form-group{{ $errors->has('file') ? ' has-error' : '' }} col-md-5">
             <label for="file">Submission</label>
