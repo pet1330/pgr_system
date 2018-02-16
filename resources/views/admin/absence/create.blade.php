@@ -10,7 +10,16 @@
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('from') ? ' has-error' : '' }} col-md-3">
             <label for="from">From</label>
-            <input type="date" class="form-control" name="from" value="{{ old('from') }}">
+            <input type="hidden"
+            name="from"
+            id="from"
+            value="{{ old('from') }}">
+            <div id="datepicker-container">
+              <div id="datepicker-center">
+                <div id="from_datepicker">
+                </div>
+              </div>
+            </div>
             @if ($errors->has('from'))
             <span class="help-block">
               <strong>{{ $errors->first('from') }}</strong>
@@ -19,14 +28,23 @@
           </div>
           <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }} col-md-3">
             <label for="to">To</label>
-            <input type="date" class="form-control" name="to" value="{{ old('to') }}">
+            <input type="hidden"
+            name="to"
+            id="to"
+            value="{{ old('to') }}">
+            <div id="datepicker-container">
+              <div id="datepicker-center">
+                <div id="to_datepicker">
+                </div>
+              </div>
+            </div>
             @if ($errors->has('to'))
             <span class="help-block">
               <strong>{{ $errors->first('to') }}</strong>
             </span>
             @endif
           </div>
-          <div class="form-group{{ $errors->has('absence_type_id') ? ' has-error' : '' }} col-md-4">
+          <div class="form-group{{ $errors->has('absence_type_id') ? ' has-error' : '' }} col-md-6">
             <label for="absence_type_id">Absence Type</label>
             <select class="form-control" name="absence_type_id">
               <option value="">--- Select ---</option>
@@ -45,7 +63,7 @@
             </span>
             @endif
           </div>
-          <div class="form-group{{ $errors->has('duration') ? ' has-error' : '' }} col-md-2">
+          <div class="form-group{{ $errors->has('duration') ? ' has-error' : '' }} col-md-6">
             <label for="duration">Duration (days)</label>
             <input type="number" step="1" class="form-control" name="duration" value="{{ old('duration') }}">
             @if ($errors->has('duration'))
@@ -54,7 +72,7 @@
             </span>
             @endif
           </div>
-          <div class="form-group">
+          <div class="form-group pull-right">
             <button type="submit" class="btn btn-primary">Add Absence</button>
           </div>
         </form>

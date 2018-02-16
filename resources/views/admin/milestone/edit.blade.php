@@ -10,7 +10,7 @@
           [$student->university_id, $record->slug(), $milestone->slug()]) }}" method="POST">
           {{ csrf_field() }}
           <input type="hidden" name="_method" value="PATCH">
-          <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-8">
+          <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-7">
             <label for="milestone_type">Milestone Type</label>
             <select id="milestone_type" name="milestone_type" class="form-control">
               @foreach ($types as $t)
@@ -30,12 +30,18 @@
             </span>
             @endif
           </div>
-          <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-4">
-            <label for="due">Due On</label>
-            <input type=date
-            class="form-control"
+          <div class="form-group{{ $errors->has('due') ? ' has-error' : '' }} col-md-5">
+            <label for="due">Due  On</label>
+            <input type="hidden"
             name="due"
-            value="{{ old('due') ?? $milestone->due_date->format('Y-m-d') }}">
+            id="due"
+            value="{{ old('due')  ?? $milestone->due_date->format('Y-m-d') }}">
+            <div id="datepicker-container">
+              <div id="datepicker-center">
+                <div id="due_datepicker">
+                </div>
+              </div>
+            </div>
             @if ($errors->has('due'))
             <span class="help-block">
               <strong>{{ $errors->first('due') }}</strong>
