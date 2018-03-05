@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use App\Models\College;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CollegeRequest;
-use Yajra\Datatables\Facades\Datatables;
 
 class CollegeController extends Controller
 {

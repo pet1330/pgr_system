@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use App\Models\Programme;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProgrammeRequest;
-use Yajra\Datatables\Facades\Datatables;
 
 class ProgrammeController extends Controller
 {

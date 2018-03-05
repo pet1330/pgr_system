@@ -1,7 +1,7 @@
 <ul class="sidebar-menu">
   <li class="header">MAIN MENU</li>
   <li>
-    <a href="{{ auth()->user()->dashboard_url() }}">
+    <a href="{{ route('home') }}">
       <i class="fa fa-dashboard" aria-hidden="true"></i>
       <span>Dashboard</span>
     </a>

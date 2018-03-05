@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Illuminate\Http\Request;
 use Silber\Bouncer\Database\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Silber\Bouncer\Database\Ability;
-use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\Admin\StoreRolesRequest;
 use App\Http\Requests\Admin\UpdateRolesRequest;
 

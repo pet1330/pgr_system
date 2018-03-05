@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Carbon\Carbon;
 use App\Models\AbsenceType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\AbsenceTypeRequest;
 
 class AbsenceTypeController extends Controller

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Log;
 use Bouncer;
 use Validator;
+use DataTables;
 use Carbon\Carbon;
 use MediaUploader;
 use App\Models\Media;
@@ -18,7 +19,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ApprovalRequest;
 use App\Http\Requests\MilestoneRequest;
 use App\Notifications\AdminUploadAlert;
-use Yajra\Datatables\Facades\Datatables;
 use App\Notifications\AdminUploadConfirmation;
 use App\Notifications\StudentUploadConfirmation;
 
