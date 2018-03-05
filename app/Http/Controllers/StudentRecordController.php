@@ -19,7 +19,6 @@ use App\Http\Requests\StudentRequest;
 use App\Http\Requests\FindStudentRequest;
 use App\Http\Requests\StudentRecordRequest;
 use App\Http\Requests\ConfirmStudentIdRequest;
-use Yajra\Datatables\Engines\EloquentEngine;
 
 class StudentRecordController extends Controller
 {
@@ -146,7 +145,7 @@ class StudentRecordController extends Controller
         return view('student.dashboard', compact('student'));
     }
 
-    private function absences_controls(EloquentEngine $dt, Student $student)
+    private function absences_controls($dt, Student $student)
     {
         if( auth()->user()->can('manage', Absence::class) )
         {
