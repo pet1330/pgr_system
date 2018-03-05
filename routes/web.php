@@ -1,23 +1,14 @@
 <?php
 
 Route::middleware('guest')->get('login', 'SAMLController@login')->name('login');
-Route::middleware('samlauth')->get('logout', 'SAMLController@logout')->name('logout');
-
-Route::get('auth-status', function() {
-    return auth()->check() ? "logged-in" : "logged-out";
-});
-
-Route::get('downtime-robot', function(){
-    return "All Systems Operational";
-});
-
-Route::name('account-locked')->get('account-locked', function () {
-    return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
-});
+Route::get('auth-status', 'DevController@authStatus');
+Route::get('downtime-robot', 'DevController@downtimeRobot');
+Route::name('account-locked')->get('account-locked', 'DevController@accountLocked');
 
 Route::middleware('samlauth')->group( function() {
 
-    Route::get('/', function() { return redirect(auth()->user()->dashboard_url()); })->name('home');
+    Route::get('/', 'Controller@dashboard_url')->name('home');
+    Route::get('logout', 'SAMLController@logout')->name('logout');
 
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
