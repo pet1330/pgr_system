@@ -59,9 +59,9 @@ class AdminUploadAlert extends Notification implements ShouldQueue
             $this->milestone->slug()
             ]);
 
-        $message = 'This email is to inform you that '. $this->file->uploader->name.' has submitted a file to the milestone: '. $this->milestone->name;
+        $message = 'This email is to inform you that '.$this->file->uploader->name.' has submitted a file to the milestone: '. $this->milestone->name;
 
-        if($this->file->uploader->id !== $this->student->id)
+        if( $this->file->uploader->id !== $this->student->id )
             $message = $message . ' on behalve of ' . $this->student->name;
 
         return (new MailMessage)
@@ -72,6 +72,6 @@ class AdminUploadAlert extends Notification implements ShouldQueue
             ->attach($this->file->getAbsolutePath(), [
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
-            ]);
+            ])->subject('Upload Alert - ' . $this->student->name);
     }
 }

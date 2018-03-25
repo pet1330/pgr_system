@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ApprovalRequest;
 use App\Http\Requests\MilestoneRequest;
 use App\Notifications\AdminUploadAlert;
+use App\Notifications\StudentUploadAlert;
 use App\Notifications\AdminUploadConfirmation;
 use App\Notifications\StudentUploadConfirmation;
 
@@ -66,7 +67,8 @@ class MilestoneController extends Controller
         // permissions checked in data function
 
         if ($request->ajax())
-            return $this->data( Milestone::select('milestones.*')->awaitingAmendments() )->make(true);
+            return $this->data( Milestone::select('milestones.*')->awaitingAmendments() )
+        ->make(true);
 
         return view('admin.milestone.list', [
             'title' => 'Awaiting Amendments',
@@ -107,8 +109,7 @@ class MilestoneController extends Controller
                     )));
                     $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?",
                         ["%%$keyword%%"]);
-                })
-                ->make(true);
+                })->make(true);
         }
 
         return view('admin.milestone.list', [
@@ -137,8 +138,7 @@ class MilestoneController extends Controller
                     )));
                     $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?",
                         ["%%$keyword%%"]);
-                })
-                ->make(true);
+                })->make(true);
         }
 
         return view('admin.milestone.list', [
@@ -147,10 +147,6 @@ class MilestoneController extends Controller
             'show_submitted' => true,
             ]);
     }
-
-
-
-
 
     public function data($milestones)
     {
@@ -165,7 +161,8 @@ class MilestoneController extends Controller
             ->editColumn('name', function (Milestone $ms)
                 { return $ms->name; })
             ->editColumn('due_date', function (Milestone $ms)
-                { return $ms->due_date->format('d/m/Y') . '  ('.$ms->due_date->diffForHumans().')' ; })
+                { return $ms->due_date->format('d/m/Y') . '  (' .
+                $ms->due_date->diffForHumans().')' ; })
             ->editColumn('first_name', function (Milestone $ms)
                 { return $ms->student->student->first_name; })
             ->editColumn('last_name', function (Milestone $ms)
@@ -236,7 +233,8 @@ class MilestoneController extends Controller
         return $milestone;
     }
 
-    private function storeStudentMilestone(Request $request, Student $student, StudentRecord $record)
+    private function storeStudentMilestone(Request $request,
+        Student $student, StudentRecord $record)
     {
 
         $validator = Validator::make($request->all(), [
@@ -279,7 +277,8 @@ class MilestoneController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
     }
 
-    private function storeAdminMilestone(Request $request, Student $student, StudentRecord $record)
+    private function storeAdminMilestone(Request $request,
+        Student $student, StudentRecord $record)
     {
 
         $this->authorise('manage', Milestone::class);
@@ -334,7 +333,8 @@ class MilestoneController extends Controller
         if ($record->id != $milestone->student_record_id) abort(404);
 
         $types = MilestoneType::all();
-        return view('admin.milestone.edit', compact('student', 'record', 'milestone', 'types'));
+        return view('admin.milestone.edit',
+            compact('student', 'record', 'milestone', 'types'));
     }
 
     /**
@@ -357,7 +357,8 @@ class MilestoneController extends Controller
         $milestone->milestone_type_id = $request->milestone_type;
         $milestone->non_interuptive_date = Carbon::parse($request->due)->subDays($away_days);
         $milestone->save();
-        return redirect()->route('student.record.milestone.show', compact('student', 'record', 'milestone'));
+        return redirect()->route('student.record.milestone.show',
+            compact('student', 'record', 'milestone'));
     }
 
     /**
@@ -412,21 +413,38 @@ class MilestoneController extends Controller
     public function sendUploadNotifications(
         Student $student, StudentRecord $record, Milestone $milestone, Media $upload )
     {
-        if($upload->uploader->id === $student->id)
+        $details = [ $student, $record, $milestone, $upload ];
+
+        if( $upload->uploader->id === $student->id ) // If the student uploads
         {
-            $student->notify(
-                new StudentUploadConfirmation( $student, $record, $milestone, $upload )
-            );
-            $record->school->notify(
-                new AdminUploadAlert( $student, $record, $milestone, $upload )
-            );
+            //  confirm student
+            $student->notify( new StudentUploadConfirmation( ...$details ) );
+            //  alert school
+            $record->school->notify( new AdminUploadAlert( ...$details ) );
         }
-        else
+        else if( $record->school->notifications_address == $upload->uploader->university_email ) // If school uploads
         {
-            $upload->uploader->notify(
-                new AdminUploadConfirmation( $student, $record, $milestone, $upload )
-            );
+            //  alert school
+            $record->school->notify( new AdminUploadAlert( ...$details ) );
+            //  alert student
+            $student->notify( new StudentUploadAlert( ...$details ) );
         }
+        else // If neither
+        {
+            //  Confirm uploader
+            $upload->uploader->notify( new AdminUploadConfirmation( ...$details ) );
+            //  alert student
+            $student->notify( new StudentUploadAlert( ...$details ) );
+            //  alert school
+            $record->school->notify( new AdminUploadAlert( ...$details ) );
+        }
+
+        if( $record->directorOfStudy )
+            $record->directorOfStudy->notify( new AdminUploadAlert( ...$details ) );
+        else if($record->secondSupervisor)
+            $record->secondSupervisor->notify( new AdminUploadAlert( ...$details ) );
+        else if($record->thirdSupervisor)
+            $record->thirdSupervisor->notify( new AdminUploadAlert( ...$details ) );
     }
 
     public function download(Request $request,
@@ -436,7 +454,7 @@ class MilestoneController extends Controller
         $this->authorise('view', $milestone);
 
         if($file->fileExists())
-            return response()->download($file->getAbsolutePath());
+            return response()->download($file->getAbsolutePath(), $file->original_filename);
         Log::error('Uploaded file ' . $file->slug() . " appears to be out of sync");
         abort(401);
     }
