@@ -11,6 +11,13 @@ let mix = require('laravel-mix');
  |
  */
 
+if( process.env.MIX_URL_PREFIX ) {
+    mix.setPublicPath(process.env.MIX_URL_PREFIX);
+    mix.setResourceRoot(process.env.MIX_URL_PREFIX);
+}
+
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
    .version();
+
+mix.copyDirectory('resources/assets/js/vis', 'visjs');
