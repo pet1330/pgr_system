@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Media;
 use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\StudentRecord;
@@ -10,10 +11,11 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DueTodayReminder extends Notification implements ShouldQueue
+class StudentUploadAlert extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $file;
     public $record;
     public $student;
     public $milestone;
@@ -24,8 +26,9 @@ class DueTodayReminder extends Notification implements ShouldQueue
      * @return void
      */
     public function __construct(Student $student,
-        StudentRecord $record, Milestone $milestone)
+        StudentRecord $record, Milestone $milestone, Media $file)
     {
+        $this->file = $file;
         $this->record = $record;
         $this->student = $student;
         $this->milestone = $milestone;
@@ -50,17 +53,22 @@ class DueTodayReminder extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('student.record.milestone.show', [
-            $this->student->university_id,
-            $this->record->slug(),
+        $url = route('student.record.milestone.show',
+            [$this->student->university_id,
+            $this->record->slug(), 
             $this->milestone->slug()
-        ]);
+            ]);
+
+        $message = 'This email is to inform you that '.$this->file->uploader->name.' has submitted a file to your milestone: '. $this->milestone->name;
 
         return (new MailMessage)
-            ->subject('Reminder: '. $this->milestone->name .' is due Today!')
-            ->line('This email is to remind you that the following milestone is due by the end of today.')
+            ->line($message . '.')
+            ->line('A copy of the uploaded file is attached.')
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->priority(1);
+            ->attach($this->file->getAbsolutePath(), [
+                'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
+                'mime' => $this->file->mime_type,
+            ])->subject('Upload Alert - ' . $this->milestone->name);
     }
 }

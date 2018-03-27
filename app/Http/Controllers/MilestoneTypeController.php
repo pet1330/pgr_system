@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\MilestoneTypeRequest;
 
 class MilestoneTypeController extends Controller

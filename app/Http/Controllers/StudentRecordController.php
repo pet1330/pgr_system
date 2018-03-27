@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use App\Models\Note;
 use App\Models\School;
 use App\Models\Absence;
@@ -15,11 +16,9 @@ use App\Models\StudentStatus;
 use App\Models\EnrolmentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
-use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\FindStudentRequest;
 use App\Http\Requests\StudentRecordRequest;
 use App\Http\Requests\ConfirmStudentIdRequest;
-use Yajra\Datatables\Engines\EloquentEngine;
 
 class StudentRecordController extends Controller
 {
@@ -146,7 +145,7 @@ class StudentRecordController extends Controller
         return view('student.dashboard', compact('student'));
     }
 
-    private function absences_controls(EloquentEngine $dt, Student $student)
+    private function absences_controls($dt, Student $student)
     {
         if( auth()->user()->can('manage', Absence::class) )
         {

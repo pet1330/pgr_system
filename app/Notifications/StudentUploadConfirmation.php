@@ -65,6 +65,6 @@ class StudentUploadConfirmation extends Notification implements ShouldQueue
             ->attach($this->file->getAbsolutePath(), [
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
-            ]);
+            ])->subject('Upload Confirmation - ' . $this->milestone->name);
     }
 }

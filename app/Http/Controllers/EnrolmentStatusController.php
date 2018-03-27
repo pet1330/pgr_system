@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\EnrolmentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EnrolmentStatusRequest;
-use Yajra\Datatables\Facades\Datatables;
 
 class EnrolmentStatusController extends Controller
 {

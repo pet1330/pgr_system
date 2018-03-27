@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use App\Models\Admin;
 use App\Models\Staff;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\StudentRecord;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Facades\Datatables;
 
 class AdminController extends Controller
 {

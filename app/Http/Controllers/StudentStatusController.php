@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\StudentStatus;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\StudentStatusRequest;
 
 class StudentStatusController extends Controller

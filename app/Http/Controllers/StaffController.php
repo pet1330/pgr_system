@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use DataTables;
 use App\Models\Staff;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -10,7 +11,6 @@ use App\Models\StudentRecord;
 use App\Http\Requests\StaffRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FindStaffRequest;
-use Yajra\Datatables\Facades\Datatables;
 
 class StaffController extends Controller
 {

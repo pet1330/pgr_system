@@ -76,12 +76,13 @@ class User extends Authenticatable
 
     public function dashboard_url($user=null)
     {
-        if( $user instanceof static ) $user = $user->id;
+        if( is_object($user) ) $user = $user->id;
 
         switch ($this->user_type) {
             case 'Admin': return route('admin.show', $user ?? $this->university_id);
             case 'Staff': return route('staff.show', $user ?? $this->university_id);
             case 'Student': return route('student.show', $user ?? $this->university_id);
+            default: abort(404);
         }
     }
 

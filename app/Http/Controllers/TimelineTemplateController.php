@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use App\Models\Student;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
@@ -10,7 +11,6 @@ use App\Models\StudentRecord;
 use App\Models\TimelineTemplate;
 use App\Models\MilestoneTemplate;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\TimelineCopyRequest;
 use App\Http\Requests\TimelineTemplateRequest;
 

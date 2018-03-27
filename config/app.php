@@ -171,8 +171,6 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class,
-        Yajra\Datatables\ButtonsServiceProvider::class,
         Spatie\Activitylog\ActivitylogServiceProvider::class,
 		Aacotroneo\Saml2\Saml2ServiceProvider::class,
         Plank\Mediable\MediableServiceProvider::class,
@@ -235,10 +233,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Bouncer' => Silber\Bouncer\BouncerFacade::class,
-        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
-        'MediaUploader' => Plank\Mediable\MediaUploaderFacade::class,
-        'Saml2'     => Aacotroneo\Saml2\Facades\Saml2Auth::class,
+        // 'Bouncer' => Silber\Bouncer\BouncerFacade::class,
+        // 'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        // 'MediaUploader' => Plank\Mediable\MediaUploaderFacade::class,
+        // 'Saml2'     => Aacotroneo\Saml2\Facades\Saml2Auth::class,
 
     ],
 

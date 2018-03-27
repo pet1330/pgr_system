@@ -22,4 +22,9 @@ class Controller extends BaseController
         else
             if (Bouncer::denies($ability, $parameter) ) abort(403);
     }
+
+    public function dashboard_url()
+    {
+        return redirect( auth()->user()->dashboard_url() );
+    }
 }

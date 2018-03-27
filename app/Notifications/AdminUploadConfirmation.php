@@ -32,7 +32,6 @@ class AdminUploadConfirmation extends Notification implements ShouldQueue
         $this->record = $record;
         $this->student = $student;
         $this->milestone = $milestone;
-        echo "here?";
     }
 
     /**
@@ -59,14 +58,13 @@ class AdminUploadConfirmation extends Notification implements ShouldQueue
             $this->record->slug(), 
             $this->milestone->slug()
             ]);
-            return (new MailMessage)
-            ->line('This is an email to confirm that you have successfully uploaded a submittion to '. $this->student->name . '\'s milestone: ' . $this->milestone->name)
-                ->line('A copy of the uploaded file is attached.')
-                ->action('View Milestone', $url)
-                ->line('Thanks!')
-                ->attach($this->file->getAbsolutePath(), [
-                    'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
-                    'mime' => $this->file->mime_type,
-                ]);
+        return (new MailMessage)
+            ->line('This is an email to confirm that you have successfully uploaded the attached file to '. $this->student->name . '\'s milestone: ' . $this->milestone->name)
+            ->action('View Milestone', $url)
+            ->line('Thanks!')
+            ->attach($this->file->getAbsolutePath(), [
+                'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
+                'mime' => $this->file->mime_type,
+            ])->subject('Upload Confirmation - ' . $this->student->name);
     }
 }

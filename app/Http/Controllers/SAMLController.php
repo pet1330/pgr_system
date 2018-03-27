@@ -8,7 +8,7 @@ class SAMLController extends Controller
 {
 	public function login()
 	{
-		return auth()->guest() ? redirect()->route('saml_login') : redirect()->intended(auth()->user()->dashboard_url());
+		return auth()->guest() ? redirect()->route('saml_login') : redirect()->intended();
 	}
 
 	public function logout()
