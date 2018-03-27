@@ -156,6 +156,6 @@ class Student extends User
                 $this->allow('upload', $m);
             });
         });
-        Bouncer::refresh();
+        Bouncer::refreshFor($this);
     }
 }

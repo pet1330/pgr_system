@@ -9,6 +9,7 @@ use DataTables;
 use Carbon\Carbon;
 use MediaUploader;
 use App\Models\Media;
+use App\Models\Staff;
 use App\Models\Student;
 use App\Models\Approval;
 use App\Models\Milestone;
@@ -224,9 +225,12 @@ class MilestoneController extends Controller
         {
             $student->allow('view', $milestone);
             $student->allow('upload', $milestone);
-            $student->supervisors->each->allow('view', $milestone);
+            Bouncer::refreshFor($student);
+            $student->supervisors->each(function(Staff $supervisor) use ($milestone){
+                $supervisor->allow('view', $milestone);
+                Bouncer::refreshFor($supervisor);
+            });
 
-            Bouncer::refresh();
             return redirect()->route('student.record.milestone.show',
                 compact('student', 'record', 'milestone'));
         }
@@ -463,6 +467,13 @@ class MilestoneController extends Controller
         Student $student, StudentRecord $record, Milestone $milestone)
     {
         $this->authorise('manage', Approval::class);
+
+        if(!! $request->approved)
+            $student->disallow('upload', $milestone);
+        else
+            $student->allow('upload', $milestone);
+
+        Bouncer::refreshFor($student);
 
         $milestone->approve($request->approved, $request->feedback);
 

@@ -114,7 +114,7 @@ class StudentRecord extends Model
         $this->timeline->each(function (Milestone $m) use ($supervisor) {
             $supervisor->disallow('view', $m);
         });
-        Bouncer::refresh();
+        Bouncer::refreshFor($supervisor);
         return $this->supervisors()
                     ->updateExistingPivot( $supervisor->id,
                         ['changed_on' => Carbon::now()] );
@@ -127,7 +127,7 @@ class StudentRecord extends Model
         $this->timeline->each(function (Milestone $m) use ($supervisor) {
             $supervisor->allow('view', $m);
         });
-        Bouncer::refresh();
+        Bouncer::refreshFor($supervisor);
         return $this->supervisors()->syncWithoutDetaching(
             [
                 $supervisor->id =>  [ "supervisor_type" => $type ]

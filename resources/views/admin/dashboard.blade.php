@@ -104,8 +104,8 @@
       </div>
     </div>
 
-
-@if(auth()->user()->university_id === 'plightbody')
+@if( auth()->user()->university_id === 'plightbody' ||
+    auth()->user()->university_id === 'mhanheide' )
     @component('components.infobox')
     @slot('title', 'students')
     @slot('icon', 'fa fa-gear')

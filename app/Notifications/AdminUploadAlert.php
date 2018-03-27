@@ -55,7 +55,7 @@ class AdminUploadAlert extends Notification implements ShouldQueue
     {
         $url = route('student.record.milestone.show',
             [$this->student->university_id,
-            $this->record->slug(), 
+            $this->record->slug(),
             $this->milestone->slug()
             ]);
 
