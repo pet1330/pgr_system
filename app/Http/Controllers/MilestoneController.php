@@ -464,6 +464,13 @@ class MilestoneController extends Controller
     {
         $this->authorise('manage', Approval::class);
 
+        if(!! $request->approved)
+            $student->disallow('upload', $milestone);
+        else
+            $student->allow('upload', $milestone);
+
+        Bouncer::refreshFor($student);
+
         $milestone->approve($request->approved, $request->feedback);
 
         return redirect()->route('student.record.milestone.show',
