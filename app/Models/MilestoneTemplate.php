@@ -49,9 +49,10 @@ class MilestoneTemplate extends Model
         );
         $record->student->allow('view', $m);
         $record->student->allow('upload', $m);
+        Bouncer::refreshFor($student);
         $record->supervisors->each(function (Staff $staff) use ($m) {
             $staff->allow('view', $m);
+            Bouncer::refreshFor($staff);
         });
-        Bouncer::refresh();
     }
 }

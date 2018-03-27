@@ -54,6 +54,6 @@ class Staff extends User
                 $this->allow('view', $m);
             });
         });
-        Bouncer::refresh();
+        Bouncer::refreshFor($supervisor);
     }
 }

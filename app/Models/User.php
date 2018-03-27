@@ -126,7 +126,7 @@ class User extends Authenticatable
         $this->allow('upload', Milestone::class);
         $this->allow('manage', Milestone::class);
         $this->allow('view', TimelineTemplate::class);
-        Bouncer::refresh();
+        Bouncer::refreshFor($this);
     }
 
     public function assignReadOnlyAdminPermissions($reset=true)
@@ -142,7 +142,7 @@ class User extends Authenticatable
         $this->allow('view', Approval::class);
         $this->allow('view', TimelineTemplate::class);
         $this->allow('view', Admin::class);
-        Bouncer::refresh();
+        Bouncer::refreshFor($this);
     }
 
     public function assignElevatedAdminPermissions($reset=false)
@@ -160,7 +160,7 @@ class User extends Authenticatable
         $this->allow('manage', MilestoneType::class);
         $this->allow('manage', EnrolmentStatus::class);
         $this->allow('manage', TimelineTemplate::class);
-        Bouncer::refresh();
+        Bouncer::refreshFor($this);
     }
 
     // overload the defualt password and remember me token
