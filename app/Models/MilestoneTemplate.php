@@ -20,7 +20,7 @@ class MilestoneTemplate extends Model
 
     protected $with = ['type'];
 
-    protected $fillable = ['due', 'milestone_type_id'];
+    protected $fillable = ['due', 'milestone_type_id', 'timeline_template_id'];
 
 
     public function type()
@@ -49,7 +49,7 @@ class MilestoneTemplate extends Model
         );
         $record->student->allow('view', $m);
         $record->student->allow('upload', $m);
-        Bouncer::refreshFor($student);
+        Bouncer::refreshFor($record->student);
         $record->supervisors->each(function (Staff $staff) use ($m) {
             $staff->allow('view', $m);
             Bouncer::refreshFor($staff);
