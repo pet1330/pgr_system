@@ -13,7 +13,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
   pgr:
-    image: lcasuol/pgr_system:latest
+    image: lcasuol/pgr_system:lcas
     #build: . 
     command: "bash -c 'ln -fs /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
     links:
