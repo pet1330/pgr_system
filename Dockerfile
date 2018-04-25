@@ -38,9 +38,12 @@ COPY docker/cron/crontab /root/crontab
 RUN crontab /root/crontab
 
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
+RUN curl https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
 
 #RUN useradd -d /home/app -m app
 #RUN adduser app www-data
+
+
 
 COPY . /var/www/html/pgr
 RUN chown -R www-data:www-data /var/www/html/pgr
