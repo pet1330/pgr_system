@@ -5,7 +5,7 @@
 
 | Master |
 | :----: |
-| [![Build Status](https://travis-ci.com/pet1330/pgr_system.svg?token=Chyw4WtxTvYRsGf6htmF&branch=master)](https://travis-ci.com/pet1330/pgr_system) |
+| [![Build Status](https://travis-ci.org/pet1330/pgr_system.svg?branch=master)](https://travis-ci.org/pet1330/pgr_system) |
 
 
 ## License
