@@ -20,8 +20,8 @@ RUN apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-co
                 php7.1-readline php7.1-recode php7.1-soap php7.1-sqlite3 \
                 php7.1-tidy php7.1-xml php7.1-xmlrpc php7.1-xsl php7.1-zip \
                 php-tideways php-mongodb \
-                vim nano supervisor nodejs npm apache2 curl \
-                nodejs yarn apache2 apache2-utils libapache2-mod-php7.1
+                vim nano supervisor nodejs  \
+                yarn apache2 apache2-utils libapache2-mod-php7.1
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
