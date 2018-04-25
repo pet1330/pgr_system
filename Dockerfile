@@ -1,5 +1,5 @@
 FROM khanhicetea/php7-fpm-docker
-
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update && apt-get install -y vim nano supervisor nodejs npm apache2 curl
 
 RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add -
