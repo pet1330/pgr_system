@@ -31,7 +31,7 @@ services:
     restart: always
     volumes:
       - ./db-backup.sh:/etc/periodic/daily/backup
-      - /srv/pgr/backup:/backup
+      - /srv/pgr/storage:/backup
     command: ["-l", "8", "-d", "8"]
     environment:
       MYSQL_HOST: db
