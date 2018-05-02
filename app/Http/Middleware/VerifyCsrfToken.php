@@ -13,6 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
 			'*saml2/acs',
-	    '*upload'
+	    '*upload',
+	    '*approve'
     ];
 }
