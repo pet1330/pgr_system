@@ -20,4 +20,4 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
    .version();
 
-mix.copyDirectory('resources/assets/js/vis', 'visjs');
+mix.copyDirectory('resources/assets/js/vis', 'public/visjs');
