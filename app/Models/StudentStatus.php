@@ -13,7 +13,7 @@ class StudentStatus extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'status' ];
+    protected static $logAttributes = ['status'];
 
     protected $fillable = ['status'];
 

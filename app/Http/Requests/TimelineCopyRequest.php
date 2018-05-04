@@ -27,7 +27,7 @@ class TimelineCopyRequest extends FormRequest
             'timeline_id' => [
                 'required',
                 'exists:timeline_templates,id',
-            ]
+            ],
         ];
     }
 }

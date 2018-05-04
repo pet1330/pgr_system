@@ -26,7 +26,7 @@ class FindStaffRequest extends FormRequest
         return [
             'university_id' => [
                 'required',
-                'alpha'
+                'alpha',
             ],
         ];
     }

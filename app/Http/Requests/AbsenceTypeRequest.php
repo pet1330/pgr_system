@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\AbsenceType;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AbsenceTypeRequest extends FormRequest
 {
@@ -24,36 +24,36 @@ class AbsenceTypeRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
-                $abst = AbsenceType::where('name', '=' ,$this->name)->first();
+                $abst = AbsenceType::where('name', '=', $this->name)->first();
+
                 return [
                         'name' => [
                             'required',
                             'min:3',
-                            'unique:absence_types,name' . (is_null($abst)? "" : ",".$abst->id)
+                            'unique:absence_types,name'.(is_null($abst) ? '' : ','.$abst->id),
                         ],
                         'interuption'=> [
                             'required',
-                            'boolean'
-                        ]
+                            'boolean',
+                        ],
                 ];
-            case 'POST':
-                return 
+            case 'POST' :
+                return
                 [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:absence_types,name'
+                        'unique:absence_types,name',
                     ],
                     'interuption'=> [
                         'required',
-                        'boolean'
-                    ]
+                        'boolean',
+                    ],
                 ];
         }
     }

@@ -27,7 +27,7 @@ class TimelineTemplateRequest extends FormRequest
             'name' => [
                 'required',
                 'min:3',
-                ]
+                ],
         ];
     }
 }

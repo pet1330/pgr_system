@@ -36,7 +36,7 @@ class StaffRequest extends FormRequest
             ],
             'university_id' => [
                 'required',
-            ]
+            ],
         ];
     }
 }

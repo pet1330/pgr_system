@@ -6,7 +6,6 @@ use DataTables;
 use Carbon\Carbon;
 use App\Models\AbsenceType;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AbsenceTypeRequest;
 
 class AbsenceTypeController extends Controller
@@ -20,36 +19,35 @@ class AbsenceTypeController extends Controller
     {
         $this->authorise('manage', AbsenceType::class);
 
-        if ($request->ajax())
-        {
-
-        $absencetypes = AbsenceType::select('absence_types.*')->withCount([
+        if ($request->ajax()) {
+            $absencetypes = AbsenceType::select('absence_types.*')->withCount([
             'absence',
             'absence AS currentabsence' => function ($query) {
                 $query->where('from', '<=', Carbon::now())
                       ->where('to', '>=', Carbon::now());
-            }]);
+            }, ]);
 
-          return Datatables::eloquent($absencetypes)
+            return Datatables::eloquent($absencetypes)
               ->editColumn('interuption', '{{$interuption ? "Yes" : "No" }}')
               ->addColumn('editaction', function (AbsenceType $at) {
-                return '<form method="GET" action="' . route('settings.absence-type.edit', $at->id) . '"
+                  return '<form method="GET" action="'.route('settings.absence-type.edit', $at->id).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
-                })
-                ->addColumn('deleteaction', function (AbsenceType $at) {
-                  return '<form method="POST" action="' . route('settings.absence-type.destroy', $at->id) . '"
-                  accept-charset="UTF-8" class="delete-form">
-                  <input type="hidden" name="_method" value="DELETE">' . 
-                  csrf_field() . '<button class="btn btn-danger">
-                  <i class="fa fa-trash"></i></button> </form>';
               })
+                ->addColumn('deleteaction', function (AbsenceType $at) {
+                    return '<form method="POST" action="'.route('settings.absence-type.destroy', $at->id).'"
+                  accept-charset="UTF-8" class="delete-form">
+                  <input type="hidden" name="_method" value="DELETE">'.
+                  csrf_field().'<button class="btn btn-danger">
+                  <i class="fa fa-trash"></i></button> </form>';
+                })
                 ->rawColumns(['editaction', 'deleteaction'])
               ->make(true);
         }
 
         $deletedAbsenceType = AbsenceType::onlyTrashed()->get();
+
         return view('admin.settings.absencetype.index', compact('deletedAbsenceType'));
     }
 
@@ -63,12 +61,13 @@ class AbsenceTypeController extends Controller
     {
         $this->authorise('manage', AbsenceType::class);
 
-        $abs = AbsenceType::create($request->only([ 'name', 'interuption' ]));
+        $abs = AbsenceType::create($request->only(['name', 'interuption']));
+
         return redirect()
             ->route('settings.absence-type.index')
             ->with('flash', [
-                'message' => 'Successfully added "' . $abs->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully added "'.$abs->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -83,13 +82,14 @@ class AbsenceTypeController extends Controller
     {
         $this->authorise('manage', $absence_type);
 
-        $absence_type->update($request->only( ['name', 'interuption'] ));
+        $absence_type->update($request->only(['name', 'interuption']));
         $absence_type->save();
+
         return redirect()
             ->route('settings.absence-type.index')
             ->with('flash', [
-                'message' => 'Successfully updated "' . $absence_type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully updated "'.$absence_type->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -112,11 +112,12 @@ class AbsenceTypeController extends Controller
 
         // We are using soft delete so this item will remain in the database
         $absence_type->delete();
+
         return redirect()
             ->route('settings.absence-type.index')
             ->with('flash', [
-                'message' => 'Successfully deleted "' . $absence_type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully deleted "'.$absence_type->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -125,22 +126,23 @@ class AbsenceTypeController extends Controller
         $abs = AbsenceType::withTrashed()->findOrFail($id);
 
         $this->authorise('manage', $abs);
-        
-        if($abs->trashed())
-        {
+
+        if ($abs->trashed()) {
             $abs->restore();
+
             return redirect()
               ->route('settings.absence-type.index')
               ->with('flash', [
-                  'message' => 'Successfully restored "' . $abs->name . '"',
-                  'type' => 'success'
+                  'message' => 'Successfully restored "'.$abs->name.'"',
+                  'type' => 'success',
               ]);
         }
+
         return redirect()
             ->route('settings.absence-type.index')
             ->with('flash', [
-                'message' => 'Error: Absence Type is not deleted: "' . $abs->name . '"',
-                'type' => 'danger'
+                'message' => 'Error: Absence Type is not deleted: "'.$abs->name.'"',
+                'type' => 'danger',
             ]);
     }
 }

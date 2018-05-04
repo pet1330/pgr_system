@@ -12,9 +12,9 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
-        \factory(Student::class,500)->create();
+        \factory(Student::class, 500)->create();
 
-        Student::all()->each(function(Student $s) {
+        Student::all()->each(function (Student $s) {
             $s->allow('view', $s);
         });
         Bouncer::refresh();

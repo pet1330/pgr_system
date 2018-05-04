@@ -24,18 +24,18 @@ class ProgrammeRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
                 $programme = Programme::where('name', $this->name)->first();
+
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:programmes,name' . (is_null($programme)? "" : ",".$programme->id),
+                        'unique:programmes,name'.(is_null($programme) ? '' : ','.$programme->id),
                     ],
                     'duration' => [
                         'required',
@@ -45,12 +45,12 @@ class ProgrammeRequest extends FormRequest
                         'max:600',
                     ],
                 ];
-            case 'POST':
+            case 'POST' :
                 return [
                     'name' => [
                     'required',
                     'min:3',
-                    'unique:programmes,name'
+                    'unique:programmes,name',
                     ],
                     'duration' => [
                         'required',

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TimelineTemplate extends Model
 {
@@ -13,13 +13,13 @@ class TimelineTemplate extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'name' ];
+    protected static $logAttributes = ['name'];
 
-    protected $table ='timeline_templates';
+    protected $table = 'timeline_templates';
 
-    protected $with = [ 'milestone_templates' ];
+    protected $with = ['milestone_templates'];
 
-    protected $fillable = [ 'name' ];
+    protected $fillable = ['name'];
 
     public function milestone_templates()
     {

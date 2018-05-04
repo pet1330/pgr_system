@@ -13,8 +13,8 @@ class CreateEnrolmentStatusesTable extends Migration
      */
     public function up()
     {
-         Schema::create('enrolment_statuses', function (Blueprint $table) {
-            $table->engine ='InnoDB';
+        Schema::create('enrolment_statuses', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('status');
             $table->softDeletes();
@@ -22,7 +22,7 @@ class CreateEnrolmentStatusesTable extends Migration
         });
 
         // Add Student and Enrolment Status to Student Record
-        Schema::table('student_records', function($table) {
+        Schema::table('student_records', function ($table) {
             $table->integer('enrolment_status_id')->unsigned()->index();
             $table->foreign('enrolment_status_id')->references('id')->on('enrolment_statuses');
         });

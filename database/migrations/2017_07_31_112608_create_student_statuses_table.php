@@ -14,18 +14,17 @@ class CreateStudentStatusesTable extends Migration
     public function up()
     {
         Schema::create('student_statuses', function (Blueprint $table) {
-            $table->engine ='InnoDB';
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('status');
             $table->softDeletes();
             $table->timestamps();
         });
 
-        Schema::table('student_records', function($table) {
+        Schema::table('student_records', function ($table) {
             $table->integer('student_status_id')->unsigned()->index();
             $table->foreign('student_status_id')->references('id')->on('student_statuses');
         });
-        
     }
 
     /**
@@ -43,4 +42,3 @@ class CreateStudentStatusesTable extends Migration
         Schema::drop('student_statuses');
     }
 }
-
