@@ -13,15 +13,24 @@ get into tinker: `php artisan tinker`
   * in `routes/web.php` file add `auth()->loginUsingId(App\Models\Admin::first()->id);` to login as the first admin found
   * or in `routes/web.php` file add 
 
-			$hack_user = getenv('HACK_USER');
+      $hack_user = getenv('HACK_USER');
 
-			if (!empty($hack_user)) {
-			    auth()->loginUsingId(App\Models\User::where('university_id',$hack_user) -> first()->id);
-			}
+      if (!empty($hack_user)) {
+          auth()->loginUsingId(App\Models\User::where('university_id',$hack_user) -> first()->id);
+      }
 
-	* assign permissions to user: 
-	  * `$user->assignReadOnlyAdminPermissions();`
-	  * `$user->assignBasicAdminPermissions();`
-	  * `$user->assignElevatedAdminPermissions();`
+  * assign permissions to user: 
+    * `$user->assignReadOnlyAdminPermissions();`
+    * `$user->assignBasicAdminPermissions();`
+    * `$user->assignElevatedAdminPermissions();`
 
 
+## Development
+
+* use `docker-compose -f docker-compose-devel.yml up` to fire up the development deployment
+* the local source directory is deployed as the main app directory in development, so the following might have to be run in the container:
+  * Enter the container with `docker-compose -f docker-compose-devel.yaml exec pgr bash`
+  * run `composer install`
+  * `yarn`
+  * `yarn run production`
+  * You can now leave the container

@@ -23,6 +23,7 @@ services:
       - 9989:80
       - 9443:443
     volumes:
+      - .:/var/www/html/pgr
       - /srv/pgr/storage:/var/www/html/pgr/storage
       - /srv/pgr/config:/srv/config
 
