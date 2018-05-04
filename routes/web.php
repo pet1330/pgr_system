@@ -1,5 +1,22 @@
 <?php
 
+$proxy_url    = getenv('PROXY_URL');
+$proxy_schema = getenv('PROXY_SCHEMA');
+
+$hack_user = getenv('HACK_USER');
+
+if (!empty($hack_user)) {
+    auth()->loginUsingId(App\Models\User::where('university_id',$hack_user) -> first()->id);
+}
+
+if (!empty($proxy_url)) {
+   URL::forceRootUrl($proxy_url);
+}
+
+if (!empty($proxy_schema)) {
+   URL::forceSchema($proxy_schema);
+}
+
 Route::middleware('guest')->get('login', 'SAMLController@login')->name('login');
 Route::get('auth-status', 'DevController@authStatus');
 Route::get('downtime-robot', 'DevController@downtimeRobot');
