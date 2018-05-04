@@ -31,8 +31,8 @@
                     [$student->university_id, $record->slug(), $m->slug()]) }}">
                     <li class="col-md-6 list-unstyled"><b>
                         <span class="fa-stack fa-md" style="margin-right: 20px;">
-                            <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-                            <strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
+                            <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i>
+                            <strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
                         </span>
                     {{ $m->name }}</li></a>
                     @endforeach
@@ -53,8 +53,8 @@
                         [$student->university_id, $record->slug(), $m->slug()]) }}">
                         <li class="col-md-6 list-unstyled"><b>
                             <span class="fa-stack fa-md" style="margin-right: 20px;">
-                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-                                <strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
+                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i>
+                                <strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
                             </span>
                         {{ $m->name }}</li></a>
                         @endforeach
@@ -75,8 +75,8 @@
                         [$student->university_id, $record->slug(), $m->slug()]) }}">
                         <li class="col-md-6 list-unstyled"><b>
                             <span class="fa-stack fa-md" style="margin-right: 20px;">
-                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-                                <strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
+                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i>
+                                <strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
                             </span>
                         {{ $m->name }}</li></a>
                         @endforeach
@@ -97,10 +97,10 @@
                             <li class="col-md-6 list-unstyled"><b>
                                 <span class="fa-stack fa-md" style="margin-right: 20px;">
                                     <i class="fa fa-calendar-o fa-stack-2x"
-                                    style="transform: scale(1.5,1);">
+                                    style="transform: scale(2,1);">
                                     </i>
                                     <strong class="fa-stack-1x calendar-text"
-                                    style="font-size: 8px;margin-top:2.5px;">
+                                    style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">
                                     {{ $m->submitted_date->format('d/m/y') }}
                                     </strong>
                                 </span>
@@ -124,8 +124,8 @@
                             [$student->university_id, $record->slug(), $m->slug()]) }}">
                             <li class="col-md-6 list-unstyled"><b>
                                 <span class="fa-stack fa-md" style="margin-right: 20px;">
-                                    <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-                                    <strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->submitted_date->format('d/m/y') }}</strong>
+                                    <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i>
+                                    <strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->submitted_date->format('d/m/y') }}</strong>
                                 </span>
                             {{ $m->name }}</li></a>
                             @endforeach
@@ -145,8 +145,8 @@
                                 [$student->university_id, $record->slug(), $m->slug()]) }}">
                                 <li class="col-md-6 list-unstyled"><b>
                                     <span class="fa-stack fa-md" style="margin-right: 20px;">
-                                        <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-                                        <strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
+                                        <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i>
+                                        <strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
                                     </span>
                                 {{ $m->name }}</li></a>
                                 @endforeach
@@ -167,8 +167,8 @@
                         [$student->university_id, $record->slug(), $m->slug()]) }}">
                         <li class="col-md-6 list-unstyled"><b>
                             <span class="fa-stack fa-md" style="margin-right: 20px;">
-                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i>
-                                <strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
+                                <i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i>
+                                <strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong>
                             </span>
                         {{ $m->name }}</li></a>
                         @endforeach
@@ -196,7 +196,7 @@
                 @foreach ($milestones as $m)
                 {
                 content:'<a href="{{ route('student.record.milestone.show',
-                    [$student->university_id, $record->slug(), $m->slug()]) }}" data-toggle="tooltip" data-placement="top" title="{{ $m->name }}"><span class="fa-stack fa-md" style="margin: 0 2px;"><i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(1.5,1);"></i><strong class="fa-stack-1x calendar-text" style="font-size: 8px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong></span></a>',
+                    [$student->university_id, $record->slug(), $m->slug()]) }}" data-toggle="tooltip" data-placement="top" title="{{ $m->name }}"><span class="fa-stack fa-md" style="margin: 0 2px;"><i class="fa fa-calendar-o fa-stack-2x" style="transform: scale(2,1);"></i><strong class="fa-stack-1x calendar-text" style="margin-left:-5px; font-size: 10px;margin-top:2.5px;">{{ $m->due_date->format('d/m/y') }}</strong></span></a>',
                     group: 1,
                     className: 'expected',
                     start: '{{ $m->due_date }}',
