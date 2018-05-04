@@ -25,7 +25,8 @@ $(document).ready(function() {
 
     // LIST OF ALL STUDENTS FOR ADMINS
     // ==========================================================================
-    $('#admin-student-table').DataTable(
+
+    var as_table=$('#admin-student-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'student.first_name', searchable: true, orderable: true },
@@ -41,6 +42,25 @@ $(document).ready(function() {
             ]
         })
     );
+
+    $('#admin-student-table thead tr.dt_search td').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input style="font-size: 10pt;" type="text" placeholder="filter" />' );
+    } );
+ 
+    // Apply the search
+    as_table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+
 
     // List of Admins for Admins
     //==============================================================================================
