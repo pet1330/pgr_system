@@ -16,10 +16,10 @@ class CreateSupervisorsTable extends Migration
         Schema::create('supervisors', function (Blueprint $table) {
             $table->integer('staff_id')->unsigned()->index();
             $table->integer('student_record_id')->unsigned()->index();
-            
+
             $table->dateTime('changed_on')->nullable()->default(null);
             $table->smallInteger('supervisor_type')->unsigned();
-            
+
             $table->foreign('staff_id')->references('id')->on('users');
             $table->foreign('student_record_id')->references('id')->on('student_records');
 

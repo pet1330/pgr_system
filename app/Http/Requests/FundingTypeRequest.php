@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\FundingType;
+use Illuminate\Foundation\Http\FormRequest;
 
 class FundingTypeRequest extends FormRequest
 {
@@ -24,29 +24,28 @@ class FundingTypeRequest extends FormRequest
      */
     public function rules()
     {
-
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
-                $ft = FundingType::where('name', '=' ,$this->name)->first();
+                $ft = FundingType::where('name', '=', $this->name)->first();
+
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:funding_types,name' . (is_null($ft)? "" : ",".$ft->id)
-                    ]
+                        'unique:funding_types,name'.(is_null($ft) ? '' : ','.$ft->id),
+                    ],
                 ];
-            case 'POST':
-                return 
+            case 'POST' :
+                return
                 [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:funding_types,name'
-                    ]
+                        'unique:funding_types,name',
+                    ],
                 ];
         }
     }

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-    use Spatie\Activitylog\Traits\LogsActivity;
 
 class AbsenceType extends Model
 {
@@ -13,7 +13,7 @@ class AbsenceType extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'name', 'interuption' ];
+    protected static $logAttributes = ['name', 'interuption'];
 
     protected $fillable = ['name', 'interuption'];
 

@@ -13,7 +13,7 @@ class AlterApprovalsTable extends Migration
      */
     public function up()
     {
-        Schema::table('approvals', function(Blueprint $table) {
+        Schema::table('approvals', function (Blueprint $table) {
             $table->softDeletes();
         });
     }
@@ -25,7 +25,7 @@ class AlterApprovalsTable extends Migration
      */
     public function down()
     {
-        Schema::table('approvals', function(Blueprint $table) {
+        Schema::table('approvals', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
     }

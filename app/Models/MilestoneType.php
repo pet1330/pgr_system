@@ -19,11 +19,11 @@ class MilestoneType extends Model
         'student_makable' => 'boolean',
     ];
 
-    protected static $logAttributes = [ 'name', 'duration', 'student_makable'];
-    
-    protected $table ='milestone_types';
+    protected static $logAttributes = ['name', 'duration', 'student_makable'];
 
-    protected $fillable = [ 'name', 'duration', 'student_makable' ];
+    protected $table = 'milestone_types';
+
+    protected $fillable = ['name', 'duration', 'student_makable'];
 
     public function scopeStudentMakable($query)
     {

@@ -13,7 +13,7 @@ class Programme extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'name', 'duration', 'duration_unit' ];
+    protected static $logAttributes = ['name', 'duration', 'duration_unit'];
 
     protected $fillable = ['name', 'duration', 'duration_unit'];
 

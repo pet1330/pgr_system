@@ -16,16 +16,15 @@ class MilestoneSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        StudentRecord::all()->map(function ($sr) use ($faker)
-        {
-            for ($i=0; $i < 10 ; $i++) {
+        StudentRecord::all()->map(function ($sr) use ($faker) {
+            for ($i = 0; $i < 10; $i++) {
                 $sub = $faker->optional()->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
                 $due = $faker->dateTimeBetween($sr->enrolment_date, $sr->calculateEndDate());
                 $type = MilestoneType::inRandomOrder()->first();
                 $m = $sr->timeline()->save(Milestone::make(
                     [
                         'submitted_date'        =>   $sub,
-                        'duration'              =>   $faker->numberBetween(1,12),
+                        'duration'              =>   $faker->numberBetween(1, 12),
                         'duration_unit'         =>   'Months',
                         'name'                  =>   $sub ? $type->name : null,
                         'due_date'              =>   $due,

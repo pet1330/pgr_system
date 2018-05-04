@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Auth;
 use Carbon\Carbon;
 use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
@@ -22,11 +21,10 @@ class Absence extends Model
         'absence_type_id',
         'from',
         'to',
-        'duration'
+        'duration',
     ];
 
     protected $with = ['type'];
-
 
     protected $fillable = [
         'user_id',
@@ -51,19 +49,20 @@ class Absence extends Model
         return $this->belongsTo(student::class, 'user_id');
     }
 
-    public function isFuture($date=null)
+    public function isFuture($date = null)
     {
         return ($date ?? Carbon::now()) < $this->from;
     }
-    
-    public function isPast($date=null)
+
+    public function isPast($date = null)
     {
         return ($date ?? Carbon::now()) > $this->to;
     }
 
-    public function isCurrent($date=null)
+    public function isCurrent($date = null)
     {
         $date = $date ?? Carbon::now();
+
         return $date >= $this->from && $date <= $this->to;
     }
 
@@ -73,14 +72,16 @@ class Absence extends Model
         ->orderBy('from', 'desc')->get();
     }
 
-    public function scopeCurrent($query) {
+    public function scopeCurrent($query)
+    {
         return $query
         ->where('from', '<=', Carbon::now())
         ->where('to', '>=', Carbon::now())
         ->orderBy('from', 'desc')->get();
     }
 
-    public function scopeFuture($query) {
+    public function scopeFuture($query)
+    {
         return $query->where('from', '>', Carbon::now())
         ->orderBy('from', 'asc')->get();
     }

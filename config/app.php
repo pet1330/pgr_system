@@ -55,7 +55,6 @@ return [
 
     'url_prefix' => env('URL_PREFIX', ''),
 
-
     /*
     |--------------------------------------------------------------------------
     | Route Prefix Proxy
@@ -186,7 +185,7 @@ return [
         Laravel\Tinker\TinkerServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Spatie\Activitylog\ActivitylogServiceProvider::class,
-		Aacotroneo\Saml2\Saml2ServiceProvider::class,
+        Aacotroneo\Saml2\Saml2ServiceProvider::class,
         Plank\Mediable\MediableServiceProvider::class,
         Silber\Bouncer\BouncerServiceProvider::class,
         /*
@@ -196,7 +195,6 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
 
     ],
 

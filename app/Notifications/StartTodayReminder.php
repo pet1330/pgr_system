@@ -54,17 +54,16 @@ class StartTodayReminder extends Notification implements ShouldQueue
         $url = route('student.record.milestone.show', [
             $this->student->university_id,
             $this->record->slug(),
-            $this->milestone->slug()
+            $this->milestone->slug(),
         ]);
 
-        
         $duediff = Carbon::today()->diffForHumans(
             $this->milestone->due_date->copy()
             ->addDay(1)->startOfDay(), true);
 
         return (new MailMessage)
-            ->subject('Reminder: '. $this->milestone->name .' is upcoming Milestone')
-            ->line('This email is to remind you that the following milestone is due in ' . $duediff . '.')
+            ->subject('Reminder: '.$this->milestone->name.' is upcoming Milestone')
+            ->line('This email is to remind you that the following milestone is due in '.$duediff.'.')
             ->action('View Milestone', $url)
             ->line('Thanks!');
     }

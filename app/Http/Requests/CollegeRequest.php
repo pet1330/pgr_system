@@ -24,26 +24,26 @@ class CollegeRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
                 $college = College::where('name', $this->name)->first();
+
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:colleges,name' . (is_null($college)? "" : ",".$college->id),
+                        'unique:colleges,name'.(is_null($college) ? '' : ','.$college->id),
                     ],
                 ];
-            case 'POST':
+            case 'POST' :
                 return [
                     'name' => [
                     'required',
                     'min:3',
-                    'unique:colleges,name'
+                    'unique:colleges,name',
                     ],
                 ];
         }

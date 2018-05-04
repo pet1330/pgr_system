@@ -25,7 +25,7 @@ class CreateSchoolsTable extends Migration
         });
 
         // Add School to Student Record
-        Schema::table('student_records', function($table) {
+        Schema::table('student_records', function ($table) {
             $table->integer('school_id')->unsigned()->index();
             $table->foreign('school_id')->references('id')->on('schools');
         });

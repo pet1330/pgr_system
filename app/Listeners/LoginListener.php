@@ -3,9 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use \Aacotroneo\Saml2\Events\Saml2LoginEvent;
+use Aacotroneo\Saml2\Events\Saml2LoginEvent;
 
 class LoginListener
 {
@@ -41,8 +39,7 @@ class LoginListener
             'university_id' => $details['UniversityID'][0],
         ]);
 
-        if (! $user->exists )
-        {
+        if (! $user->exists) {
             $user->user_type = $details['Description'][0] == 'Staff Account' ? 'Staff' : 'Student';
             $user->save();
             // Convert $user to the correct type
@@ -52,7 +49,9 @@ class LoginListener
 
         $user->save();
 
-        if( $user->locked) return redirect()->route('account-locked');
+        if ($user->locked) {
+            return redirect()->route('account-locked');
+        }
 
         //login user
         auth()->login($user);

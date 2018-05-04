@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\EnrolmentStatus;
+use Illuminate\Database\Seeder;
 
 class EnrolmentStatusSeeder extends Seeder
 {
@@ -14,10 +14,9 @@ class EnrolmentStatusSeeder extends Seeder
     {
         $example_statuses = ['Not Enrolled', 'Enrolled', 'Submitted', 'Graduated', 'Failed'];
 
-        foreach ($example_statuses as $status)
-        {
+        foreach ($example_statuses as $status) {
             EnrolmentStatus::create([
-                'status' => $status
+                'status' => $status,
             ]);
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Media;
 use App\Models\Student;
 use App\Models\Approval;
 use App\Models\Milestone;
@@ -12,7 +11,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class MilestoneApprovalAlert extends Notification implements ShouldQueue
+class StudentMilestoneApprovalAlert extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -26,7 +25,7 @@ class MilestoneApprovalAlert extends Notification implements ShouldQueue
      * @return void
      */
     public function __construct(Student $student,StudentRecord $record,
-        Milestone $milestone, Approval $approval )
+        Milestone $milestone, Approval $approval)
     {
         $this->record = $record;
         $this->student = $student;
@@ -53,20 +52,22 @@ class MilestoneApprovalAlert extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('student.record.milestone.show', [ $this->student->university_id,
-            $this->record->slug(), $this->milestone->slug() ]);
+        $url = route('student.record.milestone.show', [$this->student->university_id,
+            $this->record->slug(), $this->milestone->slug(), ]);
 
-        $status = $this->approval->approved ? "approved" : 'rejected';
-        $feedback = str_finish($this->approval->reason,'.');
-        $lineTwo = "";
+        $status = $this->approval->approved ? 'approved' : 'rejected';
+        $feedback = str_finish($this->approval->reason, '.');
+        $lineTwo = '';
 
         $lineOne = sprintf("This email is to inform you that your milestone '%s' has been %s.",
-            [$this->milestone->name, $status ] );
+            [$this->milestone->name, $status]);
 
-        if(! $this->approval->approved) { // if rejected
-            $lineOne .= " You will be required to amend your documentation and submit an updated version.";
-            if($feedback) $lineTwo .= sprintf("The following feedback was provided: %s. ", [ $feedback ]);
-            $lineTwo .= "Please liaise with your PGR admin team for further clarification.";
+        if (! $this->approval->approved) { // if rejected
+            $lineOne .= ' You will be required to amend your documentation and submit an updated version.';
+            if ($feedback) {
+                $lineTwo .= sprintf('The following feedback was provided: %s. ', [$feedback]);
+            }
+            $lineTwo .= 'Please liaise with your PGR admin team for further clarification.';
         }
 
         return (new MailMessage)
@@ -74,6 +75,6 @@ class MilestoneApprovalAlert extends Notification implements ShouldQueue
             ->line($lineTwo)
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject( sprintf("Milestone %s: %s", [strtoupper($status), $this->milestone->name]) );
+            ->subject(sprintf('Milestone %s: %s', [strtoupper($status), $this->milestone->name]));
     }
 }

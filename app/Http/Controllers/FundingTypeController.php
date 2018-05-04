@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use DataTables;
-use Carbon\Carbon;
 use App\Models\FundingType;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\FundingTypeRequest;
 
 class FundingTypeController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -19,32 +16,30 @@ class FundingTypeController extends Controller
      */
     public function index(Request $request)
     {
-
         $this->authorise('manage', FundingType::class);
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
+            $fundingTypes = FundingType::select('funding_types.*')->withCount('students');
 
-        $fundingTypes = FundingType::select('funding_types.*')->withCount('students');
-
-          return Datatables::eloquent($fundingTypes)
+            return Datatables::eloquent($fundingTypes)
               ->addColumn('editaction', function (FundingType $ft) {
-                return '<form method="GET" action="' . route('settings.funding-type.edit', $ft->id) . '"
+                  return '<form method="GET" action="'.route('settings.funding-type.edit', $ft->id).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
-                })
+              })
                 ->addColumn('deleteaction', function (FundingType $ft) {
-                  return '<form method="POST" action="' . route('settings.funding-type.destroy', $ft->id) . '"
+                    return '<form method="POST" action="'.route('settings.funding-type.destroy', $ft->id).'"
                   accept-charset="UTF-8" class="delete-form">
-                  <input type="hidden" name="_method" value="DELETE">' . 
-                  csrf_field() . '<button class="btn btn-danger">
+                  <input type="hidden" name="_method" value="DELETE">'.
+                  csrf_field().'<button class="btn btn-danger">
                   <i class="fa fa-trash"></i></button> </form>';
                 })->rawColumns(['editaction', 'deleteaction'])
               ->make(true);
         }
 
         $deletedFundingType = FundingType::onlyTrashed()->get();
+
         return view('admin.settings.fundingtype.index', compact('deletedFundingType'));
     }
 
@@ -56,15 +51,15 @@ class FundingTypeController extends Controller
      */
     public function store(FundingTypeRequest $request)
     {
-
         $this->authorise('manage', FundingType::class);
 
-        $fun = FundingType::create($request->only( 'name' ));
+        $fun = FundingType::create($request->only('name'));
+
         return redirect()
             ->route('settings.funding-type.index')
               ->with('flash', [
-                  'message' => 'Successfully added "' . $fun->name . '"',
-                  'type' => 'success'
+                  'message' => 'Successfully added "'.$fun->name.'"',
+                  'type' => 'success',
               ]);
     }
 
@@ -77,27 +72,25 @@ class FundingTypeController extends Controller
      */
     public function update(FundingTypeRequest $request, FundingType $funding_type)
     {
-
         $this->authorise('manage', $funding_type);
 
-      $funding_type->update($request->only( 'name' ));
-      $funding_type->save();
+        $funding_type->update($request->only('name'));
+        $funding_type->save();
+
         return redirect()
             ->route('settings.funding-type.index')
             ->with('flash', [
-                'message' => 'Successfully updated "' . $funding_type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully updated "'.$funding_type->name.'"',
+                'type' => 'success',
             ]);
     }
 
     public function edit(FundingType $funding_type)
     {
-
         $this->authorise('manage', $funding_type);
 
         return view('admin.settings.fundingtype.edit', compact('funding_type'));
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -107,16 +100,16 @@ class FundingTypeController extends Controller
      */
     public function destroy(FundingTypeRequest $request, FundingType $funding_type)
     {
-
         $this->authorise('manage', $funding_type);
 
         // We are using soft delete so this item will remain in the database
         $funding_type->delete();
+
         return redirect()
             ->route('settings.funding-type.index')
             ->with('flash', [
-                'message' => 'Successfully deleted "' . $funding_type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully deleted "'.$funding_type->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -126,21 +119,22 @@ class FundingTypeController extends Controller
 
         $this->authorise('manage', $funding_type);
 
-        if($funding_type->trashed())
-        {
+        if ($funding_type->trashed()) {
             $funding_type->restore();
+
             return redirect()
                 ->route('settings.funding-type.index')
                 ->with('flash', [
-                    'message' => 'Successfully restored "' . $funding_type->name . '"',
-                    'type' => 'success'
+                    'message' => 'Successfully restored "'.$funding_type->name.'"',
+                    'type' => 'success',
                 ]);
         }
+
         return redirect()
                 ->route('settings.funding-type.index')
                 ->with('flash', [
-                    'message' => 'Error: Absence Type is not deleted: "' . $funding_type->name . '"',
-                    'type' => 'danger'
+                    'message' => 'Error: Absence Type is not deleted: "'.$funding_type->name.'"',
+                    'type' => 'danger',
                 ]);
     }
 }

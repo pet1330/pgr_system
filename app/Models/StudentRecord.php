@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Bouncer;
 use Carbon\Carbon;
-use App\Models\Milestone;
 use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -12,11 +11,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentRecord extends Model
 {
+    protected $with = ['supervisors'];
 
-    protected $with = [ 'supervisors' ];
+    protected $dates = ['enrolment_date'];
 
-    protected $dates = [ 'enrolment_date' ];
-    
     use HasHashSlug;
     use SoftDeletes;
     use LogsActivity;
@@ -115,9 +113,10 @@ class StudentRecord extends Model
             $supervisor->disallow('view', $m);
         });
         Bouncer::refreshFor($supervisor);
+
         return $this->supervisors()
-                    ->updateExistingPivot( $supervisor->id,
-                        ['changed_on' => Carbon::now()] );
+                    ->updateExistingPivot($supervisor->id,
+                        ['changed_on' => Carbon::now()]);
     }
 
     public function addSupervisor(Staff $supervisor, $type)
@@ -128,9 +127,10 @@ class StudentRecord extends Model
             $supervisor->allow('view', $m);
         });
         Bouncer::refreshFor($supervisor);
+
         return $this->supervisors()->syncWithoutDetaching(
             [
-                $supervisor->id =>  [ "supervisor_type" => $type ]
+                $supervisor->id =>  ['supervisor_type' => $type],
             ]
         );
     }
@@ -169,10 +169,11 @@ class StudentRecord extends Model
 
     public function ordinal($number)
     {
-        if ((($number % 100) >= 11) && (($number%100) <= 13))
-            return $number. 'th';
-        else
-            return $number. ['th','st','nd','rd','th','th','th','th','th','th'][$number % 10];
+        if ((($number % 100) >= 11) && (($number % 100) <= 13)) {
+            return $number.'th';
+        } else {
+            return $number.['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][$number % 10];
+        }
     }
 
     public function note()
@@ -180,7 +181,7 @@ class StudentRecord extends Model
         return $this->morphOne(Note::class, 'noteable')->withDefault();
     }
 
-    public function updateNote($content="")
+    public function updateNote($content = '')
     {
         $this->note->exists ?
             $this->note->update(['content' => $content]) :
@@ -190,14 +191,20 @@ class StudentRecord extends Model
     public function visualTimelineEnd()
     {
         $e = $this->timeline()->orderBy('due_date', 'desc')->pluck('due_date')->first();
-        if($e) return max($e, $this->end);
+        if ($e) {
+            return max($e, $this->end);
+        }
+
         return $this->end;
     }
 
     public function visualTimelineStart()
     {
         $s = $this->timeline()->orderBy('due_date')->pluck('due_date')->first();
-        if($s) return min($s, $this->start);
+        if ($s) {
+            return min($s, $this->start);
+        }
+
         return $this->start;
     }
 }
