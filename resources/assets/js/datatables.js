@@ -1,5 +1,25 @@
 $(document).ready(function() {
 
+    function initialise_column_search(o) {
+        var that = o;
+        var hd = o.header()
+        var old_title=$(hd).html();
+        $(hd).html('<input size="4" style="font-size: 8pt;" type="text" placeholder="filter"/><br>'+old_title);
+        $('input', hd).click(
+            function(e) {
+               //do something
+               e.stopPropagation();
+            });
+        $( 'input', o.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+
+    }
+
     let generalSettings = {
         serverSide: true,
         processing: true,
@@ -11,7 +31,7 @@ $(document).ready(function() {
         // stateSave: true,
         bProcessing: true,
         deferRender: false,
-        lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500], [10, 20, 30, 40, 50, 100, 200, 500]],
+        lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500, -1], [10, 20, 30, 40, 50, 100, 200, 500, "All"]],
         pageLength: 50,
         dom: 'lfrtBip',
         buttons: [
@@ -43,28 +63,15 @@ $(document).ready(function() {
         })
     );
 
-    $('#admin-student-table thead tr.dt_search td').each( function () {
-        var title = $(this).text();
-        $(this).html( '<input style="font-size: 10pt;" type="text" placeholder="filter" />' );
-    } );
- 
     // Apply the search
     as_table.columns().every( function () {
-        var that = this;
- 
-        $( 'input', this.header() ).on( 'keyup change', function () {
-            if ( that.search() !== this.value ) {
-                that
-                    .search( this.value )
-                    .draw();
-            }
-        } );
+        initialise_column_search(this);
     } );
 
 
     // List of Admins for Admins
     //==============================================================================================
-    $('#admin-admin-table').DataTable(
+    var aa_table=$('#admin-admin-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
@@ -73,6 +80,11 @@ $(document).ready(function() {
             ]
         })
     );
+
+    // Apply the search
+    aa_table.columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of absence types for Admins
     //==============================================================================================
