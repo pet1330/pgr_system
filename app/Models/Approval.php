@@ -18,9 +18,9 @@ class Approval extends Model
         'approved_name',
     ];
 
-    protected $with = [ 'approved_by' ];
+    protected $with = ['approved_by'];
 
-    protected $casts = [ 'approved' => 'boolean' ];
+    protected $casts = ['approved' => 'boolean'];
 
     public function approvable()
     {
@@ -39,7 +39,7 @@ class Approval extends Model
 
     public function isAcceptedByAnyone()
     {
-        return !! $this->approved;
+        return (bool) $this->approved;
     }
 
     public function scopeRejectedByAnyone($query)
@@ -49,7 +49,7 @@ class Approval extends Model
 
     public function isRejectedByAnyone()
     {
-        return !! $this->approved;
+        return (bool) $this->approved;
     }
 
     public function isUnapproved()
@@ -74,9 +74,9 @@ class Approval extends Model
 
     public function scopeByAdmin($query)
     {
-        $query->whereHas('approved_by', function($q) {
-                return $q->where('user_type', 'Admin');
-            });
+        $query->whereHas('approved_by', function ($q) {
+            return $q->where('user_type', 'Admin');
+        });
     }
 
     public function isApprovedBySupervisor()
@@ -86,8 +86,8 @@ class Approval extends Model
 
     public function scopeBySupervisor($query)
     {
-        $query->whereHas('approved_by', function($q) {
-                return $q->where('user_type', 'Staff');
-            });
+        $query->whereHas('approved_by', function ($q) {
+            return $q->where('user_type', 'Staff');
+        });
     }
 }

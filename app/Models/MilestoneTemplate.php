@@ -14,14 +14,13 @@ class MilestoneTemplate extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'due', 'milestone_type_id' ];
+    protected static $logAttributes = ['due', 'milestone_type_id'];
 
-    protected $table ='milestone_templates';
+    protected $table = 'milestone_templates';
 
     protected $with = ['type'];
 
     protected $fillable = ['due', 'milestone_type_id', 'timeline_template_id'];
-
 
     public function type()
     {
@@ -44,7 +43,7 @@ class MilestoneTemplate extends Model
                 'created_by' => auth()->id(),
                 'milestone_type_id' => $this->type->id,
                 'due_date' => $nid->copy()->addDays(
-                    $record->student->interuptionPeriodSoFar())
+                    $record->student->interuptionPeriodSoFar()),
             ])
         );
         $record->student->allow('view', $m);

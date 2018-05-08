@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class SamlAuth
+class DevUser
 {
     /**
      * Handle an incoming request.
@@ -15,12 +15,11 @@ class SamlAuth
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->guest()) {
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
+        if (\App::environment() === 'local' && ! auth()->check()) {
+            $hack_user = getenv('HACK_USER');
+            if (! empty($hack_user)) {
+                auth()->loginUsingId(\App\Models\Admin::whereUniversityId($hack_user)->first()->id);
             }
-
-            return redirect()->route('login');
         }
 
         return $next($request);

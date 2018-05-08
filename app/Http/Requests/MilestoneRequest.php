@@ -29,8 +29,8 @@ class MilestoneRequest extends FormRequest
                 'exists:milestone_types,id',
             ],
             'due' => [
-                'date'
-            ]
+                'date',
+            ],
         ];
     }
 }

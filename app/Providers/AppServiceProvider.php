@@ -4,14 +4,12 @@ namespace App\Providers;
 
 use View;
 use Bouncer;
-use Blade;
 use Validator;
 use App\Models\Admin;
 use App\Models\Staff;
 use App\Models\Student;
-use App\Models\Milestone;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,7 +36,9 @@ class AppServiceProvider extends ServiceProvider
             return Admin::where('university_id', $value)->exists();
         });
 
-        View::share('app_version', \Cache::remember('app_version', 10, function () { return strtok(shell_exec('git describe --always --tags'), '-'); }) );
+        View::share('app_version', \Cache::remember('app_version', 10, function () {
+            return strtok(shell_exec('git describe --always --tags'), '-');
+        }));
     }
 
     /**

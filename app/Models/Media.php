@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Plank\Mediable\Mediable;
 use Balping\HashSlug\HasHashSlug;
 use Spatie\Activitylog\Traits\LogsActivity;
 

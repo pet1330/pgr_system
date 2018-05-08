@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class SamlAuth
+class RoutePrefixProxy
 {
     /**
      * Handle an incoming request.
@@ -15,12 +15,11 @@ class SamlAuth
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->guest()) {
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
-            }
-
-            return redirect()->route('login');
+        if (config('app.proxy_url')) {
+            \URL::forceRootUrl(config('app.proxy_url'));
+        }
+        if (config('app.proxy_schema')) {
+            \URL::forceRootUrl(config('app.proxy_schema'));
         }
 
         return $next($request);

@@ -14,7 +14,7 @@ class CreateProgrammesTable extends Migration
     public function up()
     {
         Schema::create('programmes', function (Blueprint $table) {
-            $table->engine ='InnoDB';
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
             $table->integer('duration')->unsigned();
@@ -24,7 +24,7 @@ class CreateProgrammesTable extends Migration
         });
 
         // Add Student and Enrolment Status to Student Record
-        Schema::table('student_records', function($table) {
+        Schema::table('student_records', function ($table) {
             $table->integer('programme_id')->unsigned()->index();
             $table->foreign('programme_id')->references('id')->on('programmes');
         });
@@ -38,7 +38,6 @@ class CreateProgrammesTable extends Migration
     public function down()
     {
         Schema::table('student_records', function (Blueprint $table) {
-            
             $table->dropForeign('student_records_programme_id_foreign');
             $table->dropColumn('programme_id');
         });

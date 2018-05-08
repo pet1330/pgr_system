@@ -2,15 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Carbon\Carbon;
-use App\Models\Student;
+use Tests\TestCase;
 use App\Models\Absence;
-use App\Models\Staff;
-use App\Models\Admin;
-use Auth;
+use App\Models\Student;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AbsenceTest extends TestCase
 {
@@ -23,8 +19,8 @@ class AbsenceTest extends TestCase
      */
     public function testStudentHasAbsence()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
-        
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
+
         $student = factory(Student::class)->create();
 
         $ab = factory(Absence::class)->make([
@@ -42,9 +38,9 @@ class AbsenceTest extends TestCase
      */
     public function testAbsenceIsHappeningNow()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
         $student = factory(Student::class)->create();
-        
+
         $pastAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
@@ -63,7 +59,6 @@ class AbsenceTest extends TestCase
         $this->assertFalse($pastAbence->isCurrent());
         $this->assertFalse($futureAbence->isCurrent());
         $this->assertTrue($currentAbence->isCurrent());
-
     }
 
     /**
@@ -73,9 +68,9 @@ class AbsenceTest extends TestCase
      */
     public function testAbsenceHasHappenedAndFinished()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
         $student = factory(Student::class)->create();
-        
+
         $pastAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
@@ -103,9 +98,9 @@ class AbsenceTest extends TestCase
      */
     public function testAbsenceHasNotStartedYet()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
         $student = factory(Student::class)->create();
-        
+
         $pastAbence = factory(Absence::class)->create([
             'from' =>  Carbon::now()->subDays(4),
             'to'   =>  Carbon::now()->subDays(2),
@@ -120,7 +115,7 @@ class AbsenceTest extends TestCase
             'from' =>  Carbon::now()->subDays(2),
             'to'   =>  Carbon::now()->addDays(2),
         ]);
-        
+
         $this->assertFalse($pastAbence->isFuture());
         $this->assertTrue($futureAbence->isFuture());
         $this->assertFalse($currentAbence->isFuture());
@@ -133,7 +128,7 @@ class AbsenceTest extends TestCase
      */
     public function testScopeForPastAbsences()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
         factory(Student::class)->create();
 
         factory(Absence::class)->create([
@@ -147,13 +142,13 @@ class AbsenceTest extends TestCase
     }
 
     /**
-     * Test absence scope for future period
+     * Test absence scope for future period.
      *
      * @return void
      */
     public function testScopeForFutureAbsences()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
         factory(Student::class)->create();
 
         factory(Absence::class)->create([
@@ -167,13 +162,13 @@ class AbsenceTest extends TestCase
     }
 
     /**
-     * Test absence scope for current period
+     * Test absence scope for current period.
      *
      * @return void
      */
     public function testScopeForCurrentAbsences()
     {
-        $this->artisan('db:seed', [ '--class' => 'AbsenceTypeSeeder' ]);
+        $this->artisan('db:seed', ['--class' => 'AbsenceTypeSeeder']);
         factory(Student::class)->create();
 
         factory(Absence::class)->create([
@@ -184,6 +179,5 @@ class AbsenceTest extends TestCase
         $this->assertEquals(Absence::past()->count(), 0);
         $this->assertEquals(Absence::current()->count(), 1);
         $this->assertEquals(Absence::future()->count(), 0);
-
     }
 }

@@ -53,13 +53,13 @@ class DueTodayReminder extends Notification implements ShouldQueue
         $url = route('student.record.milestone.show',
             [$this->student->university_id,
             $this->record->slug(),
-            $this->milestone->slug()
+            $this->milestone->slug(),
             ]);
 
         return (new MailMessage)
-            ->line('This email is to remind you that the milestone '. $this->milestone->name.' is due by the end of today.')
+            ->line('This email is to remind you that the milestone '.$this->milestone->name.' is due by the end of today.')
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject('Reminder: '. $this->milestone->name .' is due Today!');
+            ->subject('Reminder: '.$this->milestone->name.' is due Today!');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\College;
+use Illuminate\Database\Seeder;
 
 class CollegeSeeder extends Seeder
 {
@@ -15,11 +15,10 @@ class CollegeSeeder extends Seeder
         $example_colleges = [
             'College of Arts',
             'College of Science',
-            'College of Social Science'];
+            'College of Social Science', ];
 
-        foreach ($example_colleges as $college)
-        {
-            College::create( [ 'name' => $college ] );
+        foreach ($example_colleges as $college) {
+            College::create(['name' => $college]);
         }
     }
 }

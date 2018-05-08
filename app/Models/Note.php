@@ -20,10 +20,10 @@ class Note extends Model
     protected static $logAttributes = [
         'content',
         'noteable_id',
-        'noteable_type'
+        'noteable_type',
     ];
 
-    protected $table ='notes';
+    protected $table = 'notes';
 
     protected $fillable = [
         'content',
@@ -36,7 +36,7 @@ class Note extends Model
         return $this->intro();
     }
 
-    public function intro($length=40)
+    public function intro($length = 40)
     {
         return str_limit($this->content, $length, '...');
     }
@@ -46,11 +46,13 @@ class Note extends Model
         return $this->morphTo();
     }
 
-    public function setContentAttribute($c) {
+    public function setContentAttribute($c)
+    {
         $this->attributes['content'] = htmlentities($c);
     }
 
-    public function getContentAttribute($c) {
+    public function getContentAttribute($c)
+    {
         return html_entity_decode($c);
     }
 }

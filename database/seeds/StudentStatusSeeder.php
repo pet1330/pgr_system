@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\StudentStatus;
+use Illuminate\Database\Seeder;
 
 class StudentStatusSeeder extends Seeder
 {
@@ -14,12 +14,10 @@ class StudentStatusSeeder extends Seeder
     {
         $example_statuses = ['UK', 'EU', 'International'];
 
-        foreach ($example_statuses as $status)
-        {
+        foreach ($example_statuses as $status) {
             StudentStatus::create([
-                'status' => $status
+                'status' => $status,
             ]);
         }
     }
 }
-    

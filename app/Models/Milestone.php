@@ -29,15 +29,15 @@ class Milestone extends Model
         'non_interuptive_date',
     ];
 
-    protected $table ='milestones';
+    protected $table = 'milestones';
 
     protected $dates = [
         'due_date',
         'submitted_date',
-        'non_interuptive_date'
+        'non_interuptive_date',
     ];
 
-    protected $with = [ 'type', 'approvals' ];
+    protected $with = ['type', 'approvals'];
 
     protected $fillable = [
         'name',
@@ -77,7 +77,7 @@ class Milestone extends Model
 
     public function isSubmitted()
     {
-        return !! $this->submitted_date;
+        return (bool) $this->submitted_date;
     }
 
     public function scopeNotSubmitted($query)
@@ -125,7 +125,7 @@ class Milestone extends Model
 
     public function isUpcoming()
     {
-        return $this->isNotSubmitted() && 
+        return $this->isNotSubmitted() &&
         $this->due_date >= Carbon::today() &&
         $this->due_date < Carbon::parse('+5 weeks') &&
         $this->approvals->isEmpty();
@@ -159,7 +159,7 @@ class Milestone extends Model
             $this->approvals->isEmpty();
     }
 
-    public function scopeAwaitingAmendments($query, $selector=null)
+    public function scopeAwaitingAmendments($query, $selector = null)
     {
         return $query->filterApprovals(false, $selector);
     }
@@ -169,7 +169,7 @@ class Milestone extends Model
         return $this->approvals->isNotEmpty() && ! $this->approvals->last()->approved;
     }
 
-    public function scopeApproved($query, $selector=null)
+    public function scopeApproved($query, $selector = null)
     {
         return $query->filterApprovals(true, $selector);
     }
@@ -179,21 +179,23 @@ class Milestone extends Model
         return $this->approvals->isNotEmpty() && $this->approvals->last()->approved;
     }
 
-    public function scopeFilterApprovals($query, $accepted=true, $selector=null)
+    public function scopeFilterApprovals($query, $accepted = true, $selector = null)
     {
         return $query->select($selector ?? 'milestones.*')
             ->join('approvals', 'milestones.id', '=', 'approvals.approvable_id')
             ->join(DB::raw('(SELECT approvable_id, MAX(created_at) created_at
-                FROM approvals GROUP BY approvable_id) aa' ), function($join) {
+                FROM approvals GROUP BY approvable_id) aa'), function ($join) {
                 $join->on('approvals.approvable_id', '=', 'aa.approvable_id')
                      ->on('approvals.created_at', '=', 'aa.created_at');
-            })->where('approvals.approved', !! $accepted);
+            })->where('approvals.approved', (bool) $accepted);
     }
 
     public function getStartDateAttribute()
     {
-        if($this->duration)
+        if ($this->duration) {
             return $this->due_date->copy()->subDays($this->duration);
+        }
+
         return $this->due_date;
     }
 
@@ -214,26 +216,40 @@ class Milestone extends Model
 
     public function getStatusForHumansAttribute()
     {
-        if ( $this->isRecentlysubmitted() ) return "Recently Submitted";
-        if ( $this->isOverdue() ) return "Overdue";
-        if ( $this->isPreviouslySubmitted() ) return "Submitted";
-        if ( $this->isUpcoming() ) return "Upcoming";
-        if ( $this->isFuture() ) return "Future";
-        if ( $this->isAwaitingAmendments() ) return "Awaiting Amendments";
-        if ( $this->isApproved() ) return "Approved";
+        if ($this->isRecentlysubmitted()) {
+            return 'Recently Submitted';
+        }
+        if ($this->isOverdue()) {
+            return 'Overdue';
+        }
+        if ($this->isPreviouslySubmitted()) {
+            return 'Submitted';
+        }
+        if ($this->isUpcoming()) {
+            return 'Upcoming';
+        }
+        if ($this->isFuture()) {
+            return 'Future';
+        }
+        if ($this->isAwaitingAmendments()) {
+            return 'Awaiting Amendments';
+        }
+        if ($this->isApproved()) {
+            return 'Approved';
+        }
     }
 
     public function created_by()
     {
         return $this->belongsTo(User::class);
-    }  
+    }
 
     public function approvals()
     {
         return $this->morphMany(Approval::class, 'approvable');
     }
 
-    public function approve($approved=true, $feedback=null)
+    public function approve($approved = true, $feedback = null)
     {
         $this->approvals()->save(
             Approval::make([
@@ -248,6 +264,6 @@ class Milestone extends Model
     {
         return $this->update(['due_date' => $this->non_interuptive_date
             ->copy()->addDays($this->student->student
-                ->interuptionPeriodSoFar()) ]);
+                ->interuptionPeriodSoFar()), ]);
     }
 }

@@ -12,19 +12,19 @@ class Controller extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
 
-    protected function authorise($ability, $parameter=null)
+    protected function authorise($ability, $parameter = null)
     {
-        if($parameter instanceof Model)
-        {
-            if( Bouncer::denies($ability, $parameter) && Bouncer::denies($ability, get_class($parameter)) )
+        if ($parameter instanceof Model) {
+            if (Bouncer::denies($ability, $parameter) && Bouncer::denies($ability, get_class($parameter))) {
                 abort(403);
+            }
+        } elseif (Bouncer::denies($ability, $parameter)) {
+            abort(403);
         }
-        else
-            if (Bouncer::denies($ability, $parameter) ) abort(403);
     }
 
     public function dashboard_url()
     {
-        return redirect( auth()->user()->dashboard_url() );
+        return redirect(auth()->user()->dashboard_url());
     }
 }

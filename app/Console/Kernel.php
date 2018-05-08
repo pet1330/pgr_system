@@ -7,11 +7,9 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-
     protected $routeMiddleware = [
 
     ];
-
 
     /**
      * The Artisan commands provided by your application.
@@ -32,11 +30,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('reminders:duetoday')
             ->dailyAt('08:30')->pingBefore(
-                'https://hchk.io/' . env('UPCOMING_STATUS_CHECK_KEY'));
+                'https://hchk.io/'.env('UPCOMING_STATUS_CHECK_KEY'));
 
         $schedule->command('reminders:starttoday')
             ->dailyAt('08:30')->pingBefore(
-                'https://hchk.io/' . env('DUE_STATUS_CHECK_KEY'));
+                'https://hchk.io/'.env('DUE_STATUS_CHECK_KEY'));
     }
 
     /**

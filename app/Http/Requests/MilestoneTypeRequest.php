@@ -24,18 +24,18 @@ class MilestoneTypeRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
-                $mt = MilestoneType::where('name', '=' ,$this->name)->first();
+                $mt = MilestoneType::where('name', '=', $this->name)->first();
+
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:milestone_types,name' . (is_null($mt)? "" : ",".$mt->id)
+                        'unique:milestone_types,name'.(is_null($mt) ? '' : ','.$mt->id),
                     ],
                     'duration' => [
                         'nullable',
@@ -45,15 +45,15 @@ class MilestoneTypeRequest extends FormRequest
                     ],
                     'student_makable' => [
                         'required',
-                        'boolean'
-                    ]
+                        'boolean',
+                    ],
                 ];
-            case 'POST':
+            case 'POST' :
                 return [
                     'name' => [
                     'required',
                     'min:3',
-                    'unique:milestone_types,name'
+                    'unique:milestone_types,name',
                     ],
                     'duration' => [
                         'nullable',
@@ -63,8 +63,8 @@ class MilestoneTypeRequest extends FormRequest
                     ],
                     'student_makable' => [
                         'required',
-                        'boolean'
-                    ]
+                        'boolean',
+                    ],
                 ];
         }
     }

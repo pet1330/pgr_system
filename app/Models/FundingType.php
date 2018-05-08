@@ -13,7 +13,7 @@ class FundingType extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected static $logAttributes = [ 'name' ];
+    protected static $logAttributes = ['name'];
 
     protected $fillable = ['name'];
 
