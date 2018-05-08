@@ -4,7 +4,7 @@ services:
   redis:
     image: redis
   db:
-    image: mysql:8.0
+    image: mysql:5.7
     volumes:
       - /srv/pgr/db:/var/lib/mysql
     expose:
