@@ -15,33 +15,33 @@ class AddVariousIndexes extends Migration
     {
         Schema::table('users', function(Blueprint $table)
         {
-            $table->index('last_name');
-            $table->index('first_name');
+            $table->index('last_name')->change();
+            $table->index('first_name')->change();
         });
         Schema::table('student_records', function(Blueprint $table)
         {
-            $table->index('enrolment_date');
-            $table->index('tierFour');
+            $table->index('enrolment_date')->change();
+            $table->index('tierFour')->change();
         });
         Schema::table('milestones', function(Blueprint $table)
         {
-            $table->index('submitted_date');
-            $table->index('name');
-            $table->index('non_interuptive_date');
+            $table->index('submitted_date')->change();
+            $table->index('name')->change();
+            $table->index('non_interuptive_date')->change();
         });
         Schema::table('absences', function(Blueprint $table)
         {
-            $table->index('from');
-            $table->index('to');
+            $table->index('from')->change();
+            $table->index('to')->change();
         });
         Schema::table('schools', function(Blueprint $table)
         {
-            $table->index('name');
-            $table->index('notifications_address');
+            $table->index('name')->change();
+            $table->index('notifications_address')->change();
         });
         Schema::table('student_statuses', function(Blueprint $table)
         {
-            $table->index('status');
+            $table->index('status')->change();
         });
     }
 
@@ -54,33 +54,33 @@ class AddVariousIndexes extends Migration
     {
         Schema::table('users', function(Blueprint $table)
         {
-            $table->dropIndex('last_name');
-            $table->dropIndex('first_name');
+            $table->dropIndex('users_last_name_index')->change();
+            $table->dropIndex('users_first_name_index')->change();
         });
         Schema::table('student_records', function(Blueprint $table)
         {
-            $table->dropIndex('enrolment_date');
-            $table->dropIndex('tierFour');
+            $table->dropIndex('student_records_enrolment_date_index')->change();
+            $table->dropIndex('student_records_tierfour_index')->change();
         });
         Schema::table('milestones', function(Blueprint $table)
         {
-            $table->dropIndex('submitted_date');
-            $table->dropIndex('name');
-            $table->dropIndex('non_interuptive_date');
+            $table->dropIndex('milestones_submitted_date_index')->change();
+            $table->dropIndex('milestones_name_index')->change();
+            $table->dropIndex('milestones_non_interuptive_date_index')->change();
         });
         Schema::table('absences', function(Blueprint $table)
         {
-            $table->dropIndex('from');
-            $table->dropIndex('to');
+            $table->dropIndex('absences_from_index')->change();
+            $table->dropIndex('absences_to_index')->change();
         });
         Schema::table('schools', function(Blueprint $table)
         {
-            $table->dropIndex('name');
-            $table->dropIndex('notifications_address');
+            $table->dropIndex('schools_name_index')->change();
+            $table->dropIndex('schools_notifications_address_index')->change();
         });
         Schema::table('student_statuses', function(Blueprint $table)
         {
-            $table->dropIndex('status');
+            $table->dropIndex('student_statuses_status_index')->change();
         });
     }
 }
