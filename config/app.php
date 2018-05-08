@@ -58,6 +58,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Route Prefix Proxy
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used to set the applications root URL when using a global
+    | route prefix. They will then be used by the RoutePrefixProxy.
+    |
+    */
+
+    'proxy_url' => env('PROXY_URL'),
+
+    'proxy_schema' => env('PROXY_SCHEMA'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

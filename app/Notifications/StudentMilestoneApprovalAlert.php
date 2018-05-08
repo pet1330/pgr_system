@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Media;
 use App\Models\Student;
+use App\Models\Approval;
 use App\Models\Milestone;
 use App\Models\StudentRecord;
 use Illuminate\Bus\Queueable;
@@ -24,12 +25,13 @@ class MilestoneApprovalAlert extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Student $student,
-        StudentRecord $record, Milestone $milestone)
+    public function __construct(Student $student,StudentRecord $record,
+        Milestone $milestone, Approval $approval )
     {
         $this->record = $record;
         $this->student = $student;
         $this->milestone = $milestone;
+        $this->approval = $approval;
     }
 
     /**
@@ -51,18 +53,27 @@ class MilestoneApprovalAlert extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('student.record.milestone.show',
-            [$this->student->university_id,
-            $this->record->slug(), 
-            $this->milestone->slug()
-            ]);
+        $url = route('student.record.milestone.show', [ $this->student->university_id,
+            $this->record->slug(), $this->milestone->slug() ]);
 
-        $message = 'This email is to inform you that your milestone "'.$this->milestone->name.'"" has been approved.';
+        $status = $this->approval->approved ? "approved" : 'rejected';
+        $feedback = str_finish($this->approval->reason,'.');
+        $lineTwo = "";
+
+        $lineOne = sprintf("This email is to inform you that your milestone '%s' has been %s.",
+            [$this->milestone->name, $status ] );
+
+        if(! $this->approval->approved) { // if rejected
+            $lineOne .= " You will be required to amend your documentation and submit an updated version.";
+            if($feedback) $lineTwo .= sprintf("The following feedback was provided: %s. ", [ $feedback ]);
+            $lineTwo .= "Please liaise with your PGR admin team for further clarification.";
+        }
 
         return (new MailMessage)
-            ->line($message)
+            ->line($lineOne)
+            ->line($lineTwo)
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject('Milestone approved: ' . $this->milestone->name);
+            ->subject( sprintf("Milestone %s: %s", [strtoupper($status), $this->milestone->name]) );
     }
 }
