@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
-  @include('layouts.header')
   <body class="hold-transition skin-blue sidebar-mini">
+  @if(config('app.global_message'))
+    <div id="global-message">
+      <b>IMPORTANT MESSAGE:</b> {{ config('app.global_message') }}
+    </div>
+  @endif
+  @include('layouts.header')
     <div class="wrapper" id="app">
       @include('layouts.nav.header')
       <aside class="main-sidebar">
