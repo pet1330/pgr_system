@@ -251,7 +251,7 @@ class Milestone extends Model
 
     public function approve($approved = true, $feedback = null)
     {
-        $this->approvals()->save(
+        return $this->approvals()->save(
             Approval::make([
                 'approved' => $approved,
                 'reason' => $feedback,
