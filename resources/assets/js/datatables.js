@@ -1,5 +1,25 @@
 $(document).ready(function() {
 
+    function initialise_column_search(o) {
+        let that = o;
+        let hd = o.header()
+        let old_title=$(hd).html();
+        $(hd).html('<input size="4" style="font-size: 8pt;" type="text" placeholder="filter"/><br>'+old_title);
+        $('input', hd).click(
+            function(e) {
+               //do something
+               e.stopPropagation();
+            });
+        $( 'input', o.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+
+    }
+
     let generalSettings = {
         serverSide: true,
         processing: true,
@@ -11,7 +31,7 @@ $(document).ready(function() {
         // stateSave: true,
         bProcessing: true,
         deferRender: false,
-        lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500], [10, 20, 30, 40, 50, 100, 200, 500]],
+        lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500, -1], [10, 20, 30, 40, 50, 100, 200, 500, "All"]],
         pageLength: 50,
         dom: 'lfrtBip',
         buttons: [
@@ -25,7 +45,8 @@ $(document).ready(function() {
 
     // LIST OF ALL STUDENTS FOR ADMINS
     // ==========================================================================
-    $('#admin-student-table').DataTable(
+
+    let as_table=$('#admin-student-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'student.first_name', searchable: true, orderable: true },
@@ -42,9 +63,15 @@ $(document).ready(function() {
         })
     );
 
+    // Apply the search
+    as_table.columns().every( function () {
+        initialise_column_search(this);
+    } );
+
+
     // List of Admins for Admins
     //==============================================================================================
-    $('#admin-admin-table').DataTable(
+    let aa_table=$('#admin-admin-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
@@ -53,6 +80,11 @@ $(document).ready(function() {
             ]
         })
     );
+
+    // Apply the search
+    aa_table.columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of absence types for Admins
     //==============================================================================================
