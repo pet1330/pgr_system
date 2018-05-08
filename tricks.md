@@ -39,3 +39,9 @@ get into tinker: `php artisan tinker`
 
 * `docker exec -i pgrsystem_db_1 mysql -B -uroot pgr_saml < ~/pgr201804251312.sql`
 
+## Backup to S3
+
+* https://www.zenko.io/blog/backup-files-s3-server-duplicity/
+* configure `boto` in `/etc/boto.cfg`
+* `PASSPHRASE=foo duplicity --file-prefix-archive backup- /srv/pgr s3://s3-eu-west-1.amazonaws.com/uol-pgr-backup`
+* set up lifecycle rule on S3 bucket: https://aws.amazon.com/blogs/aws/archive-s3-to-glacier/
