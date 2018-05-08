@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentMilestoneApprovalAlert extends Notification implements ShouldQueue
+class SupervisorMilestoneApprovalAlert extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -59,15 +59,15 @@ class StudentMilestoneApprovalAlert extends Notification implements ShouldQueue
         $status = $this->approval->approved ? 'approved' : 'rejected';
         $lineTwo = '';
 
-        $lineOne = sprintf("This email is to inform you that your milestone '%s' has been %s.",
-            $this->milestone->name, $status);
+        $lineOne = sprintf("This email is to inform %s's milestone '%s' has been %s.",
+            $this->student->name, $this->milestone->name, $status);
 
         if (! $this->approval->approved) { // if rejected
-            $lineOne .= ' You will be required to amend your documentation and submit an updated version.';
+            $lineOne .= ' They will be required to amend the document and submit an updated version.';
             if ($this->approval->reason) {
                 $lineTwo .= sprintf('The following feedback was provided: %s. ', str_finish($this->approval->reason, '.'));
             }
-            $lineTwo .= 'Please liaise with your PGR admin team for further clarification.';
+            $lineTwo .= sprintf('Please ensure %s understands the alterations that must be made. For further clarification please liaise with the PGR admin team.', $this->student->first_name);
         }
 
         return (new MailMessage)
@@ -75,6 +75,6 @@ class StudentMilestoneApprovalAlert extends Notification implements ShouldQueue
             ->line($lineTwo)
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject(sprintf('Milestone %s: %s', strtoupper($status), $this->milestone->name));
+            ->subject(sprintf('Milestone %s: %s [%s]', $this->student->name, $this->milestone->name, strtoupper($status)));
     }
 }

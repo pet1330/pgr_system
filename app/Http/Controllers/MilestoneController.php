@@ -22,6 +22,8 @@ use App\Notifications\AdminUploadAlert;
 use App\Notifications\StudentUploadAlert;
 use App\Notifications\AdminUploadConfirmation;
 use App\Notifications\StudentUploadConfirmation;
+use App\Notifications\StudentMilestoneApprovalAlert;
+use App\Notifications\SupervisorMilestoneApprovalAlert;
 
 class MilestoneController extends Controller
 {
@@ -485,7 +487,13 @@ class MilestoneController extends Controller
 
         Bouncer::refreshFor($student);
 
-        $milestone->approve($request->approved, $request->feedback);
+        $approval = $milestone->approve($request->approved, $request->feedback);
+
+        $student->notify(new StudentMilestoneApprovalAlert($student,
+            $record, $milestone, $approval));
+
+        $student->supervisors->each->notify(new SupervisorMilestoneApprovalAlert($student,
+            $record, $milestone, $approval));
 
         return redirect()->route('student.record.milestone.show',
           [$student->university_id, $record->slug(), $milestone->slug()])
