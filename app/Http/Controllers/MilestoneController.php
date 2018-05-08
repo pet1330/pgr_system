@@ -479,7 +479,7 @@ class MilestoneController extends Controller
     {
         $this->authorise('manage', Approval::class);
 
-        if (!! $request->approved) {
+        if ((bool) $request->approved) {
             $student->disallow('upload', $milestone);
         } else {
             $student->allow('upload', $milestone);
