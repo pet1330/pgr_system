@@ -27,7 +27,6 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
-
     'global_message' => env('GLOBAL_MESSAGE'),
 
     /*
