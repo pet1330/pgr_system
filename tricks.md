@@ -36,5 +36,6 @@ get into tinker: `php artisan tinker`
   * You can now leave the container
 
 ## Data Import
+
 * `docker exec -i pgrsystem_db_1 mysql -B -uroot pgr_saml < ~/pgr201804251312.sql`
 
