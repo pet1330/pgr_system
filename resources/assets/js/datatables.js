@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
     function initialise_column_search(o) {
-        var that = o;
-        var hd = o.header()
-        var old_title=$(hd).html();
+        let that = o;
+        let hd = o.header()
+        let old_title=$(hd).html();
         $(hd).html('<input size="4" style="font-size: 8pt;" type="text" placeholder="filter"/><br>'+old_title);
         $('input', hd).click(
             function(e) {
@@ -46,7 +46,7 @@ $(document).ready(function() {
     // LIST OF ALL STUDENTS FOR ADMINS
     // ==========================================================================
 
-    var as_table=$('#admin-student-table').DataTable(
+    let as_table=$('#admin-student-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'student.first_name', searchable: true, orderable: true },
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
     // List of Admins for Admins
     //==============================================================================================
-    var aa_table=$('#admin-admin-table').DataTable(
+    let aa_table=$('#admin-admin-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
