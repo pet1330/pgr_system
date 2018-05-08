@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\EnrolmentStatus;
+use Illuminate\Foundation\Http\FormRequest;
 
 class EnrolmentStatusRequest extends FormRequest
 {
@@ -24,21 +24,21 @@ class EnrolmentStatusRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
                 $status = EnrolmentStatus::where('status', $this->status)->first();
+
                 return [
                     'status' => [
                         'required',
                         'min:3',
-                        'unique:enrolment_statuses,status' . (is_null($status)? "" : ",".$status->id),
+                        'unique:enrolment_statuses,status'.(is_null($status) ? '' : ','.$status->id),
                     ],
                 ];
-            case 'POST':
+            case 'POST' :
                 return [
                     'status' => [
                         'required',

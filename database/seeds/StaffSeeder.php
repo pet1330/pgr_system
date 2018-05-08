@@ -12,8 +12,8 @@ class StaffSeeder extends Seeder
      */
     public function run()
     {
-        \factory(Staff::class,100)->create();
-        Staff::all()->each(function(Staff $s) {
+        \factory(Staff::class, 100)->create();
+        Staff::all()->each(function (Staff $s) {
             $s->allow('view', $s);
         });
         Bouncer::refresh();

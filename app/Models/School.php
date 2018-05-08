@@ -14,13 +14,13 @@ class School extends Model
     use LogsActivity;
 
     protected static $logOnlyDirty = true;
-    
-    protected static $logAttributes = [ 'name', 'college_id', 'notifications_address' ];
-    
+
+    protected static $logAttributes = ['name', 'college_id', 'notifications_address'];
+
     protected $with = ['college'];
-    
-    protected $fillable = [ 'id', 'name', 'college_id', 'notifications_address' ];
-    
+
+    protected $fillable = ['id', 'name', 'college_id', 'notifications_address'];
+
     protected $table = 'schools';
 
     public function college()

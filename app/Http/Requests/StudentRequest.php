@@ -36,7 +36,7 @@ class StudentRequest extends FormRequest
             ],
             'university_id' => [
                 'required',
-            ]
+            ],
         ];
     }
 }

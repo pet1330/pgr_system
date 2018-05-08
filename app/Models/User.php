@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Bouncer;
-use App\Models\Role;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
@@ -15,9 +14,9 @@ class User extends Authenticatable
     use LogsActivity;
     use HasRolesAndAbilities;
 
-    protected $casts = [ 'locked' => 'boolean', ];
+    protected $casts = ['locked' => 'boolean'];
 
-    protected $table = "users";
+    protected $table = 'users';
 
     protected static $logOnlyDirty = true;
 
@@ -31,52 +30,56 @@ class User extends Authenticatable
         'last_name',
         'university_email',
         'university_id',
-        'user_type'
+        'user_type',
     ];
 
     public function getNameAttribute()
     {
-        return sprintf("%s %s", $this->first_name, $this->last_name);
+        return sprintf('%s %s', $this->first_name, $this->last_name);
     }
 
     public function newFromBuilder($attributes = [], $connection = null)
     {
-        if (static::class === "App\Models\User")
-        {
-            if(!isset($attributes->user_type))
-                throw new \Exception("User Type Not Defined", 1);
-            $userType = __NAMESPACE__ . '\\' . $attributes->user_type;
+        if (static::class === "App\Models\User") {
+            if (! isset($attributes->user_type)) {
+                throw new \Exception('User Type Not Defined', 1);
+            }
+            $userType = __NAMESPACE__.'\\'.$attributes->user_type;
             $factory = (new $userType)->newFromBuilder($attributes, $connection);
             $factory->setRawAttributes((array) $attributes, true);
+
             return $factory->load($factory->with);
         }
+
         return parent::newFromBuilder($attributes, $connection);
     }
 
-    public function avatar($size=80)
+    public function avatar($size = 80)
     {
-        return "https://s.gravatar.com/avatar/" . 
-                md5( strtolower( trim( $this->university_email ) ) ) . "?d=mm&s=" . $size;
+        return 'https://s.gravatar.com/avatar/'.
+                md5(strtolower(trim($this->university_email))).'?d=mm&s='.$size;
     }
 
     public function isAdmin()
     {
-        return $this->user_type === "Admin";
+        return $this->user_type === 'Admin';
     }
 
     public function isStaff()
     {
-        return $this->user_type === "Staff";
+        return $this->user_type === 'Staff';
     }
 
     public function isStudent()
     {
-        return $this->user_type === "Student";
+        return $this->user_type === 'Student';
     }
 
-    public function dashboard_url($user=null)
+    public function dashboard_url($user = null)
     {
-        if( is_object($user) ) $user = $user->id;
+        if (is_object($user)) {
+            $user = $user->id;
+        }
 
         switch ($this->user_type) {
             case 'Admin': return route('admin.show', $user ?? $this->university_id);
@@ -88,7 +91,7 @@ class User extends Authenticatable
 
     public function getRouteKeyName()
     {
-        return "university_id";
+        return 'university_id';
     }
 
     public function routeNotificationForMail()
@@ -101,17 +104,20 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user');
     }
 
-    public function assignDefaultPermissions($reset=false)
+    public function assignDefaultPermissions($reset = false)
     {
-        $user = User::find($this->id);
-        if ( $user && get_class($user) !== "App\Models\User")
+        $user = self::find($this->id);
+        if ($user && get_class($user) !== "App\Models\User") {
             return $user->assignDefaultPermissions($reset);
+        }
         throw new RuntimeException('User of unknown type');
     }
 
-    public function assignBasicAdminPermissions($reset=false)
+    public function assignBasicAdminPermissions($reset = false)
     {
-        if($reset) $this->abilities()->sync([]);
+        if ($reset) {
+            $this->abilities()->sync([]);
+        }
 
         $this->allow('view', $this);
         $this->allow('view', Note::class);
@@ -129,9 +135,11 @@ class User extends Authenticatable
         Bouncer::refreshFor($this);
     }
 
-    public function assignReadOnlyAdminPermissions($reset=true)
+    public function assignReadOnlyAdminPermissions($reset = true)
     {
-        if($reset) $this->abilities()->sync([]);
+        if ($reset) {
+            $this->abilities()->sync([]);
+        }
 
         $this->allow('view', $this);
         $this->allow('view', Note::class);
@@ -145,7 +153,7 @@ class User extends Authenticatable
         Bouncer::refreshFor($this);
     }
 
-    public function assignElevatedAdminPermissions($reset=false)
+    public function assignElevatedAdminPermissions($reset = false)
     {
         $this->assignBasicAdminPermissions($reset);
 
@@ -164,8 +172,19 @@ class User extends Authenticatable
     }
 
     // overload the defualt password and remember me token
-    public function getAuthPassword() {return null; /* not supported*/ }
-    public function getRememberToken() {return null; /* not supported*/ }
-    public function setRememberToken($value) {return null; /* not supported*/ }
-    public function getRememberTokenName() {return null; /* not supported*/ }
+    public function getAuthPassword()
+    { /* not supported*/
+    }
+
+    public function getRememberToken()
+    { /* not supported*/
+    }
+
+    public function setRememberToken($value)
+    { /* not supported*/
+    }
+
+    public function getRememberTokenName()
+    { /* not supported*/
+    }
 }

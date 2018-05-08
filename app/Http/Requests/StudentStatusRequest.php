@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\StudentStatus;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StudentStatusRequest extends FormRequest
 {
@@ -24,21 +24,21 @@ class StudentStatusRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
                 $status = StudentStatus::where('status', $this->status)->first();
+
                 return [
                     'status' => [
                         'required',
                         'min:3',
-                        'unique:student_statuses,status' . (is_null($status)? "" : ",".$status->id),
+                        'unique:student_statuses,status'.(is_null($status) ? '' : ','.$status->id),
                     ],
                 ];
-            case 'POST':
+            case 'POST' :
                 return [
                     'status' => [
                         'required',

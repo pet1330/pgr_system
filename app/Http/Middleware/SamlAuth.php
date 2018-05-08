@@ -15,12 +15,14 @@ class SamlAuth
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->guest())
-		{
-			if($request->ajax())
+        if (auth()->guest()) {
+            if ($request->ajax()) {
                 return response('Unauthorized.', 401);
-			return redirect()->route('login');
-		}
-		return $next($request);
+            }
+
+            return redirect()->route('login');
+        }
+
+        return $next($request);
     }
 }

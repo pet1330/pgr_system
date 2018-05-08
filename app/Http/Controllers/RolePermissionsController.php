@@ -5,32 +5,27 @@ namespace App\Http\Controllers;
 use DataTables;
 use Illuminate\Http\Request;
 use Silber\Bouncer\Database\Role;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
 use Silber\Bouncer\Database\Ability;
-use App\Http\Requests\Admin\StoreRolesRequest;
 use App\Http\Requests\Admin\UpdateRolesRequest;
 
 class RolePermissionsController extends Controller
 {
-
     public function index(Request $request)
     {
-
         $this->authorise('view', Role::class);
 
-        if ($request->ajax())
-        {
-           $roles = Role::with('abilities');
+        if ($request->ajax()) {
+            $roles = Role::with('abilities');
 
             return Datatables::eloquent($roles)
-                    ->addColumn('name', function (Role $role)
-                        { return $role->name; })
+                    ->addColumn('name', function (Role $role) {
+                        return $role->name;
+                    })
                     ->addColumn('abilities', function (Role $role) {
                         return $role->abilities->pluck('name')->implode('<br>');
-                        })
+                    })
                     ->addColumn('editaction', function (Role $role) {
-                    return '<form method="GET" action=""
+                        return '<form method="GET" action=""
                       accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
@@ -49,14 +44,13 @@ class RolePermissionsController extends Controller
 
     public function store(RolesRequest $request, Role $role)
     {
-
         $this->authorise('create', Role::class);
 
         Bouncer::allow($role)->to($request->name, $request->model);
         $role->allow($request->input('abilities'));
+
         return redirect()->route('settings.rolepermissions.index');
     }
-
 
     /**
      * Show the form for editing Role.

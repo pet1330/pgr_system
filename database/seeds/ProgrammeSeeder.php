@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Programme;
+use Illuminate\Database\Seeder;
 
 class ProgrammeSeeder extends Seeder
 {
@@ -14,12 +14,11 @@ class ProgrammeSeeder extends Seeder
     {
         $example_programmes =
             [
-                ['name' => 'PhD', 'duration' => 42, 'duration_unit' => 'Months' ],
-                ['name' => 'MSc', 'duration' => 12, 'duration_unit' => 'Months' ],
-                ['name' => 'MPhil', 'duration' => 18,'duration_unit' => 'Months' ]
+                ['name' => 'PhD', 'duration' => 42, 'duration_unit' => 'Months'],
+                ['name' => 'MSc', 'duration' => 12, 'duration_unit' => 'Months'],
+                ['name' => 'MPhil', 'duration' => 18, 'duration_unit' => 'Months'],
             ];
-        foreach ($example_programmes as $programme)
-        {
+        foreach ($example_programmes as $programme) {
             Programme::create([
                 'name' => $programme['name'],
                 'duration' => $programme['duration'],

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\FundingType;
+use Illuminate\Database\Seeder;
 
 class FundingTypeSeeder extends Seeder
 {
@@ -14,10 +14,9 @@ class FundingTypeSeeder extends Seeder
     {
         $examples = ['rif', 'project', 'self_funding'];
 
-        foreach ($examples as $example)
-        {
+        foreach ($examples as $example) {
             FundingType::create([
-                'name' => $example
+                'name' => $example,
             ]);
         }
     }

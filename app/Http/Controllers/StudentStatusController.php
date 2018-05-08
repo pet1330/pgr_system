@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use DataTables;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\StudentStatus;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentStatusRequest;
 
 class StudentStatusController extends Controller
@@ -20,29 +18,29 @@ class StudentStatusController extends Controller
     {
         $this->authorise('manage', StudentStatus::class);
 
-        if ($request->ajax())
-        {
-        $student_status = StudentStatus::select('student_statuses.*')->withCount('students');
+        if ($request->ajax()) {
+            $student_status = StudentStatus::select('student_statuses.*')->withCount('students');
 
-          return Datatables::eloquent($student_status)
+            return Datatables::eloquent($student_status)
               ->addColumn('editaction', function (StudentStatus $student_status) {
-                return '<form method="GET" action="' . route('settings.student-status.edit', $student_status->id) . '"
+                  return '<form method="GET" action="'.route('settings.student-status.edit', $student_status->id).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
-                })
-                ->addColumn('deleteaction', function (StudentStatus $student_status) {
-                  return '<form method="POST" action="' . route('settings.student-status.destroy', $student_status->id) . '"
-                  accept-charset="UTF-8" class="delete-form">
-                  <input type="hidden" name="_method" value="DELETE">' . 
-                  csrf_field() . '<button class="btn btn-danger">
-                  <i class="fa fa-trash"></i></button> </form>';
               })
+                ->addColumn('deleteaction', function (StudentStatus $student_status) {
+                    return '<form method="POST" action="'.route('settings.student-status.destroy', $student_status->id).'"
+                  accept-charset="UTF-8" class="delete-form">
+                  <input type="hidden" name="_method" value="DELETE">'.
+                  csrf_field().'<button class="btn btn-danger">
+                  <i class="fa fa-trash"></i></button> </form>';
+                })
                 ->rawColumns(['editaction', 'deleteaction'])
               ->make(true);
         }
 
         $deletedStatuses = StudentStatus::onlyTrashed()->get();
+
         return view('admin.settings.studentstatus.index', compact('deletedStatuses'));
     }
 
@@ -56,12 +54,13 @@ class StudentStatusController extends Controller
     {
         $this->authorise('manage', StudentStatus::class);
 
-        $stu = StudentStatus::create($request->only( 'status' ));
+        $stu = StudentStatus::create($request->only('status'));
+
         return redirect()
             ->route('settings.student-status.index')
             ->with('flash', [
-                'message' => 'Successfully added "' . $stu->status . '"',
-                'type' => 'success'
+                'message' => 'Successfully added "'.$stu->status.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -76,13 +75,14 @@ class StudentStatusController extends Controller
     {
         $this->authorise('manage', $student_status);
 
-        $student_status->update($request->only( 'status' ));
+        $student_status->update($request->only('status'));
         $student_status->save();
+
         return redirect()
             ->route('settings.student-status.index')
             ->with('flash', [
-                'message' => 'Successfully updated "' . $student_status->status . '"',
-                'type' => 'success'
+                'message' => 'Successfully updated "'.$student_status->status.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -105,11 +105,12 @@ class StudentStatusController extends Controller
 
         // We are using soft delete so this item will remain in the database
         $student_status->delete();
+
         return redirect()
             ->route('settings.student-status.index')
             ->with('flash', [
-                'message' => 'Successfully deleted "' . $student_status->status . '"',
-                'type' => 'success'
+                'message' => 'Successfully deleted "'.$student_status->status.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -119,21 +120,22 @@ class StudentStatusController extends Controller
 
         $this->authorise('manage', $student_status);
 
-        if($student_status->trashed())
-        {
+        if ($student_status->trashed()) {
             $student_status->restore();
+
             return redirect()
                 ->route('settings.student-status.index')
                 ->with('flash', [
-                    'message' => 'Successfully restored "' . $student_status->status . '"',
-                    'type' => 'success'
+                    'message' => 'Successfully restored "'.$student_status->status.'"',
+                    'type' => 'success',
                 ]);
         }
+
         return redirect()
                 ->route('settings.student-status.index')
                 ->with('flash', [
-                    'message' => 'Error: Status is not deleted: "' . $student_status->status . '"',
-                    'type' => 'danger'
+                    'message' => 'Error: Status is not deleted: "'.$student_status->status.'"',
+                    'type' => 'danger',
                 ]);
     }
 }

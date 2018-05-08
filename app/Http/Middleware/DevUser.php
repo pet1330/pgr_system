@@ -15,10 +15,9 @@ class DevUser
      */
     public function handle($request, Closure $next)
     {
-
-        if(\App::environment()==="local" && !auth()->check()) {
+        if (\App::environment() === 'local' && ! auth()->check()) {
             $hack_user = getenv('HACK_USER');
-            if ( !empty($hack_user) ) {
+            if (! empty($hack_user)) {
                 auth()->loginUsingId(\App\Models\Admin::whereUniversityId($hack_user)->first()->id);
             }
         }

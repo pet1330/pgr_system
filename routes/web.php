@@ -5,8 +5,7 @@ Route::get('auth-status', 'DevController@authStatus');
 Route::get('downtime-robot', 'DevController@downtimeRobot');
 Route::name('account-locked')->get('account-locked', 'DevController@accountLocked');
 
-Route::middleware('samlauth')->group( function() {
-
+Route::middleware('samlauth')->group(function () {
     Route::get('/', 'Controller@dashboard_url')->name('home');
     Route::get('logout', 'SAMLController@logout')->name('logout');
 
@@ -17,7 +16,7 @@ Route::middleware('samlauth')->group( function() {
 
     Route::get('student/find', 'StudentController@find')->name('student.find');
     Route::post('student/find', 'StudentController@find_post')->name('student.find');
-    
+
     Route::get('student/confirm', 'StudentController@confirm_user')->name('student.confirm');
     Route::post('student/confirm', 'StudentController@confirm_post_user')->name('student.confirm');
 
@@ -26,7 +25,7 @@ Route::middleware('samlauth')->group( function() {
 
     Route::get('staff/find', 'StaffController@find')->name('staff.find');
     Route::post('staff/find', 'StaffController@find_post')->name('staff.find');
-    
+
     Route::get('staff/confirm', 'StaffController@confirm_user')->name('staff.confirm');
     Route::post('staff/confirm', 'StaffController@confirm_post_user')->name('staff.confirm');
 
@@ -36,9 +35,9 @@ Route::middleware('samlauth')->group( function() {
     Route::get('staff/upgrade', 'StaffController@upgrade')->name('staff.upgrade.index');
     Route::post('staff/{staff}/upgrade', 'StaffController@upgrade_store')->name('staff.upgrade.store');
 
-    Route::get('admin/downgrade', 
+    Route::get('admin/downgrade',
         'AdminController@downgrade')->name('admin.downgrade.index');
-    Route::post('admin/{admin}/downgrade', 
+    Route::post('admin/{admin}/downgrade',
         'AdminController@downgrade_store')->name('admin.downgrade.store');
 
     Route::get('student/{student}/record/{record}/supervisor/find',
@@ -85,15 +84,14 @@ Route::middleware('samlauth')->group( function() {
     Route::resource('student.record.milestone', 'MilestoneController');
 
     Route::resource('admin', 'AdminController');
-    
-    Route::resource('student.absence', 'AbsenceController', ['except' => 'index' ]);
-    
+
+    Route::resource('student.absence', 'AbsenceController', ['except' => 'index']);
+
     Route::resource('student', 'StudentController');
 
     Route::resource('staff', 'StaffController');
 
-    Route::prefix('settings')->as('settings.')->group(function ()
-    {
+    Route::prefix('settings')->as('settings.')->group(function () {
         Route::get('timeline/{timeline}/restore',
                    'TimelineTemplateController@restore')->name('timeline.restore');
 
@@ -124,21 +122,21 @@ Route::middleware('samlauth')->group( function() {
         Route::get('milestone-type/{milestone_type}/restore',
             'MilestoneTypeController@restore')->name('milestone-type.restore');
 
-        $settings_resource = [ 'except' => [ 'create', 'show' ] ];
-        
+        $settings_resource = ['except' => ['create', 'show']];
+
         Route::resource('timeline.milestone', 'MilestoneTemplateController', ['except' => 'index']);
-        
+
         Route::resource('timeline', 'TimelineTemplateController');
 
         Route::resource('school', 'SchoolController', $settings_resource);
-        
+
         Route::resource('college', 'CollegeController', $settings_resource);
 
         Route::resource('programme', 'ProgrammeController', $settings_resource);
 
         Route::resource('absence-type', 'AbsenceTypeController', $settings_resource);
 
-        Route::resource('funding-type', 'FundingTypeController',  $settings_resource);
+        Route::resource('funding-type', 'FundingTypeController', $settings_resource);
 
         Route::resource('milestone-type', 'MilestoneTypeController', $settings_resource);
 
@@ -147,7 +145,7 @@ Route::middleware('samlauth')->group( function() {
         Route::resource('enrolment-status', 'EnrolmentStatusController', $settings_resource);
 
         Route::resource('user-roles', 'UserRolesController');
-        
+
         Route::resource('role-permissions', 'RolePermissionsController');
     });
 });

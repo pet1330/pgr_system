@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Absence;
 use App\Models\Student;
-use Illuminate\Http\Request;
 use App\Models\AbsenceType;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AbsenceRequest;
 
 class AbsenceController extends Controller
 {
-
     /**
      * Show the form for creating a new resource.
      *
@@ -20,10 +16,10 @@ class AbsenceController extends Controller
      */
     public function create(Student $student)
     {
-
         $this->authorise('manage', Absence::class);
 
         $types = AbsenceType::all();
+
         return view('admin.absence.create', compact('student', 'types'));
     }
 
@@ -35,7 +31,6 @@ class AbsenceController extends Controller
      */
     public function store(AbsenceRequest $request, Student $student)
     {
-
         $this->authorise('manage', Absence::class);
 
         $absence = $student->absences()->save(
@@ -48,6 +43,7 @@ class AbsenceController extends Controller
         );
 
         $student->records->each->recalculateMilestonesDueDate();
+
         return redirect()->route('student.show', $student->university_id);
     }
 
@@ -59,10 +55,10 @@ class AbsenceController extends Controller
      */
     public function edit(Student $student, Absence $absence)
     {
-        
         $this->authorise('manage', $absence);
 
         $types = AbsenceType::all();
+
         return view('admin.absence.edit', compact('absence', 'student', 'types'));
     }
 
@@ -77,6 +73,7 @@ class AbsenceController extends Controller
         $this->authorise('manage', $absence);
         $absence->delete();
         $student->records->each->recalculateMilestonesDueDate();
+
         return redirect()->route('student.show', $student->university_id);
     }
 }

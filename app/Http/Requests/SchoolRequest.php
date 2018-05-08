@@ -24,18 +24,18 @@ class SchoolRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'DELETE':
             return [];
             case 'PATCH':
             case 'PUT':
                 $school = School::where('name', $this->name)->first();
+
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:schools,name' . (is_null($school)? "" : ",".$school->id),
+                        'unique:schools,name'.(is_null($school) ? '' : ','.$school->id),
                     ],
                     'college_id' => [
                         'required',
@@ -46,12 +46,12 @@ class SchoolRequest extends FormRequest
                         'email',
                     ],
                 ];
-            case 'POST':
+            case 'POST' :
                 return [
                     'name' => [
                         'required',
                         'min:3',
-                        'unique:schools,name'
+                        'unique:schools,name',
                     ],
                     'college_id' => [
                         'required',

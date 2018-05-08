@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Bouncer;
 use App\Scopes\UserScope;
 
 class Admin extends User
@@ -14,7 +13,7 @@ class Admin extends User
         static::addGlobalScope(new UserScope('Admin'));
     }
 
-    public function assignDefaultPermissions($reset=false)
+    public function assignDefaultPermissions($reset = false)
     {
         $this->assignBasicAdminPermissions($reset);
     }
