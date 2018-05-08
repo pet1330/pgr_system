@@ -62,7 +62,7 @@ class AdminUploadAlert extends Notification implements ShouldQueue
         $message = 'This email is to inform you that '.$this->file->uploader->name.' has submitted a file to the milestone: '.$this->milestone->name;
 
         if ($this->file->uploader->id !== $this->student->id) {
-            $message = $message.' on behalve of '.$this->student->name;
+            $message = $message.' on behalf of '.$this->student->name;
         }
 
         return (new MailMessage)
