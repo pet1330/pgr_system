@@ -4,7 +4,7 @@ $(document).ready(function() {
         let that = o;
         let hd = o.header()
         let old_title=$(hd).html();
-        $(hd).html('<input size="4" style="font-size: 8pt;" type="text" placeholder="filter"/><br>'+old_title);
+        $(hd).html('<div><input type="search" style="font-size: 8pt;width: 100%;" type="text" placeholder="filter"/></div><br>'+old_title);
         $('input', hd).click(
             function(e) {
                //do something
