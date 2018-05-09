@@ -40,20 +40,10 @@ RUN chmod 600 /etc/apache2/mysite*
 COPY docker/cron/crontab /root/crontab
 RUN crontab /root/crontab
 
-<<<<<<< HEAD
-RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
-RUN curl https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
-
-=======
->>>>>>> 3a44e8a92b96b624046fdd8a25290d471126916d
 #RUN useradd -d /home/app -m app
 #RUN adduser app www-data
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 3a44e8a92b96b624046fdd8a25290d471126916d
 COPY . /var/www/html/pgr
 RUN chown -R www-data:www-data /var/www/html/pgr
 COPY docker/supervisor/conf.d/* /etc/supervisor/conf.d/
