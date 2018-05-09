@@ -23,14 +23,14 @@
             </div>
           </div>
 
-          @if($sr->overdue_count) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#overdue' }}"> @endif
+          @if($sr->overdue) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#overdue' }}"> @endif
           <div class="col-sm-3">
-            <div class="hero-widget well well-sm {{ $sr->overdue_count ? 'text-danger' : 'text-muted' }}">
+            <div class="hero-widget well well-sm {{ $sr->overdue ? 'text-danger' : 'text-muted' }}">
               <div class="icon">
                 <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
               </div>
               <div class="text">
-                <var> {{ $sr->overdue_count }}</var>
+                <var> {{ $sr->overdue }}</var>
               </div>
               <div class="options">
                 <span class="btn btn-lg">
@@ -38,39 +38,39 @@
               </div>
             </div>
           </div>
-          @if($sr->overdue_count) </a> @endif
+          @if($sr->overdue) </a> @endif
 
-          @if($sr->amendments_count) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#amendments' }}"> @endif
+          @if($sr->amendments) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#amendments' }}"> @endif
           <div class="col-sm-3">
-            <div class="hero-widget well well-sm {{ $sr->amendments_count ? 'text-warning' : 'text-muted' }}">
+            <div class="hero-widget well well-sm {{ $sr->amendments ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </div>
               <div class="text">
-                <var>{{ $sr->amendments_count }}</var>
+                <var>{{ $sr->amendments }}</var>
               </div>
               <div class="options">
                 <span class="btn btn-lg">Awaiting Amendments</span>
               </div>
             </div>
           </div>
-        @if($sr->amendments_count) </a> @endif
+        @if($sr->amendments) </a> @endif
 
-        @if($sr->upcoming_count) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#upcoming' }}"> @endif
+        @if($sr->upcoming) <a href="{{ route('student.record.milestone.index', [$sr->student->university_id, $sr->slug()]) . '#upcoming' }}"> @endif
           <div class="col-sm-3">
-            <div class="hero-widget well well-sm {{ $sr->upcoming_count ? 'text-warning' : 'text-muted' }}">
+            <div class="hero-widget well well-sm {{ $sr->upcoming ? 'text-warning' : 'text-muted' }}">
               <div class="icon">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
               </div>
               <div class="text">
-                <var>{{ $sr->upcoming_count }}</var>
+                <var>{{ $sr->upcoming }}</var>
               </div>
               <div class="options">
                 <span class="btn btn-lg">Upcoming Milestones</span>
               </div>
             </div>
           </div>
-        @if($sr->upcoming_count) </a> @endif
+        @if($sr->upcoming) </a> @endif
         </div>
       </div>
     @endforeach

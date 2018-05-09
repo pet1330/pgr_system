@@ -18,7 +18,7 @@ class DevUser
         if (\App::environment() === 'local' && ! auth()->check()) {
             $hack_user = getenv('HACK_USER');
             if (! empty($hack_user)) {
-                auth()->loginUsingId(\App\Models\Admin::whereUniversityId($hack_user)->first()->id);
+                auth()->loginUsingId(\App\Models\User::where('university_id', $hack_user)->first()->id);
             }
         }
 
