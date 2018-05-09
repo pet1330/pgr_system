@@ -1,4 +1,5 @@
 /node_modules
+/public/visjs/
 /public/hot
 /public/storage
 /public/plugins/*
