@@ -3,8 +3,10 @@ version: '2'
 services:
   redis:
     image: redis
+    restart: always
   db:
-    image: mysql:8.0
+    image: mysql:5.7
+    restart: always
     volumes:
       - /srv/pgr/db:/var/lib/mysql
     expose:
@@ -13,7 +15,8 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
   pgr:
-    image: lcasuol/pgr_system:latest
+    image: lcasuol/pgr_system:lcas
+    restart: always
     #build: . 
     command: "bash -c 'ln -fs /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
     links:

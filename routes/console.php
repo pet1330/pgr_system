@@ -4,6 +4,10 @@ use App\Models\Milestone;
 use App\Notifications\DueTodayReminder;
 use App\Notifications\StartTodayReminder;
 
+if (config('app.proxy_url')) {
+    URL::forceRootUrl(config('app.proxy_url'));
+}
+
 Artisan::command('reminders:starttoday', function () {
     Milestone::upcoming()->whereHas('type', function ($q) {
         $q->whereNotNull('duration');

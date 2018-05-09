@@ -3,7 +3,7 @@
   <body class="hold-transition skin-blue sidebar-mini">
   @if(config('app.global_message'))
     <div id="global-message">
-      <b>IMPORTANT MESSAGE:</b> {{ config('app.global_message') }}
+      <b>IMPORTANT MESSAGE:</b> {!! config('app.global_message') !!}
     </div>
   @endif
   @include('layouts.header')

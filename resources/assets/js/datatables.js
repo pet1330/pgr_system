@@ -1,5 +1,25 @@
 $(document).ready(function() {
 
+    function initialise_column_search(o) {
+        let that = o;
+        let hd = o.header()
+        let old_title=$(hd).html();
+        $(hd).html('<div><input type="search" style="font-size: 8pt;width: 100%;" type="text" placeholder="filter"/></div><br>'+old_title);
+        $('input', hd).click(
+            function(e) {
+               //do something
+               e.stopPropagation();
+            });
+        $( 'input', o.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+
+    }
+
     let generalSettings = {
         serverSide: true,
         processing: true,
@@ -11,7 +31,7 @@ $(document).ready(function() {
         // stateSave: true,
         bProcessing: true,
         deferRender: false,
-        lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500], [10, 20, 30, 40, 50, 100, 200, 500]],
+        lengthMenu: [[10, 20, 30, 40, 50, 100, 200, 500, -1], [10, 20, 30, 40, 50, 100, 200, 500, "All"]],
         pageLength: 50,
         dom: 'lfrtBip',
         buttons: [
@@ -25,7 +45,8 @@ $(document).ready(function() {
 
     // LIST OF ALL STUDENTS FOR ADMINS
     // ==========================================================================
-    $('#admin-student-table').DataTable(
+
+    let as_table=$('#admin-student-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'student.first_name', searchable: true, orderable: true },
@@ -42,9 +63,15 @@ $(document).ready(function() {
         })
     );
 
+    // Apply the search
+    as_table.columns().every( function () {
+        initialise_column_search(this);
+    } );
+
+
     // List of Admins for Admins
     //==============================================================================================
-    $('#admin-admin-table').DataTable(
+    let aa_table=$('#admin-admin-table').DataTable(
         _.merge({}, generalSettings, {
             columns: [
                 { data: 'first_name', name: 'first_name', searchable: true, orderable: true },
@@ -53,6 +80,11 @@ $(document).ready(function() {
             ]
         })
     );
+
+    // Apply the search
+    aa_table.columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of absence types for Admins
     //==============================================================================================
@@ -67,7 +99,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of funding types for Admins
     //==============================================================================================
@@ -80,7 +114,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of programmes for Admins
     //==============================================================================================
@@ -94,7 +130,10 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
+
 
     // List of student statuses for Admins
     //==============================================================================================
@@ -107,7 +146,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of enrolment statuses for Admins
     //==============================================================================================
@@ -120,7 +161,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false}
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of milestone types for Admins
     //==============================================================================================
@@ -136,7 +179,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of timeline templates for Admins
     //==============================================================================================
@@ -149,7 +194,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of milestones for Admins
     //==============================================================================================
@@ -163,7 +210,9 @@ $(document).ready(function() {
                 { data: 'last_name', name: 'student.student.last_name', searchable: true, orderable: true },
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of submitted milestones for Admins
     //==============================================================================================
@@ -178,7 +227,9 @@ $(document).ready(function() {
                 { data: 'last_name', name: 'student.student.last_name', searchable: true, orderable: true },
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of milestone templates for Admins
     //==============================================================================================
@@ -191,7 +242,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of colleges for Admins
     //==============================================================================================
@@ -204,7 +257,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of school for Admins
     //==============================================================================================
@@ -218,7 +273,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of Staff for Admins
     //==============================================================================================
@@ -230,7 +287,9 @@ $(document).ready(function() {
                 { data: 'university_id', name: 'university_id', searchable: true, orderable: true }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of Staff to upgrade for Admins
     //==============================================================================================
@@ -247,7 +306,9 @@ $(document).ready(function() {
                                'Staff members who supervise students cannot be made into admin.<br>'
             }
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of Admins to downgrade
     //==============================================================================================
@@ -260,7 +321,9 @@ $(document).ready(function() {
                 { data: 'downgrade', name: 'downgrade', searchable: false, orderable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of permissions for each role
     //==============================================================================================
@@ -272,7 +335,9 @@ $(document).ready(function() {
                 { data: 'editaction', name: 'editaction', orderable: false, searchable: false },
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of roles fore each user
     //==============================================================================================
@@ -289,7 +354,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of absences for student dashboard
     //==============================================================================================
@@ -304,7 +371,9 @@ $(document).ready(function() {
                 { data: 'type', name: 'type.name', searchable: false, orderable: true }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     // List of absences for student dashboard for admin
     //==============================================================================================
@@ -320,7 +389,9 @@ $(document).ready(function() {
                 { data: 'deleteaction', name: 'deleteaction', orderable: false, searchable: false }
             ]
         })
-    );
+    ).columns().every( function () {
+        initialise_column_search(this);
+    } );
 
     $('.dataTables_wrapper tbody').on( 'click', 'tr', function () {
         if ($(this).data().link != null) window.location = $(this).data().link;
