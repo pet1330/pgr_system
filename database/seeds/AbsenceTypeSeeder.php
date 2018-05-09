@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\AbsenceType;
+use Illuminate\Database\Seeder;
 
 class AbsenceTypeSeeder extends Seeder
 {
@@ -19,15 +19,12 @@ class AbsenceTypeSeeder extends Seeder
             'fieldwork' => 0,
             'long term sick' => 1,
             'unknown (interuptive)' => 1,
-            'unknown (non interuptive)' => 0];
+            'unknown (non interuptive)' => 0, ];
 
-
-
-        foreach ($examples as $name => $interupts)
-        {
+        foreach ($examples as $name => $interupts) {
             AbsenceType::create([
                 'name' => $name,
-                'interuption' => $interupts
+                'interuption' => $interupts,
             ]);
         }
     }

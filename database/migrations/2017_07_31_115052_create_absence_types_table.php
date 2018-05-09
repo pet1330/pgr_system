@@ -21,7 +21,7 @@ class CreateAbsenceTypesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('absences', function($table) {
+        Schema::table('absences', function ($table) {
             $table->integer('absence_type_id')->unsigned()->index();
             $table->foreign('absence_type_id')->references('id')->on('absence_types');
         });
@@ -34,7 +34,7 @@ class CreateAbsenceTypesTable extends Migration
      */
     public function down()
     {
-        Schema::table('absences', function (Blueprint $table) {    
+        Schema::table('absences', function (Blueprint $table) {
             $table->dropForeign('absences_absence_type_id_foreign');
             $table->dropColumn('absence_type_id');
         });

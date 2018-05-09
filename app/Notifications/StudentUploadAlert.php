@@ -55,20 +55,20 @@ class StudentUploadAlert extends Notification implements ShouldQueue
     {
         $url = route('student.record.milestone.show',
             [$this->student->university_id,
-            $this->record->slug(), 
-            $this->milestone->slug()
+            $this->record->slug(),
+            $this->milestone->slug(),
             ]);
 
-        $message = 'This email is to inform you that '.$this->file->uploader->name.' has submitted a file to your milestone: '. $this->milestone->name;
+        $message = 'This email is to inform you that '.$this->file->uploader->name.' has submitted a file to your milestone: '.$this->milestone->name;
 
         return (new MailMessage)
-            ->line($message . '.')
+            ->line($message.'.')
             ->line('A copy of the uploaded file is attached.')
             ->action('View Milestone', $url)
             ->line('Thanks!')
             ->attach($this->file->getAbsolutePath(), [
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
-            ])->subject('Upload Alert - ' . $this->milestone->name);
+            ])->subject('Upload Alert - '.$this->milestone->name);
     }
 }

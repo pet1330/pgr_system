@@ -14,7 +14,7 @@ class CreateStudentRecordsTable extends Migration
     public function up()
     {
         Schema::create('student_records', function (Blueprint $table) {
-            $table->engine ='InnoDB';
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('student_id')->unsigned()->index();
             $table->date('enrolment_date')->nullable();

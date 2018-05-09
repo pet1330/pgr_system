@@ -24,15 +24,13 @@ class SupervisorRequest extends FormRequest
     public function rules()
     {
         return [
-            'supervisor' =>
-            [
+            'supervisor' => [
                 'required',
                 'staff',
             ],
-            'type' => 
-            [
+            'type' => [
                 'required',
-                'in:1,2,3'
+                'in:1,2,3',
             ],
         ];
     }

@@ -12,7 +12,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        \factory(App\Models\Admin::class,20)->create();
+        \factory(App\Models\Admin::class, 20)->create();
         Admin::first()->assignDefaultPermissions();
     }
 }

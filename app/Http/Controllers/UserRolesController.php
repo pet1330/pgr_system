@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Silber\Bouncer\Database\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreUsersRequest;
 use App\Http\Requests\Admin\UpdateUsersRequest;
 
 class UserRolesController extends Controller
@@ -33,7 +29,6 @@ class UserRolesController extends Controller
      */
     public function create()
     {
-
         $roles = Role::get()->pluck('name', 'name');
 
         return view('admin.settings.userroles.create', compact('roles'));
@@ -49,8 +44,7 @@ class UserRolesController extends Controller
     {
         $user = User::create($request->all());
 
-        foreach ($request->input('roles') as $role)
-        {
+        foreach ($request->input('roles') as $role) {
             $user->assign($role);
         }
 

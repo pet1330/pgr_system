@@ -16,23 +16,24 @@ use App\Models\Milestone;
 use Illuminate\Http\Request;
 use App\Models\MilestoneType;
 use App\Models\StudentRecord;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\ApprovalRequest;
 use App\Http\Requests\MilestoneRequest;
 use App\Notifications\AdminUploadAlert;
 use App\Notifications\StudentUploadAlert;
 use App\Notifications\AdminUploadConfirmation;
 use App\Notifications\StudentUploadConfirmation;
+use App\Notifications\StudentMilestoneApprovalAlert;
+use App\Notifications\SupervisorMilestoneApprovalAlert;
 
 class MilestoneController extends Controller
 {
-
     public function index(Student $student, StudentRecord $record)
     {
-
         $this->authorise('view', $student);
 
-        if($student->id !== $record->student_id) abort(404);
+        if ($student->id !== $record->student_id) {
+            abort(404);
+        }
 
         $milestones = $record->timeline;
         $recently_submitted = $milestones->filter->isRecentlySubmitted();
@@ -43,9 +44,9 @@ class MilestoneController extends Controller
         $awaiting = $milestones->filter->isAwaitingAmendments();
         $approved = $milestones->filter->isApproved();
 
-        return View('student.milestones', 
+        return View('student.milestones',
             compact('student', 'record', 'milestones', 'recently_submitted',
-                'overdue', 'submitted', 'upcoming', 'future', 'awaiting', 'approved') );
+                'overdue', 'submitted', 'upcoming', 'future', 'awaiting', 'approved'));
     }
 
     public function overdue(Request $request)
@@ -53,8 +54,9 @@ class MilestoneController extends Controller
 
         // permissions checked in data function
 
-        if ($request->ajax())
-            return $this->data( Milestone::select('milestones.*')->overdue() )->make(true);
+        if ($request->ajax()) {
+            return $this->data(Milestone::select('milestones.*')->overdue())->make(true);
+        }
 
         return view('admin.milestone.list', [
             'title' => 'Overdue Milestones',
@@ -67,9 +69,10 @@ class MilestoneController extends Controller
 
         // permissions checked in data function
 
-        if ($request->ajax())
-            return $this->data( Milestone::select('milestones.*')->awaitingAmendments() )
+        if ($request->ajax()) {
+            return $this->data(Milestone::select('milestones.*')->awaitingAmendments())
         ->make(true);
+        }
 
         return view('admin.milestone.list', [
             'title' => 'Awaiting Amendments',
@@ -82,8 +85,9 @@ class MilestoneController extends Controller
 
         // permissions checked in data function
 
-        if ($request->ajax())
-            return $this->data( Milestone::select('milestones.*')->upcoming() )->make(true);
+        if ($request->ajax()) {
+            return $this->data(Milestone::select('milestones.*')->upcoming())->make(true);
+        }
 
         return view('admin.milestone.list', [
             'title' => 'Upcoming Milestones',
@@ -96,16 +100,14 @@ class MilestoneController extends Controller
 
         // permissions checked in data function
 
-        if ($request->ajax())
-        {
-            return $this->data( Milestone::select('milestones.*')->submitted() )
-                ->editColumn('submitted_date', function (Milestone $ms)
-                { 
-                    return $ms->submitted_date->format('d/m/Y') .
-                           ' (' . $ms->submitted_date->diffForHumans() . ')';
+        if ($request->ajax()) {
+            return $this->data(Milestone::select('milestones.*')->submitted())
+                ->editColumn('submitted_date', function (Milestone $ms) {
+                    return $ms->submitted_date->format('d/m/Y').
+                           ' ('.$ms->submitted_date->diffForHumans().')';
                 })
                 ->filterColumn('submitted_date', function ($query, $keyword) {
-                    $keyword = implode('%%',str_split(str_replace( ['+', '-'], '',
+                    $keyword = implode('%%', str_split(str_replace(['+', '-'], '',
                         filter_var($keyword, FILTER_SANITIZE_NUMBER_INT)
                     )));
                     $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?",
@@ -125,16 +127,14 @@ class MilestoneController extends Controller
 
         // permissions checked in data function
 
-        if ($request->ajax())
-        {
-            return $this->data( Milestone::select('milestones.*')->recentlySubmitted() )
-                ->editColumn('submitted_date', function (Milestone $ms)
-                { 
-                    return $ms->submitted_date->format('d/m/Y') .
-                           ' (' . $ms->submitted_date->diffForHumans() . ')';
+        if ($request->ajax()) {
+            return $this->data(Milestone::select('milestones.*')->recentlySubmitted())
+                ->editColumn('submitted_date', function (Milestone $ms) {
+                    return $ms->submitted_date->format('d/m/Y').
+                           ' ('.$ms->submitted_date->diffForHumans().')';
                 })
                 ->filterColumn('submitted_date', function ($query, $keyword) {
-                    $keyword = implode('%%',str_split(str_replace( ['+', '-'], '',
+                    $keyword = implode('%%', str_split(str_replace(['+', '-'], '',
                         filter_var($keyword, FILTER_SANITIZE_NUMBER_INT)
                     )));
                     $query->whereRaw("DATE_FORMAT(submitted_date,'%d/%m/%Y') like ?",
@@ -151,37 +151,40 @@ class MilestoneController extends Controller
 
     public function data($milestones)
     {
-
         $this->authorise('view', Milestone::class);
 
         return Datatables::eloquent($milestones->with([
-            'type', 'student', 'student.student', 'student.school'
-        ] ) )
-            ->editColumn('school', function (Milestone $ms)
-                { return $ms->student->school->name; })
-            ->editColumn('name', function (Milestone $ms)
-                { return $ms->name; })
-            ->editColumn('due_date', function (Milestone $ms)
-                { return $ms->due_date->format('d/m/Y') . '  (' .
-                $ms->due_date->diffForHumans().')' ; })
-            ->editColumn('first_name', function (Milestone $ms)
-                { return $ms->student->student->first_name; })
-            ->editColumn('last_name', function (Milestone $ms)
-                { return $ms->student->student->last_name; })
+            'type', 'student', 'student.student', 'student.school',
+        ]))
+            ->editColumn('school', function (Milestone $ms) {
+                return $ms->student->school->name;
+            })
+            ->editColumn('name', function (Milestone $ms) {
+                return $ms->name;
+            })
+            ->editColumn('due_date', function (Milestone $ms) {
+                return $ms->due_date->format('d/m/Y').'  ('.
+                $ms->due_date->diffForHumans().')';
+            })
+            ->editColumn('first_name', function (Milestone $ms) {
+                return $ms->student->student->first_name;
+            })
+            ->editColumn('last_name', function (Milestone $ms) {
+                return $ms->student->student->last_name;
+            })
             ->filterColumn('due_date', function ($query, $keyword) {
-                $keyword = implode('%%',str_split(str_replace( ['+', '-'], '',
+                $keyword = implode('%%', str_split(str_replace(['+', '-'], '',
                     filter_var($keyword, FILTER_SANITIZE_NUMBER_INT)
                 )));
                 $query->whereRaw("DATE_FORMAT(due_date,'%d/%m/%Y') like ?", ["%%$keyword%%"]);
             })
-            ->setRowAttr([ 'data-link' => function(Milestone $ms)
-                {
-                    return route('student.record.milestone.show', [
+            ->setRowAttr(['data-link' => function (Milestone $ms) {
+                return route('student.record.milestone.show', [
                             $ms->student->student->university_id,
                             $ms->student->slug(),
-                            $ms->slug()
+                            $ms->slug(),
                         ]);
-                }
+            },
             ]);
     }
 
@@ -192,8 +195,9 @@ class MilestoneController extends Controller
      */
     public function create(Student $student, StudentRecord $record)
     {
-
-        if ($student->id !== $record->student_id) abort(404);
+        if ($student->id !== $record->student_id) {
+            abort(404);
+        }
 
         $this->authorise('view', $student);
         $this->authorise('createMilestone');
@@ -212,8 +216,9 @@ class MilestoneController extends Controller
      */
     public function store(Request $request, Student $student, StudentRecord $record)
     {
-
-        if ($student->id !== $record->student_id) abort(404);
+        if ($student->id !== $record->student_id) {
+            abort(404);
+        }
 
         $this->authorise('view', $student);
 
@@ -221,12 +226,11 @@ class MilestoneController extends Controller
             $this->storeAdminMilestone($request, $student, $record) :
             $this->storeStudentMilestone($request, $student, $record);
 
-        if($milestone instanceof Milestone) // else redirect is returned
-        {
+        if ($milestone instanceof Milestone) { // else redirect is returned
             $student->allow('view', $milestone);
             $student->allow('upload', $milestone);
             Bouncer::refreshFor($student);
-            $student->supervisors->each(function(Staff $supervisor) use ($milestone){
+            $student->supervisors->each(function (Staff $supervisor) use ($milestone) {
                 $supervisor->allow('view', $milestone);
                 Bouncer::refreshFor($supervisor);
             });
@@ -234,24 +238,26 @@ class MilestoneController extends Controller
             return redirect()->route('student.record.milestone.show',
                 compact('student', 'record', 'milestone'));
         }
+
         return $milestone;
     }
 
     private function storeStudentMilestone(Request $request,
         Student $student, StudentRecord $record)
     {
-
         $validator = Validator::make($request->all(), [
-            'milestone_type' => [ 'required', 'exists:milestone_types,id,student_makable,1' ],
-            'file' => [ 'required', 'max:20000']
+            'milestone_type' => ['required', 'exists:milestone_types,id,student_makable,1'],
+            'file' => ['required', 'max:20000'],
         ]);
 
-        if($validator->fails()) return redirect()->back()->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $m = Milestone::make([
             'due_date' => Carbon::now()->format('Y-m-d'),
             'milestone_type_id' => $request->milestone_type,
-            'created_by' => auth()->id()
+            'created_by' => auth()->id(),
             ]);
 
         $m->submitted_date = $m->due_date;
@@ -260,44 +266,48 @@ class MilestoneController extends Controller
         $milestone = $record->timeline()->save($m);
 
         try {
-            $media = MediaUploader::fromSource( $request->file( 'file' ) )
+            $media = MediaUploader::fromSource($request->file('file'))
                 ->useHashForFilename()
-                ->toDestination( 'local', 'milestone-attachments/' . $milestone->slug() )
+                ->toDestination('local', 'milestone-attachments/'.$milestone->slug())
                 ->upload();
-            $media->original_filename = $request->file( 'file' )->getClientOriginalName();
+            $media->original_filename = $request->file('file')->getClientOriginalName();
             $media->uploader_id = auth()->id();
             $media->save();
 
-            if( $media->exists() )
-            {
+            if ($media->exists()) {
                 $milestone->attachMedia($media, ['submission']);
                 $milestone->save();
+
                 return $milestone;
             }
-        } catch(MediaUploadException $e) {} catch(\Exception $ex) {}
+        } catch (MediaUploadException $e) {
+        } catch (\Exception $ex) {
+        }
 
-            $milestone->forceDelete();
-            $validator->errors()->add('file', 'The attached file is invalid.');
-            return redirect()->back()->withErrors($validator)->withInput();
+        $milestone->forceDelete();
+        $validator->errors()->add('file', 'The attached file is invalid.');
+
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     private function storeAdminMilestone(Request $request,
         Student $student, StudentRecord $record)
     {
-
         $this->authorise('manage', Milestone::class);
 
         $validator = Validator::make($request->all(), [
-            'milestone_type' => [ 'required', 'exists:milestone_types,id' ],
-            'due' => [ 'date' ]
+            'milestone_type' => ['required', 'exists:milestone_types,id'],
+            'due' => ['date'],
         ]);
 
-        if($validator->fails()) return redirect()->back()->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $m = Milestone::make([
             'due_date' => $request->due,
             'milestone_type_id' => $request->milestone_type,
-            'non_interuptive_date' => Carbon::parse($request->due)->subDays( $student->interuptionPeriodSoFar() ),
+            'non_interuptive_date' => Carbon::parse($request->due)->subDays($student->interuptionPeriodSoFar()),
             'created_by' => auth()->id(),
             ]);
 
@@ -305,7 +315,6 @@ class MilestoneController extends Controller
 
         return $milestone;
     }
-
 
     /**
      * Display the specified resource.
@@ -315,10 +324,11 @@ class MilestoneController extends Controller
      */
     public function show(Student $student, StudentRecord $record, Milestone $milestone)
     {
-
         $this->authorise('view', $milestone);
 
-        if ($record->id != $milestone->student_record_id) abort(404);
+        if ($record->id != $milestone->student_record_id) {
+            abort(404);
+        }
 
         return view('admin.milestone.show', compact('student', 'record', 'milestone'));
     }
@@ -331,12 +341,14 @@ class MilestoneController extends Controller
      */
     public function edit(Student $student, StudentRecord $record, Milestone $milestone)
     {
-
         $this->authorise('manage', $milestone);
 
-        if ($record->id != $milestone->student_record_id) abort(404);
+        if ($record->id != $milestone->student_record_id) {
+            abort(404);
+        }
 
         $types = MilestoneType::all();
+
         return view('admin.milestone.edit',
             compact('student', 'record', 'milestone', 'types'));
     }
@@ -351,16 +363,18 @@ class MilestoneController extends Controller
     public function update(MilestoneRequest $request,
         Student $student, StudentRecord $record, Milestone $milestone)
     {
-
         $this->authorise('manage', $milestone);
 
-        if ($record->id !== $milestone->student_record_id) abort(404);
+        if ($record->id !== $milestone->student_record_id) {
+            abort(404);
+        }
 
         $away_days = $student->interuptionPeriodSoFar(Carbon::parse($request->due));
         $milestone->due_date = $request->due;
         $milestone->milestone_type_id = $request->milestone_type;
         $milestone->non_interuptive_date = Carbon::parse($request->due)->subDays($away_days);
         $milestone->save();
+
         return redirect()->route('student.record.milestone.show',
             compact('student', 'record', 'milestone'));
     }
@@ -373,93 +387,90 @@ class MilestoneController extends Controller
      */
     public function destroy(Student $student, StudentRecord $record, Milestone $milestone)
     {
-
         $this->authorise('manage', $milestone);
 
         // We are using soft delete so this item will remain in the database
         $milestone->delete();
+
         return redirect()
-            ->route('student.record.milestone.index', 
+            ->route('student.record.milestone.index',
                 [$student->university_id, $record->slug()])
             ->with('flash', [
-                'message' => 'Successfully deleted "' . $milestone->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully deleted "'.$milestone->name.'"',
+                'type' => 'success',
             ]);
     }
 
     public function upload(Request $request,
         Student $student, StudentRecord $record, Milestone $milestone)
     {
-
         $this->authorise('upload', $milestone);
 
-        if($milestone->student_record_id !== $record->id ||
-            $student->id !== $record->student_id) abort(404);
+        if ($milestone->student_record_id !== $record->id ||
+            $student->id !== $record->student_id) {
+            abort(404);
+        }
 
-        if($milestone && $request->file( 'file' ) !== null )
-        {
-            $media = MediaUploader::fromSource( $request->file( 'file' ) )
+        if ($milestone && $request->file('file') !== null) {
+            $media = MediaUploader::fromSource($request->file('file'))
                 ->useHashForFilename()
-                ->toDestination( 'local', 'milestone-attachments/' . $milestone->slug() )
+                ->toDestination('local', 'milestone-attachments/'.$milestone->slug())
                 ->upload();
-            $media->original_filename = $request->file( 'file' )->getClientOriginalName();
+            $media->original_filename = $request->file('file')->getClientOriginalName();
             $media->uploader_id = auth()->id();
             $media->save();
             $milestone->attachMedia($media, ['submission']);
             $milestone->submitted_date = Carbon::now();
             $milestone->save();
-            $this->sendUploadNotifications( $student, $record, $milestone, $media );
-            return "File uploaded successfully";
+            $this->sendUploadNotifications($student, $record, $milestone, $media);
+
+            return 'File uploaded successfully';
         }
         abort(404);
     }
 
     public function sendUploadNotifications(
-        Student $student, StudentRecord $record, Milestone $milestone, Media $upload )
+        Student $student, StudentRecord $record, Milestone $milestone, Media $upload)
     {
-        $details = [ $student, $record, $milestone, $upload ];
+        $details = [$student, $record, $milestone, $upload];
 
-        if( $upload->uploader->id === $student->id ) // If the student uploads
-        {
+        if ($upload->uploader->id === $student->id) { // If the student uploads
             //  confirm student
-            $student->notify( new StudentUploadConfirmation( ...$details ) );
+            $student->notify(new StudentUploadConfirmation(...$details));
             //  alert school
-            $record->school->notify( new AdminUploadAlert( ...$details ) );
-        }
-        else if( $record->school->notifications_address == $upload->uploader->university_email ) // If school uploads
-        {
+            $record->school->notify(new AdminUploadAlert(...$details));
+        } elseif ($record->school->notifications_address == $upload->uploader->university_email) { // If school uploads
             //  alert school
-            $record->school->notify( new AdminUploadAlert( ...$details ) );
+            $record->school->notify(new AdminUploadAlert(...$details));
             //  alert student
-            $student->notify( new StudentUploadAlert( ...$details ) );
-        }
-        else // If neither
-        {
+            $student->notify(new StudentUploadAlert(...$details));
+        } else { // If neither
             //  Confirm uploader
-            $upload->uploader->notify( new AdminUploadConfirmation( ...$details ) );
+            $upload->uploader->notify(new AdminUploadConfirmation(...$details));
             //  alert student
-            $student->notify( new StudentUploadAlert( ...$details ) );
+            $student->notify(new StudentUploadAlert(...$details));
             //  alert school
-            $record->school->notify( new AdminUploadAlert( ...$details ) );
+            $record->school->notify(new AdminUploadAlert(...$details));
         }
 
-        if( $record->directorOfStudy )
-            $record->directorOfStudy->notify( new AdminUploadAlert( ...$details ) );
-        else if($record->secondSupervisor)
-            $record->secondSupervisor->notify( new AdminUploadAlert( ...$details ) );
-        else if($record->thirdSupervisor)
-            $record->thirdSupervisor->notify( new AdminUploadAlert( ...$details ) );
+        if ($record->directorOfStudy) {
+            $record->directorOfStudy->notify(new AdminUploadAlert(...$details));
+        } elseif ($record->secondSupervisor) {
+            $record->secondSupervisor->notify(new AdminUploadAlert(...$details));
+        } elseif ($record->thirdSupervisor) {
+            $record->thirdSupervisor->notify(new AdminUploadAlert(...$details));
+        }
     }
 
     public function download(Request $request,
         Student $student, StudentRecord $record, Milestone $milestone, Media $file)
     {
-
         $this->authorise('view', $milestone);
 
-        if($file->fileExists())
+        if ($file->fileExists()) {
             return response()->download($file->getAbsolutePath(), $file->original_filename);
-        Log::error('Uploaded file ' . $file->slug() . " appears to be out of sync");
+        }
+        Log::error('Uploaded file '.$file->slug().' appears to be out of sync');
         abort(401);
     }
 
@@ -468,20 +479,27 @@ class MilestoneController extends Controller
     {
         $this->authorise('manage', Approval::class);
 
-        if(!! $request->approved)
+        if ((bool) $request->approved) {
             $student->disallow('upload', $milestone);
-        else
+        } else {
             $student->allow('upload', $milestone);
+        }
 
         Bouncer::refreshFor($student);
 
-        $milestone->approve($request->approved, $request->feedback);
+        $approval = $milestone->approve($request->approved, $request->feedback);
+
+        $student->notify(new StudentMilestoneApprovalAlert($student,
+            $record, $milestone, $approval));
+
+        $student->supervisors->each->notify(new SupervisorMilestoneApprovalAlert($student,
+            $record, $milestone, $approval));
 
         return redirect()->route('student.record.milestone.show',
           [$student->university_id, $record->slug(), $milestone->slug()])
             ->with('flash', [
                 'message' => 'Successfully approved milestone',
-                'type' => 'success'
+                'type' => 'success',
             ]);
     }
 }

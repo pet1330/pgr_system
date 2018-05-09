@@ -12,6 +12,6 @@ class MilestoneTemplateSeeder extends Seeder
      */
     public function run()
     {
-        factory( MilestoneTemplate::class, 10 )->create();
+        factory(MilestoneTemplate::class, 10)->create();
     }
 }

@@ -4,9 +4,9 @@
 $idp_host = 'https://adfs.lincoln.ac.uk:443';
 $prefix = str_finish(env('URL_PREFIX', ''), '/');
 
-return $settings = array(
+return $settings = [
 
-    /**
+    /*
      * If 'useRoutes' is set to true, the package defines five new routes:
      *
      *    Method | URI                      | Name
@@ -19,44 +19,38 @@ return $settings = array(
      */
     'useRoutes' => true,
 
-    'routesPrefix' => $prefix . 'saml2',
+    'routesPrefix' => $prefix.'saml2',
 
-    /**
+    /*
      * which middleware group to use for the saml routes
      * Laravel 5.2 will need a group which includes StartSession
      */
     'routesMiddleware' => ['web'],
 
-    /**
+    /*
      * Indicates how the parameters will be
      * retrieved from the sls request for signature validation
      */
     'retrieveParametersFromServer' => true,
 
-    /**
+    /*
      * Where to redirect after logout
      */
     'logoutRoute' => $prefix,
 
-    /**
+    /*
      * Where to redirect after login if no other option was provided
      */
     'loginRoute' => $prefix,
 
-
-    /**
+    /*
      * Where to redirect after login if no other option was provided
      */
-    'errorRoute' => $prefix . '/error',
-
-
-
+    'errorRoute' => $prefix.'/error',
 
     /*****
      * One Login Settings
      */
-
-
 
     // If 'strict' is True, then the PHP Toolkit will reject unsigned
     // or unencrypted messages if it expects them signed or encrypted
@@ -68,7 +62,7 @@ return $settings = array(
     'debug' => true, //@todo: make this depend on laravel config
 
     // Service Provider Data that we are deploying
-    'sp' => array(
+    'sp' => [
 
         // Specifies constraints on the name identifier to be used to
         // represent the requested subject.
@@ -88,41 +82,41 @@ return $settings = array(
 
         // Specifies info about where and how the <AuthnResponse> message MUST be
         // returned to the requester, in this case our SP.
-        'assertionConsumerService' => array(
+        'assertionConsumerService' => [
             // URL Location where the <Response> from the IdP will be returned,
             // using HTTP-POST binding.
             // Leave blank to use the 'saml_acs' route
             'url' => '',
-        ),
+        ],
         // Specifies info about where and how the <Logout Response> message MUST be
         // returned to the requester, in this case our SP.
-        'singleLogoutService' => array(
+        'singleLogoutService' => [
             // URL Location where the <Response> from the IdP will be returned,
             // using HTTP-Redirect binding.
             // Leave blank to use the 'saml_sls' route
             'url' => '',
-        ),
-    ),
+        ],
+    ],
 
     // Identity Provider Data that we want connect with our SP
-    'idp' => array(
+    'idp' => [
         // Identifier of the IdP entity  (must be a URI)
 
-        'entityId' => $idp_host . '/federationmetadata/2007-06/federationmetadata.xml',
+        'entityId' => $idp_host.'/federationmetadata/2007-06/federationmetadata.xml',
         // SSO endpoint info of the IdP. (Authentication Request protocol)
-        'singleSignOnService' => array(
+        'singleSignOnService' => [
             // URL Target of the IdP where the SP will send the Authentication Request Message,
             // using HTTP-Redirect binding.
 
-            'url' => $idp_host . '/adfs/ls',
-        ),
+            'url' => $idp_host.'/adfs/ls',
+        ],
         // SLO endpoint info of the IdP.
-        'singleLogoutService' => array(
+        'singleLogoutService' => [
             // URL Location of the IdP where the SP will send the SLO Request,
             // using HTTP-Redirect binding.
 
-            'url' => $idp_host . '/adfs/ls?wa=wsignout1.0',
-        ),
+            'url' => $idp_host.'/adfs/ls?wa=wsignout1.0',
+        ],
         // Public x509 certificate of the IdP
 
         'x509cert' => 'MIIC4DCCAcigAwIBAgIQfZ4RS/LKyJ5Ax128/65MDDANBgkqhkiG9w0BAQsFADAsMSowKAYDVQQDEyFBREZTIFNpZ25pbmcgLSBhZGZzLmxpbmNvbG4uYWMudWswHhcNMTcwNDEyMDI0MDUzWhcNMjAwNDExMDI0MDUzWjAsMSowKAYDVQQDEyFBREZTIFNpZ25pbmcgLSBhZGZzLmxpbmNvbG4uYWMudWswggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCkGih3kEXpFJ8aey1SBdB9TEJ5KbPaBuZ4JzD/zbY2g42wMPnmlchawouzHwCJynG8zGFt20xnuhsCdTE4Tqt9YGnWoIF9VU93KOT7AfTBkubUvWlgXBdpp07Q892RIojrykxz9T88dd2KY3kBuy7+tKWNkXQl5W6dPI4gTE3mk0EPTO68wlunEUbEsDNc7r6fLkNlIitR4blwdWeHVYoBBihHnDZlT2yv/EcKNTcHjN8c6PSIvi6dhjsPDfhBQdAYSX5jO75aEXhJ4+zUg8u7Pbwb9eTNMQ0mty28+iEcnAq6T5ppYYUnKNUgjZT2JTb6F6RxTV1LgxOa2GVB5MnPAgMBAAEwDQYJKoZIhvcNAQELBQADggEBADs4fx9fdoDO20iAHvAwYrvRaIhd65g3c4W1jQwCeA2/+DYBvfOO9t9VhzmQlUvA+X0x1rqh9GoamGfOVAzOg3ikQbOlCxRXitYNQHwCQAZ8PjVCOpQKeWbzo2bO2MwQUYdXOTrSGhc83fZEovT4kpmKC3RiOvVCTe1geqpHAoAFHa/ZDKSw8uG1zv+X4M7vWsOJJ5tx/l716f1YYqEUtsfLlDKue+OWtdiyKGO/JzYypEh7xQBdXc+GKaUd1bwpsl01f8ZMIKF4340V10FCNyr/9CH7KQBYKDRZ788imJbMuc8BKh6pkun/ETGPDr25/uMEXNSL6H4Jemfq0nChC+M=',
@@ -131,9 +125,7 @@ return $settings = array(
          *  (openssl x509 -noout -fingerprint -in "idp.crt" to generate it)
          */
         // 'certFingerprint' => '',
-    ),
-
-
+    ],
 
     /***
      *
@@ -142,9 +134,9 @@ return $settings = array(
      *
      */
     // Security settings
-    'security' => array(
+    'security' => [
 
-        /** signatures and encryptions offered */
+        /* signatures and encryptions offered */
 
         // Indicates that the nameID of the <samlp:logoutRequest> sent by this SP
         // will be encrypted.
@@ -170,8 +162,7 @@ return $settings = array(
         */
         'signMetadata' => false,
 
-
-        /** signatures and encryptions required **/
+        /* signatures and encryptions required **/
 
         // Indicates a requirement for the <samlp:Response>, <samlp:LogoutRequest> and
         // <samlp:LogoutResponse> elements received by this SP to be signed.
@@ -190,28 +181,28 @@ return $settings = array(
         // Set true or don't present thi parameter and you will get an AuthContext 'exact' 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport'
         // Set an array with the possible auth context values: array ('urn:oasis:names:tc:SAML:2.0:ac:classes:Password', 'urn:oasis:names:tc:SAML:2.0:ac:classes:X509'),
         'requestedAuthnContext' => true,
-    ),
+    ],
 
     // Contact information template, it is recommended to suply a technical and support contacts
-    'contactPerson' => array(
-        'technical' => array(
+    'contactPerson' => [
+        'technical' => [
             'givenName' => 'name',
-            'emailAddress' => env('TECH_SUPPORT_ADDRESS')
-        ),
-        'support' => array(
+            'emailAddress' => env('TECH_SUPPORT_ADDRESS'),
+        ],
+        'support' => [
             'givenName' => 'Support',
-            'emailAddress' => env('TECH_SUPPORT_ADDRESS')
-        ),
-    ),
+            'emailAddress' => env('TECH_SUPPORT_ADDRESS'),
+        ],
+    ],
 
     // Organization information template, the info in en_US lang is recomended, add more if required
-    'organization' => array(
-        'en-GB' => array(
+    'organization' => [
+        'en-GB' => [
             'name' => 'Name',
             'displayname' => 'PGR System',
-            'url' => env('APP_URL')
-        ),
-    ),
+            'url' => env('APP_URL'),
+        ],
+    ],
 
 /* Interoperable SAML 2.0 Web Browser SSO Profile [saml2int]   http://saml2int.org/profile/current
 
@@ -222,4 +213,4 @@ return $settings = array(
    'wantNameIdEncrypted' => false,
 */
 
-);
+];

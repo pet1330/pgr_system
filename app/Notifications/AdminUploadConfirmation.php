@@ -55,16 +55,17 @@ class AdminUploadConfirmation extends Notification implements ShouldQueue
     {
         $url = route('student.record.milestone.show',
             [$this->student->university_id,
-            $this->record->slug(), 
-            $this->milestone->slug()
+            $this->record->slug(),
+            $this->milestone->slug(),
             ]);
+
         return (new MailMessage)
-            ->line('This is an email to confirm that you have successfully uploaded the attached file to '. $this->student->name . '\'s milestone: ' . $this->milestone->name)
+            ->line('This is an email to confirm that you have successfully uploaded the attached file to '.$this->student->name.'\'s milestone: '.$this->milestone->name)
             ->action('View Milestone', $url)
             ->line('Thanks!')
             ->attach($this->file->getAbsolutePath(), [
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
-            ])->subject('Upload Confirmation - ' . $this->student->name);
+            ])->subject('Upload Confirmation - '.$this->student->name);
     }
 }

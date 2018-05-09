@@ -2,9 +2,7 @@
 
 namespace App\Listeners;
 
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use \Aacotroneo\Saml2\Events\Saml2LogoutEvent;
+use Aacotroneo\Saml2\Events\Saml2LogoutEvent;
 
 class LogoutListener
 {
@@ -15,7 +13,6 @@ class LogoutListener
      */
     public function __construct()
     {
-
     }
 
     /**

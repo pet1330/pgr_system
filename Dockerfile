@@ -20,15 +20,18 @@ RUN apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-co
                 php7.1-readline php7.1-recode php7.1-soap php7.1-sqlite3 \
                 php7.1-tidy php7.1-xml php7.1-xmlrpc php7.1-xsl php7.1-zip \
                 php-tideways php-mongodb \
-                vim nano supervisor nodejs  \
-                yarn apache2 apache2-utils libapache2-mod-php7.1
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+                vim nano supervisor nodejs duplicity \
+                yarn apache2 apache2-utils libapache2-mod-php7.1 \
+                && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
 RUN a2enmod  php7.1
 RUN a2enmod  rewrite
 RUN a2enconf php7.1-fpm
+
+RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
+RUN curl -L https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
+
 
 COPY docker/apache/sites-available/* /etc/apache2/sites-available/
 COPY docker/apache/mysitename.crt /etc/apache2
@@ -37,14 +40,20 @@ RUN chmod 600 /etc/apache2/mysite*
 COPY docker/cron/crontab /root/crontab
 RUN crontab /root/crontab
 
+<<<<<<< HEAD
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
 RUN curl https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
 
+=======
+>>>>>>> 3a44e8a92b96b624046fdd8a25290d471126916d
 #RUN useradd -d /home/app -m app
 #RUN adduser app www-data
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3a44e8a92b96b624046fdd8a25290d471126916d
 COPY . /var/www/html/pgr
 RUN chown -R www-data:www-data /var/www/html/pgr
 COPY docker/supervisor/conf.d/* /etc/supervisor/conf.d/

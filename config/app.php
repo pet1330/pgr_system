@@ -27,6 +27,8 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+    'global_message' => env('GLOBAL_MESSAGE'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -55,6 +57,19 @@ return [
 
     'url_prefix' => env('URL_PREFIX', ''),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Route Prefix Proxy
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used to set the applications root URL when using a global
+    | route prefix. They will then be used by the RoutePrefixProxy.
+    |
+    */
+
+    'proxy_url' => env('PROXY_URL'),
+
+    'proxy_schema' => env('PROXY_SCHEMA'),
 
     /*
     |--------------------------------------------------------------------------
@@ -172,7 +187,7 @@ return [
         Laravel\Tinker\TinkerServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Spatie\Activitylog\ActivitylogServiceProvider::class,
-		Aacotroneo\Saml2\Saml2ServiceProvider::class,
+        Aacotroneo\Saml2\Saml2ServiceProvider::class,
         Plank\Mediable\MediableServiceProvider::class,
         Silber\Bouncer\BouncerServiceProvider::class,
         /*
@@ -182,7 +197,6 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
 
     ],
 

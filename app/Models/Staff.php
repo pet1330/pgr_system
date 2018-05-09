@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Bouncer;
-use App\Models\Training;
 use App\Scopes\UserScope;
 
 class Staff extends User
@@ -30,7 +29,7 @@ class Staff extends User
             case 1: return 'Director of Study';
             case 2: return 'Second Supervisor';
             case 3: return 'Third Supervisor';
-            default: abort(404); 
+            default: abort(404);
         }
     }
 
@@ -39,18 +38,18 @@ class Staff extends User
         return $this->belongsToMany(App\Models\Training::class);
     }
 
-    public function assignDefaultPermissions($reset=false)
+    public function assignDefaultPermissions($reset = false)
     {
         // Remove all abilities
-        if($reset) $this->abilities()->sync([]);
+        if ($reset) {
+            $this->abilities()->sync([]);
+        }
 
         // Assign a sensable default
         $this->allow('view', $this);
-        $this->supervising->each(function(StudentRecord $record)
-        {
+        $this->supervising->each(function (StudentRecord $record) {
             $this->allow('view', $record->student);
-            $record->timeline->each(function(Milestone $m)
-            {
+            $record->timeline->each(function (Milestone $m) {
                 $this->allow('view', $m);
             });
         });

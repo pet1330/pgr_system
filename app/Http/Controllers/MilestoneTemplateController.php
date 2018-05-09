@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\MilestoneType;
 use App\Models\TimelineTemplate;
 use App\Models\MilestoneTemplate;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\MilestoneTemplateRequest;
 
 class MilestoneTemplateController extends Controller
 {
-
     /**
      * Show the form for creating a new resource.
      *
@@ -19,35 +16,35 @@ class MilestoneTemplateController extends Controller
      */
     public function create(TimelineTemplate $timeline)
     {
-
         $this->authorise('manage', $timeline);
 
         $types = MilestoneType::all();
+
         return view('admin.settings.milestonetemplate.create', compact('timeline', 'types'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(MilestoneTemplateRequest $request, TimelineTemplate $timeline)
     {
-
         $this->authorise('manage', $timeline);
 
         $milestone = $timeline->milestone_templates()->save(
             MilestoneTemplate::make([
                 'due' => $request->due,
-                'milestone_type_id' => $request->milestone_type
+                'milestone_type_id' => $request->milestone_type,
             ])
         );
+
         return redirect()
             ->route('settings.timeline.show', $timeline->id)
             ->with('flash', [
-                'message' => 'Successfully added "' . $milestone->type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully added "'.$milestone->type->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -60,7 +57,6 @@ class MilestoneTemplateController extends Controller
         return view('admin.settings.milestonetemplate.edit', compact('timeline', 'milestone', 'types'));
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -72,14 +68,14 @@ class MilestoneTemplateController extends Controller
         TimelineTemplate $timeline, MilestoneTemplate $milestone)
     {
         $this->authorise('manage', $timeline);
-        
-        $milestone->update( $request->only( [ 'due', 'milestone_type' ] ) );
+
+        $milestone->update($request->only(['due', 'milestone_type']));
 
         return redirect()
             ->route('settings.timeline.show', $timeline->id)
             ->with('flash', [
-                'message' => 'Successfully updated "' . $milestone->type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully updated "'.$milestone->type->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -98,11 +94,10 @@ class MilestoneTemplateController extends Controller
         return redirect()
             ->route('settings.timeline.show', $timeline->id)
             ->with('flash', [
-                'message' => 'Successfully deleted "' . $milestone->type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully deleted "'.$milestone->type->name.'"',
+                'type' => 'success',
             ]);
     }
-
 
     public function restore($id)
     {
@@ -110,21 +105,22 @@ class MilestoneTemplateController extends Controller
 
         $this->authorise('manage', $mt->timeline_template);
 
-        if($mt->trashed())
-        {
+        if ($mt->trashed()) {
             $mt->restore();
+
             return redirect()
                 ->route('settings.timeline.show', $mt->timeline_template->id)
                 ->with('flash', [
-                'message' => 'Successfully restored "' . $mt->type->name . '"',
-                'type' => 'success'
+                'message' => 'Successfully restored "'.$mt->type->name.'"',
+                'type' => 'success',
             ]);
         }
+
         return redirect()
                 ->route('settings.timeline.show', $mt->timeline_template->id)
                 ->with('flash', [
-                'message' => 'Error: Milestone Template has not deleted: "' . $mt->type->name . '"',
-                'type' => 'danger'
+                'message' => 'Error: Milestone Template has not deleted: "'.$mt->type->name.'"',
+                'type' => 'danger',
             ]);
     }
 }

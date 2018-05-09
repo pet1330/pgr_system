@@ -29,16 +29,16 @@ class AbsenceRequest extends FormRequest
                 'exists:absence_types,id',
             ],
             'from' => [
-                'date'
+                'date',
             ],
             'to' => [
                 'date',
-                'after_or_equal:from'
+                'after_or_equal:from',
             ],
             'duration' => [
                 'required',
-                'integer'
-            ]
+                'integer',
+            ],
         ];
     }
 }

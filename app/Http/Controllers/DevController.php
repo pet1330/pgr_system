@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class DevController extends Controller
 {
     public function authStatus()
     {
-        return auth()->check() ? "logged-in" : "logged-out";
+        return auth()->check() ? 'logged-in' : 'logged-out';
     }
 
     public function downtimeRobot()
     {
-        return "All Systems Operational";
+        return 'All Systems Operational';
     }
 
     public function accountLocked()
     {
-        return "SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED";
+        return 'SORRY! YOUR ACCOUNT APPEARS TO HAVE BEEN LOCKED';
     }
 }

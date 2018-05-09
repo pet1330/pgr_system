@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\Models\StudentRecord;
 use App\Models\Student;
+use App\Models\StudentRecord;
+use Illuminate\Database\Seeder;
 
 class StudentRecordSeeder extends Seeder
 {
@@ -14,10 +14,9 @@ class StudentRecordSeeder extends Seeder
     public function run()
     {
         $students = Student::all();
-        foreach ($students as $student)
-        {
+        foreach ($students as $student) {
             $record = $student->records()->save(
-                factory(StudentRecord::class)->make() , 'student_id' );
+                factory(StudentRecord::class)->make(), 'student_id');
         }
     }
 }

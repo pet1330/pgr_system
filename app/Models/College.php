@@ -10,13 +10,13 @@ class College extends Model
 {
     use SoftDeletes;
     use LogsActivity;
-    
+
     protected static $logOnlyDirty = true;
-    
-    protected static $logAttributes = [ 'name' ];
-    
-    protected $fillable = [ 'name' ];
-    
+
+    protected static $logAttributes = ['name'];
+
+    protected $fillable = ['name'];
+
     protected $table = 'colleges';
 
     public function schools()
