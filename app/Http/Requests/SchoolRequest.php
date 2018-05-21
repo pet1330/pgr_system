@@ -46,7 +46,7 @@ class SchoolRequest extends FormRequest
                         'email',
                     ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return [
                     'name' => [
                         'required',
