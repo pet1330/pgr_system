@@ -38,6 +38,7 @@ class AbsenceRequest extends FormRequest
             'duration' => [
                 'required',
                 'integer',
+                'min:0',
             ],
         ];
     }
