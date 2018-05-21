@@ -14,3 +14,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #
 #0 * * * *    cd /var/www/html/pgr && php ./artisan list
+
+* * * * * php /var/www/html/pgr/artisan schedule:run >> /tmp/cron.log 2>&1
+
