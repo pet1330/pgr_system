@@ -38,7 +38,7 @@ class CollegeRequest extends FormRequest
                         'unique:colleges,name'.(is_null($college) ? '' : ','.$college->id),
                     ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return [
                     'name' => [
                     'required',

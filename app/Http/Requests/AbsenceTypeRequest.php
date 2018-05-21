@@ -42,7 +42,7 @@ class AbsenceTypeRequest extends FormRequest
                             'boolean',
                         ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return
                 [
                     'name' => [
