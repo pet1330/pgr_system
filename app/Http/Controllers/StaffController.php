@@ -21,7 +21,7 @@ class StaffController extends Controller
                 ->rawColumns(['editaction', 'deleteaction'])
             ->setRowAttr(['data-link' => function (Staff $staff) {
                 return route('staff.show', $staff->university_id);
-            }, ])
+            }])
             ->make(true);
         }
 

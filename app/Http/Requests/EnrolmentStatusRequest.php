@@ -38,7 +38,7 @@ class EnrolmentStatusRequest extends FormRequest
                         'unique:enrolment_statuses,status'.(is_null($status) ? '' : ','.$status->id),
                     ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return [
                     'status' => [
                         'required',
