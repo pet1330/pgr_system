@@ -9,9 +9,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     #RewriteRule ^(.*)/$ /$1 [L,R=302]
 
-    RewriteRule ^pgr/css/(.*) /css/$1 [L]
-    RewriteRule ^pgr/js/(.*) /js/$1 [L]
-    RewriteRule ^pgr/visjs/(.*) /visjs/$1 [L]
+    RewriteRule ^pgr-test/css/(.*) /css/$1 [L]
+    RewriteRule ^pgr-test/js/(.*) /js/$1 [L]
+    RewriteRule ^pgr-test/visjs/(.*) /visjs/$1 [L]
 
     
 

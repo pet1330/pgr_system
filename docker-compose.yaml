@@ -8,13 +8,13 @@ services:
     image: mysql:5.7
     restart: always
     volumes:
-      - /srv/pgr/db:/var/lib/mysql
+      - /srv/pgr-test/db:/var/lib/mysql
     expose:
       - "3306"
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
-  pgr:
+  pgr-test:
     image: lcasuol/pgr_system:lcas
     restart: always
     #build: . 
@@ -23,22 +23,8 @@ services:
       - db
       - redis
     ports:
-      - 80:80
-      - 443:443
+      - 8081:443
     volumes:
-      - /srv/pgr/storage:/var/www/html/pgr/storage
-      - /srv/pgr/config:/srv/config
-
-  mysqldump:
-    image: schnitzler/mysqldump
-    restart: always
-    volumes:
-      - ./db-backup.sh:/etc/periodic/daily/backup
-      - /srv/pgr/storage:/backup
-    command: ["-l", "8", "-d", "8"]
-    environment:
-      MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
-      MYSQL_DATABASE: pgr_saml
+      - /srv/pgr-test/storage:/var/www/html/pgr/storage
+      - /srv/pgr-test/config:/srv/config
 
