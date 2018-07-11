@@ -49,11 +49,11 @@ RUN a2enmod ssl
 
 WORKDIR /var/www/html/pgr
 
-RUN composer install
-RUN yarn
-RUN yarn run production
+#RUN composer install
+#RUN yarn
+#RUN yarn run 
 
-RUN chown -R www-data:www-data /var/www/html/pgr
+#RUN chown -R www-data:www-data /var/www/html/pgr
 
 EXPOSE 8080
 
