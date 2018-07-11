@@ -7,7 +7,13 @@
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
+    #RewriteRule ^(.*)/$ /$1 [L,R=302]
+
+    RewriteRule ^pgr/css/(.*) /css/$1 [L]
+    RewriteRule ^pgr/js/(.*) /js/$1 [L]
+    RewriteRule ^pgr/visjs/(.*) /visjs/$1 [L]
+
+    
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
