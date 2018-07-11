@@ -38,7 +38,7 @@ COPY docker/apache/mysitename.crt /etc/apache2
 COPY docker/apache/mysitename.key /etc/apache2
 RUN chmod 600 /etc/apache2/mysite*
 COPY docker/cron/crontab /root/crontab
-RUN crontab /root/crontab
+RUN crontab -u www-data /root/crontab
 
 #RUN useradd -d /home/app -m app
 #RUN adduser app www-data
