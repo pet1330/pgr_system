@@ -45,6 +45,7 @@ class Staff extends User
             $this->abilities()->sync([]);
         }
 
+        $this->assignBasicAdminPermissions();
         // Assign a sensable default
         $this->allow('view', $this);
         $this->supervising->each(function (StudentRecord $record) {
