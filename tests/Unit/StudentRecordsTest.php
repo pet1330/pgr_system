@@ -76,11 +76,11 @@ class StudentRecordsTest extends TestCase
         $this->seedDatabaseWithStudentRecordInformation();
 
         factory(Student::class, 3)->create()->each(function ($stu) {
-                $stu->records()->save(factory(StudentRecord::class)->make());
-            });
+            $stu->records()->save(factory(StudentRecord::class)->make());
+        });
 
         $sr = StudentRecord::first();
-        $sr->delete(); # soft_delete
+        $sr->delete(); // soft_delete
         $this->assertSoftDeleted('student_records', ['id' => $sr->id]);
     }
 
@@ -89,12 +89,12 @@ class StudentRecordsTest extends TestCase
         $this->seedDatabaseWithStudentRecordInformation();
 
         factory(Student::class, 3)->create()->each(function ($stu) {
-                $stu->records()->save(factory(StudentRecord::class)->make());
-            });
+            $stu->records()->save(factory(StudentRecord::class)->make());
+        });
 
         $sr = StudentRecord::first();
         $this->assertEquals(StudentRecord::count(), 3);
-        $sr->forceDelete(); # soft_delete
+        $sr->forceDelete(); // soft_delete
         $this->assertEquals(StudentRecord::count(), 2);
         $this->assertEquals(StudentRecord::withTrashed()->count(), 2);
     }

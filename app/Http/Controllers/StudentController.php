@@ -80,31 +80,30 @@ class StudentController extends Controller
 
         $current_records = $student->records()->count();
 
-        if($current_records === 0)
-        {
+        if ($current_records === 0) {
             return view('student.no_record_dashboard', compact('student'));
         }
 
-        if ($current_records > 1)
-        {
+        if ($current_records > 1) {
             return view('student.show', compact('student'));
         }
 
         $old_records = $student->records()->onlyTrashed()->count();
 
-        if($old_records > 0)
-        {
-            if( auth()->user()->can('manage', Student::class) )
+        if ($old_records > 0) {
+            if (auth()->user()->can('manage', Student::class)) {
                 return view('student.show', compact('student'));
+            }
         }
 
         session()->reflash();
+
         return redirect()->route('student.record.show',
             [$student->university_id, $student->record()->slug()]);
 
         dd($student->records()->withTrashed()->pluck('deleted_at'));
 
-        dd("CASE NOT FOUND");
+        dd('CASE NOT FOUND');
     }
 
     public function find()

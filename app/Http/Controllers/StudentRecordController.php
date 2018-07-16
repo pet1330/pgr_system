@@ -124,8 +124,9 @@ class StudentRecordController extends Controller
 
         $this->authorise('view', $student);
 
-        if ($request->ajax())
+        if ($request->ajax()) {
             return $this->absences_controls($this->absences($record), $student)->make(true);
+        }
 
         $record = $student->record();
         $overdue = $record->timeline->filter->isOverdue();
@@ -225,6 +226,7 @@ class StudentRecordController extends Controller
     {
         $this->authorise('manage', $student);
         $record->delete();
+
         return redirect()->route('student.show', $student->university_id)
             ->with('flash', [
               'message' => 'Record successfully archived.',
@@ -237,8 +239,9 @@ class StudentRecordController extends Controller
         $this->authorise('manage', $student);
         $record = $student->records()->onlyTrashed()->findOrFail($id);
         $record->restore();
+
         return redirect()->route('student.record.show',
                 [$student->university_id, $record->slug()])->with('flash', [
-              'message' => 'Record successfully restored.', 'type' => 'success' ]);
+              'message' => 'Record successfully restored.', 'type' => 'success', ]);
     }
 }
