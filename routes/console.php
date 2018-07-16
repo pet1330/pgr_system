@@ -1,6 +1,8 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Milestone;
+use App\Models\StudentRecord;
 use App\Notifications\DueTodayReminder;
 use App\Notifications\StartTodayReminder;
 
@@ -22,7 +24,7 @@ Artisan::command('reminders:starttoday', function () {
 
 Artisan::command('reminders:duetoday', function () {
     Milestone::upcoming()
-        ->where('due_date', Carbon\Carbon::today())
+        ->where('due_date', Carbon::today())
         ->get()->each(function (Milestone $m) {
             $m->student->student->notify(
                 new DueTodayReminder(
@@ -32,3 +34,9 @@ Artisan::command('reminders:duetoday', function () {
         }
     );
 })->describe('Send upcoming milestone reminders');
+
+Artisan::command('pgr:tidy-archive', function () {
+    StudentRecord::onlyTrashed()
+    ->where('deleted_at', '<', Carbon::today()->subYears(config('app.archive_limit')))
+    ->get()->each->forceDelete();
+})->describe(sprintf("Permanently removes archived records older than %u years", config('app.archive_limit')));
