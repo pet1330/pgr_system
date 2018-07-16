@@ -39,4 +39,4 @@ Artisan::command('pgr:tidy-archive', function () {
     StudentRecord::onlyTrashed()
     ->where('deleted_at', '<', Carbon::today()->subYears(config('app.archive_limit')))
     ->get()->each->forceDelete();
-})->describe(sprintf("Permanently removes archived records older than %u years", config('app.archive_limit')));
+})->describe(sprintf('Permanently removes archived records older than %u years', config('app.archive_limit')));

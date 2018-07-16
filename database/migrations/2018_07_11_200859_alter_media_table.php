@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AlterMediaTable extends Migration
@@ -13,7 +12,7 @@ class AlterMediaTable extends Migration
      */
     public function up()
     {
-        Schema::table('media', function($table) {
+        Schema::table('media', function ($table) {
             $table->softDeletes();
         });
     }
@@ -25,7 +24,7 @@ class AlterMediaTable extends Migration
      */
     public function down()
     {
-        Schema::table('media', function($table) {
+        Schema::table('media', function ($table) {
             $table->dropColumn('deleted_at');
         });
     }

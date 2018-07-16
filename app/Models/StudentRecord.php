@@ -46,29 +46,30 @@ class StudentRecord extends Model
     public static function boot()
     {
         parent::boot();
-        static::deleting(function(StudentRecord $record) {
-            if( $record->isForceDeleting() ) {
+        static::deleting(function (StudentRecord $record) {
+            if ($record->isForceDeleting()) {
                 $record->timeline()->withTrashed()->get()->each->forceDelete();
                 $record->note->withTrashed()->forceDelete();
                 $record->supervisors()->sync([]);
             } else {
                 $record->timeline->each->delete();
                 $record->note->delete();
-                $record->supervisors->each(function(Staff $supervisor) use ($record) {
+                $record->supervisors->each(function (Staff $supervisor) use ($record) {
                     $record->removeSupervisor($supervisor);
                 });
             }
         });
 
-        static::restoring(function(StudentRecord $record) {
+        static::restoring(function (StudentRecord $record) {
             $record->note()->withTrashed()->restore();
             $deleted_time = $record->deleted_at->copy()->subSecond();
             $record->timeline()->onlyTrashed()
                 ->where('deleted_at', '>=', $deleted_time)->get()->each->restore();
             $record->previousSupervisors()->where('changed_on', '>=', $deleted_time)
-                ->each(function($sup) use ($record) { $record->previousSupervisors()
+                ->each(function ($sup) use ($record) {
+                    $record->previousSupervisors()
                 ->updateExistingPivot($sup->id, ['changed_on' => null]);
-            });
+                });
         });
     }
 

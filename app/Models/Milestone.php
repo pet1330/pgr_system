@@ -27,7 +27,7 @@ class Milestone extends Model
         'due_date',
         'submitted_date',
         'non_interuptive_date',
-        'deleted_at'
+        'deleted_at',
     ];
 
     protected static $logAttributes = [
@@ -55,8 +55,8 @@ class Milestone extends Model
     {
         parent::boot();
 
-        static::deleting(function(Milestone $milestone) {
-            if( $milestone->isForceDeleting() ) {
+        static::deleting(function (Milestone $milestone) {
+            if ($milestone->isForceDeleting()) {
                 $milestone->approvals->each->forceDelete();
                 $milestone->media()->withTrashed()->get()->each->forceDelete();
             } else {
@@ -65,7 +65,7 @@ class Milestone extends Model
             }
         });
 
-        static::restoring(function(Milestone $milestone) {
+        static::restoring(function (Milestone $milestone) {
             $deleted_time = $milestone->deleted_at->copy()->subSecond();
             $milestone->media()->withTrashed()
                 ->where('deleted_at', '>=', $deleted_time)
