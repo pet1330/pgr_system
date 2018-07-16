@@ -19,6 +19,17 @@ class Milestone extends Model
 
     protected static $logOnlyDirty = true;
 
+    protected $table = 'milestones';
+
+    protected $with = ['type', 'approvals'];
+
+    protected $dates = [
+        'due_date',
+        'submitted_date',
+        'non_interuptive_date',
+        'deleted_at'
+    ];
+
     protected static $logAttributes = [
         'name',
         'duration',
@@ -28,16 +39,6 @@ class Milestone extends Model
         'student_record_id',
         'non_interuptive_date',
     ];
-
-    protected $table = 'milestones';
-
-    protected $dates = [
-        'due_date',
-        'submitted_date',
-        'non_interuptive_date',
-    ];
-
-    protected $with = ['type', 'approvals'];
 
     protected $fillable = [
         'name',
@@ -49,6 +50,29 @@ class Milestone extends Model
         'student_record_id',
         'non_interuptive_date',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(Milestone $milestone) {
+            if( $milestone->isForceDeleting() ) {
+                $milestone->approvals->each->forceDelete();
+                $milestone->media()->withTrashed()->get()->each->forceDelete();
+            } else {
+                $milestone->media()->get()->each->delete();
+                $milestone->approvals->each->delete();
+            }
+        });
+
+        static::restoring(function(Milestone $milestone) {
+            $deleted_time = $milestone->deleted_at->copy()->subSecond();
+            $milestone->media()->withTrashed()
+                ->where('deleted_at', '>=', $deleted_time)
+                ->get()->each->restore();
+            $milestone->approvals()->withTrashed()->get()->each->restore();
+        });
+    }
 
     public function getNameAttribute()
     {

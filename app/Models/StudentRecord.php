@@ -13,7 +13,7 @@ class StudentRecord extends Model
 {
     protected $with = ['supervisors'];
 
-    protected $dates = ['enrolment_date'];
+    protected $dates = ['enrolment_date', 'deleted_at'];
 
     use HasHashSlug;
     use SoftDeletes;
@@ -42,6 +42,35 @@ class StudentRecord extends Model
         'student_status_id',
         'enrolment_status_id',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function(StudentRecord $record) {
+            if( $record->isForceDeleting() ) {
+                $record->timeline()->withTrashed()->get()->each->forceDelete();
+                $record->note->withTrashed()->forceDelete();
+                $record->supervisors()->sync([]);
+            } else {
+                $record->timeline->each->delete();
+                $record->note->delete();
+                $record->supervisors->each(function(Staff $supervisor) use ($record) {
+                    $record->removeSupervisor($supervisor);
+                });
+            }
+        });
+
+        static::restoring(function(StudentRecord $record) {
+            $record->note()->withTrashed()->restore();
+            $deleted_time = $record->deleted_at->copy()->subSecond();
+            $record->timeline()->onlyTrashed()
+                ->where('deleted_at', '>=', $deleted_time)->get()->each->restore();
+            $record->previousSupervisors()->where('changed_on', '>=', $deleted_time)
+                ->each(function($sup) use ($record) { $record->previousSupervisors()
+                ->updateExistingPivot($sup->id, ['changed_on' => null]);
+            });
+        });
+    }
 
     /**
      * Get the student that this record belongs to.
@@ -89,6 +118,14 @@ class StudentRecord extends Model
     public function getThirdSupervisorAttribute()
     {
         return $this->supervisor(3);
+    }
+
+    public function previousSupervisors()
+    {
+        return $this->belongsToMany(Staff::class, 'supervisors')
+                    ->wherePivot('changed_on', '!=', null)
+                    ->withPivot(['supervisor_type', 'changed_on'])
+                    ->withTimestamps();
     }
 
     public function supervisors()
@@ -158,8 +195,8 @@ class StudentRecord extends Model
     public function calculateEndDate()
     {
         return $this->enrolment_date->copy()
-                    ->addMonths($this->programme->duration)
-                    ->addDays($this->student->totalInteruptionPeriod());
+            ->addMonths($this->programme->duration)
+            ->addDays($this->student->totalInteruptionPeriod());
     }
 
     public function recalculateMilestonesDueDate()
