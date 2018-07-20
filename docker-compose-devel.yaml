@@ -5,6 +5,7 @@ services:
     image: redis
   db:
     image: mysql:5.7
+    restart: always
     volumes:
       - /srv/pgr-test/db:/var/lib/mysql
     expose:
@@ -13,18 +14,18 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
   pgr:
-    image: lcasuol/pgr_system:lcas
+    image: lcasuol/pgr_devel:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.devel
     #build: . 
-    command: "bash -c 'ln -fs /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
+    command: "bash -c '/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
     links:
       - db
       - redis
     ports:
-      - 9989:80
-      - 9443:443
+      - 19989:80
+      - 19443:443
     volumes:
       - .:/var/www/html/pgr
-      - /srv/pgr-test/storage:/var/www/html/pgr/storage
-      - /srv/pgr-test/config:/srv/config
-
 

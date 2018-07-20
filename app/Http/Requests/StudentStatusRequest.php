@@ -38,7 +38,7 @@ class StudentStatusRequest extends FormRequest
                         'unique:student_statuses,status'.(is_null($status) ? '' : ','.$status->id),
                     ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return [
                     'status' => [
                         'required',

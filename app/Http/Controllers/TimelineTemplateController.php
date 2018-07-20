@@ -44,7 +44,7 @@ class TimelineTemplateController extends Controller
                 ->rawColumns(['editaction', 'deleteaction'])
                 ->setRowAttr(['data-link' => function ($tt) {
                     return route('settings.timeline.show', $tt->id);
-                }, ])
+                }])
                 ->make(true);
         }
 
