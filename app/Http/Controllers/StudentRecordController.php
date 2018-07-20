@@ -67,8 +67,6 @@ class StudentRecordController extends Controller
             abort(404);
         }
 
-        $student->records->each->delete();
-
         $record = $student->records()
                 ->save(StudentRecord::make([
                     'enrolment_date' => $request->enrolment_date,
@@ -83,7 +81,7 @@ class StudentRecordController extends Controller
 
         return redirect()->route('student.show', $student->university_id)
             ->with('flash', [
-              'message' => 'Successfully added a record for "'.$student->name.'"',
+              'message' => 'Successfully created a new record for "'.$student->name.'"',
               'type' => 'success',
             ]);
     }
@@ -127,20 +125,16 @@ class StudentRecordController extends Controller
         $this->authorise('view', $student);
 
         if ($request->ajax()) {
-            return $this->absences_controls(
-                $this->absences($record), $student)->make(true);
+            return $this->absences_controls($this->absences($record), $student)->make(true);
         }
 
-        if ($student->record() !== null) {
-            $record = $student->record();
-            $overdue = $record->timeline->filter->isOverdue();
-            $upcoming = $record->timeline->filter->isUpcoming();
-            $awaiting = $record->timeline->filter->isAwaitingAmendments();
+        $record = $student->record();
+        $overdue = $record->timeline->filter->isOverdue();
+        $upcoming = $record->timeline->filter->isUpcoming();
+        $awaiting = $record->timeline->filter->isAwaitingAmendments();
 
-            return view('student.dashboard', compact('student', 'record', 'upcoming', 'overdue', 'awaiting'));
-        }
-
-        return view('student.dashboard', compact('student'));
+        return view('student.with_record_dashboard',
+            compact('student', 'record', 'upcoming', 'overdue', 'awaiting'));
     }
 
     private function absences_controls($dt, Student $student)
@@ -226,5 +220,28 @@ class StudentRecordController extends Controller
         $record->updateNote($request->content);
 
         return 'Note Updated Successfully.';
+    }
+
+    public function destroy(Request $request, Student $student, StudentRecord $record)
+    {
+        $this->authorise('manage', $student);
+        $record->delete();
+
+        return redirect()->route('student.show', $student->university_id)
+            ->with('flash', [
+              'message' => 'Record successfully archived.',
+              'type' => 'success',
+            ]);
+    }
+
+    public function restore(student $student, $id)
+    {
+        $this->authorise('manage', $student);
+        $record = $student->records()->onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return redirect()->route('student.record.show',
+                [$student->university_id, $record->slug()])->with('flash', [
+              'message' => 'Record successfully restored.', 'type' => 'success', ]);
     }
 }

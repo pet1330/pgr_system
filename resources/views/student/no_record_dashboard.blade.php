@@ -7,7 +7,7 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="box box-primary">
         <div class="box-body text-center">
-          <h4>{{ ucfirst($student->first_name) }} does not currently have a student record</h4>
+          <h4>{{ ucfirst($student->first_name) }} does not currently have an active student record</h4>
           @can('manage', App\Models\Student::class)
           <form action="{{ route('student.find') }}" method="POST">
             {{ csrf_field() }}
@@ -18,6 +18,7 @@
         </div>
       </div>
     </div>
+      @include('student._previous_records')
   </div>
 </div>
 @endsection
