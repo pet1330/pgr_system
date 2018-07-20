@@ -3,6 +3,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>PGR System</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <style type="text/css">
+    .lt-ie9 #app { display: none !important; }
+    html, body, #browser-support-check-container {position : relative; width: 100%; height: 100%; background: #3c8dbc; padding: 0; margin: 0;}
+    #browser-support-check-modal {position: absolute; left: 50%; top: 50%; width: 500px; height: 200px; margin: -100px 0 0 -250px; background : #000; padding: 10px; color: #FFF;}
+    #browser-support-check-container {display: none;}
+    #browser-support-check-modal {display: none;}
+    .lt-ie9 #browser-support-check-container {display: block;}
+    .lt-ie9 #browser-support-check-modal {display: block;}
+  </style>
+
   <link rel="stylesheet" href="{{ url(config('app.url_prefix') . mix('css/app.css')) }}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   
