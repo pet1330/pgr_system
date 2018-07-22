@@ -79,8 +79,7 @@ class StudentController extends Controller
         $this->authorise('view', $student);
         session()->flash('student', $student);
 
-        if ($student->records()->count() === 1 && ! auth()->user()->can('manage', Student::class))
-        {
+        if ($student->records()->count() === 1 && ! auth()->user()->can('manage', Student::class)) {
             return redirect()->route('student.record.show',
                 [$student->university_id, $student->record()->slug()]);
         }
@@ -104,6 +103,7 @@ class StudentController extends Controller
             return redirect()->route('student.show', $student);
         }
         session()->flash('student_id', $request->university_id);
+
         return redirect()->route('student.confirm_id');
     }
 
@@ -113,6 +113,7 @@ class StudentController extends Controller
 
         if (session()->has('student_id')) {
             session()->reflash();
+
             return view('admin.user.student.notfound');
         }
 
@@ -123,11 +124,13 @@ class StudentController extends Controller
     {
         $this->authorise('manage', Student::class);
 
-        if (session()->has('student_id') && $request->has('university_id') && 
+        if (session()->has('student_id') && $request->has('university_id') &&
             $request->university_id === session()->get('student_id')) {
-                session()->reflash();
-                return redirect()->route('student.create', $request->student_id);
+            session()->reflash();
+
+            return redirect()->route('student.create', $request->student_id);
         }
+
         return redirect()->route('student.find')
             ->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
     }
@@ -138,8 +141,10 @@ class StudentController extends Controller
 
         if (session()->has('student_id') || session()->hasOldInput('university_id')) {
             $university_id = session()->get('student_id');
+
             return view('admin.user.student.create', compact('university_id'));
         }
+
         return redirect()->route('student.find');
     }
 
@@ -159,7 +164,7 @@ class StudentController extends Controller
 
         return redirect()->route('student.show', $student)
             ->with('flash', [
-                'message' => 'Successfully added "' . $student->name . '"',
+                'message' => 'Successfully added "'.$student->name.'"',
                 'type' => 'success',
             ]);
     }
