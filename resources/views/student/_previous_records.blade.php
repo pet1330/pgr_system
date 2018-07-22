@@ -1,6 +1,6 @@
 @can('manage', App\Models\Student::class)
 @if($student->records()->onlyTrashed()->count() > 0)
-<div class="col-md-12">
+{{-- <div class="col-md-12"> --}}
   <div class="box box box-danger">
     <div class="box-body">
       <div class="panel-heading">
@@ -25,6 +25,6 @@
       </div>
     </div>
   </div>
-</div>
+{{-- </div> --}}
 @endif
 @endcan

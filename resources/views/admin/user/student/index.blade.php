@@ -6,7 +6,8 @@
 <div class="panel-body">
     <a  href="{{ route('student.find') }}">
         <span class="btn btn-default pull-right">
-        Add A New Student Record</span>
+            Create A New Student
+        </span>
     </a>
 </div>
 <div class="col-md-12">

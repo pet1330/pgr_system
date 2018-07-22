@@ -6,10 +6,12 @@
   <div class="content">
       <div class="panel panel-primary">
         <div class="panel-heading">
+          @if($student->records->count() > 0)
           <h3 class="panel-title">Select Record</h3>
+          @endif
         </div>
         <div class="panel-body">
-          @foreach($student->records as $record)
+          @forelse($student->records as $record)
           <div class="panel panel-default">
             <div class="panel-heading">
               <a href="{{ route('student.record.show', [$student->university_id, $record->slug()]) }}">
@@ -17,10 +19,15 @@
               </a>
             </div>
           </div>
-          @endforeach
+          @empty
+          <center><h4>{{ ucfirst($student->first_name) }} does not currently have an active student record</h4></center>
+          @endforelse
         </div>
       </div>
       @include('student._previous_records')
+      @can('manage', App\Models\Student::class)
+        <a href="{{ route('student.record.create', $student->university_id) }}"><button type="submit" class="btn btn-primary">Create New Student Record</button></a>
+      @endcan
   </div>
 </div>
 @endsection

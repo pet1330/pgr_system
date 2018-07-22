@@ -22,11 +22,11 @@ class StudentRecordController extends Controller
         $this->authorise('manage', Student::class);
 
         if (session()->has('student') || session()->hasOldInput('university_id')) {
-            $funding_types = FundingType::all();
-            $schools = School::all();
-            $enrolment_statuses = EnrolmentStatus::all();
-            $student_statuses = StudentStatus::all();
-            $programmes = Programme::all();
+            $funding_types = FundingType::get();
+            $schools = School::get();
+            $enrolment_statuses = EnrolmentStatus::get();
+            $student_statuses = StudentStatus::get();
+            $programmes = Programme::get();
 
             return view('admin.user.student.create_record', compact(
                 'student', 'funding_types', 'schools',
