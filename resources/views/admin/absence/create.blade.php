@@ -65,7 +65,7 @@
           </div>
           <div class="form-group{{ $errors->has('duration') ? ' has-error' : '' }} col-md-6">
             <label for="duration">Duration (days)</label>
-            <input type="number" step="1" class="form-control" name="duration" value="{{ old('duration') }}">
+            <input id="duration" type="number" step="1" class="form-control" name="duration" value="{{ old('duration') }}">
             @if ($errors->has('duration'))
             <span class="help-block">
               <strong>{{ $errors->first('duration') }}</strong>

@@ -6,6 +6,8 @@ Route::get('downtime-robot', 'DevController@downtimeRobot');
 Route::name('account-locked')->get('account-locked', 'DevController@accountLocked');
 
 Route::middleware('samlauth')->group(function () {
+    Route::get('api/holidays', 'ExternalAPI@getBankHolidays')->name('api.bank_holidays');
+
     Route::get('/', 'Controller@dashboard_url')->name('home');
     Route::get('logout', 'SAMLController@logout')->name('logout');
 
