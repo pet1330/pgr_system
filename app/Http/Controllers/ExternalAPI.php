@@ -11,7 +11,7 @@ class ExternalAPI extends Controller
     {
         $client = new Client();
         $res = $client->request('GET', 'https://www.gov.uk/bank-holidays.json');
-        return $res->getBody();
+        return response($res->getBody(), 200) -> header('Content-Type', 'text/json');;
     }
 
 }

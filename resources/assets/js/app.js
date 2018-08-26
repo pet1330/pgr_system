@@ -18,7 +18,6 @@ Dropzone.autoDiscover = false;
 function working_days(from, to, cb) {
   function get_bank_holidays(cb) {
     $.getJSON('https://lcas.lincoln.ac.uk/pgr-test/api/holidays', null, function(data) {
-      banner.addClass("alt");
       //console.log(data);
       var event_lst = data['england-and-wales'].events;
       var holidays = [];
@@ -59,9 +58,12 @@ function working_days(from, to, cb) {
 }
 
 function propose_duration(selector) {
-  var from = $('#from').val();
-  var to = $('#to').val();
+  var s_from = $('#from').val().split('-');
+  var s_to = $('#to').val().split('-');
+  var from = new Date(s_from[0], s_from[1]-1, s_from[2]);
+  var to = new Date(s_to[0], s_to[1]-1, s_to[2]);
   console.log(from);
+  console.log(to);
   working_days(from, to, function (wd) {
     $(selector).val(wd);
   });
@@ -116,7 +118,7 @@ $(function() {
     $('#to_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
         dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
     $('#to').change(function(){ $('#to_datepicker').datepicker('setDate', $(this).val()); });
-    $('#to_datepicker').change(function(){ $('#to').attr('value',$(this).val()); });
+    $('#to_datepicker').change(function(){ $('#to').attr('value',$(this).val()); propose_duration('#duration')});
     $('#to_datepicker').datepicker('setDate', $('#to').val());
 
 
