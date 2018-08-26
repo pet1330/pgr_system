@@ -29,7 +29,7 @@ get into tinker: `php artisan tinker`
 
 ## Development
 
-* use `docker-compose -f docker-compose-devel.yml up` to fire up the development deployment
+* use `docker-compose -f docker-compose-devel.yaml up` to fire up the development deployment
 * the local source directory is deployed as the main app directory in development, so the following might have to be run in the container:
   * Enter the container with `docker-compose -f docker-compose-devel.yaml exec pgr bash`
   * run `composer install`
