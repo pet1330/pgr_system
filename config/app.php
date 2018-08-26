@@ -29,6 +29,8 @@ return [
 
     'global_message' => env('GLOBAL_MESSAGE'),
 
+    'archive_limit' => env('ARCHIVE_LIMIT', 6),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

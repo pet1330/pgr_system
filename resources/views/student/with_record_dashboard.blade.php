@@ -1,3 +1,9 @@
+@extends('layouts.dashboard')
+@section('page_title', $student->name .'\'s Dashboard')
+@section('page_description', '')
+@section('content')
+<div id="app">
+  <div class="content">
 @can('manage', App\Models\Student::class)
 <div class="panel-body row">
   <div class="dropdown pull-right">
@@ -44,6 +50,22 @@
           [$student->university_id, $record->slug()]) }}">
           Assign Regularisation
         </a>
+      </li>
+      @endcan
+      @endcan
+      @can('manage', App\Models\Milestone::class)
+      @can('manage', App\Models\Student::class)
+      <li role="separator" class="divider"></li>
+      <li role="presentation">
+        <form method="POST" action="{{ route('student.record.destroy',
+          [$student->university_id, $record->slug()]) }}" accept-charset="UTF-8" class="form-main">
+              <input type="hidden" name="_method" value="DELETE">
+              {{ csrf_field() }}
+            <button class="btn btn-link" type="submit" role="menuitem" onclick="return confirm('Are you sure?')"
+            style="color: #777;display: block; padding: 3px 20px; clear: both; font-weight: normal; line-height: 1.42857143; white-space: nowrap;">
+              <center>Archive Record</center>
+            </button>
+        </form>
       </li>
       @endcan
       @endcan
@@ -307,3 +329,6 @@
     </div>
   @endcan
 </div>
+</div>
+</div>
+@endsection

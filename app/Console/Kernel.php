@@ -35,6 +35,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('reminders:starttoday')
             ->dailyAt('08:30')->pingBefore(
                 'https://hchk.io/'.env('DUE_STATUS_CHECK_KEY'));
+
+        $schedule->command('pgr:tidy-archive')->monthlyOn(1, '05:30');
+
+        $schedule->command('bouncer:clean')->monthlyOn(1, '05:35');
     }
 
     /**

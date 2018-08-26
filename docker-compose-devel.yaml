@@ -28,4 +28,6 @@ services:
       - 19443:443
     volumes:
       - .:/var/www/html/pgr
+      - /srv/pgr-test/storage:/var/www/html/pgr/storage
+      - /srv/pgr-test/config:/srv/config
 
