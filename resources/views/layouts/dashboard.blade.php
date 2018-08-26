@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+  @include('layouts.header')
   <body class="hold-transition skin-blue sidebar-mini">
   @if(config('app.global_message'))
-    <div id="global-message">
+    <div id="global-message" style="z-index: 999999;">
       <b>IMPORTANT MESSAGE:</b> {!! config('app.global_message') !!}
     </div>
   @endif
-  @include('layouts.header')
+      <div id="browser-support-check-container">
+        <div id="browser-support-check-modal">
+            <center>
+            <h1>Browser Not Supported!</h1>
+            <p>Unfortunally this Internet Explorer version is not supported. To use this service, please consider upgrading to a newer version of Internet Explorer, or changing browser to <a href="https://www.google.com/chrome/">Google Chrome</a> or <a href="https://www.mozilla.org/en-GB/firefox/new/">Firefox</a>.</p>
+            <h3>We appologise for this inconvenience</h3>
+            </center>
+        </div>
+    </div>
     <div class="wrapper" id="app">
       @include('layouts.nav.header')
       <aside class="main-sidebar">

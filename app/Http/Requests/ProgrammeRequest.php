@@ -45,7 +45,7 @@ class ProgrammeRequest extends FormRequest
                         'max:600',
                     ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return [
                     'name' => [
                     'required',

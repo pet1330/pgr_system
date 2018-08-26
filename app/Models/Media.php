@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Balping\HashSlug\HasHashSlug;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Media extends \Plank\Mediable\Media
 {
     use HasHashSlug;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $with = ['uploader'];
 

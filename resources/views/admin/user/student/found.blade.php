@@ -1,11 +1,11 @@
 @extends('layouts.dashboard')
-@section('page_title', 'Create a Student Record')
+@section('page_title', 'Create a New Student Record')
 @section('page_description', "")
 @section('content')
 <div class="row">
     @if($student->records->isNotEmpty())
     <div class="form-group alert alert-danger alert-important col-md-8 col-md-offset-2">
-        <label>Warning! {{ $student->name }} already has {{ $student->records->count() }} record. Creating a new one, will archive this <a href="{{ $student->dashboard_url() }}">previous record</a>.</label>
+        <label>Warning! {{ $student->name }} already has {{ $student->records->count() }} student record{{ $student->records->count() > 1 ? 's' : '' }}. <a href="{{ $student->dashboard_url() }}">View previous record</a>.</label>
     </div>
     @endif
     <div class="col-md-3 col-md-offset-4">

@@ -38,7 +38,7 @@ class FundingTypeRequest extends FormRequest
                         'unique:funding_types,name'.(is_null($ft) ? '' : ','.$ft->id),
                     ],
                 ];
-            case 'POST' :
+            case 'POST':
                 return
                 [
                     'name' => [

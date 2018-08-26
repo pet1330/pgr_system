@@ -36,7 +36,7 @@ class School extends Model
 
     public function studentRecords()
     {
-        return $this->hasMany(StudentRecord::class)->withTrashed();
+        return $this->hasMany(StudentRecord::class);
     }
 
     public function routeNotificationForMail()

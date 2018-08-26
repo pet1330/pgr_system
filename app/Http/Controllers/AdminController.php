@@ -20,7 +20,7 @@ class AdminController extends Controller
             return Datatables::eloquent($admin)
             ->setRowAttr(['data-link' => function (Admin $admin) {
                 return route('admin.show', $admin->university_id);
-            }, ])
+            }])
             ->make(true);
         }
 

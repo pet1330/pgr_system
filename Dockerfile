@@ -11,9 +11,8 @@ RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add -
 RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" |  tee /etc/apt/sources.list.d/yarn.list
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
-RUN apt-get -y update
-RUN apt-get -y --force-yes upgrade
-RUN apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-common php7.1-curl \
+RUN apt-get -y update && apt-get -y --force-yes upgrade && \
+    apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-common php7.1-curl \
                 php7.1-cgi php7.1-dev php7.1-fpm php7.1-gd php7.1-gmp php7.1-imap php7.1-intl \
                 php7.1-json php7.1-ldap php7.1-mbstring php7.1-mcrypt php7.1-mysql \
                 php7.1-odbc php7.1-opcache php7.1-pgsql php7.1-phpdbg php7.1-pspell \
@@ -25,9 +24,7 @@ RUN apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-co
                 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-RUN a2enmod  php7.1
-RUN a2enmod  rewrite
-RUN a2enconf php7.1-fpm
+RUN a2enmod  php7.1 && a2enmod rewrite && a2enconf php7.1-fpm
 
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
 RUN curl -L https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php

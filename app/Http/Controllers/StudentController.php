@@ -68,7 +68,7 @@ class StudentController extends Controller
                 ->editColumn('tierFour', '{{$tierFour ? "Yes" : "No" }}')
                 ->setRowAttr(['data-link' => function (StudentRecord $sr) {
                     return route('student.show', $sr->student->university_id);
-                }, ])->make(true);
+                }])->make(true);
         }
 
         return View('admin.user.student.index');
@@ -77,15 +77,14 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $this->authorise('view', $student);
+        session()->flash('student', $student);
 
-        if ($student->records->isNotEmpty()) {
-            session()->reflash();
-
+        if ($student->records()->count() === 1 && ! auth()->user()->can('manage', Student::class)) {
             return redirect()->route('student.record.show',
-                        [$student->university_id, $student->record()->slug()]);
+                [$student->university_id, $student->record()->slug()]);
         }
 
-        return view('student.dashboard', compact('student'));
+        return view('student.show', compact('student'));
     }
 
     public function find()
@@ -101,41 +100,11 @@ class StudentController extends Controller
 
         $student = Student::where('university_id', $request->university_id)->first();
         if ($student) {
-            session()->flash('student', $student);
-
-            return redirect()->route('student.confirm');
+            return redirect()->route('student.show', $student);
         }
         session()->flash('student_id', $request->university_id);
 
         return redirect()->route('student.confirm_id');
-    }
-
-    public function confirm_user()
-    {
-        $this->authorise('manage', Student::class);
-
-        if (session()->has('student')) {
-            session()->reflash();
-            $student = session()->get('student');
-
-            return view('admin.user.student.found', compact('student'));
-        }
-
-        return redirect()->route('student.find');
-    }
-
-    public function confirm_post_user(Request $request)
-    {
-        $this->authorise('manage', Student::class);
-
-        if (session()->has('student')) {
-            session()->reflash();
-
-            return redirect()->route('student.record.create',
-                session()->get('student')->university_id);
-        }
-
-        return redirect()->route('student.find');
     }
 
     public function confirm_id()
@@ -155,19 +124,15 @@ class StudentController extends Controller
     {
         $this->authorise('manage', Student::class);
 
-        if (session()->has('student_id')) {
-            if ($request->university_id === session()->get('student_id')) {
-                session()->reflash();
-
-                return redirect()->route('student.create', $request->student_id);
-            }
-
+        if (session()->has('student_id') && $request->has('university_id') &&
+            $request->university_id === session()->get('student_id')) {
             session()->reflash();
-            redirect()->back()->withErrors(['student', 'WHAT IS THIS?']);
-        }
-        redirect()->back()->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
 
-        return redirect()->route('student.find');
+            return redirect()->route('student.create', $request->student_id);
+        }
+
+        return redirect()->route('student.find')
+            ->withErrors(['nomatch' =>'The IDs provided do not match. Please try again']);
     }
 
     public function create()
@@ -197,9 +162,7 @@ class StudentController extends Controller
 
         $student->assignDefaultPermissions();
 
-        session()->flash('student', $student);
-
-        return redirect()->route('student.confirm')
+        return redirect()->route('student.show', $student)
             ->with('flash', [
                 'message' => 'Successfully added "'.$student->name.'"',
                 'type' => 'success',
