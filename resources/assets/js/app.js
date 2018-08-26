@@ -15,6 +15,59 @@ import Dropzone from 'dropzone';
 
 Dropzone.autoDiscover = false;
 
+function working_days(from, to, cb) {
+  function get_bank_holidays(cb) {
+    $.getJSON('https://www.gov.uk/bank-holidays.json', null, function(data) {
+      banner.addClass("alt");
+      //console.log(data);
+      var event_lst = data['england-and-wales'].events;
+      var holidays = [];
+      for (var d in event_lst) {
+        var bhd = event_lst[d].date.split('-');
+        var dt = new Date(bhd[0], bhd[1]-1, bhd[2]);
+        holidays.push(dt.getTime());
+        //console.log(bhd);
+      }
+      //console.log(holidays);
+      if (cb)
+        cb(holidays);
+    });
+  }
+
+  function getNumWorkDays(startDate, endDate, bhd) {
+      var numWorkDays = 0;
+      var currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+          // Skips Sunday and Saturday
+          if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6 && (! bhd.includes(currentDate.getTime()))) {
+              numWorkDays++;
+              //console.log(currentDate);
+              //console.log(currentDate in bhd);
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+          //currentDate = currentDate.addDays(1);
+      }
+      return numWorkDays;
+  }
+
+  get_bank_holidays(function (bhd) {
+    var wd = getNumWorkDays(from, to, bhd);
+    console.log(wd);
+    if (cb)
+      cb(wd);
+  });
+}
+
+function propose_duration(selector) {
+  var from = $('#from').val();
+  var to = $('#to').val();
+  console.log(from);
+  working_days(from, to, function (wd) {
+    $(selector).val(wd);
+  });
+}
+
+
 $(function() {
 
     if(localStorage.expandedMenu==0) { $("body").addClass('sidebar-collapse'); }
@@ -56,7 +109,7 @@ $(function() {
     $('#from_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
         dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
     $('#from').change(function(){ $('#from_datepicker').datepicker('setDate', $(this).val()); });
-    $('#from_datepicker').change(function(){ $('#from').attr('value',$(this).val()); });
+    $('#from_datepicker').change(function(){ $('#from').attr('value',$(this).val()); propose_duration('#duration')});
     $('#from_datepicker').datepicker('setDate', $('#from').val());
 
 
