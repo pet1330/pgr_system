@@ -29,7 +29,7 @@ return [
 
     'global_message' => env('GLOBAL_MESSAGE'),
 
-    'archive_limit' => env('ARCHIVE_LIMIT', 2),
+    'archive_limit' => env('ARCHIVE_LIMIT', 6),
 
     /*
     |--------------------------------------------------------------------------
