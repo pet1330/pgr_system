@@ -17,7 +17,7 @@ Dropzone.autoDiscover = false;
 
 function working_days(from, to, cb) {
   function get_bank_holidays(cb) {
-    $.getJSON('https://www.gov.uk/bank-holidays.json', null, function(data) {
+    $.getJSON('https://lcas.lincoln.ac.uk/pgr-test/api/holidays', null, function(data) {
       banner.addClass("alt");
       //console.log(data);
       var event_lst = data['england-and-wales'].events;
