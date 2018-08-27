@@ -11,7 +11,7 @@ RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add -
 RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" |  tee /etc/apt/sources.list.d/yarn.list
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
-RUN curl -o /usr/local/bin/rmate https://raw.githubusercontent.com/aurora/rmate/master/rmate && chmod +x /usr/local/bin/rmate
+RUN curl -o /usr/local/bin/rmate https://raw.githubusercontent.com/aurora/rmate/v1.0.1/rmate && chmod +x /usr/local/bin/rmate
 
 RUN apt-get -y update && apt-get -y --force-yes upgrade && \
     apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-common php7.1-curl \
