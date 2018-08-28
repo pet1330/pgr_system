@@ -15,66 +15,72 @@ import Dropzone from 'dropzone';
 
 Dropzone.autoDiscover = false;
 
+Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+}
+Storage.prototype.getObj = function(key) {
+    return JSON.parse(this.getItem(key))
+}
+
 function working_days(from, to, cb) {
   function get_bank_holidays(cb) {
-    $.getJSON('https://lcas.lincoln.ac.uk/pgr-test/api/holidays', null, function(data) {
-      //console.log(data);
-      var event_lst = data['england-and-wales'].events;
-      var holidays = [];
-      for (var d in event_lst) {
-        var bhd = event_lst[d].date.split('-');
-        var dt = new Date(bhd[0], bhd[1]-1, bhd[2]);
-        holidays.push(dt.getTime());
-        //console.log(bhd);
-      }
-      //console.log(holidays);
-      if (cb)
-        cb(holidays);
-    });
+    if (sessionStorage.getObj("bankHolidays") === null) {
+      $.getJSON(window.location.origin + window.url_prefix + '/api/holidays', null,
+        function(holidayData) {
+          sessionStorage.setObj('bankHolidays',
+            holidayData.map(function(date) {
+              let bhd = date.split('-');
+              return new Date(bhd[0], bhd[1]-1, bhd[2]).getTime();
+            })
+          );
+        }
+      );
+    }
+    if (cb)
+      cb(sessionStorage.getItem("bankHolidays"));
   }
 
   function getNumWorkDays(startDate, endDate, bhd) {
-      var numWorkDays = 0;
-      var currentDate = new Date(startDate);
+      let numWorkDays = 0;
+      let currentDate = new Date(startDate);
       while (currentDate <= endDate) {
-          // Skips Sunday and Saturday
-          if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6 && (! bhd.includes(currentDate.getTime()))) {
+          // Skips Sunday and Saturday, check bank holidays is an array and that they are excluded
+          if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6 && bhd && (! bhd.includes(currentDate.getTime()))) {
               numWorkDays++;
-              //console.log(currentDate);
-              //console.log(currentDate in bhd);
+              // console.log(currentDate);
           }
           currentDate.setDate(currentDate.getDate() + 1);
-          //currentDate = currentDate.addDays(1);
       }
       return numWorkDays;
   }
 
   get_bank_holidays(function (bhd) {
     var wd = getNumWorkDays(from, to, bhd);
-    console.log(wd);
+    // console.log(wd);
     if (cb)
       cb(wd);
   });
 }
 
 function propose_duration(selector) {
-  var s_from = $('#from').val().split('-');
-  var s_to = $('#to').val().split('-');
-  var from = new Date(s_from[0], s_from[1]-1, s_from[2]);
-  var to = new Date(s_to[0], s_to[1]-1, s_to[2]);
-  console.log(from);
-  console.log(to);
-  working_days(from, to, function (wd) {
-    $(selector).val(wd);
-  });
+  if (! $('#from').val().length !== 0 && $('#to').val().length !== 0 )
+  {
+    var s_from = $('#from').val().split('-');
+    var s_to = $('#to').val().split('-');
+      var from = new Date(s_from[0], s_from[1]-1, s_from[2]);
+      var to = new Date(s_to[0], s_to[1]-1, s_to[2]);
+      working_days(from, to, function (wd) {
+        if (wd !== 0 && wd !== null)
+          $(selector).val(wd);
+      });
+  }
 }
-
 
 $(function() {
 
-    if(localStorage.expandedMenu==0) { $("body").addClass('sidebar-collapse'); }
-    $('body').bind('expanded.pushMenu', function() { localStorage.expandedMenu = 1; });
-    $('body').bind('collapsed.pushMenu', function() { localStorage.expandedMenu = 0; });
+    if(sessionStorage.expandedMenu==0) { $("body").addClass('sidebar-collapse'); }
+    $('body').bind('expanded.pushMenu', function() { sessionStorage.expandedMenu = 1; });
+    $('body').bind('collapsed.pushMenu', function() { sessionStorage.expandedMenu = 0; });
 
     $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
