@@ -70,7 +70,9 @@ function propose_duration(selector) {
       var from = new Date(s_from[0], s_from[1]-1, s_from[2]);
       var to = new Date(s_to[0], s_to[1]-1, s_to[2]);
       working_days(from, to, function (wd) {
-        if (wd !== 0 && wd !== null)
+        if (wd === 0 || wd === null)
+          $(selector).val('');
+        else
           $(selector).val(wd);
       });
   }
