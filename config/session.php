@@ -122,7 +122,7 @@ return [
     |
     */
 
-    'cookie' => 'pgr_session',
+    'cookie' => env('SESSION_COOKIE', 'pgr_session'),
 
     /*
     |--------------------------------------------------------------------------
