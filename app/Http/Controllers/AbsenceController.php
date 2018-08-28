@@ -48,21 +48,6 @@ class AbsenceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Student $student, Absence $absence)
-    {
-        $this->authorise('manage', $absence);
-
-        $types = AbsenceType::all();
-
-        return view('admin.absence.edit', compact('absence', 'student', 'types'));
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

@@ -85,7 +85,7 @@ Route::middleware('samlauth')->group(function () {
 
     Route::resource('admin', 'AdminController');
 
-    Route::resource('student.absence', 'AbsenceController', ['except' => 'index']);
+    Route::resource('student.absence', 'AbsenceController', ['only' => ['create', 'store', 'destroy']]);
 
     Route::get('student/{student}/record/{record}/restore',
                    'StudentRecordController@restore')->name('student.record.restore');
