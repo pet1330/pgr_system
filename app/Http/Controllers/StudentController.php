@@ -79,7 +79,7 @@ class StudentController extends Controller
         $this->authorise('view', $student);
         session()->flash('student', $student);
 
-        if ($student->records()->count() === 1) {
+        if ($student->records()->count() === 1 && ! auth()->user()->can('manage', Student::class)) {
             return redirect()->route('student.record.show',
                 [$student->university_id, $student->record()->slug()]);
         }
