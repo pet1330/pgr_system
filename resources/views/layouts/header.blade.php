@@ -20,7 +20,8 @@
   <script>
   window.csrfToken  =  <?php echo json_encode([
   'csrfToken' => csrf_token(),
-  ]); ?>
+  ]); ?>;
+  window.url_prefix = "{{ config('app.url_prefix') }}";
   </script>
   @stack('header_scripts')
 
