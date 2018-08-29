@@ -25,7 +25,7 @@ Storage.prototype.getObj = function(key) {
 function working_days(from, to, cb) {
   function get_bank_holidays(cb) {
     if (sessionStorage.getObj("bankHolidays") === null) {
-      $.getJSON(window.location.origin + window.url_prefix + '/api/holidays', null,
+      $.getJSON(window.location.origin + '/' + window.url_prefix + '/api/holidays', null,
         function(holidayData) {
           sessionStorage.setObj('bankHolidays',
             holidayData.map(function(date) {
