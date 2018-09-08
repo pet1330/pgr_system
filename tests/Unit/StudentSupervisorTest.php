@@ -12,16 +12,6 @@ class StudentSupervisorTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function seedDatabaseWithStudentRecordInformation()
-    {
-        $this->artisan('db:seed', ['--class' => 'EnrolmentStatusSeeder']);
-        $this->artisan('db:seed', ['--class' => 'StudentStatusSeeder']);
-        $this->artisan('db:seed', ['--class' => 'ProgrammeSeeder']);
-        $this->artisan('db:seed', ['--class' => 'CollegeSeeder']);
-        $this->artisan('db:seed', ['--class' => 'SchoolSeeder']);
-        $this->artisan('db:seed', ['--class' => 'FundingTypeSeeder']);
-    }
-
     /**
      * Test Student can add a supervisor.
      *
