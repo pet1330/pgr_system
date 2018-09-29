@@ -8,9 +8,6 @@ use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\MilestoneType;
 use App\Models\StudentRecord;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class StudentDashboardTest extends TestCase
@@ -22,7 +19,7 @@ class StudentDashboardTest extends TestCase
         $stu = factory(Student::class)->create();
         $stu->assignDefaultPermissions(true);
         $this->actingAs($stu)
-            ->get(route('student.show',$stu->university_id))
+            ->get(route('student.show', $stu->university_id))
             ->assertStatus(200)
             ->assertSeeText('does not currently have an active student record')
             ->assertSeeText('Dashboard')
@@ -40,8 +37,8 @@ class StudentDashboardTest extends TestCase
         $stu->assignDefaultPermissions(true);
 
         $this->actingAs($stu)
-            ->get(route('student.show',$stu->university_id))
-            ->assertRedirect(route('student.record.show',[$stu->university_id, $stu->record()->slug()]));
+            ->get(route('student.show', $stu->university_id))
+            ->assertRedirect(route('student.record.show', [$stu->university_id, $stu->record()->slug()]));
     }
 
     public function test_a_student_can_visit_their_dashboard_with_a_blank_record()
@@ -52,7 +49,7 @@ class StudentDashboardTest extends TestCase
         $stu->assignDefaultPermissions(true);
 
         $this->actingAs($stu)
-            ->get(route('student.record.show',[$stu->university_id, $stu->record()->slug()]))
+            ->get(route('student.record.show', [$stu->university_id, $stu->record()->slug()]))
             ->assertStatus(200)
             ->assertSeeText('Dashboard')
             ->assertSeeText('You have no upcoming or or overdue milestones! Congrats!')
@@ -73,7 +70,7 @@ class StudentDashboardTest extends TestCase
         $stu->assignDefaultPermissions(true);
 
         $this->actingAs($stu)
-            ->get(route('student.show',$stu->university_id))
+            ->get(route('student.show', $stu->university_id))
             ->assertStatus(200)
             ->assertSeeText('Select Record')
             ->assertDontSeeText('Create New Student Record');
@@ -90,7 +87,7 @@ class StudentDashboardTest extends TestCase
         $m = factory(Milestone::class)->make([
             'due_date' => Carbon::today()->subDays(20),
             'non_interuptive_date' => Carbon::today()->subDays(20),
-            'submitted_date' => null
+            'submitted_date' => null,
         ]);
         $stu->record()->timeline()->save($m);
         $stu->assignDefaultPermissions(true);
@@ -114,7 +111,7 @@ class StudentDashboardTest extends TestCase
         $m = factory(Milestone::class)->make([
             'due_date' => Carbon::today()->addDays(3),
             'non_interuptive_date' => Carbon::today()->addDays(3),
-            'submitted_date' => null
+            'submitted_date' => null,
         ]);
         $stu->record()->timeline()->save($m);
         $stu->assignDefaultPermissions(true);
