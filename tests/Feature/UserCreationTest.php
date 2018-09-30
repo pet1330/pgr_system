@@ -5,8 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Admin;
 use App\Models\Staff;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserCreationTest extends TestCase
@@ -19,7 +17,7 @@ class UserCreationTest extends TestCase
             'university_id' => 'bsmith',
             'first_name' => 'Bob',
             'last_name' => 'Smith',
-            'university_email' => 'bsmith@lincoln.ac.uk'
+            'university_email' => 'bsmith@lincoln.ac.uk',
         ];
 
         $user = factory(Admin::class)->create();
@@ -33,14 +31,13 @@ class UserCreationTest extends TestCase
         $this->assertEquals(Staff::count(), 1);
     }
 
-
     public function test_staff_member_cannot_be_duplicated()
     {
         $staff_details = [
             'university_id' => 'bsmith',
             'first_name' => 'Bob',
             'last_name' => 'Smith',
-            'university_email' => 'bsmith@lincoln.ac.uk'
+            'university_email' => 'bsmith@lincoln.ac.uk',
         ];
 
         $user = factory(Admin::class)->create();
