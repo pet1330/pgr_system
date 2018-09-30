@@ -120,11 +120,11 @@ class StaffController extends Controller
     {
         $this->authorise('manage', Staff::class);
 
-        $staff = Staff::firstOrCreate([
+        $staff = Staff::updateOrCreate(['university_email' => $request->university_email],
+            [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'university_id' => $request->university_id,
-                'university_email' => $request->university_email,
                 'user_type' => 'Staff',
             ]);
 
