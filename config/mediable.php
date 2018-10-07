@@ -155,7 +155,7 @@ return [
                 'text/json',
                 'application/json',
                 'application/msword',
-                'application/application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'application/wps-office.docx',
             ],
             'extensions' => [
