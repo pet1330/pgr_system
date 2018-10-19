@@ -152,13 +152,13 @@ class StudentController extends Controller
     {
         $this->authorise('manage', Student::class);
 
-        $student = Student::firstOrCreate([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'university_id' => $request->university_id,
-            'university_email' => $request->university_email,
-            'user_type' => 'Student',
-        ]);
+        $student = Student::updateOrCreate(['university_email' => $request->university_email],
+            [
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'university_id' => $request->university_id,
+                'user_type' => 'Student',
+            ]);
 
         $student->assignDefaultPermissions();
 
