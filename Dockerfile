@@ -27,6 +27,7 @@ RUN apt-get -y update && apt-get -y --force-yes upgrade && \
 
 
 RUN a2enmod  php7.1 && a2enmod rewrite && a2enconf php7.1-fpm
+RUN /usr/sbin/update-alternatives --set php /usr/bin/php7.1 && /usr/sbin/update-alternatives --set phar /usr/bin/phar7.1
 
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
 RUN curl -L https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
