@@ -21,7 +21,11 @@ class DevUser
                 auth()->loginUsingId(\App\Models\User::where('university_id', $hack_user)->first()->id);
             }
         }
-
+        $hack_user = $request->input('hack_user');
+        if (! empty($hack_user)) {
+            auth()->loginUsingId(\App\Models\User::where('university_id', $hack_user)->first()->id);
+        } 
+	
         return $next($request);
     }
 }
