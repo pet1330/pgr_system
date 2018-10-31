@@ -15,11 +15,74 @@ import Dropzone from 'dropzone';
 
 Dropzone.autoDiscover = false;
 
+Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+}
+Storage.prototype.getObj = function(key) {
+    return JSON.parse(this.getItem(key))
+}
+
+function working_days(from, to, cb) {
+  function get_bank_holidays(cb) {
+    if (sessionStorage.getObj("bankHolidays") === null) {
+      $.getJSON(window.location.origin + '/' + window.url_prefix + '/api/holidays', null,
+        function(holidayData) {
+          sessionStorage.setObj('bankHolidays',
+            holidayData.map(function(date) {
+              let bhd = date.split('-');
+              return new Date(bhd[0], bhd[1]-1, bhd[2]).getTime();
+            })
+          );
+        }
+      );
+    }
+    if (cb)
+      cb(sessionStorage.getItem("bankHolidays"));
+  }
+
+  function getNumWorkDays(startDate, endDate, bhd) {
+      let numWorkDays = 0;
+      let currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+          // Skips Sunday and Saturday, check bank holidays is an array and that they are excluded
+          if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6 && bhd && (! bhd.includes(currentDate.getTime()))) {
+              numWorkDays++;
+              // console.log(currentDate);
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return numWorkDays;
+  }
+
+  get_bank_holidays(function (bhd) {
+    var wd = getNumWorkDays(from, to, bhd);
+    // console.log(wd);
+    if (cb)
+      cb(wd);
+  });
+}
+
+function propose_duration(selector) {
+  if (! $('#from').val().length !== 0 && $('#to').val().length !== 0 )
+  {
+    var s_from = $('#from').val().split('-');
+    var s_to = $('#to').val().split('-');
+      var from = new Date(s_from[0], s_from[1]-1, s_from[2]);
+      var to = new Date(s_to[0], s_to[1]-1, s_to[2]);
+      working_days(from, to, function (wd) {
+        if (wd === 0 || wd === null)
+          $(selector).val('');
+        else
+          $(selector).val(wd);
+      });
+  }
+}
+
 $(function() {
 
-    if(localStorage.expandedMenu==0) { $("body").addClass('sidebar-collapse'); }
-    $('body').bind('expanded.pushMenu', function() { localStorage.expandedMenu = 1; });
-    $('body').bind('collapsed.pushMenu', function() { localStorage.expandedMenu = 0; });
+    if(sessionStorage.expandedMenu==0) { $("body").addClass('sidebar-collapse'); }
+    $('body').bind('expanded.pushMenu', function() { sessionStorage.expandedMenu = 1; });
+    $('body').bind('collapsed.pushMenu', function() { sessionStorage.expandedMenu = 0; });
 
     $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -56,14 +119,14 @@ $(function() {
     $('#from_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
         dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
     $('#from').change(function(){ $('#from_datepicker').datepicker('setDate', $(this).val()); });
-    $('#from_datepicker').change(function(){ $('#from').attr('value',$(this).val()); });
+    $('#from_datepicker').change(function(){ $('#from').attr('value',$(this).val()); propose_duration('#duration')});
     $('#from_datepicker').datepicker('setDate', $('#from').val());
 
 
     $('#to_datepicker').datepicker({ changeMonth: true, changeYear: true, inline: true,
         dateFormat: "yy-mm-dd", altField: "#d", altFormat: "yy-mm-dd" });
     $('#to').change(function(){ $('#to_datepicker').datepicker('setDate', $(this).val()); });
-    $('#to_datepicker').change(function(){ $('#to').attr('value',$(this).val()); });
+    $('#to_datepicker').change(function(){ $('#to').attr('value',$(this).val()); propose_duration('#duration')});
     $('#to_datepicker').datepicker('setDate', $('#to').val());
 
 
