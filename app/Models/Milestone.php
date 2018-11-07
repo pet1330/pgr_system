@@ -81,7 +81,7 @@ class Milestone extends Model
 
     public function getDurationAttribute()
     {
-        return $this->attributes['duration'] ?? $this->type->duration;
+        return $this->attributes['duration'] ?: $this->type->duration;
     }
 
     public function student()
