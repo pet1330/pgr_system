@@ -32,20 +32,11 @@ services:
       - /srv/pgr-test/config:/srv/config
 
   smtp:
-    environment:
-      - MH_HOSTNAME=pgr.lcas.group
-      - MH_UI_WEB_PATH=mailhog
-      - MH_MAILDIR_PATH=/srv/mailhog/maildir
-      - MH_OUTGOING_SMTP=/srv/mailhog/config/outgoing.json
-      - MH_STORAGE=maildir
-    image: mailhog/mailhog
-    command: ["-smtp-bind-addr", "0.0.0.0:25"]
-    user: root
+    image: djfarrelly/maildev
+    command: "bin/maildev --web 80 --smtp 25 --outgoing-host mailslot.lincoln.ac.uk --outgoing-port 25 --base-pathname /maildev --auto-relay marc@hanheide.net"
     volumes:
-      - /srv/mailhog:/srv/mailhog
-    expose:
-      - 25
-      - 8025
+      - /srv/maildev/storage:/tmp/maildev
     ports:
-      - "8125:8025"
-      - "8925:25"
+      - "8190:80"
+      - "1125:25"
+
