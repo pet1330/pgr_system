@@ -38,6 +38,12 @@ class Staff extends User
         return $this->belongsToMany(App\Models\Training::class);
     }
 
+    public function upgrade_to_admin($reset=true)
+    {
+        $this->update(['user_type' => 'Admin']);
+        $this->assignBasicAdminPermissions($reset);
+    }
+
     public function assignDefaultPermissions($reset = false)
     {
         // Remove all abilities
