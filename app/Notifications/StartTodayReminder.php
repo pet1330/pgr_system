@@ -62,9 +62,13 @@ class StartTodayReminder extends Notification implements ShouldQueue
             ->addDay(1)->startOfDay(), true);
 
         return (new MailMessage)
-            ->subject('Reminder: '.$this->milestone->name.' is upcoming Milestone')
-            ->line('This email is to remind you that the following milestone is due in '.$duediff.'.')
+            ->line('Student: '.$this->student->name.' ('.$this->student->university_id.')')
+            ->line('Programme: '.$this->record->programme->name)
+            ->line('Milestone: '.$this->milestone->name)
+            ->line('')
+            ->line('This email is to remind you that the milestone "'.$this->milestone->name.'" is due in '.$duediff.'.')
             ->action('View Milestone', $url)
-            ->line('Thanks!');
+            ->line('Thanks!')
+            ->subject('[PGR] Reminder: '.$this->milestone->name.' is due in '.$duediff.'.')
     }
 }
