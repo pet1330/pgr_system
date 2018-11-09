@@ -25,6 +25,7 @@ services:
     links:
       - db
       - redis
+      - smtp
     ports:
       - 80:80
       - 443:443
@@ -40,24 +41,6 @@ services:
     ports:
       - "8090:80"
       - "1025:25"
-
-  smtp_old:
-    environment:
-      - MH_HOSTNAME=pgr.lcas.group
-      - MH_UI_WEB_PATH=mailhog
-      - MH_MAILDIR_PATH=/srv/mailhog/maildir
-      - MH_OUTGOING_SMTP=/srv/mailhog/config/outgoing.json
-      - MH_STORAGE=maildir
-    image: mailhog/mailhog
-    command: ["-smtp-bind-addr", "0.0.0.0:25"]
-    user: root
-    volumes:
-      - /srv/mailhog:/srv/mailhog
-    expose:
-      - 8025
-    ports:
-      - "8025:8025"
-      - "8825:25"
 
   mysqldump:
     image: schnitzler/mysqldump
