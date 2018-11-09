@@ -13,6 +13,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'PGR System'),
+    'app_version' => env('APP_VERSION', 'unknown'),
 
     /*
     |--------------------------------------------------------------------------

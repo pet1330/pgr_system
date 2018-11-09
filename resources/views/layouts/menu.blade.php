@@ -192,4 +192,10 @@
     </ul>
   </li>
   @endcan
+  <li>
+    <a target="_blank" href="https://github.com/LCAS/pgr_system/wiki">
+      <i class="fa fa-question" aria-hidden="true"></i>
+      <span>Help</span>
+    </a>
+  </li>
 </ul>
