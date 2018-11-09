@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     #build: . 
-    command: "bash -c 'ln -fs /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
+    command: "bash -c 'if [ -r /srv/config/.htaccess ]; then ln -fsv /srv/config/.htaccess /var/www/html/pgr/public/.htaccess; fi && ln -fsv /srv/config/.env /var/www/html/pgr/.env && /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf'"
     links:
       - db
       - redis
