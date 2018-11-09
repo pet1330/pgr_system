@@ -69,6 +69,6 @@ class StartTodayReminder extends Notification implements ShouldQueue
             ->line('This email is to remind you that the milestone "'.$this->milestone->name.'" is due in '.$duediff.'.')
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject('[PGR] Reminder: '.$this->milestone->name.' is due in '.$duediff.'.')
+            ->subject('[PGR] Reminder: '.$this->milestone->name.' is due in '.$duediff.'.');
     }
 }

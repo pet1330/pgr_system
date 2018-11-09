@@ -29,7 +29,6 @@ Artisan::command('reminders:starttoday', function () {
                 $m->student->student, $m->student, $m
             )
         );
-
     });
 })->describe('Send upcoming milestone reminders');
 
