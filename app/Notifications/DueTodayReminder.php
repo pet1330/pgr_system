@@ -57,9 +57,13 @@ class DueTodayReminder extends Notification implements ShouldQueue
             ]);
 
         return (new MailMessage)
-            ->line('This email is to remind you that the milestone '.$this->milestone->name.' is due by the end of today.')
+            ->line('Student: '.$this->student->name.' ('.$this->student->university_id.')')
+            ->line('Programme: '.$this->record->programme->name)
+            ->line('Milestone: '.$this->milestone->name)
+            ->line('')
+            ->line('This email is to remind you that the milestone "'.$this->milestone->name.'" is due by the end of today.')
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject('Reminder: '.$this->milestone->name.' is due Today!');
+            ->subject('[PGR] Reminder: '.$this->milestone->name.' is due today!');
     }
 }

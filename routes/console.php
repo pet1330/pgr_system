@@ -24,6 +24,12 @@ Artisan::command('reminders:starttoday', function () {
                 $m->student->student, $m->student, $m
             )
         );
+        $m->student->school->notify(
+            new StartTodayReminder(
+                $m->student->student, $m->student, $m
+            )
+        );
+
     });
 })->describe('Send upcoming milestone reminders');
 
@@ -37,6 +43,11 @@ Artisan::command('reminders:duetoday', function () {
                 )
             );
             $m->student->supervisor(1)->notify(
+                new DueTodayReminder(
+                    $m->student->student, $m->student, $m
+                )
+            );
+            $m->student->school->notify(
                 new DueTodayReminder(
                     $m->student->student, $m->student, $m
                 )
