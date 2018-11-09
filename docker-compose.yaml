@@ -25,6 +25,7 @@ services:
     links:
       - db
       - redis
+      - smtp
     ports:
       - 8081:443
     volumes:
@@ -39,4 +40,3 @@ services:
     ports:
       - "8190:80"
       - "1125:25"
-
