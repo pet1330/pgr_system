@@ -1,7 +1,7 @@
 <header class="main-header">
   <a href="{{ route('home') }}" class="logo">
     <span class="logo-mini"><b>PGR</b></span>
-    <span class="logo-lg"><b>PGR</b> System</span>
+    <span class="logo-lg"><i class="fa fa-graduation-cap"></i> {{ config('app.name') }}</span>
   </a>
   <nav class="navbar navbar-static-top" role="navigation">
     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

@@ -34,9 +34,9 @@ services:
 
   smtp:
     image: djfarrelly/maildev
-    command: "bin/maildev --web 80 --smtp 25 --outgoing-host mailslot.lincoln.ac.uk --outgoing-port 25 --base-pathname /maildev --auto-relay marc@hanheide.net"
+    command: "bin/maildev --web 80 --smtp 25 --outgoing-host mailslot.lincoln.ac.uk --outgoing-port 25 --base-pathname /maildev"
     volumes:
-      - /srv/maildev/storage:/tmp/maildev
+      - /srv/maildev/storage-test:/tmp/maildev
     ports:
       - "8190:80"
       - "1125:25"
