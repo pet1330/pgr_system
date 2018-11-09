@@ -63,15 +63,11 @@ class AdminController extends Controller
     {
         $this->authorise('manage', Admin::class);
 
-        $admin->user_type = 'Staff';
-        $admin->save();
-        $staff = Staff::find($admin->id);
-
-        $staff->assignDefaultPermissions(true);
+        $admin->downgrade_to_staff();
 
         return redirect()->route('admin.downgrade.index')
             ->with('flash', [
-                'message' => $staff->name.' is no longer an Admin',
+                'message' => $admin->name.' is no longer an Admin',
                 'type' => 'success',
             ]);
     }
