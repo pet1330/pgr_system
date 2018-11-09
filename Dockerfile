@@ -1,5 +1,10 @@
 #FROM khanhicetea/php7-fpm-docker
 FROM ubuntu:16.04
+
+ARG VERSION=latest
+ARG BUILD_DATE=unknown
+ARG SOURCE_COMMIT=HEAD  
+
 ENV DEBIAN_FRONTEND noninteractive
 
 
@@ -60,6 +65,10 @@ RUN chown -R www-data:www-data /var/www/html/pgr
 EXPOSE 8080
 
 #CMD 'php artisan serve --port=8080 --host=0.0.0.0'
+
+ENV APP_VERSION=$VERSION
+ENV BUILD_DATE=$BUILD_DATE
+ENV GIT_COMMIT_HASH=$SOURCE_COMMIT
 
 #USER root
 CMD "/usr/bin/supervisord"
