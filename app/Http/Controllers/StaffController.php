@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use DataTables;
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Staff;
 use Illuminate\Http\Request;
@@ -60,11 +61,16 @@ class StaffController extends Controller
     {
         $this->authorise('manage', Staff::class);
 
-        $staff = Staff::where('university_id', $request->university_id)->first();
+        $staff = User::where('university_id', $request->university_id)->first();
+
         if ($staff) {
             session()->flash('staff', $staff);
 
-            return redirect()->route('staff.show', $staff->university_id);
+            return redirect($staff->dashboard_url())
+                ->with('flash', [
+                    'message' => $staff->name . ' is already registered',
+                    'type' => 'warning',
+                ]);
         }
         session()->flash('staff_id', $request->university_id);
 
@@ -163,15 +169,11 @@ class StaffController extends Controller
     {
         $this->authorise('manage', Admin::class);
 
-        $staff->user_type = 'Admin';
-        $staff->save();
-        $admin = Admin::find($staff->id);
-
-        $admin->assignDefaultPermissions(true);
+        $staff->upgrade_to_admin();
 
         return redirect()->route('staff.upgrade.index')
             ->with('flash', [
-                'message' => $admin->name.' has been upgraded to an Admin',
+                'message' => $staff->name.' has been upgraded to an Admin',
                 'type' => 'success',
             ]);
     }

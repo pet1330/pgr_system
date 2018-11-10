@@ -1,0 +1,16 @@
+[ -n "$SOURCE_BRANCH" ]  || SOURCE_BRANCH=$(git symbolic-ref -q --short HEAD)  # (1)
+[ -n "$GIT_SHA1" ]       || GIT_SHA1=$(git rev-parse -q HEAD)
+SOURCE_COMMIT=$GIT_SHA1
+[ -n "$GIT_TAG" ]        || GIT_TAG=$(git describe --tags --abbrev=0 $GIT_SHA1)
+VERSION=$GIT_TAG
+[ -n "$SOURCE_TYPE" ]        || SOURCE_TYPE=git  # (3)
+[ -n "$DOCKERFILE_PATH" ]    || DOCKERFILE_PATH=.
+[ -n "$IMAGE_NAME" ]         || IMAGE_NAME=lcasuol/pgr_system:${SOURCE_BRANCH}
+
+
+echo "SOURCE_BRANCH:   $SOURCE_BRANCH"
+echo "GIT_SHA1:        $GIT_SHA1"
+echo "GIT_TAG:         $GIT_TAG"
+echo "VERSION: 		   $VERSION"
+echo "DOCKERFILE_PATH: $DOCKERFILE_PATH"
+echo "IMAGE_NAME:      $IMAGE_NAME"
