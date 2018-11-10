@@ -38,5 +38,5 @@ services:
     volumes:
       - /srv/maildev/storage-test:/tmp/maildev
     ports:
-      - "8190:80"
+      - "8091:80"
       - "1125:25"
