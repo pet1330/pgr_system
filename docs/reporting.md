@@ -1,0 +1,3 @@
+# Reporting 
+
+Reporting is directly integrated with the admin tabular views, where any table can directly be filtered by columns and exported to the Clipboard, Excel, PDF, or printed. Filtering by column is facilitated by entering matching text into the column header (e.g. entering "Life Sciences" into the "School" column to only show records matching that school). The view updates live, and the number of entries to be shown and exported can be selected. A click on `Copy`, `Excel`, `PDF`, or `print` creates the respective format. 

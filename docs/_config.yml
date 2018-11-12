@@ -1,1 +1,7 @@
 theme: jekyll-theme-slate
+plugins:
+- jekyll-menus
+favicon: images/favicon.ico
+author: Marc Hanheide
+email: mhanheide@lincoln.ac.uk
+description: "PGR Management System" # You can edit this line in _config.yml. It will appear in your document head meta and in 
