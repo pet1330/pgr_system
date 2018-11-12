@@ -263,11 +263,12 @@ class AbsenceTest extends TestCase
         $this->assertEquals($stu->totalInteruptionPeriod(), 10);
     }
 
+
     public function test_interuption_period_so_far_includes_previous_interuptions()
     {
         $stu = factory(Student::class)->create();
         $abs_type = AbsenceType::create(['name' => 'test', 'interuption' => true]);
-        $this->assertEquals($stu->totalInteruptionPeriod(), 0);
+        $this->assertEquals($stu->interuptionPeriodSoFar(), 0);
         $from = Carbon::today()->subDays(7);
         $to = Carbon::today()->subDays(3);
 
@@ -281,7 +282,7 @@ class AbsenceTest extends TestCase
         );
 
         $stu->refresh();
-        $this->assertEquals($stu->totalInteruptionPeriod(), 4);
+        $this->assertEquals($stu->interuptionPeriodSoFar(), 4);
 
         $from = Carbon::today()->subDays(22);
         $to = Carbon::today()->subDays(20);
@@ -296,7 +297,7 @@ class AbsenceTest extends TestCase
         );
 
         $stu->refresh();
-        $this->assertEquals($stu->totalInteruptionPeriod(), 6);
+        $this->assertEquals($stu->interuptionPeriodSoFar(), 6);
     }
 
     public function test_interuption_period_so_far_excludes_future_interuptions()
@@ -304,6 +305,7 @@ class AbsenceTest extends TestCase
         $stu = factory(Student::class)->create();
         $abs_type = AbsenceType::create(['name' => 'test', 'interuption' => true]);
         $this->assertEquals($stu->totalInteruptionPeriod(), 0);
+        $this->assertEquals($stu->interuptionPeriodSoFar(), 0);
         $from = Carbon::today()->addDays(3);
         $to = Carbon::today()->addDays(7);
 
@@ -317,7 +319,8 @@ class AbsenceTest extends TestCase
         );
 
         $stu->refresh();
-        $this->assertEquals($stu->totalInteruptionPeriod(), 4);
+        $this->assertEquals($stu->interuptionPeriodSoFar(), 0);
+        $this->assertEquals($stu->interuptionPeriodSoFar($stu->absences->first()->from), 4);
 
         $from = Carbon::today()->addDays(9);
         $to = Carbon::today()->addDays(12);
@@ -332,7 +335,8 @@ class AbsenceTest extends TestCase
         );
 
         $stu->refresh();
-        $this->assertEquals($stu->totalInteruptionPeriod(), 7);
+        $this->assertEquals($stu->interuptionPeriodSoFar(), 0);
+        $this->assertEquals($stu->interuptionPeriodSoFar($stu->absences[1]->from), 7);
     }
 
     public function test_interuption_period_so_far_includes_current_interuptions()
@@ -356,6 +360,7 @@ class AbsenceTest extends TestCase
         $this->assertEquals($stu->interuptionPeriodSoFar(), 10);
         $this->assertEquals($stu->interuptionPeriodSoFar(Carbon::today(), false), 0);
     }
+
 
     public function test_recalculating_milestone_due_date()
     {
