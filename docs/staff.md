@@ -18,6 +18,6 @@ After logging in the dashboard directly shows all upcoming, recently submitted, 
 
 ## Use Cases
 
-* Viewing the [timeline of studies](/images/timeline.png) and their submitted [milestones](milestone)
+* Viewing the [timeline of studies](usecase_timeline) and their submitted [milestones](milestone)
 * Uploading [first submissions and amendments to Milestones](usecase_milestone) on behalf of Students
 

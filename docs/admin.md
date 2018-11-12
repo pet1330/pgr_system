@@ -17,7 +17,7 @@ After logging in the dashboard directly shows an overview of all students in the
 
 ## Use Cases
 
-* Enrolling a [new student](usecase_enrol)
+* Enrolling a [new student](usecase_admin)
   * editing the student record
   * applying a "Timeline Template"
 * [Correcting milestone dates](usecase_correction)

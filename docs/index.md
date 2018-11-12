@@ -2,21 +2,18 @@
 title: The Post-Graduate (Research) Management System (PGR System)
 ---
 
-
-# Quick Links
-
-<ul>
-{% for item in site.menus.header %}
-  <li class="menu-item-{{ loop.index }}">
-    <a href="{{ item.url }}" title="Go to {{ item.title }}">{{ item.title }}</a>
-  </li>
-{% endfor %}
-</ul>
-
-
 # The Post-Graduate (Research) Management System (PGR System)
 
 _The PGR system has been developed by [Peter Lightbody](https://github.com/pet1330) and [Marc Hanheide](https://github.com/marc-hanheide) based on a requirement analysis with the [College of Science at the University of Lincoln](https://www.lincoln.ac.uk/home/collegeofscience/) to support the formal processes of studying towards a PGR degree._
+
+
+## Quick Links
+
+* most common [Use Cases](use_cases)
+* Guides for different Users:
+  * [Student](student)
+  * [Staff/Supervisor](staff)
+  * [Admin](admin)
 
 ## Core Features
 
@@ -31,10 +28,5 @@ The system is a self-hosted solution providing an easy to use online browser-bas
 _Issues can be viewed and reported either directly in [GitHub](https://github.com/lcas/pgr_system/issues) or reported without a GitHub account [here](https://gitreports.com/issue/LCAS/pgr_system/)._
 
 
-## Guides for different users
 
-Whether your are and _Admin_, a _Staff/Supervisor_, or a _Student_, here are some short guides tailored to your role:
-* [Student](student)
-* [Staff/Supervisor](staff)
-* [Admin](admin)
 

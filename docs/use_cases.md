@@ -14,10 +14,10 @@
 
 ## For Admins
 
-* Enrolling a [new student](usecase_enrol)
+* Enrolling a [new student](usecase_admin)
   * editing the student record
   * applying a "Timeline Template"
-* [Correcting milestone dates](usecase_correction)
+* [Correcting milestone dates](usecase_admin)
 * [Archiving](usecase_archive) a student record (after the graduated/withdrew)
 * Entering [interruptions](usecase_interruption)
 * Viewing the [timeline of studies](usecase_timeline) and their submitted milestones

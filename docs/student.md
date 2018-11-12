@@ -1,8 +1,3 @@
----
-title: Guide for Students
-menus: header
-
----
 
 # A short Guide for Students
 
@@ -19,7 +14,7 @@ After logging in the dashboard directly shows all upcoming, recently submitted, 
 
 ## Use Cases for Students
 
-* Viewing the [timeline of studies](images/timeline.png) and due milestones:
+* Viewing the [timeline of studies](usecase_timeline) and due milestones:
 	Display your [PGR journey](template) one a timeline and show all the due dates for submission of the important documents, according to the PGR regulation of your institution:
 	<br><a href="images/timeline.png"><img src="images/timeline.png" height="200"></a>
 * Receiving [notifications](notification) by email about upcoming and due milestones:
