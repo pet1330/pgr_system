@@ -1,1 +1,15 @@
 theme: jekyll-theme-slate
+show_downloads: false
+title: '<a href="/">PGR Management System</a>'
+author: Marc Hanheide
+email: mhanheide@lincoln.ac.uk
+description: "An online system to manage PGR students and regulations." # You can edit this line in _config.yml. It will appear in your document head meta and in 
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+github:
+  is_project_page: false
+  show_downloads: false

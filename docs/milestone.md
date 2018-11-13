@@ -1,0 +1,7 @@
+# Milestones
+
+Milestones are check-points within a student's journey, such as "Confirmation of Study", "Annual Monitoring", or "Thesis Submission". They are associated with specific documentation required in-line with an institution's regulations and hence require the student to submit documentation and have it approved by the respective bodies/panels.
+
+In the PGR system, different types of milestones can be defined by the administrators, being either compulsory milestones that form part of a programmes regulations or optional milestones (such as "change of supervisory team", etc). Compulsory milestones usually form part of a [Timeline Template](template) which can be used to instantiate a student's timeline with all required milestones at the time of enrolment.
+
+Milestones are submitted by students or by admins on behalf of students. They are then either `rejected` or `approved` by an admin, according to the decision of the respective institutional body/panel. [Notifications](notification) are sent when a submission to a milestone is made or the status of a milestone changes. Reminder [Notifications](notification) are furthermore sent to students and supervisors to remind them of upcoming and now due milestones (See [user roles](roles) for details about the users' specific notifications).

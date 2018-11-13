@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
@@ -19,9 +18,11 @@ class HolidayController extends Controller
                 Cache::put('holidays', $dates, 60 * 24 * 30);
             } catch (\GuzzleHttp\Exception\ClientException $e) {
                 Log::warning($e->getResponse()->getBody(true));
+
                 return response()->json('Unable to calculate duration.', 503);
             }
         }
+
         return Cache::get('holidays');
     }
 }

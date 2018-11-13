@@ -18,7 +18,7 @@ class Admin extends User
         $this->assignBasicAdminPermissions($reset);
     }
 
-    public function downgrade_to_staff($reset=true)
+    public function downgrade_to_staff($reset = true)
     {
         $this->update(['user_type' => 'Staff']);
         $staff = Staff::find($this->id);
