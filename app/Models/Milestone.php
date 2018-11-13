@@ -286,8 +286,7 @@ class Milestone extends Model
 
     public function recalculateDueDate()
     {
-        return $this->update(['due_date' => $this->non_interuptive_date
-            ->copy()->addDays($this->student->student
-                ->interuptionPeriodSoFar()), ]);
+        $this->update(['due_date' => $this->non_interuptive_date->copy()
+            ->addDays($this->student->student->interuptionPeriodSoFar($this->due_date))]);
     }
 }
