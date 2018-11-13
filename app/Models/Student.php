@@ -94,10 +94,9 @@ class Student extends User
 
     public function interuptionPeriodSoFar(Carbon $at_point = null, $include_current = true)
     {
-        return $this->absences->filter(function (Absence $ab) {
-            return (bool) $ab->type->interuption;
-        })->filter(function (Absence $ab) use ($at_point, $include_current) {
-            return $ab->isPast($at_point) || $ab->isCurrent($at_point) && $include_current;
+        return $this->absences->filter(function (Absence $ab)  use ($at_point, $include_current) {
+            return ((bool) $ab->type->interuption) &&
+                ($ab->isPast($at_point) || $ab->isCurrent($at_point) && $include_current);
         })->sum('duration');
     }
 

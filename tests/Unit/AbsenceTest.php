@@ -360,44 +360,4 @@ class AbsenceTest extends TestCase
         $this->assertEquals($stu->interuptionPeriodSoFar(), 10);
         $this->assertEquals($stu->interuptionPeriodSoFar(Carbon::today(), false), 0);
     }
-
-
-    public function test_recalculating_milestone_due_date()
-    {
-        $this->seedDatabaseWithStudentRecordInformation();
-        $stu = factory(Student::class)->create();
-        $stu->records()->save(factory(StudentRecord::class)->make());
-
-        $abs_type = AbsenceType::create(['name' => 'test', 'interuption' => true]);
-        $mt = factory(MilestoneType::class)->create();
-
-        $from = Carbon::today()->subDays(7);
-        $to = Carbon::today()->subDays(3);
-        $due_date = Carbon::today()->addDays(3);
-
-        $m = factory(Milestone::class)->make([
-            'due_date' => $due_date,
-            'non_interuptive_date' => $due_date,
-        ]);
-
-        $stu->record()->timeline()->save($m);
-        $this->assertEquals($stu->record()->timeline()->count(), 1);
-
-        $this->assertEquals($m->due_date, $due_date);
-        $this->assertEquals($m->non_interuptive_date, $due_date);
-
-        $stu->absences()->save(
-            Absence::make([
-                'from' => $from,
-                'to' => $to,
-                'absence_type_id' => $abs_type->id,
-                'duration' => $from->diffInDays($to),
-            ])
-        );
-
-        $m->recalculateDueDate();
-        $m->refresh();
-        $this->assertEquals($m->non_interuptive_date, $due_date);
-        $this->assertEquals($m->due_date, $due_date->addDays($from->diffInDays($to)));
-    }
 }
