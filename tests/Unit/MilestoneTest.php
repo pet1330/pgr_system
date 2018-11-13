@@ -19,7 +19,6 @@ class MilestoneTest extends TestCase
     /**
      * Test assigning a student record a timeline.
      */
-
     public function test_blank_milestone_can_be_assigned_to_student()
     {
         $this->seedDatabaseWithStudentRecordInformation();
@@ -68,6 +67,7 @@ class MilestoneTest extends TestCase
                 'duration' => $from->diffInDays($to),
             ])
         );
+
         return $m;
     }
 
@@ -97,7 +97,6 @@ class MilestoneTest extends TestCase
         $m->refresh();
         $this->assertEquals($m->non_interuptive_date, $due_date);
         $this->assertEquals($m->due_date, $due_date);
-
     }
 
     public function test_past_milestone_is_not_moved_by_current_absence() // think about when abense is over both current time and milestone due date
@@ -128,7 +127,7 @@ class MilestoneTest extends TestCase
         $this->assertEquals($m->due_date, $due_date);
     }
 
-// Can we have current Due Date (current milestones)
+    // Can we have current Due Date (current milestones)
 
     public function test_future_milestone_is_moved_by_past_absence()
     {
@@ -185,9 +184,6 @@ class MilestoneTest extends TestCase
         $this->assertEquals($m->non_interuptive_date, $due_date);
         $this->assertEquals($m->due_date, $due_date);
     }
-
-
-
 
     // /**
     //  * Test assigning a student record a timeline.

@@ -68,7 +68,7 @@ class StaffController extends Controller
 
             return redirect($staff->dashboard_url())
                 ->with('flash', [
-                    'message' => $staff->name . ' is already registered',
+                    'message' => $staff->name.' is already registered',
                     'type' => 'warning',
                 ]);
         }

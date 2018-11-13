@@ -6,10 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Absence;
 use App\Models\Student;
-use App\Models\Milestone;
 use App\Models\AbsenceType;
-use App\Models\MilestoneType;
-use App\Models\StudentRecord;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AbsenceTest extends TestCase
@@ -262,7 +259,6 @@ class AbsenceTest extends TestCase
         $stu->refresh();
         $this->assertEquals($stu->totalInteruptionPeriod(), 10);
     }
-
 
     public function test_interuption_period_so_far_includes_previous_interuptions()
     {
