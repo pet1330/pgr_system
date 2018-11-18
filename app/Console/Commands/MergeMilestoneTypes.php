@@ -72,7 +72,7 @@ class MergeMilestoneTypes extends Command
             ->whereIn('id', Milestone::where('milestone_type_id', $mt_new->id)->withTrashed()->pluck('id'))
             ->update(['milestone_type_id' => $mt_old->id]);
 
-        $this->info('Updating Milestone Types with type: '.$mt_new->name);
+        $this->info("Updating Milestone Templates with type: " . $mt_new->name);
         MilestoneTemplate::withTrashed()
             ->whereIn('id', MilestoneTemplate::where('milestone_type_id', $mt_new->id)->withTrashed()->pluck('id'))
             ->update(['milestone_type_id' => $mt_old->id]);
