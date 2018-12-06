@@ -23,13 +23,13 @@ class FundingTypeController extends Controller
 
             return Datatables::eloquent($fundingTypes)
               ->addColumn('editaction', function (FundingType $ft) {
-                  return '<form method="GET" action="'.route('settings.funding-type.edit', $ft->id).'"
+                  return '<form method="GET" action="'.route('settings.funding-type.edit', $ft->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
               })
                 ->addColumn('deleteaction', function (FundingType $ft) {
-                    return '<form method="POST" action="'.route('settings.funding-type.destroy', $ft->id).'"
+                    return '<form method="POST" action="'.route('settings.funding-type.destroy', $ft->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">'.
                   csrf_field().'<button class="btn btn-danger">
@@ -113,9 +113,9 @@ class FundingTypeController extends Controller
             ]);
     }
 
-    public function restore($id)
+    public function restore($slug)
     {
-        $funding_type = FundingType::withTrashed()->find($id);
+        $funding_type = FundingType::withTrashed()->findOrFail(FundingType::decodeSlug($slug));
 
         $this->authorise('manage', $funding_type);
 
@@ -131,10 +131,10 @@ class FundingTypeController extends Controller
         }
 
         return redirect()
-                ->route('settings.funding-type.index')
-                ->with('flash', [
-                    'message' => 'Error: Absence Type is not deleted: "'.$funding_type->name.'"',
-                    'type' => 'danger',
-                ]);
+            ->route('settings.funding-type.index')
+            ->with('flash', [
+                'message' => 'Error: Absence Type is not deleted: "'.$funding_type->name.'"',
+                'type' => 'danger',
+            ]);
     }
 }

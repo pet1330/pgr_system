@@ -14,7 +14,7 @@
         <div class="panel-body">
           @foreach($student->records()->onlyTrashed()->get() as $record)
           <div class="col-md-12">
-            <a href="{{ route('student.record.restore', [$student->university_id, $record->id]) }}">
+            <a href="{{ route('student.record.restore', [$student->university_id, $record->slug()]) }}">
               <span class="btn btn-success">Restore</span>
             </a>
             {{ $record->programme->name }} (Created: {{ $record->created_at->format('d/m/Y') }})

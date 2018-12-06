@@ -128,7 +128,6 @@ class StudentRecordController extends Controller
             return $this->absences_controls($this->absences($record), $student)->make(true);
         }
 
-        $record = $student->record();
         $overdue = $record->timeline->filter->isOverdue();
         $upcoming = $record->timeline->filter->isUpcoming();
         $awaiting = $record->timeline->filter->isAwaitingAmendments();
@@ -234,14 +233,29 @@ class StudentRecordController extends Controller
             ]);
     }
 
-    public function restore(student $student, $id)
+    public function restore(student $student, $slug)
     {
         $this->authorise('manage', $student);
-        $record = $student->records()->onlyTrashed()->findOrFail($id);
-        $record->restore();
 
-        return redirect()->route('student.record.show',
-                [$student->university_id, $record->slug()])->with('flash', [
-              'message' => 'Record successfully restored.', 'type' => 'success', ]);
+        $record = $student->records()->withTrashed()
+            ->findOrFail(StudentRecord::decodeSlug($slug));
+
+        if ($record->trashed()) {
+            $record->restore();
+
+            return redirect()
+                ->route('student.record.show', [$student->university_id, $record->slug()])
+                ->with('flash', [
+                    'message' => 'Student record successfully restored.',
+                    'type' => 'success',
+                ]);
+        }
+
+        return redirect()
+            ->route('student.record.show', [$student->university_id, $record->slug()])
+            ->with('flash', [
+                'message' => 'Error: Student record is not archived.',
+                'type' => 'danger',
+            ]);
     }
 }

@@ -38,7 +38,7 @@ class StudentDashboardTest extends TestCase
 
         $this->actingAs($stu)
             ->get(route('student.show', $stu->university_id))
-            ->assertRedirect(route('student.record.show', [$stu->university_id, $stu->record()->slug()]));
+            ->assertRedirect(route('student.record.show', [$stu->university_id, $stu->records()->first()->slug()]));
     }
 
     public function test_a_student_can_visit_their_dashboard_with_a_blank_record()
@@ -49,7 +49,7 @@ class StudentDashboardTest extends TestCase
         $stu->assignDefaultPermissions(true);
 
         $this->actingAs($stu)
-            ->get(route('student.record.show', [$stu->university_id, $stu->record()->slug()]))
+            ->get(route('student.record.show', [$stu->university_id, $stu->records()->first()->slug()]))
             ->assertStatus(200)
             ->assertSeeText('Dashboard')
             ->assertSeeText('You have no upcoming or or overdue milestones! Congrats!')
@@ -89,12 +89,12 @@ class StudentDashboardTest extends TestCase
             'non_interuptive_date' => Carbon::today()->subDays(20),
             'submitted_date' => null,
         ]);
-        $stu->record()->timeline()->save($m);
+        $stu->records()->first()->timeline()->save($m);
         $stu->assignDefaultPermissions(true);
-        $stu->record()->refresh();
+        $stu->records()->first()->refresh();
 
         $this->actingAs($stu)
-            ->get(route('student.record.show', [$stu->university_id, $stu->record()->slug()]))
+            ->get(route('student.record.show', [$stu->university_id, $stu->records()->first()->slug()]))
             ->assertStatus(200)
             ->assertSeeText('Overdue Milestones')
             ->assertDontSeeText('You have no upcoming or or overdue milestones! Congrats!');
@@ -113,12 +113,12 @@ class StudentDashboardTest extends TestCase
             'non_interuptive_date' => Carbon::today()->addDays(3),
             'submitted_date' => null,
         ]);
-        $stu->record()->timeline()->save($m);
+        $stu->records()->first()->timeline()->save($m);
         $stu->assignDefaultPermissions(true);
-        $stu->record()->refresh();
+        $stu->records()->first()->refresh();
 
         $this->actingAs($stu)
-            ->get(route('student.record.show', [$stu->university_id, $stu->record()->slug()]))
+            ->get(route('student.record.show', [$stu->university_id, $stu->records()->first()->slug()]))
             ->assertStatus(200)
             ->assertSeeText('Upcoming Milestones')
             ->assertDontSeeText('You have no upcoming or or overdue milestones! Congrats!');

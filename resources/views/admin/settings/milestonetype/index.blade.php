@@ -71,7 +71,7 @@
           <div class="panel-body">
             @foreach($deletedMilestoneType as $dmt)
             <div class="col-md-12">
-              <a href="{{ route('settings.milestone-type.restore', $dmt->id) }}">
+              <a href="{{ route('settings.milestone-type.restore', $dmt->slug()) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $dmt->name }}

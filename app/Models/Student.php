@@ -22,76 +22,6 @@ class Student extends User
         return $this->hasMany(StudentRecord::class);
     }
 
-    public function record()
-    {
-        return $this->records->last();
-    }
-
-    public function getSchoolAttribute()
-    {
-        return $this->record()->school;
-    }
-
-    public function getCollegeAttribute()
-    {
-        return $this->record()->school->college;
-    }
-
-    public function getTierFourAttribute()
-    {
-        return $this->record()->tierFour;
-    }
-
-    public function getStudentStatusAttribute()
-    {
-        return $this->record()->StudentStatus;
-    }
-
-    public function getProgrammeTitleAttribute()
-    {
-        return $this->record()->ProgrammeTitle;
-    }
-
-    public function getProgrammeTypeAttribute()
-    {
-        return $this->record()->ProgrammeType;
-    }
-
-    public function getEnrolmentStatusAttribute()
-    {
-        return $this->record()->EnrolmentStatus;
-    }
-
-    public function getDirectorOfStudyAttribute()
-    {
-        return $this->record()->directorOfStudy;
-    }
-
-    public function getSecondSupervisorAttribute()
-    {
-        return $this->record()->secondSupervisor;
-    }
-
-    public function getThirdSupervisorAttribute()
-    {
-        return $this->record()->thirdSupervisor;
-    }
-
-    public function removeSupervisor(Staff $supervisor)
-    {
-        return $this->record()->removeSupervisor($supervisor);
-    }
-
-    public function addSupervisor(Staff $supervisor, $type)
-    {
-        return $this->record()->addSupervisor($supervisor, $type);
-    }
-
-    public function supervisors()
-    {
-        return $this->record()->supervisors();
-    }
-
     public function interuptionPeriodSoFar(Carbon $at_point = null, $include_current = true)
     {
         return $this->absences->filter(function (Absence $ab) use ($at_point, $include_current) {
@@ -105,26 +35,6 @@ class Student extends User
         return $this->absences->filter(function (Absence $ab) {
             return (bool) $ab->type->interuption;
         })->sum('duration');
-    }
-
-    public function getStartDateAttribute()
-    {
-        return $this->record()->enrolment_date;
-    }
-
-    public function enrolmentStatus()
-    {
-        return $this->record()->enrolmentStatus();
-    }
-
-    public function fundingType()
-    {
-        return $this->record()->fundingType();
-    }
-
-    public function programme()
-    {
-        return $this->record()->programme();
     }
 
     public function absences()

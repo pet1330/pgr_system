@@ -8,7 +8,7 @@
       <div class="box-body">
         <label>Update Milestone</label>
         <form action="{{ route('settings.timeline.milestone.update',
-        [$timeline->id, $milestone->id]) }}" method="POST">
+        [$timeline->slug(), $milestone->slug()]) }}" method="POST">
           {{ csrf_field() }}
           <input type="hidden" name="_method" value="PATCH">
           <div class="form-group{{ $errors->has('milestone_type') ? ' has-error' : '' }} col-md-6">

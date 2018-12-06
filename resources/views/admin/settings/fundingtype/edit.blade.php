@@ -5,7 +5,7 @@
     <div class="box box box-primary">
       <div class="box-body">
         <label>Update funding type</label>
-        <form action="{{ route('settings.funding-type.update', $funding_type->id) }}" method="POST">
+        <form action="{{ route('settings.funding-type.update', $funding_type->slug()) }}" method="POST">
         <input type="hidden" name="_method" value="PATCH">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-12">
@@ -21,6 +21,4 @@
       </div>
     </div>
 </form>
-{{-- </section> --}}
-{{-- </div> --}}
 @endsection

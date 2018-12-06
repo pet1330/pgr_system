@@ -41,7 +41,7 @@
           <div class="panel-body">
               @foreach($deletedStatuses as $status)
               <div class="col-md-12">
-                <a href="{{ route('settings.student-status.restore', $status->id) }}">
+                <a href="{{ route('settings.student-status.restore', $status->slug()) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
                 {{ $status->status }}

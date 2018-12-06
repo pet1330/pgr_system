@@ -59,7 +59,7 @@
           <div class="panel-body">
             @foreach($deletedAbsenceType as $dat)
             <div class="col-md-12">
-              <a href="{{ route('settings.absence-type.restore', $dat->id) }}">
+              <a href="{{ route('settings.absence-type.restore', $dat->slug()) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $dat->name }}

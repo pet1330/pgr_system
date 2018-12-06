@@ -29,8 +29,8 @@ class MilestoneTest extends TestCase
             'due_date' => Carbon::now(),
             'non_interuptive_date' => Carbon::now(),
         ]);
-        $stu->record()->timeline()->save($m);
-        $this->assertEquals($stu->record()->timeline()->count(), 1);
+        $stu->records()->first()->timeline()->save($m);
+        $this->assertEquals($stu->records()->first()->timeline()->count(), 1);
     }
 
     private function recalculate_test_setup($due_date, $from, $to)
@@ -47,8 +47,8 @@ class MilestoneTest extends TestCase
             'non_interuptive_date' => $due_date,
         ]);
 
-        $stu->record()->timeline()->save($m);
-        $this->assertEquals($stu->record()->timeline()->count(), 1);
+        $stu->records()->first()->timeline()->save($m);
+        $this->assertEquals($stu->records()->first()->timeline()->count(), 1);
 
         $this->assertEquals($m->due_date, $due_date);
         $this->assertEquals($m->non_interuptive_date, $due_date);
