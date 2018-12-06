@@ -15,7 +15,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
   pgr:
-    image: lcasuol/pgr_system:0.0.6
+    image: lcasuol/pgr_system:0.0.7
     build:
       context: .
       dockerfile: Dockerfile
