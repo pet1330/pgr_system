@@ -30,20 +30,20 @@ class TimelineTemplateController extends Controller
             return Datatables::eloquent($timeline)
                 ->addColumn('editaction', function (TimelineTemplate $tt) {
                     return '<form method="GET" action="'.route('settings.timeline.edit',
-                      $tt->id).'" accept-charset="UTF-8" class="delete-form">
+                      $tt->slug()).'" accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (TimelineTemplate $tt) {
                     return '<form method="POST" action="'.route('settings.timeline.destroy',
-                        $tt->id).'" accept-charset="UTF-8" class="delete-form">
+                        $tt->slug()).'" accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">'.
                       csrf_field().'<button class="btn btn-danger">
                       <i class="fa fa-trash"></i></button> </form>';
                 })
                 ->rawColumns(['editaction', 'deleteaction'])
                 ->setRowAttr(['data-link' => function ($tt) {
-                    return route('settings.timeline.show', $tt->id);
+                    return route('settings.timeline.show', $tt->slug());
                 }])
                 ->make(true);
         }
@@ -93,13 +93,13 @@ class TimelineTemplateController extends Controller
                 })
                 ->addColumn('editaction', function (MilestoneTemplate $mt) use ($timeline) {
                     return '<form method="GET" action="'.
-                    route('settings.timeline.milestone.edit', [$timeline->id, $mt->id]).'"
+                    route('settings.timeline.milestone.edit', [$timeline->slug(), $mt->slug()]).'"
                       accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (MilestoneTemplate $mt) use ($timeline) {
-                    return '<form method="POST" action="'.route('settings.timeline.milestone.destroy', [$timeline->id, $mt->id]).'"
+                    return '<form method="POST" action="'.route('settings.timeline.milestone.destroy', [$timeline->slug(), $mt->slug()]).'"
                       accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">'.
                       csrf_field().'<button class="btn btn-danger">
@@ -166,9 +166,9 @@ class TimelineTemplateController extends Controller
             ]);
     }
 
-    public function restore($id)
+    public function restore($slug)
     {
-        $tt = TimelineTemplate::withTrashed()->find($id);
+        $tt = TimelineTemplate::withTrashed()->findOrFail(TimelineTemplate::decodeSlug($slug));
 
         $this->authorise('manage', $tt);
 

@@ -492,7 +492,7 @@ class MilestoneController extends Controller
         $student->notify(new StudentMilestoneApprovalAlert($student,
             $record, $milestone, $approval));
 
-        $student->supervisors->each->notify(new SupervisorMilestoneApprovalAlert($student,
+        $record->supervisors->each->notify(new SupervisorMilestoneApprovalAlert($student,
             $record, $milestone, $approval));
 
         return redirect()->route('student.record.milestone.show',

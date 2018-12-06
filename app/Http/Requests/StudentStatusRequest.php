@@ -34,7 +34,7 @@ class StudentStatusRequest extends FormRequest
                 return [
                     'status' => [
                         'required',
-                        'min:3',
+                        'min:2',
                         'unique:student_statuses,status'.(is_null($status) ? '' : ','.$status->id),
                     ],
                 ];
@@ -42,7 +42,7 @@ class StudentStatusRequest extends FormRequest
                 return [
                     'status' => [
                         'required',
-                        'min:3',
+                        'min:2',
                         'unique:student_statuses,status',
                     ],
                 ];

@@ -70,7 +70,7 @@
           <div class="panel-body">
             @foreach($deletedSchools as $s)
             <div class="col-md-12">
-              <a href="{{ route('settings.school.restore', $s->id) }}">
+              <a href="{{ route('settings.school.restore', $s->slug()) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $s->name }}

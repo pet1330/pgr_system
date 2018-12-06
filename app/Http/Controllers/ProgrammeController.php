@@ -23,13 +23,13 @@ class ProgrammeController extends Controller
 
             return Datatables::eloquent($programmes)
               ->addColumn('editaction', function (Programme $programme) {
-                  return '<form method="GET" action="'.route('settings.programme.edit', $programme->id).'"
+                  return '<form method="GET" action="'.route('settings.programme.edit', $programme->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
               })
                 ->addColumn('deleteaction', function (Programme $programme) {
-                    return '<form method="POST" action="'.route('settings.programme.destroy', $programme->id).'"
+                    return '<form method="POST" action="'.route('settings.programme.destroy', $programme->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">'.
                   csrf_field().'<button class="btn btn-danger">
@@ -114,9 +114,9 @@ class ProgrammeController extends Controller
             ]);
     }
 
-    public function restore($id)
+    public function restore($slug)
     {
-        $prog = Programme::withTrashed()->find($id);
+        $prog = Programme::withTrashed()->findOrFail(Programme::decodeSlug($slug));
 
         $this->authorise('manage', $prog);
 

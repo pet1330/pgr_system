@@ -41,7 +41,7 @@
           <div class="panel-body">
             @foreach($deletedColleges as $c)
             <div class="col-md-12">
-              <a href="{{ route('settings.college.restore', $c->id) }}">
+              <a href="{{ route('settings.college.restore', $c->slug()) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $c->name }}

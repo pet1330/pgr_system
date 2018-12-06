@@ -24,13 +24,13 @@ class MilestoneTypeController extends Controller
             return Datatables::eloquent($miletypes)
                 ->editColumn('student_makable', '{{ $student_makable ? "Yes" : "No" }}')
                 ->addColumn('editaction', function (MilestoneType $mt) {
-                    return '<form method="GET" action="'.route('settings.milestone-type.edit', $mt->id).'"
+                    return '<form method="GET" action="'.route('settings.milestone-type.edit', $mt->slug()).'"
                       accept-charset="UTF-8" class="delete-form">
                       <button class="btn btn-warning">
                       <i class="fa fa-pencil"></i></button> </form>';
                 })
                 ->addColumn('deleteaction', function (MilestoneType $mt) {
-                    return '<form method="POST" action="'.route('settings.milestone-type.destroy', $mt->id).'"
+                    return '<form method="POST" action="'.route('settings.milestone-type.destroy', $mt->slug()).'"
                       accept-charset="UTF-8" class="delete-form">
                       <input type="hidden" name="_method" value="DELETE">'.
                       csrf_field().'<button class="btn btn-danger">
@@ -115,9 +115,9 @@ class MilestoneTypeController extends Controller
             ]);
     }
 
-    public function restore($id)
+    public function restore($slug)
     {
-        $mt = MilestoneType::withTrashed()->find($id);
+        $mt = MilestoneType::withTrashed()->findOrFail(MilestoneType::decodeSlug($slug));
 
         $this->authorise('manage', $mt);
 

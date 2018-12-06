@@ -23,13 +23,13 @@ class EnrolmentStatusController extends Controller
 
             return Datatables::eloquent($enrolment_status)
               ->addColumn('editaction', function (EnrolmentStatus $enrolment_status) {
-                  return '<form method="GET" action="'.route('settings.enrolment-status.edit', $enrolment_status->id).'"
+                  return '<form method="GET" action="'.route('settings.enrolment-status.edit', $enrolment_status->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
               })
                 ->addColumn('deleteaction', function (EnrolmentStatus $enrolment_status) {
-                    return '<form method="POST" action="'.route('settings.enrolment-status.destroy', $enrolment_status->id).'"
+                    return '<form method="POST" action="'.route('settings.enrolment-status.destroy', $enrolment_status->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">'.
                   csrf_field().'<button class="btn btn-danger">
@@ -114,9 +114,9 @@ class EnrolmentStatusController extends Controller
             ]);
     }
 
-    public function restore($id)
+    public function restore($slug)
     {
-        $enrolment_status = EnrolmentStatus::withTrashed()->find($id);
+        $enrolment_status = EnrolmentStatus::withTrashed()->find(EnrolmentStatus::decodeSlug($slug));
 
         $this->authorise('manage', $enrolment_status);
 
