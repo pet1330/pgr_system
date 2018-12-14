@@ -25,6 +25,8 @@ get into tinker: `php artisan tinker`
     * `$user->assignReadOnlyAdminPermissions();`
     * `$user->assignBasicAdminPermissions();`
     * `$user->assignElevatedAdminPermissions();`
+  * list abilities: `$abilities = $user->getAbilities();`
+  
 
 
 ## Development
