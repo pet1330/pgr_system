@@ -27,4 +27,4 @@ After logging in the dashboard directly shows all upcoming, recently submitted, 
 
 Apologies for the audio quality. This is an "as is" recording, only to complement the documentation here for anyone who missed the induction session.
 
-<iframe src="https://uol.cloud.panopto.eu/Panopto/Podcast/StreamInBrowser/73bd3605-a24a-417d-b314-a9b500b5e42c.mp4?mediaTargetType=videoPodcast" width="720" height="405" style="padding: 0px; border: 1px solid #464646;" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+<iframe src="https://uol.cloud.panopto.eu/Panopto/Podcast/StreamInBrowser/73bd3605-a24a-417d-b314-a9b500b5e42c.mp4?mediaTargetType=videoPodcast" width="720" height="405" style="padding: 0px; border: 1px solid #464646;" frameborder="0" allowfullscreen></iframe>
