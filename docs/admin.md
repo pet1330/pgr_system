@@ -30,5 +30,10 @@ After logging in the dashboard directly shows an overview of all students in the
   * Students in Programme
 
 
+## Recording of Induction session (13/12/2018)
+
+Apologies for the audio quality. This is an "as is" recording, only to complement the documentation here for anyone who missed the induction session.
+
+<iframe src="https://uol.cloud.panopto.eu/Panopto/Podcast/StreamInBrowser/92157c64-3a49-415a-9d16-a9b500a6652f.mp4?mediaTargetType=videoPodcast" width="720" height="405" style="padding: 0px; border: 1px solid #464646;" frameborder="0" allowfullscreen></iframe>
 
 
