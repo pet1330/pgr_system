@@ -31,13 +31,13 @@ class SchoolController extends Controller
               return $s->college->name;
           })
               ->addColumn('editaction', function (School $school) {
-                  return '<form method="GET" action="'.route('settings.school.edit', $school->id).'"
+                  return '<form method="GET" action="'.route('settings.school.edit', $school->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <button class="btn btn-warning">
                   <i class="fa fa-pencil"></i></button> </form>';
               })
                 ->addColumn('deleteaction', function (School $school) {
-                    return '<form method="POST" action="'.route('settings.school.destroy', $school->id).'"
+                    return '<form method="POST" action="'.route('settings.school.destroy', $school->slug()).'"
                   accept-charset="UTF-8" class="delete-form">
                   <input type="hidden" name="_method" value="DELETE">'.
                   csrf_field().'<button class="btn btn-danger">
@@ -126,9 +126,9 @@ class SchoolController extends Controller
             ]);
     }
 
-    public function restore($id)
+    public function restore($slug)
     {
-        $school = School::withTrashed()->find($id);
+        $school = School::withTrashed()->findOrFail(School::decodeSlug($slug));
 
         $this->authorise('manage', $school);
 

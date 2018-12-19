@@ -5,7 +5,7 @@
 <div class="box box box-primary">
   <div class="box-body">
     <label>Update milestone type</label>
-    <form action="{{ route('settings.milestone-type.update', $milestone_type->id) }}" method="POST">
+    <form action="{{ route('settings.milestone-type.update', $milestone_type->slug()) }}" method="POST">
       <input type="hidden" name="_method" value="PATCH">
       {{ csrf_field() }}
       <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-6">

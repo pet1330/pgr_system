@@ -41,7 +41,7 @@
           <div class="panel-body">
             @foreach($deleted_timelines as $tt)
             <div class="col-md-12">
-              <a href="{{ route('settings.timeline.restore', $tt->id) }}">
+              <a href="{{ route('settings.timeline.restore', $tt->slug()) }}">
                 <span class="btn btn-success">Restore</span>
               </a>
               {{ $tt->name }}

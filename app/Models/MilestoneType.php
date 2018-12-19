@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Plank\Mediable\Mediable;
+use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,8 +11,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MilestoneType extends Model
 {
     use Mediable;
-    use LogsActivity;
+    use HasHashSlug;
     use SoftDeletes;
+    use LogsActivity;
 
     protected static $logOnlyDirty = true;
 

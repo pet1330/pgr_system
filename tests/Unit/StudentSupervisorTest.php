@@ -26,19 +26,19 @@ class StudentSupervisorTest extends TestCase
         $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
 
-        $supers->each(function ($s) use ($student) {
-            $count = $student->supervisors()->count() + 1;
-            $student->addSupervisor($s, $count);
+        $supers->each(function ($s) use ($studentRecord) {
+            $count = $studentRecord->supervisors()->count() + 1;
+            $studentRecord->addSupervisor($s, $count);
 
             $this->assertDatabaseHas('supervisors', [
                 'staff_id' => $s->id,
-                'student_record_id' => $student->record()->id,
+                'student_record_id' => $studentRecord->id,
                 'changed_on' => null,
                 'supervisor_type' => $count,
             ]);
         });
 
-        $this->assertEquals($student->supervisors()->count(), 3);
+        $this->assertEquals($studentRecord->supervisors()->count(), 3);
     }
 
     /**
@@ -55,23 +55,23 @@ class StudentSupervisorTest extends TestCase
         $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
 
-        $supers->each(function ($s) use ($student) {
-            $count = $student->supervisors()->count() + 1;
-            $student->addSupervisor($s, $count);
+        $supers->each(function ($s) use ($studentRecord) {
+            $count = $studentRecord->supervisors()->count() + 1;
+            $studentRecord->addSupervisor($s, $count);
 
             $this->assertDatabaseHas('supervisors', [
                 'staff_id' => $s->id,
-                'student_record_id' => $student->record()->id,
+                'student_record_id' => $studentRecord->id,
                 'changed_on' => null,
                 'supervisor_type' => $count,
             ]);
         });
 
-        $this->assertEquals($student->supervisors()->count(), 3);
+        $this->assertEquals($studentRecord->supervisors()->count(), 3);
 
-        $student->removeSupervisor($supers->first());
+        $studentRecord->removeSupervisor($supers->first());
 
-        $this->assertEquals($student->supervisors()->count(), 2);
+        $this->assertEquals($studentRecord->supervisors()->count(), 2);
     }
 
     /**
@@ -87,10 +87,10 @@ class StudentSupervisorTest extends TestCase
         $staff = factory(Staff::class)->create();
         $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
-        $student->addSupervisor($staff, 1);
-        $this->assertEquals($student->DirectorOfStudy->id, $staff->id);
-        $this->assertNull($student->secondSupervisor);
-        $this->assertNull($student->thirdSupervisor);
+        $studentRecord->addSupervisor($staff, 1);
+        $this->assertEquals($studentRecord->DirectorOfStudy->id, $staff->id);
+        $this->assertNull($studentRecord->secondSupervisor);
+        $this->assertNull($studentRecord->thirdSupervisor);
     }
 
     /**
@@ -106,10 +106,10 @@ class StudentSupervisorTest extends TestCase
         $staff = factory(Staff::class)->create();
         $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
-        $student->addSupervisor($staff, 2);
-        $this->assertNull($student->DirectorOfStudy);
-        $this->assertEquals($student->secondSupervisor->id, $staff->id);
-        $this->assertNull($student->thirdSupervisor);
+        $studentRecord->addSupervisor($staff, 2);
+        $this->assertNull($studentRecord->DirectorOfStudy);
+        $this->assertEquals($studentRecord->secondSupervisor->id, $staff->id);
+        $this->assertNull($studentRecord->thirdSupervisor);
     }
 
     /**
@@ -130,9 +130,9 @@ class StudentSupervisorTest extends TestCase
         $staff = factory(Staff::class)->create();
         $studentRecord = factory(StudentRecord::class)->make();
         $student->records()->save($studentRecord);
-        $student->addSupervisor($staff, 3);
-        $this->assertNull($student->DirectorOfStudy);
-        $this->assertNull($student->secondSupervisor);
-        $this->assertEquals($student->thirdSupervisor->id, $staff->id);
+        $studentRecord->addSupervisor($staff, 3);
+        $this->assertNull($studentRecord->DirectorOfStudy);
+        $this->assertNull($studentRecord->secondSupervisor);
+        $this->assertEquals($studentRecord->thirdSupervisor->id, $staff->id);
     }
 }

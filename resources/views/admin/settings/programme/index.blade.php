@@ -50,7 +50,7 @@
           <div class="panel-body">
               @foreach($deletedProgrammes as $progs)
               <div class="col-md-12">
-                <a href="{{ route('settings.programme.restore', $progs->id) }}">
+                <a href="{{ route('settings.programme.restore', $progs->slug()) }}">
                   <span class="btn btn-success">Restore</span>
                 </a>
                 {{ $progs->name }}

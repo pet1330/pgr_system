@@ -230,7 +230,7 @@ class MilestoneController extends Controller
             $student->allow('view', $milestone);
             $student->allow('upload', $milestone);
             Bouncer::refreshFor($student);
-            $student->supervisors->each(function (Staff $supervisor) use ($milestone) {
+            $record->supervisors->each(function (Staff $supervisor) use ($milestone) {
                 $supervisor->allow('view', $milestone);
                 Bouncer::refreshFor($supervisor);
             });
@@ -492,7 +492,7 @@ class MilestoneController extends Controller
         $student->notify(new StudentMilestoneApprovalAlert($student,
             $record, $milestone, $approval));
 
-        $student->supervisors->each->notify(new SupervisorMilestoneApprovalAlert($student,
+        $record->supervisors->each->notify(new SupervisorMilestoneApprovalAlert($student,
             $record, $milestone, $approval));
 
         return redirect()->route('student.record.milestone.show',

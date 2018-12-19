@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Bouncer;
+use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MilestoneTemplate extends Model
 {
+    use HasHashSlug;
     use SoftDeletes;
     use LogsActivity;
 

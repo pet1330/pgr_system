@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class School extends Model
 {
     use Notifiable;
+    use HasHashSlug;
     use SoftDeletes;
     use LogsActivity;
 

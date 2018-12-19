@@ -81,7 +81,7 @@ class StudentController extends Controller
 
         if ($student->records()->count() === 1 && ! auth()->user()->can('manage', Student::class)) {
             return redirect()->route('student.record.show',
-                [$student->university_id, $student->record()->slug()]);
+                [$student->university_id, $student->records()->first()->slug()]);
         }
 
         return view('student.show', compact('student'));
