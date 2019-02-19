@@ -19,7 +19,7 @@ class RoutePrefixProxy
             \URL::forceRootUrl(config('app.proxy_url'));
         }
         if (config('app.proxy_schema')) {
-            \URL::forceRootUrl(config('app.proxy_schema'));
+            \URL::forceScheme(config('app.proxy_schema'));
         }
 
         return $next($request);
