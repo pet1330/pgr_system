@@ -19,7 +19,7 @@ Artisan::command('reminders:starttoday', function () {
                 $m->student->student, $m->student, $m
             )
         );
-        $m->student->supervisor(1)->notify(
+        optional($m->student->supervisor(1))->notify(
             new StartTodayReminder(
                 $m->student->student, $m->student, $m
             )
@@ -41,7 +41,7 @@ Artisan::command('reminders:duetoday', function () {
                     $m->student->student, $m->student, $m
                 )
             );
-            $m->student->supervisor(1)->notify(
+            optional($m->student->supervisor(1))->notify(
                 new DueTodayReminder(
                     $m->student->student, $m->student, $m
                 )

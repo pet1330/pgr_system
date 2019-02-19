@@ -2,7 +2,7 @@
 
 # https://github.com/docker/docker.github.io/issues/2167
 
-git fetch --unshallow origin
+git fetch --unshallow origin || true
 
 . ./hooks/env
 docker build \
