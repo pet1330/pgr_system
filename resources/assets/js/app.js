@@ -54,12 +54,17 @@ function working_days(from, to, cb) {
       return numWorkDays;
   }
 
-  get_bank_holidays(function (bhd) {
-    var wd = getNumWorkDays(from, to, bhd);
-    // console.log(wd);
-    if (cb)
-      cb(wd);
-  });
+  var diffDays = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)));        
+  if (cb)
+    cb(diffDays+1);
+        
+        
+  //get_bank_holidays(function (bhd) {
+  //  var wd = getNumWorkDays(from, to, bhd);
+  //  // console.log(wd);
+  //  if (cb)
+  //    cb(wd);
+  //});
 }
 
 function propose_duration(selector) {
