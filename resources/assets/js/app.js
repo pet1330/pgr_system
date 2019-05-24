@@ -54,7 +54,7 @@ function working_days(from, to, cb) {
       return numWorkDays;
   }
 
-  var diffDays = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)));        
+  var diffDays = Math.round(Math.abs((to.getTime() - from.getTime()) / (24 * 60 * 60 * 1000)));        
   if (cb)
     cb(diffDays+1);
         
