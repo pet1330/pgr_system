@@ -51,7 +51,7 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
-          <a href="{{ route('student.submitted') }}">
+          <a href="{{ route('student.recent') }}">
             <div class="hero-widget well well-sm{{ $recentlySubmitted ? ' text-success' : ' text-muted' }}">
               <div class="icon">
                 <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
@@ -61,6 +61,21 @@
               </div>
               <div class="options">
                 <span class="btn btn-lg">Recently Submitted</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <a href="{{ route('student.submitted') }}">
+            <div class="hero-widget well well-sm{{ $submitted ? ' text-success' : ' text-muted' }}">
+              <div class="icon">
+                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+              </div>
+              <div class="text">
+                <var>{{ $submitted }}</var>
+              </div>
+              <div class="options">
+                <span class="btn btn-lg">All Submitted</span>
               </div>
             </div>
           </a>
