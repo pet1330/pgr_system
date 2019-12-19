@@ -17,4 +17,5 @@ npm-debug.log
 yarn-error.log
 .env
 *.lock
+.vscode
 docs/_site
