@@ -6,6 +6,7 @@ php:
 
 services:
   - mysql
+  - docker
 
 before_script:
   - cp .env.travis .env
@@ -41,3 +42,4 @@ install:
 
 script:
   - vendor/bin/phpunit --debug
+  - docker-compose build

@@ -21,7 +21,7 @@ RUN curl -o /usr/local/bin/rmate https://raw.githubusercontent.com/aurora/rmate/
 RUN apt-get -y update && apt-get -y --force-yes upgrade && \
     apt-get install -y --force-yes php${IMAGE_PHP_VERSION}-bcmath php${IMAGE_PHP_VERSION}-bz2 php${IMAGE_PHP_VERSION}-cli php${IMAGE_PHP_VERSION}-common php${IMAGE_PHP_VERSION}-curl \
                 php${IMAGE_PHP_VERSION}-cgi php${IMAGE_PHP_VERSION}-dev php${IMAGE_PHP_VERSION}-fpm php${IMAGE_PHP_VERSION}-gd php${IMAGE_PHP_VERSION}-gmp php${IMAGE_PHP_VERSION}-imap php${IMAGE_PHP_VERSION}-intl \
-                php${IMAGE_PHP_VERSION}-json php${IMAGE_PHP_VERSION}-ldap php${IMAGE_PHP_VERSION}-mbstring php${IMAGE_PHP_VERSION}-mcrypt php${IMAGE_PHP_VERSION}-mysql \
+                php${IMAGE_PHP_VERSION}-json php${IMAGE_PHP_VERSION}-ldap php${IMAGE_PHP_VERSION}-mbstring php${IMAGE_PHP_VERSION}-mysql \
                 php${IMAGE_PHP_VERSION}-odbc php${IMAGE_PHP_VERSION}-opcache php${IMAGE_PHP_VERSION}-pgsql php${IMAGE_PHP_VERSION}-phpdbg php${IMAGE_PHP_VERSION}-pspell \
                 php${IMAGE_PHP_VERSION}-readline php${IMAGE_PHP_VERSION}-recode php${IMAGE_PHP_VERSION}-soap php${IMAGE_PHP_VERSION}-sqlite3 \
                 php${IMAGE_PHP_VERSION}-tidy php${IMAGE_PHP_VERSION}-xml php${IMAGE_PHP_VERSION}-xmlrpc php${IMAGE_PHP_VERSION}-xsl php${IMAGE_PHP_VERSION}-zip \

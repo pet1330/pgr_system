@@ -15,15 +15,15 @@
     </a>
     <ul class="treeview-menu">
       <li>
-        <a href="{{ route('student.recent') }}">
-          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-          <span>Recently Submitted</span>
+        <a href="{{ route('student.submitted') }}">
+          <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+          <span>Awaiting 1st Review</span>
         </a>
       </li>
       <li>
-        <a href="{{ route('student.submitted') }}">
-          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-          <span>All Submitted</span>
+        <a href="{{ route('student.amendments') }}">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <span>Awaiting Amendments</span>
         </a>
       </li>
       <li>
@@ -39,9 +39,9 @@
         </a>
       </li>
       <li>
-        <a href="{{ route('student.amendments') }}">
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-          <span>Awaiting Amendments</span>
+        <a href="{{ route('student.recent') }}">
+          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+          <span>Recently Submitted</span>
         </a>
       </li>
     </ul>

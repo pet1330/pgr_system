@@ -4,6 +4,21 @@
 @section('content')
     <div class="box box-primary">
       <div class="panel-body ">
+      <div class="col-md-3 col-sm-6">
+          <a href="{{ route('student.submitted') }}">
+            <div class="hero-widget well well-sm{{ $submitted ? ' text-success' : ' text-muted' }}">
+              <div class="icon">
+                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+              </div>
+              <div class="text">
+                <var>{{ $submitted }}</var>
+              </div>
+              <div class="options">
+                <span class="btn btn-lg">Awaiting 1st Review</span>
+              </div>
+            </div>
+          </a>
+        </div>
         <div class="col-md-3 col-sm-6">
           <a href="{{ route('student.amendments') }}">
             <div class="hero-widget well well-sm{{ $awaitingAmendments ? ' text-warning' : ' text-muted' }}">
@@ -50,7 +65,7 @@
             </div>
           </a>
         </div>
-        <div class="col-md-3 col-sm-6">
+        <!--<div class="col-md-3 col-sm-6">
           <a href="{{ route('student.recent') }}">
             <div class="hero-widget well well-sm{{ $recentlySubmitted ? ' text-success' : ' text-muted' }}">
               <div class="icon">
@@ -64,22 +79,7 @@
               </div>
             </div>
           </a>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <a href="{{ route('student.submitted') }}">
-            <div class="hero-widget well well-sm{{ $submitted ? ' text-success' : ' text-muted' }}">
-              <div class="icon">
-                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-              </div>
-              <div class="text">
-                <var>{{ $submitted }}</var>
-              </div>
-              <div class="options">
-                <span class="btn btn-lg">All Submitted</span>
-              </div>
-            </div>
-          </a>
-        </div>
+        </div>-->
         @can('view', App\Models\Student::class)
         <div class="col-sm-6">
           <a href="{{ route('student.index') }}">

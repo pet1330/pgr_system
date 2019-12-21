@@ -101,7 +101,7 @@ class MilestoneController extends Controller
         // permissions checked in data function
 
         if ($request->ajax()) {
-            return $this->data(Milestone::select('milestones.*')->submitted())
+            return $this->data(Milestone::select('milestones.*')->underReview())
                 ->editColumn('submitted_date', function (Milestone $ms) {
                     return $ms->submitted_date->format('d/m/Y').
                            ' ('.$ms->submitted_date->diffForHumans().')';
