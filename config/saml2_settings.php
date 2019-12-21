@@ -6,7 +6,7 @@ $prefix = str_finish(env('URL_PREFIX', ''), '/');
 
 return $settings = [
 
-    /*
+    /**
      * If 'useRoutes' is set to true, the package defines five new routes:
      *
      *    Method | URI                      | Name
@@ -21,29 +21,30 @@ return $settings = [
 
     'routesPrefix' => $prefix.'saml2',
 
-    /*
+    /**
      * which middleware group to use for the saml routes
      * Laravel 5.2 will need a group which includes StartSession
      */
     'routesMiddleware' => ['web'],
 
-    /*
+    /**
      * Indicates how the parameters will be
      * retrieved from the sls request for signature validation
      */
     'retrieveParametersFromServer' => true,
 
-    /*
+    /**
      * Where to redirect after logout
      */
     'logoutRoute' => $prefix,
 
-    /*
+    /**
      * Where to redirect after login if no other option was provided
      */
     'loginRoute' => $prefix,
 
-    /*
+
+    /**
      * Where to redirect after login if no other option was provided
      */
     'errorRoute' => $prefix.'/error',
@@ -59,7 +60,13 @@ return $settings = [
     'strict' => false, //@todo: make this depend on laravel config
 
     // Enable debug mode (to print errors)
-    'debug' => true, //@todo: make this depend on laravel config
+    'debug' => env('APP_DEBUG', false),
+
+    // If 'proxyVars' is True, then the Saml lib will trust proxy headers
+    // e.g X-Forwarded-Proto / HTTP_X_FORWARDED_PROTO. This is useful if
+    // your application is running behind a load balancer which terminates
+    // SSL.
+    'proxyVars' => true,
 
     // Service Provider Data that we are deploying
     'sp' => [
@@ -90,6 +97,7 @@ return $settings = [
         ],
         // Specifies info about where and how the <Logout Response> message MUST be
         // returned to the requester, in this case our SP.
+        // Remove this part to not include any URL Location in the metadata.
         'singleLogoutService' => [
             // URL Location where the <Response> from the IdP will be returned,
             // using HTTP-Redirect binding.
@@ -136,7 +144,7 @@ return $settings = [
     // Security settings
     'security' => [
 
-        /* signatures and encryptions offered */
+        /** signatures and encryptions offered */
 
         // Indicates that the nameID of the <samlp:logoutRequest> sent by this SP
         // will be encrypted.
@@ -162,7 +170,7 @@ return $settings = [
         */
         'signMetadata' => false,
 
-        /* signatures and encryptions required **/
+        /** signatures and encryptions required **/
 
         // Indicates a requirement for the <samlp:Response>, <samlp:LogoutRequest> and
         // <samlp:LogoutResponse> elements received by this SP to be signed.
@@ -187,15 +195,14 @@ return $settings = [
     'contactPerson' => [
         'technical' => [
             'givenName' => 'name',
-            'emailAddress' => env('TECH_SUPPORT_ADDRESS'),
+            'emailAddress' => env('TECH_SUPPORT_ADDRESS', 'plightbody@lincoln.ac.uk'),
         ],
         'support' => [
             'givenName' => 'Support',
-            'emailAddress' => env('TECH_SUPPORT_ADDRESS'),
+            'emailAddress' => env('TECH_SUPPORT_ADDRESS', 'plightbody@lincoln.ac.uk'),
         ],
     ],
 
-    // Organization information template, the info in en_US lang is recomended, add more if required
     'organization' => [
         'en-GB' => [
             'name' => 'Name',
@@ -204,7 +211,7 @@ return $settings = [
         ],
     ],
 
-/* Interoperable SAML 2.0 Web Browser SSO Profile [saml2int]   http://saml2int.org/profile/current
+    /* Interoperable SAML 2.0 Web Browser SSO Profile [saml2int]   http://saml2int.org/profile/current
 
    'authnRequestsSigned' => false,    // SP SHOULD NOT sign the <samlp:AuthnRequest>,
                                       // MUST NOT assume that the IdP validates the sign
