@@ -1,8 +1,11 @@
 language: php
 
 php:
-  - 7.0.21
-  - 7.1
+  - 7.3
+#  - 7.4 disabled for now
+
+services:
+  - mysql
 
 before_script:
   - cp .env.travis .env
@@ -12,8 +15,8 @@ before_script:
   - travis_retry php artisan key:generate
   - travis_retry php artisan migrate
   - . $HOME/.nvm/nvm.sh
-  - nvm install 6.10.3
-  - nvm use 6.10.3
+  - nvm install 8.17.0
+  - nvm use 8.17.0
   - npm install -g yarn
   - yarn
   - yarn run production

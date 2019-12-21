@@ -14,7 +14,8 @@ Route::middleware('samlauth')->group(function () {
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
     Route::get('student/upcoming', 'MilestoneController@upcoming')->name('student.upcoming');
-    Route::get('student/submitted', 'MilestoneController@recent')->name('student.submitted');
+    Route::get('student/recent', 'MilestoneController@recent')->name('student.recent');
+    Route::get('student/submitted', 'MilestoneController@submitted')->name('student.submitted');
 
     Route::get('student/find', 'StudentController@find')->name('student.find');
     Route::post('student/find', 'StudentController@find_post')->name('student.find');

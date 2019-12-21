@@ -15,9 +15,15 @@
     </a>
     <ul class="treeview-menu">
       <li>
-        <a href="{{ route('student.submitted') }}">
+        <a href="{{ route('student.recent') }}">
           <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
           <span>Recently Submitted</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('student.submitted') }}">
+          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+          <span>All Submitted</span>
         </a>
       </li>
       <li>
