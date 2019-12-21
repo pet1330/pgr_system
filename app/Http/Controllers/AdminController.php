@@ -34,9 +34,10 @@ class AdminController extends Controller
         $overdue = Milestone::overdue()->count();
         $upcoming = Milestone::upcoming()->count();
         $recentlySubmitted = Milestone::recentlySubmitted()->count();
+        $submitted = Milestone::underReview()->count();
 
         return View('admin.dashboard',
-            compact('admin', 'awaitingAmendments', 'overdue', 'upcoming', 'recentlySubmitted')
+            compact('admin', 'awaitingAmendments', 'overdue', 'upcoming', 'recentlySubmitted', 'submitted')
         );
     }
 

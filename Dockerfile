@@ -1,11 +1,11 @@
-#FROM khanhicetea/php7-fpm-docker
 FROM ubuntu:16.04
 
 ARG VERSION=latest
 ARG BUILD_DATE=unknown
-ARG SOURCE_COMMIT=HEAD  
+ARG SOURCE_COMMIT=HEAD
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV IMAGE_PHP_VERSION 7.3
 
 
 RUN apt-get clean && apt-get -y update && apt-get install -y locales curl software-properties-common git \
@@ -19,20 +19,20 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN curl -o /usr/local/bin/rmate https://raw.githubusercontent.com/aurora/rmate/v1.0.1/rmate && chmod +x /usr/local/bin/rmate
 
 RUN apt-get -y update && apt-get -y --force-yes upgrade && \
-    apt-get install -y --force-yes php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-common php7.1-curl \
-                php7.1-cgi php7.1-dev php7.1-fpm php7.1-gd php7.1-gmp php7.1-imap php7.1-intl \
-                php7.1-json php7.1-ldap php7.1-mbstring php7.1-mcrypt php7.1-mysql \
-                php7.1-odbc php7.1-opcache php7.1-pgsql php7.1-phpdbg php7.1-pspell \
-                php7.1-readline php7.1-recode php7.1-soap php7.1-sqlite3 \
-                php7.1-tidy php7.1-xml php7.1-xmlrpc php7.1-xsl php7.1-zip \
+    apt-get install -y --force-yes php${IMAGE_PHP_VERSION}-bcmath php${IMAGE_PHP_VERSION}-bz2 php${IMAGE_PHP_VERSION}-cli php${IMAGE_PHP_VERSION}-common php${IMAGE_PHP_VERSION}-curl \
+                php${IMAGE_PHP_VERSION}-cgi php${IMAGE_PHP_VERSION}-dev php${IMAGE_PHP_VERSION}-fpm php${IMAGE_PHP_VERSION}-gd php${IMAGE_PHP_VERSION}-gmp php${IMAGE_PHP_VERSION}-imap php${IMAGE_PHP_VERSION}-intl \
+                php${IMAGE_PHP_VERSION}-json php${IMAGE_PHP_VERSION}-ldap php${IMAGE_PHP_VERSION}-mbstring php${IMAGE_PHP_VERSION}-mysql \
+                php${IMAGE_PHP_VERSION}-odbc php${IMAGE_PHP_VERSION}-opcache php${IMAGE_PHP_VERSION}-pgsql php${IMAGE_PHP_VERSION}-phpdbg php${IMAGE_PHP_VERSION}-pspell \
+                php${IMAGE_PHP_VERSION}-readline php${IMAGE_PHP_VERSION}-recode php${IMAGE_PHP_VERSION}-soap php${IMAGE_PHP_VERSION}-sqlite3 \
+                php${IMAGE_PHP_VERSION}-tidy php${IMAGE_PHP_VERSION}-xml php${IMAGE_PHP_VERSION}-xmlrpc php${IMAGE_PHP_VERSION}-xsl php${IMAGE_PHP_VERSION}-zip \
                 php-tideways php-mongodb \
                 vim nano supervisor nodejs duplicity \
-                yarn apache2 apache2-utils libapache2-mod-php7.1 \
+                yarn apache2 apache2-utils libapache2-mod-php${IMAGE_PHP_VERSION} \
                 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-RUN a2enmod  php7.1 && a2enmod rewrite && a2enconf php7.1-fpm
-RUN /usr/sbin/update-alternatives --set php /usr/bin/php7.1 && /usr/sbin/update-alternatives --set phar /usr/bin/phar7.1
+RUN a2enmod  php${IMAGE_PHP_VERSION} && a2enmod rewrite && a2enconf php${IMAGE_PHP_VERSION}-fpm
+RUN /usr/sbin/update-alternatives --set php /usr/bin/php${IMAGE_PHP_VERSION} && /usr/sbin/update-alternatives --set phar /usr/bin/phar${IMAGE_PHP_VERSION}
 
 RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
 RUN curl -L https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
