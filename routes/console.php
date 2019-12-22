@@ -1,10 +1,10 @@
 <?php
 
-use Carbon\Carbon;
 use App\Models\Milestone;
 use App\Models\StudentRecord;
 use App\Notifications\DueTodayReminder;
 use App\Notifications\StartTodayReminder;
+use Carbon\Carbon;
 
 if (config('app.proxy_url')) {
     URL::forceRootUrl(config('app.proxy_url'));

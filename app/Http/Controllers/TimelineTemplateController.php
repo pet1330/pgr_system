@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\Student;
-use App\Models\Milestone;
-use Illuminate\Http\Request;
-use App\Models\MilestoneType;
-use App\Models\StudentRecord;
-use App\Models\TimelineTemplate;
-use App\Models\MilestoneTemplate;
 use App\Http\Requests\TimelineCopyRequest;
 use App\Http\Requests\TimelineTemplateRequest;
+use App\Models\Milestone;
+use App\Models\MilestoneTemplate;
+use App\Models\MilestoneType;
+use App\Models\Student;
+use App\Models\StudentRecord;
+use App\Models\TimelineTemplate;
+use DataTables;
+use Illuminate\Http\Request;
 
 class TimelineTemplateController extends Controller
 {

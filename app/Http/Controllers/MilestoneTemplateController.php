@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MilestoneTemplateRequest;
+use App\Models\MilestoneTemplate;
 use App\Models\MilestoneType;
 use App\Models\TimelineTemplate;
-use App\Models\MilestoneTemplate;
-use App\Http\Requests\MilestoneTemplateRequest;
 
 class MilestoneTemplateController extends Controller
 {

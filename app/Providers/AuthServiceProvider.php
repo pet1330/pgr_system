@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Models\Milestone;
 use App\Models\MilestoneType;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

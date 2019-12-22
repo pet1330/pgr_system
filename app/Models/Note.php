@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Plank\Mediable\Mediable;
 use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Plank\Mediable\Mediable;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Note extends Model
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use Carbon\Carbon;
-use App\Models\AbsenceType;
-use Illuminate\Http\Request;
 use App\Http\Requests\AbsenceTypeRequest;
+use App\Models\AbsenceType;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
 
 class AbsenceTypeController extends Controller
 {

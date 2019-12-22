@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Bouncer;
-use Validator;
-use DataTables;
-use Carbon\Carbon;
-use MediaUploader;
-use App\Models\Media;
-use App\Models\Staff;
-use App\Models\Student;
-use App\Models\Approval;
-use App\Models\Milestone;
-use Illuminate\Http\Request;
-use App\Models\MilestoneType;
-use App\Models\StudentRecord;
 use App\Http\Requests\ApprovalRequest;
 use App\Http\Requests\MilestoneRequest;
+use App\Models\Approval;
+use App\Models\Media;
+use App\Models\Milestone;
+use App\Models\MilestoneType;
+use App\Models\Staff;
+use App\Models\Student;
+use App\Models\StudentRecord;
 use App\Notifications\AdminUploadAlert;
-use App\Notifications\StudentUploadAlert;
 use App\Notifications\AdminUploadConfirmation;
-use App\Notifications\StudentUploadConfirmation;
 use App\Notifications\StudentMilestoneApprovalAlert;
+use App\Notifications\StudentUploadAlert;
+use App\Notifications\StudentUploadConfirmation;
 use App\Notifications\SupervisorMilestoneApprovalAlert;
+use Bouncer;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
+use Log;
+use MediaUploader;
+use Validator;
 
 class MilestoneController extends Controller
 {

@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Milestone;
+use App\Models\MilestoneTemplate;
 use App\Models\MilestoneType;
 use Illuminate\Console\Command;
-use App\Models\MilestoneTemplate;
 
 class MergeMilestoneTypes extends Command
 {

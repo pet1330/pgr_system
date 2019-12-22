@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Student;
 use App\Models\Milestone;
 use App\Models\MilestoneType;
+use App\Models\Student;
 use App\Models\StudentRecord;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class StudentDashboardTest extends TestCase
 {

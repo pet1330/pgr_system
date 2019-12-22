@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\School;
-use App\Models\College;
-use Illuminate\Http\Request;
 use App\Http\Requests\SchoolRequest;
+use App\Models\College;
+use App\Models\School;
+use DataTables;
+use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\Note;
-use App\Models\School;
+use App\Http\Requests\StudentRecordRequest;
 use App\Models\Absence;
-use App\Models\Student;
-use App\Models\Programme;
+use App\Models\EnrolmentStatus;
 use App\Models\FundingType;
-use Illuminate\Http\Request;
+use App\Models\Note;
+use App\Models\Programme;
+use App\Models\School;
+use App\Models\Student;
 use App\Models\StudentRecord;
 use App\Models\StudentStatus;
-use App\Models\EnrolmentStatus;
-use App\Http\Requests\StudentRecordRequest;
+use DataTables;
+use Illuminate\Http\Request;
 
 class StudentRecordController extends Controller
 {

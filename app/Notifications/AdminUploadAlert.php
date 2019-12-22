@@ -3,13 +3,13 @@
 namespace App\Notifications;
 
 use App\Models\Media;
-use App\Models\Student;
 use App\Models\Milestone;
+use App\Models\Student;
 use App\Models\StudentRecord;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AdminUploadAlert extends Notification implements ShouldQueue
 {
