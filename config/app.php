@@ -32,6 +32,8 @@ return [
 
     'archive_limit' => env('ARCHIVE_LIMIT', 6),
 
+    'all_notifications_email' => env('ALL_NOTIFICATIONS_EMAIL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

@@ -65,7 +65,7 @@ class AdminUploadAlert extends Notification implements ShouldQueue
             $message = $message.' on behalf of '.$this->student->name;
         }
 
-        return (new MailMessage)
+        $msg = (new MailMessage)
             ->line($message.'.')
             ->line('A copy of the uploaded file is attached.')
             ->action('View Milestone', $url)
@@ -74,5 +74,9 @@ class AdminUploadAlert extends Notification implements ShouldQueue
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
             ])->subject('Upload Alert - '.$this->student->name);
+        if (config('app.all_notifications_email')) {   
+            $msg->bcc(config('app.all_notifications_email'));
+        }
+        return $msg;
     }
 }
