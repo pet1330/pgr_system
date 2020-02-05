@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\FundingType;
-use Illuminate\Http\Request;
 use App\Http\Requests\FundingTypeRequest;
+use App\Models\FundingType;
+use DataTables;
+use Illuminate\Http\Request;
 
 class FundingTypeController extends Controller
 {

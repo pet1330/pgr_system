@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\Note;
-use App\Models\School;
+use App\Http\Requests\StudentRecordRequest;
 use App\Models\Absence;
-use App\Models\Student;
-use App\Models\Programme;
+use App\Models\EnrolmentStatus;
 use App\Models\FundingType;
-use Illuminate\Http\Request;
+use App\Models\Note;
+use App\Models\Programme;
+use App\Models\School;
+use App\Models\Student;
 use App\Models\StudentRecord;
 use App\Models\StudentStatus;
-use App\Models\EnrolmentStatus;
-use App\Http\Requests\StudentRecordRequest;
+use DataTables;
+use Illuminate\Http\Request;
 
 class StudentRecordController extends Controller
 {
@@ -76,13 +76,13 @@ class StudentRecordController extends Controller
                     'enrolment_status_id' => $request->enrolment_status_id,
                     'student_status_id' => $request->student_status_id,
                     'programme_id' => $request->programme_id,
-            ])
+                ])
         );
 
         return redirect()->route('student.show', $student->university_id)
             ->with('flash', [
-              'message' => 'Successfully created a new record for "'.$student->name.'"',
-              'type' => 'success',
+                'message' => 'Successfully created a new record for "'.$student->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -111,8 +111,8 @@ class StudentRecordController extends Controller
         return redirect()
             ->route('student.record.show', [$student->university_id, $record->slug()])
             ->with('flash', [
-              'message' => 'Successfully updated "'.$record->slug().'"',
-              'type' => 'success',
+                'message' => 'Successfully updated "'.$record->slug().'"',
+                'type' => 'success',
             ]);
     }
 
@@ -184,8 +184,8 @@ class StudentRecordController extends Controller
             return redirect()->route('student.record.show',
                 [$student->university_id, $record->slug()])
                 ->with('flash', [
-                  'message' => $staff->name.' is now supervising '.$student->name,
-                  'type' => 'success',
+                    'message' => $staff->name.' is now supervising '.$student->name,
+                    'type' => 'success',
                 ]);
         }
 
@@ -204,8 +204,8 @@ class StudentRecordController extends Controller
             return redirect()->route('student.record.show',
                 [$student->university_id, $record->slug()])
                 ->with('flash', [
-                  'message' => $staff->name.' no longer supervises '.$student->name,
-                  'type' => 'success',
+                    'message' => $staff->name.' no longer supervises '.$student->name,
+                    'type' => 'success',
                 ]);
         }
 
@@ -228,8 +228,8 @@ class StudentRecordController extends Controller
 
         return redirect()->route('student.show', $student->university_id)
             ->with('flash', [
-              'message' => 'Record successfully archived.',
-              'type' => 'success',
+                'message' => 'Record successfully archived.',
+                'type' => 'success',
             ]);
     }
 

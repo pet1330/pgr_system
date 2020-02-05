@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\School;
-use App\Models\College;
-use Illuminate\Http\Request;
 use App\Http\Requests\SchoolRequest;
+use App\Models\College;
+use App\Models\School;
+use DataTables;
+use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
@@ -21,9 +21,9 @@ class SchoolController extends Controller
 
         if ($request->ajax()) {
             $schools = School::select('schools.*')->with([
-            'college' => function ($q) {
-                $q->withTrashed();
-            },
+                'college' => function ($q) {
+                    $q->withTrashed();
+                },
             ])->withCount('students');
 
             return Datatables::eloquent($schools)
@@ -68,8 +68,8 @@ class SchoolController extends Controller
         return redirect()
             ->route('settings.school.index')
             ->with('flash', [
-              'message' => 'Successfully added "'.$school->name.'"',
-              'type' => 'success',
+                'message' => 'Successfully added "'.$school->name.'"',
+                'type' => 'success',
             ]
           );
     }

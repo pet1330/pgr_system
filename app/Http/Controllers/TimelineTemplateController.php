@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\Student;
-use App\Models\Milestone;
-use Illuminate\Http\Request;
-use App\Models\MilestoneType;
-use App\Models\StudentRecord;
-use App\Models\TimelineTemplate;
-use App\Models\MilestoneTemplate;
 use App\Http\Requests\TimelineCopyRequest;
 use App\Http\Requests\TimelineTemplateRequest;
+use App\Models\Milestone;
+use App\Models\MilestoneTemplate;
+use App\Models\MilestoneType;
+use App\Models\Student;
+use App\Models\StudentRecord;
+use App\Models\TimelineTemplate;
+use DataTables;
+use Illuminate\Http\Request;
 
 class TimelineTemplateController extends Controller
 {
@@ -178,17 +178,17 @@ class TimelineTemplateController extends Controller
             return redirect()
                 ->route('settings.timeline.index')
                 ->with('flash', [
-                'message' => 'Successfully restored "'.$tt->name.'"',
-                'type' => 'success',
-            ]);
+                    'message' => 'Successfully restored "'.$tt->name.'"',
+                    'type' => 'success',
+                ]);
         }
 
         return redirect()
                 ->route('settings.timeline.index')
                 ->with('flash', [
-                'message' => 'Error: Timeline Template has not deleted: "'.$tt->name.'"',
-                'type' => 'danger',
-            ]);
+                    'message' => 'Error: Timeline Template has not deleted: "'.$tt->name.'"',
+                    'type' => 'danger',
+                ]);
     }
 
     public function create_mass_assignment(Student $student, StudentRecord $record)
@@ -217,16 +217,16 @@ class TimelineTemplateController extends Controller
             return redirect()->route('student.record.show',
               [$student->university_id, $record->slug()])
               ->with('flash', [
-                'message' => 'Milestones in '.$tt->name.' successfully copied to '.$student->name.'\'s record',
-                'type' => 'success',
-            ]);
+                  'message' => 'Milestones in '.$tt->name.' successfully copied to '.$student->name.'\'s record',
+                  'type' => 'success',
+              ]);
         }
 
         return redirect()->route('student.record.show',
             [$student->university_id, $record->slug()])
             ->with('flash', [
-              'message' => 'Error: Something went wrong! please try again',
-              'type' => 'danger',
+                'message' => 'Error: Something went wrong! please try again',
+                'type' => 'danger',
             ]);
     }
 }

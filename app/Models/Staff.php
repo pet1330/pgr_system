@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Bouncer;
 use App\Scopes\UserScope;
+use Bouncer;
 
 class Staff extends User
 {

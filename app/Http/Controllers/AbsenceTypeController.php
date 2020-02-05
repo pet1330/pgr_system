@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use Carbon\Carbon;
-use App\Models\AbsenceType;
-use Illuminate\Http\Request;
 use App\Http\Requests\AbsenceTypeRequest;
+use App\Models\AbsenceType;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
 
 class AbsenceTypeController extends Controller
 {
@@ -21,11 +21,11 @@ class AbsenceTypeController extends Controller
 
         if ($request->ajax()) {
             $absencetypes = AbsenceType::select('absence_types.*')->withCount([
-            'absence',
-            'absence AS currentabsence_count' => function ($query) {
-                $query->where('from', '<=', Carbon::now())
-                      ->where('to', '>=', Carbon::now());
-            }, ]);
+                'absence',
+                'absence AS currentabsence_count' => function ($query) {
+                    $query->where('from', '<=', Carbon::now())
+                          ->where('to', '>=', Carbon::now());
+                }, ]);
 
             return Datatables::eloquent($absencetypes)
               ->editColumn('interuption', '{{$interuption ? "Yes" : "No" }}')

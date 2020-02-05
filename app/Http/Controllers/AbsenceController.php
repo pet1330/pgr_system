@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absence;
-use App\Models\Student;
-use App\Models\AbsenceType;
 use App\Http\Requests\AbsenceRequest;
+use App\Models\Absence;
+use App\Models\AbsenceType;
+use App\Models\Student;
 
 class AbsenceController extends Controller
 {

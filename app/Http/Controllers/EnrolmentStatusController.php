@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EnrolmentStatusRequest;
+use App\Models\EnrolmentStatus;
 use DataTables;
 use Illuminate\Http\Request;
-use App\Models\EnrolmentStatus;
-use App\Http\Requests\EnrolmentStatusRequest;
 
 class EnrolmentStatusController extends Controller
 {

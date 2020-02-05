@@ -2,14 +2,14 @@
 
 namespace App\Notifications;
 
-use Carbon\Carbon;
-use App\Models\Student;
 use App\Models\Milestone;
+use App\Models\Student;
 use App\Models\StudentRecord;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class StartTodayReminder extends Notification implements ShouldQueue
 {

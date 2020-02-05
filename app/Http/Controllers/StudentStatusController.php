@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentStatusRequest;
+use App\Models\StudentStatus;
 use DataTables;
 use Illuminate\Http\Request;
-use App\Models\StudentStatus;
-use App\Http\Requests\StudentStatusRequest;
 
 class StudentStatusController extends Controller
 {

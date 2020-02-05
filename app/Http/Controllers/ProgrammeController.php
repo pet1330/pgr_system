@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\Programme;
-use Illuminate\Http\Request;
 use App\Http\Requests\ProgrammeRequest;
+use App\Models\Programme;
+use DataTables;
+use Illuminate\Http\Request;
 
 class ProgrammeController extends Controller
 {

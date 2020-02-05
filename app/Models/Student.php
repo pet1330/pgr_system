@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Bouncer;
 use Carbon\Carbon;
-use App\Scopes\UserScope;
 
 class Student extends User
 {

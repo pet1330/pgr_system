@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\UpdateRolesRequest;
 use DataTables;
 use Illuminate\Http\Request;
-use Silber\Bouncer\Database\Role;
 use Silber\Bouncer\Database\Ability;
-use App\Http\Requests\Admin\UpdateRolesRequest;
+use Silber\Bouncer\Database\Role;
 
 class RolePermissionsController extends Controller
 {

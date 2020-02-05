@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Balping\HashSlug\HasHashSlug;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Media extends \Plank\Mediable\Media
 {
