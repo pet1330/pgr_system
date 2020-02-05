@@ -12,7 +12,7 @@ class Staff extends User
         parent::boot();
         static::addGlobalScope(new UserScope('Staff'));
 
-        static::deleting(function (Staff $staff) {
+        static::deleting(function (self $staff) {
             $staff->supervised()->sync([]);
         });
     }
