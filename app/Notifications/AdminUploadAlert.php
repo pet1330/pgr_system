@@ -3,13 +3,13 @@
 namespace App\Notifications;
 
 use App\Models\Media;
-use App\Models\Student;
 use App\Models\Milestone;
+use App\Models\Student;
 use App\Models\StudentRecord;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AdminUploadAlert extends Notification implements ShouldQueue
 {
@@ -55,8 +55,8 @@ class AdminUploadAlert extends Notification implements ShouldQueue
     {
         $url = route('student.record.milestone.show',
             [$this->student->university_id,
-            $this->record->slug(),
-            $this->milestone->slug(),
+                $this->record->slug(),
+                $this->milestone->slug(),
             ]);
 
         $message = 'This email is to inform you that '.$this->file->uploader->name.' has submitted a file to the milestone: '.$this->milestone->name;
@@ -74,9 +74,10 @@ class AdminUploadAlert extends Notification implements ShouldQueue
                 'as' => snake_case($this->student->name.' '.$this->file->created_at).'.'.$this->file->extension,
                 'mime' => $this->file->mime_type,
             ])->subject('Upload Alert - '.$this->student->name);
-        if (config('app.all_notifications_email')) {   
+        if (config('app.all_notifications_email')) {
             $msg->bcc(config('app.all_notifications_email'));
         }
+
         return $msg;
     }
 }

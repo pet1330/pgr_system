@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\UpdateUsersRequest;
 use App\Models\User;
 use Silber\Bouncer\Database\Role;
-use App\Http\Requests\Admin\UpdateUsersRequest;
 
 class UserRolesController extends Controller
 {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
-use App\Models\Student;
-use Illuminate\Http\Request;
-use App\Models\StudentRecord;
 use App\Http\Requests\FindStaffRequest;
 use App\Http\Requests\SupervisorRequest;
+use App\Models\Staff;
+use App\Models\Student;
+use App\Models\StudentRecord;
+use Illuminate\Http\Request;
 
 class SupervisorController extends Controller
 {

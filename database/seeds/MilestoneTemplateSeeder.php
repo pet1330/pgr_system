@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\MilestoneTemplate;
+use Illuminate\Database\Seeder;
 
 class MilestoneTemplateSeeder extends Seeder
 {

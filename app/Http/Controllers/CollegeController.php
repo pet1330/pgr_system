@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\College;
-use Illuminate\Http\Request;
 use App\Http\Requests\CollegeRequest;
+use App\Models\College;
+use DataTables;
+use Illuminate\Http\Request;
 
 class CollegeController extends Controller
 {
@@ -59,8 +59,8 @@ class CollegeController extends Controller
         return redirect()
             ->route('settings.college.index')
             ->with('flash', [
-              'message' => 'Successfully added "'.$college->name.'"',
-              'type' => 'success',
+                'message' => 'Successfully added "'.$college->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -81,8 +81,8 @@ class CollegeController extends Controller
         return redirect()
             ->route('settings.college.index')
             ->with('flash', [
-              'message' => 'Successfully updated "'.$college->name.'"',
-              'type' => 'success',
+                'message' => 'Successfully updated "'.$college->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -109,8 +109,8 @@ class CollegeController extends Controller
         return redirect()
             ->route('settings.college.index')
             ->with('flash', [
-              'message' => 'Successfully deleted "'.$college->name.'"',
-              'type' => 'success',
+                'message' => 'Successfully deleted "'.$college->name.'"',
+                'type' => 'success',
             ]);
     }
 
@@ -126,16 +126,16 @@ class CollegeController extends Controller
             return redirect()
                 ->route('settings.college.index')
                 ->with('flash', [
-                  'message' => 'Successfully restored "'.$college->name.'"',
-                  'type' => 'success',
+                    'message' => 'Successfully restored "'.$college->name.'"',
+                    'type' => 'success',
                 ]);
         }
 
         return redirect()
             ->route('settings.college.index')
             ->with('flash', [
-              'message' => 'Error: College is not deleted: "'.$college->name.'"',
-              'type' => 'danger',
+                'message' => 'Error: College is not deleted: "'.$college->name.'"',
+                'type' => 'danger',
             ]);
     }
 }

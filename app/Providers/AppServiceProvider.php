@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use View;
-use Bouncer;
-use Validator;
 use App\Models\Admin;
 use App\Models\Staff;
 use App\Models\Student;
+use Bouncer;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Validator;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {

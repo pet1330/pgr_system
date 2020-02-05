@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MilestoneTemplateRequest;
+use App\Models\MilestoneTemplate;
 use App\Models\MilestoneType;
 use App\Models\TimelineTemplate;
-use App\Models\MilestoneTemplate;
-use App\Http\Requests\MilestoneTemplateRequest;
 
 class MilestoneTemplateController extends Controller
 {
@@ -111,16 +111,16 @@ class MilestoneTemplateController extends Controller
             return redirect()
                 ->route('settings.timeline.show', $mt->timeline_template->slug())
                 ->with('flash', [
-                'message' => 'Successfully restored "'.$mt->type->name.'"',
-                'type' => 'success',
-            ]);
+                    'message' => 'Successfully restored "'.$mt->type->name.'"',
+                    'type' => 'success',
+                ]);
         }
 
         return redirect()
                 ->route('settings.timeline.show', $mt->timeline_template->slug())
                 ->with('flash', [
-                'message' => 'Error: Milestone Template has not deleted: "'.$mt->type->name.'"',
-                'type' => 'danger',
-            ]);
+                    'message' => 'Error: Milestone Template has not deleted: "'.$mt->type->name.'"',
+                    'type' => 'danger',
+                ]);
     }
 }

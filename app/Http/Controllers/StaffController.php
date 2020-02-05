@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use DataTables;
-use App\Models\User;
+use App\Http\Requests\FindStaffRequest;
+use App\Http\Requests\StaffRequest;
 use App\Models\Admin;
 use App\Models\Staff;
+use App\Models\User;
+use DataTables;
+use DB;
 use Illuminate\Http\Request;
-use App\Http\Requests\StaffRequest;
-use App\Http\Requests\FindStaffRequest;
 
 class StaffController extends Controller
 {

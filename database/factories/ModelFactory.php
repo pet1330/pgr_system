@@ -11,24 +11,24 @@
 |
 */
 
-use Carbon\Carbon;
-use App\Models\Role;
-use App\Models\Admin;
-use App\Models\Staff;
-use App\Models\School;
 use App\Models\Absence;
-use App\Models\Student;
-use App\Models\Milestone;
-use App\Models\Programme;
-use App\Models\Permission;
 use App\Models\AbsenceType;
+use App\Models\Admin;
+use App\Models\EnrolmentStatus;
 use App\Models\FundingType;
+use App\Models\Milestone;
+use App\Models\MilestoneTemplate;
 use App\Models\MilestoneType;
+use App\Models\Permission;
+use App\Models\Programme;
+use App\Models\Role;
+use App\Models\School;
+use App\Models\Staff;
+use App\Models\Student;
 use App\Models\StudentRecord;
 use App\Models\StudentStatus;
-use App\Models\EnrolmentStatus;
 use App\Models\TimelineTemplate;
-use App\Models\MilestoneTemplate;
+use Carbon\Carbon;
 
 $factory->define(Student::class, function (Faker\Generator $faker) {
     $unid = $faker->unique()->bothify('########');
