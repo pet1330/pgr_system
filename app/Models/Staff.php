@@ -10,8 +10,28 @@ class Staff extends User
     protected static function boot()
     {
         parent::boot();
-
         static::addGlobalScope(new UserScope('Staff'));
+
+        static::deleting(function (Staff $staff) {
+            $staff->supervised()->sync([]);
+        });
+    }
+
+    public function supervised()
+    {
+        return $this->belongsToMany(StudentRecord::class, 'supervisors')
+            ->with('student')
+            ->withPivot('supervisor_type')
+            ->withTimestamps();
+    }
+
+    public function previouslySupervised()
+    {
+        return $this->belongsToMany(StudentRecord::class, 'supervisors')
+            ->wherePivot('changed_on', '!=', null)
+            ->with('student')
+            ->withPivot('supervisor_type')
+            ->withTimestamps();
     }
 
     public function supervising()
