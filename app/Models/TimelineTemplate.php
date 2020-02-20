@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TimelineTemplate extends Model
 {

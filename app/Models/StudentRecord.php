@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Balping\HashSlug\HasHashSlug;
 use Bouncer;
 use Carbon\Carbon;
-use Balping\HashSlug\HasHashSlug;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class StudentRecord extends Model
 {
@@ -46,7 +46,7 @@ class StudentRecord extends Model
     public static function boot()
     {
         parent::boot();
-        static::deleting(function (StudentRecord $record) {
+        static::deleting(function (self $record) {
             if ($record->isForceDeleting()) {
                 $record->timeline()->withTrashed()->get()->each->forceDelete();
                 $record->note->withTrashed()->forceDelete();
@@ -60,7 +60,7 @@ class StudentRecord extends Model
             }
         });
 
-        static::restoring(function (StudentRecord $record) {
+        static::restoring(function (self $record) {
             $record->note()->withTrashed()->restore();
             $deleted_time = $record->deleted_at->copy()->subSecond();
             $record->timeline()->onlyTrashed()

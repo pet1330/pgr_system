@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Models\User;
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
+use App\Models\User;
 
 class LoginListener
 {

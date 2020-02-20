@@ -32,15 +32,15 @@ class AbsenceTypeRequest extends FormRequest
                 $abst = AbsenceType::where('name', '=', $this->name)->first();
 
                 return [
-                        'name' => [
-                            'required',
-                            'min:3',
-                            'unique:absence_types,name'.(is_null($abst) ? '' : ','.$abst->id),
-                        ],
-                        'interuption'=> [
-                            'required',
-                            'boolean',
-                        ],
+                    'name' => [
+                        'required',
+                        'min:3',
+                        'unique:absence_types,name'.(is_null($abst) ? '' : ','.$abst->id),
+                    ],
+                    'interuption'=> [
+                        'required',
+                        'boolean',
+                    ],
                 ];
             case 'POST':
                 return

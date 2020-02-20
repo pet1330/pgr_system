@@ -48,9 +48,9 @@ class ProgrammeRequest extends FormRequest
             case 'POST':
                 return [
                     'name' => [
-                    'required',
-                    'min:3',
-                    'unique:programmes,name',
+                        'required',
+                        'min:3',
+                        'unique:programmes,name',
                     ],
                     'duration' => [
                         'required',

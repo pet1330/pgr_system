@@ -51,9 +51,9 @@ class MilestoneTypeRequest extends FormRequest
             case 'POST':
                 return [
                     'name' => [
-                    'required',
-                    'min:3',
-                    'unique:milestone_types,name',
+                        'required',
+                        'min:3',
+                        'unique:milestone_types,name',
                     ],
                     'duration' => [
                         'nullable',

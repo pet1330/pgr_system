@@ -3,13 +3,13 @@
 namespace App\Notifications;
 
 use App\Models\Media;
-use App\Models\Student;
 use App\Models\Milestone;
+use App\Models\Student;
 use App\Models\StudentRecord;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class StudentUploadConfirmation extends Notification implements ShouldQueue
 {
@@ -55,8 +55,8 @@ class StudentUploadConfirmation extends Notification implements ShouldQueue
     {
         $url = route('student.record.milestone.show',
             [$this->student->university_id,
-            $this->record->slug(),
-            $this->milestone->slug(),
+                $this->record->slug(),
+                $this->milestone->slug(),
             ]);
 
         return (new MailMessage)

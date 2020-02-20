@@ -41,9 +41,9 @@ class CollegeRequest extends FormRequest
             case 'POST':
                 return [
                     'name' => [
-                    'required',
-                    'min:3',
-                    'unique:colleges,name',
+                        'required',
+                        'min:3',
+                        'unique:colleges,name',
                     ],
                 ];
         }

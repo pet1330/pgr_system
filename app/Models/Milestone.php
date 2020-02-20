@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use DB;
-use Carbon\Carbon;
-use Plank\Mediable\Mediable;
 use Balping\HashSlug\HasHashSlug;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Plank\Mediable\Mediable;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Milestone extends Model
 {
@@ -55,7 +55,7 @@ class Milestone extends Model
     {
         parent::boot();
 
-        static::deleting(function (Milestone $milestone) {
+        static::deleting(function (self $milestone) {
             if ($milestone->isForceDeleting()) {
                 $milestone->approvals->each->forceDelete();
                 $milestone->media()->withTrashed()->get()->each->forceDelete();
@@ -65,7 +65,7 @@ class Milestone extends Model
             }
         });
 
-        static::restoring(function (Milestone $milestone) {
+        static::restoring(function (self $milestone) {
             $deleted_time = $milestone->deleted_at->copy()->subSecond();
             $milestone->media()->withTrashed()
                 ->where('deleted_at', '>=', $deleted_time)

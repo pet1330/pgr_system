@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Bouncer;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {

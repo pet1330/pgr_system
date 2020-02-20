@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\Absence;
-use App\Models\Student;
 use App\Models\AbsenceType;
+use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AbsenceTest extends TestCase
 {

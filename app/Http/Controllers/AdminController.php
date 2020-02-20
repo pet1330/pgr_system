@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
 use App\Models\Admin;
 use App\Models\Milestone;
+use DataTables;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller

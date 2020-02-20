@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MilestoneTypeRequest;
+use App\Models\MilestoneType;
 use DataTables;
 use Illuminate\Http\Request;
-use App\Models\MilestoneType;
-use App\Http\Requests\MilestoneTypeRequest;
 
 class MilestoneTypeController extends Controller
 {

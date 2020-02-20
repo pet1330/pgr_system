@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Bouncer;
 use Balping\HashSlug\HasHashSlug;
+use Bouncer;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class MilestoneTemplate extends Model
 {

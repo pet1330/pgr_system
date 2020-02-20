@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Bouncer;
-use Validator;
-use DataTables;
-use Carbon\Carbon;
-use MediaUploader;
-use App\Models\Media;
-use App\Models\Staff;
-use App\Models\Student;
-use App\Models\Approval;
-use App\Models\Milestone;
-use Illuminate\Http\Request;
-use App\Models\MilestoneType;
-use App\Models\StudentRecord;
 use App\Http\Requests\ApprovalRequest;
 use App\Http\Requests\MilestoneRequest;
+use App\Models\Approval;
+use App\Models\Media;
+use App\Models\Milestone;
+use App\Models\MilestoneType;
+use App\Models\Staff;
+use App\Models\Student;
+use App\Models\StudentRecord;
 use App\Notifications\AdminUploadAlert;
-use App\Notifications\StudentUploadAlert;
 use App\Notifications\AdminUploadConfirmation;
-use App\Notifications\StudentUploadConfirmation;
 use App\Notifications\StudentMilestoneApprovalAlert;
+use App\Notifications\StudentUploadAlert;
+use App\Notifications\StudentUploadConfirmation;
 use App\Notifications\SupervisorMilestoneApprovalAlert;
+use Bouncer;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
+use Log;
+use MediaUploader;
+use Validator;
 
 class MilestoneController extends Controller
 {
@@ -61,7 +61,7 @@ class MilestoneController extends Controller
         return view('admin.milestone.list', [
             'title' => 'Overdue Milestones',
             'subtitle' => 'All overdue milestones',
-            ]);
+        ]);
     }
 
     public function amendments(Request $request)
@@ -77,7 +77,7 @@ class MilestoneController extends Controller
         return view('admin.milestone.list', [
             'title' => 'Awaiting Amendments',
             'subtitle' => 'All milestones awaiting amendments',
-            ]);
+        ]);
     }
 
     public function upcoming(Request $request)
@@ -92,7 +92,7 @@ class MilestoneController extends Controller
         return view('admin.milestone.list', [
             'title' => 'Upcoming Milestones',
             'subtitle' => 'All upcoming milestones',
-            ]);
+        ]);
     }
 
     public function submitted(Request $request)
@@ -119,7 +119,7 @@ class MilestoneController extends Controller
             'title' => 'Submitted Milestones',
             'subtitle' => 'All submitted milestones',
             'show_submitted' => true,
-            ]);
+        ]);
     }
 
     public function recent(Request $request)
@@ -146,7 +146,7 @@ class MilestoneController extends Controller
             'title' => 'Submitted Milestones',
             'subtitle' => 'Recently submitted milestones',
             'show_submitted' => true,
-            ]);
+        ]);
     }
 
     public function data($milestones)
@@ -180,10 +180,10 @@ class MilestoneController extends Controller
             })
             ->setRowAttr(['data-link' => function (Milestone $ms) {
                 return route('student.record.milestone.show', [
-                            $ms->student->student->university_id,
-                            $ms->student->slug(),
-                            $ms->slug(),
-                        ]);
+                    $ms->student->student->university_id,
+                    $ms->student->slug(),
+                    $ms->slug(),
+                ]);
             },
             ]);
     }
@@ -258,7 +258,7 @@ class MilestoneController extends Controller
             'due_date' => Carbon::now()->format('Y-m-d'),
             'milestone_type_id' => $request->milestone_type,
             'created_by' => auth()->id(),
-            ]);
+        ]);
 
         $m->submitted_date = $m->due_date;
         $away_days = $student->interuptionPeriodSoFar();
@@ -309,7 +309,7 @@ class MilestoneController extends Controller
             'milestone_type_id' => $request->milestone_type,
             'non_interuptive_date' => Carbon::parse($request->due)->subDays($student->interuptionPeriodSoFar()),
             'created_by' => auth()->id(),
-            ]);
+        ]);
 
         $milestone = $record->timeline()->save($m);
 

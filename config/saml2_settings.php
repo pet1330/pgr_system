@@ -7,7 +7,7 @@ $prefix = str_finish(env('URL_PREFIX', ''), '/');
 return $settings = [
 
     /**
-     * If 'useRoutes' is set to true, the package defines five new routes:
+     * If 'useRoutes' is set to true, the package defines five new routes:.
      *
      *    Method | URI                      | Name
      *    -------|--------------------------|------------------
@@ -23,29 +23,28 @@ return $settings = [
 
     /**
      * which middleware group to use for the saml routes
-     * Laravel 5.2 will need a group which includes StartSession
+     * Laravel 5.2 will need a group which includes StartSession.
      */
     'routesMiddleware' => ['web'],
 
     /**
      * Indicates how the parameters will be
-     * retrieved from the sls request for signature validation
+     * retrieved from the sls request for signature validation.
      */
     'retrieveParametersFromServer' => true,
 
     /**
-     * Where to redirect after logout
+     * Where to redirect after logout.
      */
     'logoutRoute' => $prefix,
 
     /**
-     * Where to redirect after login if no other option was provided
+     * Where to redirect after login if no other option was provided.
      */
     'loginRoute' => $prefix,
 
-
     /**
-     * Where to redirect after login if no other option was provided
+     * Where to redirect after login if no other option was provided.
      */
     'errorRoute' => $prefix.'/error',
 
