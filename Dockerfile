@@ -14,7 +14,7 @@ RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 
 RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add -
 RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" |  tee /etc/apt/sources.list.d/yarn.list
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 
 RUN curl -o /usr/local/bin/rmate https://raw.githubusercontent.com/aurora/rmate/v1.0.1/rmate && chmod +x /usr/local/bin/rmate
 
