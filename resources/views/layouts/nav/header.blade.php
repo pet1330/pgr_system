@@ -26,7 +26,7 @@
                 </a>
               </div>
               <div class="pull-right">
-                <a href="{{ route('logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                <a href="{{ route('saml2_logout', 'saml2') }}" class="btn btn-default btn-flat">Sign out</a>
               </div>
             </li>
           </ul>

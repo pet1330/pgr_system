@@ -1,65 +1,62 @@
 <?php
 
-//This is variable is an example - Just make sure that the urls in the 'idp' config are ok.
-$idp_host = 'https://adfs.lincoln.ac.uk:443';
-$prefix = str_finish(env('URL_PREFIX', ''), '/');
+use Illuminate\Support\Str;
+
+$prefix = Str::finish(env('URL_PREFIX', ''), '/');
 
 return $settings = [
 
     /**
-     * If 'useRoutes' is set to true, the package defines five new routes:.
-     *
-     *    Method | URI                      | Name
-     *    -------|--------------------------|------------------
-     *    POST   | {routesPrefix}/acs       | saml_acs
-     *    GET    | {routesPrefix}/login     | saml_login
-     *    GET    | {routesPrefix}/logout    | saml_logout
-     *    GET    | {routesPrefix}/metadata  | saml_metadata
-     *    GET    | {routesPrefix}/sls       | saml_sls
+     * Array of IDP prefixes to be configured e.g. 'idpNames' => ['test1', 'test2', 'test3'],
+     * Separate routes will be automatically registered for each IDP specified with IDP name as prefix
+     * Separate config file saml2/<idpName>_idp_settings.php should be added & configured accordingly
      */
-    'useRoutes' => true,
+    'idpNames' => ['saml2'],
 
-    'routesPrefix' => $prefix.'saml2',
+    /**
+     * If 'useRoutes' is set to true, the package defines five new routes for reach entry in idpNames:
+     *
+     *    Method | URI                                | Name
+     *    -------|------------------------------------|------------------
+     *    POST   | {routesPrefix}/{idpName}/acs       | saml_acs
+     *    GET    | {routesPrefix}/{idpName}/login     | saml_login
+     *    GET    | {routesPrefix}/{idpName}/logout    | saml_logout
+     *    GET    | {routesPrefix}/{idpName}/metadata  | saml_metadata
+     *    GET    | {routesPrefix}/{idpName}/sls       | saml_sls
+     */
+    'useRoutes' => false,
+
+    /**
+     * Optional, leave empty if you want the defined routes to be top level, i.e. "/{idpName}/*"
+     */
+    'routesPrefix' => $prefix,
 
     /**
      * which middleware group to use for the saml routes
-     * Laravel 5.2 will need a group which includes StartSession.
+     * Laravel 5.2 will need a group which includes StartSession
      */
     'routesMiddleware' => ['web'],
 
     /**
      * Indicates how the parameters will be
-     * retrieved from the sls request for signature validation.
+     * retrieved from the sls request for signature validation
      */
-    'retrieveParametersFromServer' => true,
+    'retrieveParametersFromServer' => false,
 
     /**
-     * Where to redirect after logout.
+     * Where to redirect after logout
      */
     'logoutRoute' => $prefix,
 
     /**
-     * Where to redirect after login if no other option was provided.
+     * Where to redirect after login if no other option was provided
      */
     'loginRoute' => $prefix,
 
     /**
-     * Where to redirect after login if no other option was provided.
+     * Where to redirect after login if no other option was provided
      */
-    'errorRoute' => $prefix.'/error',
-
-    /*****
-     * One Login Settings
-     */
-
-    // If 'strict' is True, then the PHP Toolkit will reject unsigned
-    // or unencrypted messages if it expects them signed or encrypted
-    // Also will reject the messages if not strictly follow the SAML
-    // standard: Destination, NameId, Conditions ... are validated too.
-    'strict' => false, //@todo: make this depend on laravel config
-
-    // Enable debug mode (to print errors)
-    'debug' => env('APP_DEBUG', false),
+    'errorRoute' => $prefix . 'error',
 
     // If 'proxyVars' is True, then the Saml lib will trust proxy headers
     // e.g X-Forwarded-Proto / HTTP_X_FORWARDED_PROTO. This is useful if
@@ -67,156 +64,12 @@ return $settings = [
     // SSL.
     'proxyVars' => true,
 
-    // Service Provider Data that we are deploying
-    'sp' => [
-
-        // Specifies constraints on the name identifier to be used to
-        // represent the requested subject.
-        // Take a look on lib/Saml2/Constants.php to see the NameIdFormat supported
-        //'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
-
-        'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
-
-        // Usually x509cert and privateKey of the SP are provided by files placed at
-        // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => '',
-        'privateKey' => '',
-
-        // Identifier (URI) of the SP entity.
-        // Leave blank to use the 'saml_metadata' route.
-        'entityId' => '',
-
-        // Specifies info about where and how the <AuthnResponse> message MUST be
-        // returned to the requester, in this case our SP.
-        'assertionConsumerService' => [
-            // URL Location where the <Response> from the IdP will be returned,
-            // using HTTP-POST binding.
-            // Leave blank to use the 'saml_acs' route
-            'url' => '',
-        ],
-        // Specifies info about where and how the <Logout Response> message MUST be
-        // returned to the requester, in this case our SP.
-        // Remove this part to not include any URL Location in the metadata.
-        'singleLogoutService' => [
-            // URL Location where the <Response> from the IdP will be returned,
-            // using HTTP-Redirect binding.
-            // Leave blank to use the 'saml_sls' route
-            'url' => '',
-        ],
-    ],
-
-    // Identity Provider Data that we want connect with our SP
-    'idp' => [
-        // Identifier of the IdP entity  (must be a URI)
-
-        'entityId' => $idp_host.'/federationmetadata/2007-06/federationmetadata.xml',
-        // SSO endpoint info of the IdP. (Authentication Request protocol)
-        'singleSignOnService' => [
-            // URL Target of the IdP where the SP will send the Authentication Request Message,
-            // using HTTP-Redirect binding.
-
-            'url' => $idp_host.'/adfs/ls',
-        ],
-        // SLO endpoint info of the IdP.
-        'singleLogoutService' => [
-            // URL Location of the IdP where the SP will send the SLO Request,
-            // using HTTP-Redirect binding.
-
-            'url' => $idp_host.'/adfs/ls?wa=wsignout1.0',
-        ],
-        // Public x509 certificate of the IdP
-
-        'x509cert' => 'MIIC4DCCAcigAwIBAgIQfZ4RS/LKyJ5Ax128/65MDDANBgkqhkiG9w0BAQsFADAsMSowKAYDVQQDEyFBREZTIFNpZ25pbmcgLSBhZGZzLmxpbmNvbG4uYWMudWswHhcNMTcwNDEyMDI0MDUzWhcNMjAwNDExMDI0MDUzWjAsMSowKAYDVQQDEyFBREZTIFNpZ25pbmcgLSBhZGZzLmxpbmNvbG4uYWMudWswggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCkGih3kEXpFJ8aey1SBdB9TEJ5KbPaBuZ4JzD/zbY2g42wMPnmlchawouzHwCJynG8zGFt20xnuhsCdTE4Tqt9YGnWoIF9VU93KOT7AfTBkubUvWlgXBdpp07Q892RIojrykxz9T88dd2KY3kBuy7+tKWNkXQl5W6dPI4gTE3mk0EPTO68wlunEUbEsDNc7r6fLkNlIitR4blwdWeHVYoBBihHnDZlT2yv/EcKNTcHjN8c6PSIvi6dhjsPDfhBQdAYSX5jO75aEXhJ4+zUg8u7Pbwb9eTNMQ0mty28+iEcnAq6T5ppYYUnKNUgjZT2JTb6F6RxTV1LgxOa2GVB5MnPAgMBAAEwDQYJKoZIhvcNAQELBQADggEBADs4fx9fdoDO20iAHvAwYrvRaIhd65g3c4W1jQwCeA2/+DYBvfOO9t9VhzmQlUvA+X0x1rqh9GoamGfOVAzOg3ikQbOlCxRXitYNQHwCQAZ8PjVCOpQKeWbzo2bO2MwQUYdXOTrSGhc83fZEovT4kpmKC3RiOvVCTe1geqpHAoAFHa/ZDKSw8uG1zv+X4M7vWsOJJ5tx/l716f1YYqEUtsfLlDKue+OWtdiyKGO/JzYypEh7xQBdXc+GKaUd1bwpsl01f8ZMIKF4340V10FCNyr/9CH7KQBYKDRZ788imJbMuc8BKh6pkun/ETGPDr25/uMEXNSL6H4Jemfq0nChC+M=',
-        /*
-         *  Instead of use the whole x509cert you can use a fingerprint
-         *  (openssl x509 -noout -fingerprint -in "idp.crt" to generate it)
-         */
-        // 'certFingerprint' => '',
-    ],
-
-    /***
-     *
-     *  OneLogin advanced settings
-     *
-     *
+    /**
+     * (Optional) Which class implements the route functions.
+     * If commented out, defaults to this lib's controller (Aacotroneo\Saml2\Http\Controllers\Saml2Controller).
+     * If you need to extend Saml2Controller (e.g. to override the `login()` function to pass
+     * a `$returnTo` argument), this value allows you to pass your own controller, and have
+     * it used in the routes definition.
      */
-    // Security settings
-    'security' => [
-
-        /** signatures and encryptions offered */
-
-        // Indicates that the nameID of the <samlp:logoutRequest> sent by this SP
-        // will be encrypted.
-        'nameIdEncrypted' => false,
-
-        // Indicates whether the <samlp:AuthnRequest> messages sent by this SP
-        // will be signed.              [The Metadata of the SP will offer this info]
-        'authnRequestsSigned' => false,
-
-        // Indicates whether the <samlp:logoutRequest> messages sent by this SP
-        // will be signed.
-        'logoutRequestSigned' => false,
-
-        // Indicates whether the <samlp:logoutResponse> messages sent by this SP
-        // will be signed.
-        'logoutResponseSigned' => false,
-
-        /* Sign the Metadata
-         False || True (use sp certs) || array (
-                                                    keyFileName => 'metadata.key',
-                                                    certFileName => 'metadata.crt'
-                                                )
-        */
-        'signMetadata' => false,
-
-        /** signatures and encryptions required **/
-
-        // Indicates a requirement for the <samlp:Response>, <samlp:LogoutRequest> and
-        // <samlp:LogoutResponse> elements received by this SP to be signed.
-        'wantMessagesSigned' => false,
-
-        // Indicates a requirement for the <saml:Assertion> elements received by
-        // this SP to be signed.        [The Metadata of the SP will offer this info]
-        'wantAssertionsSigned' => false,
-
-        // Indicates a requirement for the NameID received by
-        // this SP to be encrypted.
-        'wantNameIdEncrypted' => false,
-
-        // Authentication context.
-        // Set to false and no AuthContext will be sent in the AuthNRequest,
-        // Set true or don't present thi parameter and you will get an AuthContext 'exact' 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport'
-        // Set an array with the possible auth context values: array ('urn:oasis:names:tc:SAML:2.0:ac:classes:Password', 'urn:oasis:names:tc:SAML:2.0:ac:classes:X509'),
-        'requestedAuthnContext' => true,
-    ],
-
-    // Contact information template, it is recommended to suply a technical and support contacts
-    'contactPerson' => [
-        'technical' => [
-            'givenName' => 'name',
-            'emailAddress' => env('TECH_SUPPORT_ADDRESS', 'plightbody@lincoln.ac.uk'),
-        ],
-        'support' => [
-            'givenName' => 'Support',
-            'emailAddress' => env('TECH_SUPPORT_ADDRESS', 'plightbody@lincoln.ac.uk'),
-        ],
-    ],
-
-    'organization' => [
-        'en-GB' => [
-            'name' => 'Name',
-            'displayname' => 'PGR System',
-            'url' => env('APP_URL'),
-        ],
-    ],
-
-    /* Interoperable SAML 2.0 Web Browser SSO Profile [saml2int]   http://saml2int.org/profile/current
-
-   'authnRequestsSigned' => false,    // SP SHOULD NOT sign the <samlp:AuthnRequest>,
-                                      // MUST NOT assume that the IdP validates the sign
-   'wantAssertionsSigned' => true,
-   'wantAssertionsEncrypted' => true, // MUST be enabled if SSL/HTTPs is disabled
-   'wantNameIdEncrypted' => false,
-*/
-
+     'saml2_controller' => \App\Http\WebControllers\AuthController::class,
 ];

@@ -1,15 +1,21 @@
 <?php
 
-Route::middleware('guest')->get('login', 'SAMLController@login')->name('login');
 Route::get('auth-status', 'DevController@authStatus');
 Route::get('downtime-robot', 'DevController@downtimeRobot');
 Route::name('account-locked')->get('account-locked', 'DevController@accountLocked');
+
+Route::prefix('{idpName}')->group(function() {
+    Route::post('acs', 'AuthController@acs')->name('saml2_acs');
+    Route::get('login', 'AuthController@login')->name('saml2_login');
+    Route::get('logout', 'AuthController@logout')->name('saml2_logout');
+    Route::get('metadata', 'AuthController@metadata')->name('saml2_metadata');
+    Route::get('sls', 'AuthController@sls')->name('saml2_sls');
+});
 
 Route::middleware('samlauth')->group(function () {
     Route::get('api/holidays', 'HolidayController@getBankHolidays')->name('api.bank_holidays');
 
     Route::get('/', 'Controller@dashboard_url')->name('home');
-    Route::get('logout', 'SAMLController@logout')->name('logout');
 
     Route::get('student/overdue', 'MilestoneController@overdue')->name('student.overdue');
     Route::get('student/amendments', 'MilestoneController@amendments')->name('student.amendments');
