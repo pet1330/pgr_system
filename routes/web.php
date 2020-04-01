@@ -4,7 +4,7 @@ Route::get('auth-status', 'DevController@authStatus');
 Route::get('downtime-robot', 'DevController@downtimeRobot');
 Route::name('account-locked')->get('account-locked', 'DevController@accountLocked');
 
-Route::prefix('{idpName}')->group(function() {
+Route::prefix('{idpName}')->group(function () {
     Route::post('acs', 'AuthController@acs')->name('saml2_acs');
     Route::get('login', 'AuthController@login')->name('saml2_login');
     Route::get('logout', 'AuthController@logout')->name('saml2_logout');

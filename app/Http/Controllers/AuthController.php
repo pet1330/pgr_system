@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Aacotroneo\Saml2\Saml2Auth;
 use Aacotroneo\Saml2\Http\Controllers\Saml2Controller;
+use Aacotroneo\Saml2\Saml2Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Saml2Controller
 {
-
     /**
      * Initiate a logout request across all the SSO infrastructure.
      *
