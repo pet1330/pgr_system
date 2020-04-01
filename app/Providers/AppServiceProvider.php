@@ -9,7 +9,6 @@ use Bouncer;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Validator;
-use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,8 +35,8 @@ class AppServiceProvider extends ServiceProvider
             return Admin::where('university_id', $value)->exists();
         });
 
-        View::share('app_version', \Cache::remember('app_version', 10, function () {
-            return strtok(shell_exec('git describe --always --tags'), '-');
+        \View::share('app_version', \Cache::remember('app_version', 10, function () {
+            return shell_exec('git describe --tag --abbrev=0');
         }));
     }
 
