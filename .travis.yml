@@ -16,8 +16,8 @@ before_script:
   - travis_retry php artisan key:generate
   - travis_retry php artisan migrate
   - . $HOME/.nvm/nvm.sh
-  - nvm install 8.17.0
-  - nvm use 8.17.0
+  - nvm install 13.12.0
+  - nvm use 13.12.0
   - npm install -g yarn
   - yarn
   - yarn run production

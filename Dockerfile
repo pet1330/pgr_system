@@ -26,7 +26,7 @@ RUN apt-get -y update && apt-get -y --force-yes upgrade && \
                 php${IMAGE_PHP_VERSION}-readline php${IMAGE_PHP_VERSION}-recode php${IMAGE_PHP_VERSION}-soap php${IMAGE_PHP_VERSION}-sqlite3 \
                 php${IMAGE_PHP_VERSION}-tidy php${IMAGE_PHP_VERSION}-xml php${IMAGE_PHP_VERSION}-xmlrpc php${IMAGE_PHP_VERSION}-xsl php${IMAGE_PHP_VERSION}-zip \
                 php-tideways php-mongodb \
-                vim nano supervisor nodejs duplicity \
+                vim nano supervisor nodejs duplicity zip unzip \
                 yarn apache2 apache2-utils libapache2-mod-php${IMAGE_PHP_VERSION} \
                 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -34,9 +34,8 @@ RUN apt-get -y update && apt-get -y --force-yes upgrade && \
 RUN a2enmod  php${IMAGE_PHP_VERSION} && a2enmod rewrite && a2enconf php${IMAGE_PHP_VERSION}-fpm
 RUN /usr/sbin/update-alternatives --set php /usr/bin/php${IMAGE_PHP_VERSION} && /usr/sbin/update-alternatives --set phar /usr/bin/phar${IMAGE_PHP_VERSION}
 
-RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
-RUN curl -L https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY docker/apache/sites-available/* /etc/apache2/sites-available/
 COPY docker/apache/mysitename.crt /etc/apache2

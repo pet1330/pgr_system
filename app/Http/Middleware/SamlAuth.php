@@ -20,7 +20,7 @@ class SamlAuth
                 return response('Unauthorized.', 401);
             }
 
-            return redirect()->route('login');
+            return redirect()->route('saml2_login', 'saml2');
         }
 
         return $next($request);

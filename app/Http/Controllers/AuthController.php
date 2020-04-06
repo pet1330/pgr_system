@@ -2,17 +2,32 @@
 
 namespace App\Http\Controllers;
 
-class AuthController extends Controller
-{
-    public function login()
-    {
-        return auth()->guest() ? redirect()->route('login') : redirect()->intended();
-    }
+use Aacotroneo\Saml2\Http\Controllers\Saml2Controller;
+use Aacotroneo\Saml2\Saml2Auth;
+use Illuminate\Http\Request;
 
-    public function logout()
+class AuthController extends Saml2Controller
+{
+    /**
+     * Initiate a logout request across all the SSO infrastructure.
+     *
+     * @param Saml2Auth $saml2Auth
+     * @param Request $request
+     */
+    public function logout(Saml2Auth $saml2Auth, Request $request)
     {
         auth()->logout();
+        session()->save();
+        parent::logout($saml2Auth, $request); // does not return
+    }
 
-        return redirect('/');
+    /**
+     * Initiate a login request.
+     *
+     * @param Saml2Auth $saml2Auth
+     */
+    public function login(Saml2Auth $saml2Auth)
+    {
+        return auth()->guest() ? parent::login($saml2Auth) : redirect()->intended(config('app.url_prefix', ''));
     }
 }
