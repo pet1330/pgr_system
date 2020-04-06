@@ -29,12 +29,12 @@ return $settings = [
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => env($this_idp_env_id.'_SP_x509',''),
-        'privateKey' => env($this_idp_env_id.'_SP_PRIVATEKEY',''),
+        'x509cert' => env($this_idp_env_id.'_SP_x509', ''),
+        'privateKey' => env($this_idp_env_id.'_SP_PRIVATEKEY', ''),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
-        'entityId' => env($this_idp_env_id.'_SP_ENTITYID',''),
+        'entityId' => env($this_idp_env_id.'_SP_ENTITYID', ''),
 
         // Specifies info about where and how the <AuthnResponse> message MUST be
         // returned to the requester, in this case our SP.
@@ -53,7 +53,7 @@ return $settings = [
             // Leave blank to use the '{idpName}_sls' route, e.g. 'test_sls'
             'url' => '',
         ],
-],
+    ],
 
     // Identity Provider Data that we want connect with our SP
     'idp' => [
@@ -72,7 +72,7 @@ return $settings = [
             'url' => env($this_idp_env_id.'_IDP_SL_URL', ''),
         ],
 
-        'x509cert' => "",
+        'x509cert' => '',
         /**
          * Enable Multi-Cert signing/encryption
          * In some scenarios the IdP uses different certificates for
@@ -80,15 +80,14 @@ return $settings = [
          * more than one certificate is published on IdP metadata.
          * In order to handle that the toolkit offers that parameter.
          */
-
         'x509certMulti'=> [
-          'signing'=> [
-              0 => env($this_idp_env_id.'_IDP_X509_SIGNING_0',''),
-              1 => env($this_idp_env_id.'_IDP_X509_SIGNING_1',''),
-              2 => env($this_idp_env_id.'_IDP_X509_SIGNING_2',''),
-              3 => env($this_idp_env_id.'_IDP_X509_SIGNING_3',''),
-              4 => env($this_idp_env_id.'_IDP_X509_SIGNING_4',''),
-          ],
+            'signing'=> [
+                0 => env($this_idp_env_id.'_IDP_X509_SIGNING_0', ''),
+                1 => env($this_idp_env_id.'_IDP_X509_SIGNING_1', ''),
+                2 => env($this_idp_env_id.'_IDP_X509_SIGNING_2', ''),
+                3 => env($this_idp_env_id.'_IDP_X509_SIGNING_3', ''),
+                4 => env($this_idp_env_id.'_IDP_X509_SIGNING_4', ''),
+            ],
         ],
     ],
 
@@ -99,7 +98,7 @@ return $settings = [
      *
      */
     // Security settings
-    'security' => array(
+    'security' => [
 
         /** signatures and encryptions offered */
 
@@ -127,7 +126,6 @@ return $settings = [
         */
         'signMetadata' => false,
 
-
         /** signatures and encryptions required **/
 
         // Indicates a requirement for the <samlp:Response>, <samlp:LogoutRequest> and
@@ -147,7 +145,7 @@ return $settings = [
         // Set true or don't present thi parameter and you will get an AuthContext 'exact' 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport'
         // Set an array with the possible auth context values: array ('urn:oasis:names:tc:SAML:2.0:ac:classes:Password', 'urn:oasis:names:tc:SAML:2.0:ac:classes:X509'),
         'requestedAuthnContext' => true,
-    ),
+    ],
 
     // Contact information template, it is recommended to suply a technical and support contacts
     'contactPerson' => [
@@ -166,7 +164,7 @@ return $settings = [
         'en-GB' => [
             'name' => 'Name',
             'displayname' => env('APP_NAME', ''),
-            'url' => env('APP_URL', '')
+            'url' => env('APP_URL', ''),
         ],
     ],
 ];
