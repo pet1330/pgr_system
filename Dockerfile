@@ -34,9 +34,8 @@ RUN apt-get -y update && apt-get -y --force-yes upgrade && \
 RUN a2enmod  php${IMAGE_PHP_VERSION} && a2enmod rewrite && a2enconf php${IMAGE_PHP_VERSION}-fpm
 RUN /usr/sbin/update-alternatives --set php /usr/bin/php${IMAGE_PHP_VERSION} && /usr/sbin/update-alternatives --set phar /usr/bin/phar${IMAGE_PHP_VERSION}
 
-# RUN curl -LO https://deployer.org/deployer.phar && mv deployer.phar /usr/local/bin/dep && chmod +x /usr/local/bin/dep
-# RUN curl -L https://getcomposer.org/installer > composer-setup.php && php composer-setup.php && mv composer.phar /usr/local/bin/composer && rm composer-setup.php
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY docker/apache/sites-available/* /etc/apache2/sites-available/
 COPY docker/apache/mysitename.crt /etc/apache2
@@ -56,9 +55,9 @@ RUN a2enmod ssl
 
 WORKDIR /var/www/html/pgr
 
-# RUN composer install
-# RUN yarn
-# RUN yarn run production
+RUN composer install
+RUN yarn
+RUN yarn run production
 
 RUN chown -R www-data:www-data /var/www/html/pgr
 
