@@ -26,8 +26,6 @@ env:
   global:
     - setup=basic
 
-sudo: false
-
 cache:
   directories:
     - $HOME/.composer/cache
