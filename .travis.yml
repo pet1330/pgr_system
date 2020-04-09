@@ -2,7 +2,20 @@ language: php
 
 php:
   - 7.3
-#  - 7.4 disabled for now
+  - 7.4
+
+jobs:
+  allow_failures:
+    - php: 7.4
+  include:
+    - php: 7.3
+      env: 'COMPOSER_FLAGS="--prefer-stable"'
+    - php: 7.3
+      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+    - php: 7.4
+      env: 'COMPOSER_FLAGS="--prefer-stable"'
+    - php: 7.4
+      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
 
 services:
   - mysql
@@ -11,8 +24,8 @@ services:
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database testing;'
-  - composer self-update
-  - composer install --dev --prefer-source --no-interaction
+  - travis_retry composer self-update
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --no-suggest --prefer-dist
   - travis_retry php artisan key:generate
   - travis_retry php artisan migrate
   - . $HOME/.nvm/nvm.sh
@@ -22,21 +35,12 @@ before_script:
   - yarn
   - yarn run production
 
-env:
-  global:
-    - setup=basic
-
 cache:
   directories:
     - $HOME/.composer/cache
 
 before_install:
     - travis_retry composer self-update
-
-install:
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-dist --no-suggest; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
 
 script:
   - vendor/bin/phpunit --debug
