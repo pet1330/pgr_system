@@ -52,6 +52,8 @@ $(document).ready(function() {
                 { data: 'first_name', name: 'student.first_name', searchable: true, orderable: true },
                 { data: 'last_name', name: 'student.last_name', searchable: true, orderable: true },
                 { data: 'university_id', name: 'student.university_id', searchable: true, orderable: true },
+                { data: 'dos_first_name', name: 'dos.first_name', searchable: true, orderable: true },
+                { data: 'dos_last_name', name: 'dos.last_name', searchable: true, orderable: true },
                 { data: 'school', name: 'school.name', searchable: true, orderable: true },
                 { data: 'tierFour', name: 'tierFour', searchable: true, orderable: true },
                 { data: 'fundingType', name: 'fundingType.name', searchable: true, orderable: true },

@@ -30,6 +30,9 @@ class StudentController extends Controller
                 'school' => function ($query) {
                     $query->withTrashed();
                 },
+                'dos' => function ($query) {
+                    $query;
+                },
                 'enrolmentStatus' => function ($query) {
                     $query->withTrashed();
                 },
@@ -44,6 +47,12 @@ class StudentController extends Controller
                 })
                 ->addColumn('last_name', function (StudentRecord $sr) {
                     return $sr->student->last_name;
+                })
+                ->addColumn('dos_first_name', function (StudentRecord $sr) {
+                    return optional($sr->dos->first())->first_name;
+                })
+                ->addColumn('dos_last_name', function (StudentRecord $sr) {
+                    return optional($sr->dos->first())->last_name;
                 })
                 ->addColumn('university_id', function (StudentRecord $sr) {
                     return $sr->student->university_id;

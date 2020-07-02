@@ -16,7 +16,9 @@
         <td>First Name</td>
         <td>Last Name</td>
         <td>University ID</td>
-        <td>school</td>
+        <td>DoS First Name</td>
+        <td>DoS Last Name</td>
+        <td>School</td>
         <td>Tier Four</td>
         <td>Funding Type</td>
         <td>Programme</td>
