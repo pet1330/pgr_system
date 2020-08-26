@@ -60,7 +60,7 @@ class StudentMilestoneApprovalAlert extends Notification implements ShouldQueue
         $lineOne = '';
         $lineTwo = '';
 
-        if ($this->approval->approved) { // if rejected
+        if ($this->approval->approved) { // if approved
             $lineOne = sprintf(
                 "This email is to inform you that your submitted milestone documentation for '%s' has been approved. Well done!",
                 $this->milestone->name
