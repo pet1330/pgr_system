@@ -56,18 +56,17 @@ class SupervisorMilestoneApprovalAlert extends Notification implements ShouldQue
         $url = route('student.record.milestone.show', [$this->student->university_id,
             $this->record->slug(), $this->milestone->slug(), ]);
 
-        $status = $this->approval->approved ? 'approved' : 'rejected';
-        $lineTwo = '';
-
-        $lineOne = sprintf("This email is to inform %s's milestone '%s' has been %s.",
+        $status = $this->approval->approved ? 'Approved' : 'Revisions requested';
+        $lineOne = sprintf("This email is to inform %s's milestone '%s' has been assess and given the status '%s'.",
             $this->student->name, $this->milestone->name, $status);
 
         if (! $this->approval->approved) { // if rejected
-            $lineOne .= ' They will be required to amend the document and submit an updated version.';
+            $lineOne .= ' They will be required to amend the documentation and submit an updated version.';
             if ($this->approval->reason) {
-                $lineTwo .= sprintf('The following feedback was provided: %s. ', str_finish($this->approval->reason, '.'));
+                $lineTwo .= sprintf("The following feedback was provided: %s. ", str_finish($this->approval->reason, '.'));
             }
-            $lineTwo .= sprintf('Please ensure %s understands the alterations that must be made. For further clarification please liaise with the PGR admin team.', $this->student->first_name);
+            $lineTwo .= sprintf(
+                "Please ensure %s understands the alterations that must be made. For further clarification, please liaise with the PGR admin team.", $this->student->first_name);
         }
 
         return (new MailMessage)
@@ -75,6 +74,6 @@ class SupervisorMilestoneApprovalAlert extends Notification implements ShouldQue
             ->line($lineTwo)
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject(sprintf('Milestone %s: %s [%s]', $this->student->name, $this->milestone->name, strtoupper($status)));
+            ->subject(sprintf("Milestone %s: %s [%s]", $this->student->name, $this->milestone->name, strtoupper($status)));
     }
 }
