@@ -59,6 +59,7 @@ class SupervisorMilestoneApprovalAlert extends Notification implements ShouldQue
         $status = $this->approval->approved ? 'Approved' : 'Revisions requested';
         $lineOne = sprintf("This email is to inform %s's milestone '%s' has been assess and given the status '%s'.",
             $this->student->name, $this->milestone->name, $status);
+        $lineTwo = '';
 
         if (! $this->approval->approved) { // if rejected
             $lineOne .= ' They will be required to amend the documentation and submit an updated version.';
