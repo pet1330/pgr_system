@@ -23,7 +23,7 @@ services:
       - db
 
   pgr:
-    image: lcasuol/pgr_system:0.1.2
+    image: lcasuol/pgr_system:0.1.3
     build:
       context: .
       dockerfile: Dockerfile
