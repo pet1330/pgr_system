@@ -3,6 +3,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{{ config('app.name') }}</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" href="{{ url(config('app.url_prefix') . '/favicon.ico') }}" />
 
   <style type="text/css">
     .lt-ie9 #app { display: none !important; }

@@ -14,8 +14,16 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
+  querytree:
+    image: d4software/querytree:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    links:
+      - db
+
   pgr:
-    image: lcasuol/pgr_system:0.0.18
+    image: lcasuol/pgr_system:0.1.4
     build:
       context: .
       dockerfile: Dockerfile

@@ -137,6 +137,12 @@ class StudentRecord extends Model
                     ->withTimestamps();
     }
 
+    public function dos()
+    {
+        return $this->supervisors()
+            ->wherePivot('supervisor_type', 1);
+    }
+
     public function supervisor($supervisorType)
     {
         return $this->supervisors()
