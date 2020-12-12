@@ -61,7 +61,7 @@ class StartTodayReminder extends Notification implements ShouldQueue
             $this->milestone->due_date->copy()
             ->addDay(1)->startOfDay(), true);
 
-        return (new MailMessage)
+        $msg = (new MailMessage)
             ->line('Student: '.$this->student->name.' ('.$this->student->university_id.')')
             ->line('Programme: '.$this->record->programme->name)
             ->line('Milestone: '.$this->milestone->name)
@@ -70,5 +70,10 @@ class StartTodayReminder extends Notification implements ShouldQueue
             ->action('View Milestone', $url)
             ->line('Thanks!')
             ->subject('[PGR] Reminder: '.$this->milestone->name.' is due in '.$duediff.'.');
+
+        if (config('app.all_notifications_email')) {
+            $msg->bcc(config('app.all_notifications_email'));
+        }
+        return $msg;
     }
 }
