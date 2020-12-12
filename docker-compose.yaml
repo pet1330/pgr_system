@@ -37,7 +37,6 @@ services:
     links:
       - db
       - redis
-      - smtp
     ports:
       - 80:80
       - 443:443
