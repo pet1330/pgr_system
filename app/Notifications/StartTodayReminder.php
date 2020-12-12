@@ -74,6 +74,7 @@ class StartTodayReminder extends Notification implements ShouldQueue
         if (config('app.all_notifications_email')) {
             $msg->bcc(config('app.all_notifications_email'));
         }
+
         return $msg;
     }
 }

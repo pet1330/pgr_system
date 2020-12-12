@@ -73,7 +73,7 @@ class StudentMilestoneApprovalAlert extends Notification implements ShouldQueue
         }
         if ($this->approval->reason) {
             $lineTwo .= sprintf(
-                'The following additional feedback was provided: %s. ', 
+                'The following additional feedback was provided: %s. ',
                 str_finish($this->approval->reason, '.')
             );
         }
