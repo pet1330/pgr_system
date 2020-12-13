@@ -23,7 +23,7 @@ before_script:
   - cp .env.travis .env
   - mysql -e 'create database testing;'
   - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --no-suggest --prefer-dist
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
   - travis_retry php artisan key:generate
   - travis_retry php artisan migrate
   - . $HOME/.nvm/nvm.sh
