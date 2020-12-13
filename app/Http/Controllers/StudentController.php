@@ -31,7 +31,6 @@ class StudentController extends Controller
                     $query->withTrashed();
                 },
                 'dos' => function ($query) {
-                    $query;
                 },
                 'enrolmentStatus' => function ($query) {
                     $query->withTrashed();
