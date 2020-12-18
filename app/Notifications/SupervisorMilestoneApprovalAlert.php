@@ -64,10 +64,10 @@ class SupervisorMilestoneApprovalAlert extends Notification implements ShouldQue
         if (! $this->approval->approved) { // if rejected
             $lineOne .= ' They will be required to amend the documentation and submit an updated version.';
             if ($this->approval->reason) {
-                $lineTwo .= sprintf("The following feedback was provided: %s. ", str_finish($this->approval->reason, '.'));
+                $lineTwo .= sprintf('The following feedback was provided: %s. ', str_finish($this->approval->reason, '.'));
             }
             $lineTwo .= sprintf(
-                "Please ensure %s understands the alterations that must be made. For further clarification, please liaise with the PGR admin team.", $this->student->first_name);
+                'Please ensure %s understands the alterations that must be made. For further clarification, please liaise with the PGR admin team.', $this->student->first_name);
         }
 
         return (new MailMessage)
@@ -75,6 +75,6 @@ class SupervisorMilestoneApprovalAlert extends Notification implements ShouldQue
             ->line($lineTwo)
             ->action('View Milestone', $url)
             ->line('Thanks!')
-            ->subject(sprintf("Milestone %s: %s [%s]", $this->student->name, $this->milestone->name, strtoupper($status)));
+            ->subject(sprintf('Milestone %s: %s [%s]', $this->student->name, $this->milestone->name, strtoupper($status)));
     }
 }
